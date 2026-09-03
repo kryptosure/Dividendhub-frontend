@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 120" width="380" height="120">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3B82F6" />
+      <stop offset="50%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#34D399" />
+    </linearGradient>
+  </defs>
+  <!-- "D" (font-size 55) -->
+  <text x="40" y="78" font-family="'Segoe UI', Arial, sans-serif" font-size="55" font-weight="800" fill="url(#grad)" text-anchor="middle">D</text>
+  <!-- Dollar sign centred inside the "D" -->
+  <text x="40" y="64" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#34D399" text-anchor="middle">$</text>
+  <!-- Brand name -->
+  <text x="92" y="72" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="700" fill="url(#grad)">DividendBro</text>
+</svg>

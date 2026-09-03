@@ -18,18 +18,21 @@
   }
 
   [data-theme="dark"] {
-    --bg-primary: #0a0e1a;
-    --bg-secondary: #111827;
-    --bg-surface: rgba(255, 255, 255, 0.04);
-    --bg-surface-hover: rgba(255, 255, 255, 0.08);
-    --border-color: rgba(255, 255, 255, 0.06);
-    --border-hover: rgba(255, 255, 255, 0.12);
-    --text-primary: #f1f5f9;
+    --bg-primary: #000000;
+    --bg-secondary: #000000;
+    --bg-surface: #000000;
+    --bg-surface-hover: #0a0a0a;
+    --border-color: #1f1f1f;
+    --border-hover: #2a2a2a;
+    --text-primary: #ffffff;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
-    --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
-    --shadow-hover: 0 12px 48px rgba(0,0,0,0.4);
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.5);
+    --shadow-hover: 0 12px 48px rgba(0,0,0,0.6);
   }
+
+  /* ❌ Gold border on cards removed – keeping it minimalistic */
+  /* No card border rules here – just clean, pure black */
 
   * {
     @apply box-border m-0 p-0;
@@ -101,6 +104,7 @@
     text-wrap: balance;
   }
 }
+
 /* Mobile-first font adjustments */
 @media (max-width: 768px) {
   body {
@@ -128,4 +132,20 @@
   .text-2xl {
     font-size: 1.25rem !important;
   }
+}
+
+/* Date picker fixes for dark/light themes */
+input[type="date"] {
+  color-scheme: dark;
+}
+[data-theme="dark"] input[type="date"] {
+  color: #ffffff !important;
+  background-color: #0a0a0a !important;
+}
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+[data-theme="light"] input[type="date"] {
+  color: #0f172a !important;
+  background-color: #ffffff !important;
 }

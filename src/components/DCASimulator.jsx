@@ -18,6 +18,15 @@ const DCASimulator = ({ symbol, market }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!amount || !startDate || !symbol) return;
+
+    // ✅ Debug log – shows what we're sending to the API
+    console.log('DCASimulator called with:', { 
+      symbol, 
+      market, 
+      amount: parseFloat(amount), 
+      startDate 
+    });
+
     setLoading(true);
     setError(null);
     setResult(null);
@@ -25,6 +34,7 @@ const DCASimulator = ({ symbol, market }) => {
       const data = await simulateDCA(symbol, parseFloat(amount), startDate, market);
       setResult(data);
     } catch (err) {
+      console.error('DCA error:', err);
       setError(err.message || 'Failed to simulate DCA');
     } finally {
       setLoading(false);
@@ -42,19 +52,16 @@ const DCASimulator = ({ symbol, market }) => {
     }
 
     const schedule = result.schedule;
-    // Determine grouping: monthly, quarterly, yearly
     const totalMonths = schedule.length;
     let groupBy = 'monthly';
     if (totalMonths > 120) groupBy = 'yearly';
     else if (totalMonths > 60) groupBy = 'quarterly';
 
-    // Aggregate data by period
     const groupedData = [];
     let currentGroup = null;
     let groupInvested = 0;
     let groupValue = 0;
 
-    // Helper to get year/quarter/month label
     const getLabel = (dateStr, groupType) => {
       const d = new Date(dateStr + 'T00:00:00Z');
       const year = d.getUTCFullYear();
@@ -64,12 +71,10 @@ const DCASimulator = ({ symbol, market }) => {
         const quarter = Math.ceil(month / 3);
         return `Q${quarter} ${year}`;
       }
-      // monthly
       const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       return `${monthNames[month-1]} ${year}`;
     };
 
-    // Determine grouping key for each entry
     const getGroupKey = (dateStr, groupType) => {
       const d = new Date(dateStr + 'T00:00:00Z');
       const year = d.getUTCFullYear();
@@ -90,26 +95,21 @@ const DCASimulator = ({ symbol, market }) => {
           label: getLabel(item.date, groupBy),
           invested: 0,
           value: 0,
-          date: item.date, // keep for sorting
+          date: item.date,
         };
       }
       groups[key].invested += item.amount;
-      // Portfolio value at this investment date: sharesDRIP * price? Or sharesNoDRIP?
-      // We'll use sharesDRIP (with reinvestment) times price to get value.
       const shares = item.sharesDRIP || item.sharesNoDRIP;
       const price = item.price;
       groups[key].value = shares * price;
     }
 
-    // Convert to array and sort by date
     const sortedKeys = Object.keys(groups).sort();
     const labels = sortedKeys.map(k => groups[k].label);
     const investedData = sortedKeys.map(k => groups[k].invested);
     const valueData = sortedKeys.map(k => groups[k].value);
-    // Growth = value - invested
     const growthData = sortedKeys.map((k, i) => valueData[i] - investedData[i]);
 
-    // Destroy existing chart
     if (chartInstance.current) {
       chartInstance.current.destroy();
       chartInstance.current = null;

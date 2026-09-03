@@ -17,6 +17,10 @@ import Signup from './pages/Signup';
 import BackToTop from './components/BackToTop';
 import Blog from './pages/Blog';
 import Article from './pages/Article';
+// New imports for simulator pages
+import SimulatorSingle from './pages/SimulatorSingle';
+import SimulatorDCA from './pages/SimulatorDCA';
+
 import { getMe } from './services/api';
 
 const queryClient = new QueryClient();
@@ -60,6 +64,9 @@ function App() {
                 <Route path="/blog/:slug" element={<Article />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
+                {/* New simulator routes */}
+                <Route path="/simulate/one-time" element={<SimulatorSingle />} />
+                <Route path="/simulate/dca" element={<SimulatorDCA />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </main>
@@ -97,7 +104,6 @@ function Home() {
         <meta name="twitter:description" content={pageDescription} />
       </Helmet>
 
-      {/* Hero Section – Smaller Title */}
       <div className="text-center mb-8">
         <h1 className="text-3xl md:text-4xl font-extrabold gradient-text">
           The Best Dividend Analysis & Management Tool
