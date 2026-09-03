@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #f0f4f8;
+    --bg-secondary: #ffffff;
+    --bg-surface: rgba(0, 0, 0, 0.04);
+    --bg-surface-hover: rgba(0, 0, 0, 0.08);
+    --border-color: rgba(0, 0, 0, 0.06);
+    --border-hover: rgba(0, 0, 0, 0.12);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.06);
+    --shadow-hover: 0 12px 48px rgba(0,0,0,0.1);
+  }
+
+  [data-theme="dark"] {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-surface: rgba(255, 255, 255, 0.04);
+    --bg-surface-hover: rgba(255, 255, 255, 0.08);
+    --border-color: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.12);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --shadow-card: 0 8px 32px rgba(0,0,0,0.3);
+    --shadow-hover: 0 12px 48px rgba(0,0,0,0.4);
+  }
+
+  * {
+    @apply box-border m-0 p-0;
+  }
+  html {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  body {
+    @apply bg-bg-primary text-text-primary font-sans antialiased overflow-x-hidden;
+    min-height: 100vh;
+  }
+  #root {
+    @apply min-h-screen flex flex-col;
+  }
+  ::-webkit-scrollbar {
+    @apply w-1.5 h-1.5;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-secondary;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent-blue rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-teal;
+  }
+  :focus-visible {
+    @apply outline-2 outline-accent-blue outline-offset-2;
+  }
+  ::selection {
+    @apply bg-accent-blue/30 text-text-primary;
+  }
+  * {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .no-transition {
+    transition: none !important;
+  }
+}
+
+@layer components {
+  .card-hover {
+    @apply transition-shadow duration-200 hover:shadow-card-hover;
+  }
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent;
+  }
+  .gradient-bg {
+    @apply bg-gradient-to-r from-accent-blue to-accent-teal;
+  }
+  .table-wrapper {
+    @apply w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-wrapper table {
+    @apply w-full min-w-[600px] md:min-w-full;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}
