@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dividendbro.com/sitemap.xml
