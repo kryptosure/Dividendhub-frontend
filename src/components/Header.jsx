@@ -3,12 +3,18 @@ import { Link, useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
 
 const Header = () => {
-  const { token, logout, currency, setCurrency, theme, toggleTheme } = useStore();
+  const { token, logout, market, setMarket, currency, setCurrency, theme, toggleTheme } = useStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handleMarketChange = (newMarket) => {
+    setMarket(newMarket);
+    // Auto‑switch currency based on market
+    setCurrency(newMarket === 'us' ? 'usd' : 'sgd');
   };
 
   return (
@@ -20,7 +26,31 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-4">
+        <nav className="hidden md:flex items-center space-x-3">
+          {/* Market Toggle */}
+          <div className="flex items-center gap-1 border border-border rounded-full p-0.5">
+            <button
+              onClick={() => handleMarketChange('us')}
+              className={`px-3 py-1 text-xs font-medium rounded-full transition ${
+                market === 'us'
+                  ? 'bg-accent-blue text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              🇺🇸 US
+            </button>
+            <button
+              onClick={() => handleMarketChange('sg')}
+              className={`px-3 py-1 text-xs font-medium rounded-full transition ${
+                market === 'sg'
+                  ? 'bg-accent-blue text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              🇸🇬 SGX
+            </button>
+          </div>
+
           {/* Currency Toggle – both options visible */}
           <div className="flex items-center gap-1 border border-border rounded-full p-0.5">
             <button
@@ -86,7 +116,30 @@ const Header = () => {
         </nav>
 
         {/* Mobile Menu – compact version */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden flex items-center gap-1">
+          {/* Market buttons (small) */}
+          <div className="flex items-center gap-0.5 border border-border rounded-full p-0.5">
+            <button
+              onClick={() => handleMarketChange('us')}
+              className={`px-2 py-0.5 text-[10px] font-medium rounded-full transition ${
+                market === 'us'
+                  ? 'bg-accent-blue text-white'
+                  : 'text-text-secondary'
+              }`}
+            >
+              US
+            </button>
+            <button
+              onClick={() => handleMarketChange('sg')}
+              className={`px-2 py-0.5 text-[10px] font-medium rounded-full transition ${
+                market === 'sg'
+                  ? 'bg-accent-blue text-white'
+                  : 'text-text-secondary'
+              }`}
+            >
+              SGX
+            </button>
+          </div>
           {/* Currency buttons (small) */}
           <div className="flex items-center gap-0.5 border border-border rounded-full p-0.5">
             <button
