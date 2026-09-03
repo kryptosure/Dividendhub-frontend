@@ -10,7 +10,7 @@ const SearchBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const debouncedQuery = useDebounce(query, 300);
-  const market = useStore((state) => state.market);
+  const { market, setMarket } = useStore();
   const navigate = useNavigate();
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
@@ -118,6 +118,30 @@ const SearchBar = () => {
 
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl mx-auto mb-6">
+      {/* Market Toggle */}
+      <div className="flex justify-center gap-3 mb-4">
+        <button
+          onClick={() => setMarket('us')}
+          className={`px-4 py-1.5 rounded-full text-sm font-semibold transition ${
+            market === 'us'
+              ? 'bg-accent-blue text-white'
+              : 'bg-bg-surface text-text-muted hover:text-text-primary'
+          }`}
+        >
+          🇺🇸 US Stocks
+        </button>
+        <button
+          onClick={() => setMarket('sg')}
+          className={`px-4 py-1.5 rounded-full text-sm font-semibold transition ${
+            market === 'sg'
+              ? 'bg-accent-blue text-white'
+              : 'bg-bg-surface text-text-muted hover:text-text-primary'
+          }`}
+        >
+          🇸🇬 SGX Stocks
+        </button>
+      </div>
+
       <form onSubmit={handleSubmit} className="relative">
         <svg
           className="absolute left-3 top-3 w-4 h-4 text-text-muted"
@@ -146,7 +170,7 @@ const SearchBar = () => {
         )}
       </form>
 
-      {/* Quick Links – Larger & More Touchable */}
+      {/* Quick Links */}
       <div className="flex flex-wrap gap-1.5 mt-2 justify-center">
         <span className="text-xs text-text-muted mr-1 self-center">Popular:</span>
         {links.stocks.map((item) => (
