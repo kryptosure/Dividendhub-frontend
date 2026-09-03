@@ -101,3 +101,31 @@
     text-wrap: balance;
   }
 }
+/* Mobile-first font adjustments */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  h1, .hero-title {
+    font-size: 1.75rem !important;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  .text-sm {
+    font-size: 0.75rem !important;
+  }
+  .text-base {
+    font-size: 0.875rem !important;
+  }
+  .text-lg {
+    font-size: 1rem !important;
+  }
+  .text-xl {
+    font-size: 1.125rem !important;
+  }
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+}
