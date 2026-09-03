@@ -147,7 +147,7 @@ export const shareViaWhatsApp = async (element, title, fallbackMessage) => {
   if (!imageDataUrl) {
     // Fallback to link sharing
     const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(fallbackMessage || 'Check out this dividend data on DividendHub!');
+    const text = encodeURIComponent(fallbackMessage || 'Check out this dividend data on DividendBro!');
     window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
     showNotification('Could not capture image. Sharing link instead.', 'error');
     return;
@@ -158,12 +158,12 @@ export const shareViaWhatsApp = async (element, title, fallbackMessage) => {
     try {
       const response = await fetch(imageDataUrl);
       const blob = await response.blob();
-      const file = new File([blob], 'dividendhub-share.jpg', { type: 'image/jpeg' });
+      const file = new File([blob], 'DividendBro-share.jpg', { type: 'image/jpeg' });
 
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
-          title: title || 'DividendHub',
-          text: fallbackMessage || 'Check out this dividend data on DividendHub!',
+          title: title || 'DividendBro',
+          text: fallbackMessage || 'Check out this dividend data on DividendBro!',
           files: [file],
         });
         console.log('Share successful via Web Share API');
@@ -171,8 +171,8 @@ export const shareViaWhatsApp = async (element, title, fallbackMessage) => {
       } else {
         // Try without canShare check
         await navigator.share({
-          title: title || 'DividendHub',
-          text: fallbackMessage || 'Check out this dividend data on DividendHub!',
+          title: title || 'DividendBro',
+          text: fallbackMessage || 'Check out this dividend data on DividendBro!',
           files: [file],
         });
         console.log('Share successful via Web Share API');
@@ -186,17 +186,17 @@ export const shareViaWhatsApp = async (element, title, fallbackMessage) => {
 
   // 3. Fallback: download the image and open WhatsApp
   // Download the image
-  downloadImage(imageDataUrl, 'dividendhub-share.jpg');
+  downloadImage(imageDataUrl, 'DividendBro-share.jpg');
 
   // Open WhatsApp with a pre‑filled message
   const url = encodeURIComponent(window.location.href);
-  const text = encodeURIComponent(fallbackMessage || `Check out this dividend data on DividendHub!`);
+  const text = encodeURIComponent(fallbackMessage || `Check out this dividend data on DividendBro!`);
   window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, '_blank');
 
   // Show notification with "Download Again" button
   showNotification(
     `📸 Image downloaded! Open WhatsApp, tap the attachment icon 📎, and select the downloaded image.`,
     'success',
-    () => downloadImage(imageDataUrl, 'dividendhub-share.jpg')
+    () => downloadImage(imageDataUrl, 'DividendBro-share.jpg')
   );
 };

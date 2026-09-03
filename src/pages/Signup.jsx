@@ -46,8 +46,8 @@ const Signup = () => {
   return (
     <>
       <Helmet>
-        <title>Sign Up – DividendHub</title>
-        <meta name="description" content="Create a free DividendHub account to track your dividend portfolio and passive income." />
+        <title>Sign Up – DividendBro</title>
+        <meta name="description" content="Create a free DividendBro account to track your dividend portfolio and passive income." />
       </Helmet>
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
         <div className="max-w-md w-full bg-bg-surface border border-border rounded-xl p-8 shadow-card">

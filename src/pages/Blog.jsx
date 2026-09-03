@@ -7,7 +7,7 @@ const Blog = () => {
   return (
     <>
       <Helmet>
-        <title>Dividend Investing Blog – DividendHub</title>
+        <title>Dividend Investing Blog – DividendBro</title>
         <meta name="description" content="Read articles on dividend investing, stock picks, portfolio building, and more." />
       </Helmet>
 

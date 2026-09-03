@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://dividendhub-api.onrender.com/api',
+  baseURL: 'https://DividendBro-api.onrender.com/api',
   headers: { 'Content-Type': 'application/json' },
   timeout: 30000,
 });

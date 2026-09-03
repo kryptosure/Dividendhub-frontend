@@ -118,7 +118,7 @@ const Results = () => {
             headers={['Year', 'Total Dividend', 'Payouts']}
             elementRef={resultsRef}
             title={`${data.name || data.symbol} Dividend History`}
-            shareMessage={`Check out the dividend history of ${data.name || data.symbol} on DividendHub!`}
+            shareMessage={`Check out the dividend history of ${data.name || data.symbol} on DividendBro!`}
           />
         </div>
 

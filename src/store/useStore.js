@@ -160,7 +160,7 @@ const useStore = create(
       },
     }),
     {
-      name: 'dividendhub-storage',
+      name: 'DividendBro-storage',
       partialize: (state) => ({
         user: state.user,
         token: state.token,

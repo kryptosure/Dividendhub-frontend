@@ -79,7 +79,7 @@ function Home() {
 
   const pageTitle = symbol
     ? `${symbol} Dividend History – Yield, Ex‑Dates & Safety`
-    : 'DividendHub – Best Dividend Analysis & Management Tool for US & SGX Stocks';
+    : 'DividendBro – Best Dividend Analysis & Management Tool for US & SGX Stocks';
 
   const pageDescription = symbol
     ? `View dividend history, current yield, safety score, and ex‑dates for ${symbol}. Track your portfolio and passive income.`

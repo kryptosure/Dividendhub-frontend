@@ -19,7 +19,7 @@ const Article = () => {
   return (
     <>
       <Helmet>
-        <title>{article.title} – DividendHub</title>
+        <title>{article.title} – DividendBro</title>
         <meta name="description" content={article.excerpt} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={article.excerpt} />
@@ -48,7 +48,7 @@ const Article = () => {
 
           <div className="mt-8 pt-4 border-t border-border text-center">
             <p className="text-text-muted text-sm">
-              🚀 Explore more on <Link to="/" className="text-accent-blue hover:underline">DividendHub</Link>
+              🚀 Explore more on <Link to="/" className="text-accent-blue hover:underline">DividendBro</Link>
             </p>
           </div>
         </div>

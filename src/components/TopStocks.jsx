@@ -125,7 +125,7 @@ const TopStocks = () => {
             headers={['Name','Symbol','Price','Yield','Payouts','Safety']}
             elementRef={topStocksRef}
             title={`Top Dividend ${type === 'stock' ? 'Stocks' : 'ETFs'} (${market.toUpperCase()})`}
-            shareMessage={`Check out the top dividend ${type === 'stock' ? 'stocks' : 'ETFs'} on DividendHub!`}
+            shareMessage={`Check out the top dividend ${type === 'stock' ? 'stocks' : 'ETFs'} on DividendBro!`}
           />
         </div>
 

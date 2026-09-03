@@ -327,7 +327,7 @@ const PortfolioView = () => {
             headers={getCSVHeaders()}
             elementRef={portfolioRef}
             title={`Portfolio - ${view.charAt(0).toUpperCase() + view.slice(1)}`}
-            shareMessage={`Check out my dividend portfolio (${view}) on DividendHub!`}
+            shareMessage={`Check out my dividend portfolio (${view}) on DividendBro!`}
           />
         </div>
 

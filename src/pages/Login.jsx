@@ -45,14 +45,14 @@ const Login = () => {
   return (
     <>
       <Helmet>
-        <title>Login – DividendHub</title>
-        <meta name="description" content="Sign in to your DividendHub account to manage your dividend portfolio." />
+        <title>Login – DividendBro</title>
+        <meta name="description" content="Sign in to your DividendBro account to manage your dividend portfolio." />
       </Helmet>
       <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
         <div className="max-w-md w-full bg-bg-surface border border-border rounded-xl p-8 shadow-card">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-extrabold gradient-text">Welcome Back</h1>
-            <p className="text-text-muted text-sm mt-1">Sign in to your DividendHub account</p>
+            <p className="text-text-muted text-sm mt-1">Sign in to your DividendBro account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">

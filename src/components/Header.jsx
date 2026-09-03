@@ -44,7 +44,7 @@ const Header = () => {
               <path d="M35 58 V34 h14 c6 0 10 3 10 8 0 3-1.5 5-4 6.5 3 1 5 3.5 5 7 0 5.5-4.5 9.5-11 9.5H35z M42 42 h5 c2.5 0 4-1 4-3s-1.5-3-4-3h-5v6z M42 50 h7 c3 0 4.5-1.5 4.5-4s-1.5-4-4.5-4h-7v8z" fill="url(#logoGrad)" />
             </svg>
             <span className="font-extrabold text-lg bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent hidden sm:block">
-              DividendHub
+              DividendBro
             </span>
           </Link>
 
