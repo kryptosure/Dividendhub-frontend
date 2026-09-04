@@ -20,14 +20,17 @@ const PortfolioCalculator = ({ symbol, market }) => {
     setResult(null);
     try {
       const data = await calculatePortfolio(symbol, purchaseDate, parseFloat(quantity), market);
+      console.log('✅ Result received:', data);
       setResult(data);
     } catch (err) {
+      console.error('Portfolio error:', err);
       setError(err.message || 'Failed to calculate portfolio');
     } finally {
       setLoading(false);
     }
   };
 
+  // If no symbol, show placeholder
   if (!symbol) {
     return (
       <div className="bg-bg-surface border border-border rounded-xl p-4">
@@ -86,7 +89,98 @@ const PortfolioCalculator = ({ symbol, market }) => {
 
       {result && (
         <div className="space-y-4">
-          {/* ... existing result rendering ... */}
+          {/* Summary Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div className="bg-bg-secondary p-3 rounded-lg">
+              <div className="text-xs uppercase text-text-muted">Current Value</div>
+              <div className="text-lg font-bold">
+                {formatCurrency(result.currentValue, currencySymbol)}
+              </div>
+              <div className="text-xs text-text-muted">
+                {formatNumber(result.sharesToday || result.quantity, 2)} shares
+              </div>
+            </div>
+            <div className="bg-bg-secondary p-3 rounded-lg">
+              <div className="text-xs uppercase text-text-muted">Invested Cost</div>
+              <div className="text-lg font-bold">
+                {formatCurrency(result.purchaseCost, currencySymbol)}
+              </div>
+              <div className="text-xs text-text-muted">
+                @{formatCurrency(result.buyPrice, currencySymbol)}
+              </div>
+            </div>
+            <div className={`bg-bg-secondary p-3 rounded-lg ${result.capitalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
+              <div className="text-xs uppercase text-text-muted">Capital Gains</div>
+              <div className="text-lg font-bold">
+                {result.capitalGain >= 0 ? '+' : ''}
+                {formatCurrency(result.capitalGain, currencySymbol)}
+              </div>
+              <div className="text-xs">
+                {result.capitalGainPct >= 0 ? '+' : ''}{formatPercent(result.capitalGainPct)}
+              </div>
+            </div>
+            <div className="bg-bg-secondary p-3 rounded-lg text-accent-green">
+              <div className="text-xs uppercase text-text-muted">Dividend Gains</div>
+              <div className="text-lg font-bold">
+                +{formatCurrency(result.totalDividendGain, currencySymbol)}
+              </div>
+              <div className="text-xs">{result.dividendCount} payouts</div>
+            </div>
+            <div className={`bg-bg-secondary p-3 rounded-lg col-span-2 md:col-span-1 ${result.netGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
+              <div className="text-xs uppercase text-text-muted">Net Gains</div>
+              <div className="text-lg font-bold">
+                {result.netGain >= 0 ? '+' : ''}
+                {formatCurrency(result.netGain, currencySymbol)}
+              </div>
+              <div className="text-xs">
+                {result.netGainPct >= 0 ? '+' : ''}{formatPercent(result.netGainPct)} total return
+              </div>
+            </div>
+          </div>
+
+          {/* DRIP Section */}
+          {result.reinvest && (
+            <div className="bg-bg-secondary p-3 rounded-lg">
+              <div className="text-xs uppercase text-text-muted font-semibold mb-2">
+                Dividend Reinvestment (DRIP)
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div>
+                  <div className="text-xs text-text-muted">Final Shares</div>
+                  <div className="font-bold">{formatNumber(result.reinvest.finalShares, 2)}</div>
+                  <div className="text-xs text-accent-green">
+                    +{formatNumber(result.reinvest.extraShares, 2)}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-text-muted">Final Value</div>
+                  <div className="font-bold">
+                    {formatCurrency(result.reinvest.finalValue, currencySymbol)}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-text-muted">Extra Value</div>
+                  <div className="font-bold text-accent-green">
+                    +{formatCurrency(result.reinvest.extraValue, currencySymbol)}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xs text-text-muted">Total Return (DRIP)</div>
+                  <div className="font-bold text-accent-green">
+                    {result.reinvest.totalReturnPct >= 0 ? '+' : ''}
+                    {formatPercent(result.reinvest.totalReturnPct)}
+                  </div>
+                  <div className="text-xs text-text-muted">
+                    vs {result.netGainPct >= 0 ? '+' : ''}{formatPercent(result.netGainPct)} without DRIP
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="text-text-muted text-xs">
+            * {result.note || 'Dividends are per share as declared, multiplied by the quantity held since purchase. Buy price is the close on the last trading day on or before the purchase date.'}
+          </div>
         </div>
       )}
     </div>
