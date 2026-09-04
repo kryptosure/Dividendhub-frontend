@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { calculatePortfolio } from '../services/api';
 import useStore from '../store/useStore';
 import { formatCurrency, formatNumber, formatPercent } from '../utils/formatters';
+import DatePicker from './DatePicker';
+import SimulatorExport from './SimulatorExport';
 
 const PortfolioCalculator = ({ symbol, market }) => {
   const [purchaseDate, setPurchaseDate] = useState('');
@@ -30,7 +32,6 @@ const PortfolioCalculator = ({ symbol, market }) => {
     }
   };
 
-  // If no symbol, show placeholder
   if (!symbol) {
     return (
       <div className="bg-bg-surface border border-border rounded-xl p-4">
@@ -49,11 +50,9 @@ const PortfolioCalculator = ({ symbol, market }) => {
           <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
             Purchase Date
           </label>
-          <input
-            type="date"
+          <DatePicker
             value={purchaseDate}
             onChange={(e) => setPurchaseDate(e.target.value)}
-            className="w-full bg-bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-blue"
             required
           />
         </div>
@@ -89,7 +88,6 @@ const PortfolioCalculator = ({ symbol, market }) => {
 
       {result && (
         <div className="space-y-4">
-          {/* Summary Cards */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             <div className="bg-bg-secondary p-3 rounded-lg">
               <div className="text-xs uppercase text-text-muted">Current Value</div>
@@ -138,7 +136,6 @@ const PortfolioCalculator = ({ symbol, market }) => {
             </div>
           </div>
 
-          {/* DRIP Section – now with consistent font sizes */}
           {result.reinvest && (
             <div className="bg-bg-secondary p-4 rounded-lg">
               <div className="text-sm uppercase text-text-muted font-semibold mb-3">
@@ -181,6 +178,13 @@ const PortfolioCalculator = ({ symbol, market }) => {
           <div className="text-text-muted text-xs">
             * {result.note || 'Dividends are per share as declared, multiplied by the quantity held since purchase. Buy price is the close on the last trading day on or before the purchase date.'}
           </div>
+
+          <SimulatorExport 
+            result={result} 
+            symbol={symbol} 
+            currencySymbol={currencySymbol} 
+            type="single" 
+          />
         </div>
       )}
     </div>

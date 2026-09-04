@@ -11,7 +11,6 @@ const SimulatorDCA = () => {
   const { market } = useStore();
   const [symbol, setSymbol] = useState('');
 
-  // ✅ Exactly like Results page – fetch and cache stock data
   const { data, isLoading, error } = useQuery({
     queryKey: ['stock', symbol, market],
     queryFn: () => getStock(symbol, market),
@@ -36,20 +35,18 @@ const SimulatorDCA = () => {
 
         <div className="mb-6 max-w-sm">
           <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
-            Stock Symbol
+            Enter Stock Name or Symbol
           </label>
           <SimulatorSearchInput
             symbol={symbol}
             setSymbol={setSymbol}
             market={market}
-            placeholder="e.g. AAPL, MSFT, D05.SI"
+            placeholder="e.g. Apple, Microsoft, DBS, OCBC"
           />
         </div>
 
-        {/* ⏳ Loading state */}
         {isLoading && <LoadingSpinner />}
 
-        {/* ❌ Error state */}
         {error && (
           <div className="bg-accent-red/10 border border-accent-red/20 rounded-xl p-4 text-accent-red">
             <p className="font-semibold">⚠️ {err?.message || 'Failed to load stock data'}</p>
@@ -57,16 +54,16 @@ const SimulatorDCA = () => {
           </div>
         )}
 
-        {/* ✅ Success – render simulator (stock is now cached in DB) */}
         {data && !isLoading && !error && (
-          <DCASimulator symbol={symbol} market={market} />
+          <div id="simulation-results" className="space-y-4">
+            <DCASimulator symbol={symbol} market={market} />
+          </div>
         )}
 
-        {/* ℹ️ Empty state */}
         {!symbol && !isLoading && !error && (
           <div className="bg-bg-surface border border-border rounded-xl p-12 text-center text-text-secondary">
-            <p className="text-lg">Enter a stock symbol above to start your DCA simulation.</p>
-            <p className="text-sm text-text-muted mt-2">Try AAPL, MSFT, or D05.SI</p>
+            <p className="text-lg">Enter a stock name or symbol above to start your DCA simulation.</p>
+            <p className="text-sm text-text-muted mt-2">Try Apple, Microsoft, DBS, or OCBC</p>
           </div>
         )}
       </div>

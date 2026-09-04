@@ -7,8 +7,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icon-192.png', 'icon-512.png', 'manifest.json'],
-      manifest: false,
+      // ✅ Updated to point to your new favicon and cover image
+      includeAssets: ['images/favicon.png', 'images/cover.png'],
+      manifest: false, // You are using your own manifest.json in /public
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [

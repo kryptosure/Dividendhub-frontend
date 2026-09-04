@@ -3,9 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { getBatchStocks } from '../services/api';
 import useStore from '../store/useStore';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { formatCurrency, formatNumber, formatPercent } from '../utils/formatters';
-import ExportButtons from './ExportButtons';
 
 function getWeekStart(date) {
   const d = new Date(date);
@@ -79,10 +78,141 @@ function getFutureEstimates(dividendData, shares, currency, exchangeRate) {
   return futureDates;
 }
 
+// Edit Holding Modal Component (inline)
+const EditHoldingModal = ({ isOpen, onClose, onSave, holding, currencySymbol }) => {
+  const [quantity, setQuantity] = useState(1);
+  const [purchaseDate, setPurchaseDate] = useState('');
+  const [purchasePrice, setPurchasePrice] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (isOpen && holding) {
+      setQuantity(holding.shares || 1);
+      setPurchaseDate(holding.purchaseDate || '');
+      setPurchasePrice(holding.purchasePrice || '');
+      setError('');
+    }
+  }, [isOpen, holding]);
+
+  if (!isOpen || !holding) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!quantity || quantity < 1) {
+      setError('Please enter a valid quantity (minimum 1)');
+      return;
+    }
+    if (!purchaseDate) {
+      setError('Please select a purchase date');
+      return;
+    }
+    if (!purchasePrice || parseFloat(purchasePrice) <= 0) {
+      setError('Please enter a valid purchase price');
+      return;
+    }
+
+    setError('');
+    onSave(holding.symbol, {
+      shares: parseInt(quantity),
+      purchaseDate: purchaseDate,
+      purchasePrice: parseFloat(purchasePrice),
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-bg-secondary border border-border rounded-xl max-w-md w-full p-6 shadow-xl">
+        <h3 className="text-xl font-bold mb-2">Edit Holding</h3>
+        <p className="text-text-muted text-sm mb-4">
+          <span className="font-semibold text-text-primary">{holding.name || holding.symbol}</span> ({holding.symbol})
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
+              Quantity / Shares
+            </label>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              min="1"
+              step="1"
+              className="w-full bg-bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-blue"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
+              Purchase Date
+            </label>
+            <input
+              type="date"
+              value={purchaseDate}
+              onChange={(e) => setPurchaseDate(e.target.value)}
+              className="w-full bg-bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-blue"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
+              Purchase Price (per share)
+            </label>
+            <input
+              type="number"
+              value={purchasePrice}
+              onChange={(e) => setPurchasePrice(e.target.value)}
+              placeholder="e.g. 150.50"
+              step="0.01"
+              min="0.01"
+              className="w-full bg-bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-blue"
+              required
+            />
+          </div>
+
+          {quantity && purchasePrice && parseFloat(quantity) > 0 && parseFloat(purchasePrice) > 0 && (
+            <div className="bg-bg-surface rounded-lg p-3 border border-border">
+              <div className="flex justify-between text-sm">
+                <span className="text-text-muted">Total Cost:</span>
+                <span className="text-text-primary font-semibold">
+                  {currencySymbol}{(parseFloat(quantity) * parseFloat(purchasePrice)).toFixed(2)}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {error && <p className="text-accent-red text-sm">{error}</p>}
+
+          <div className="flex gap-3 mt-4">
+            <button
+              type="submit"
+              className="flex-1 px-4 py-2 bg-gradient-to-r from-accent-blue to-accent-teal text-white font-semibold rounded-full hover:shadow-lg transition"
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-bg-surface border border-border rounded-full hover:bg-bg-surface-hover transition"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 const PortfolioView = () => {
-  const { portfolio, market, currency, removeFromPortfolio } = useStore();
+  const { portfolio, market, currency, removeFromPortfolio, updatePortfolioItem } = useStore();
   const [view, setView] = useState('holdings');
   const [exchangeRate, setExchangeRate] = useState(null);
+  const [editingHolding, setEditingHolding] = useState(null);
+  const [expandedRows, setExpandedRows] = useState({});
   const symbols = portfolio.map(item => item.symbol);
   const portfolioRef = useRef(null);
 
@@ -101,14 +231,17 @@ const PortfolioView = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  const convertedHoldings = useMemo(() => {
-    if (!data) return [];
+  const holdingsWithData = useMemo(() => {
+    if (!data || !exchangeRate) return [];
     const holdings = data.filter(r => !r.error && r.data);
     const baseCurrencyCode = currency.toUpperCase();
     const rate = exchangeRate || 1.35;
 
     return holdings.map(r => {
-      const shares = portfolio.find(p => p.symbol === r.symbol)?.shares || 1;
+      const portfolioItem = portfolio.find(p => p.symbol === r.symbol);
+      const shares = portfolioItem?.shares || 1;
+      const purchasePrice = portfolioItem?.purchasePrice || null;
+      const purchaseDate = portfolioItem?.purchaseDate || null;
       const price = r.data.currentPrice || 0;
       const yieldPct = r.data.currentYield || 0;
       const origCurrency = r.data.currency || (r.market === 'sg' ? 'SGD' : 'USD');
@@ -126,14 +259,50 @@ const PortfolioView = () => {
       }
       
       const valueInBase = shares * priceInBase;
+      const costBasis = purchasePrice ? shares * purchasePrice : valueInBase;
+      const gain = valueInBase - costBasis;
+      const gainPct = costBasis > 0 ? (gain / costBasis) * 100 : 0;
+
+      let dividendIncome = 0;
+      let dividendPayouts = [];
+      const divData = r.data;
+      if (divData && divData.byYear) {
+        for (const yearObj of divData.byYear) {
+          if (yearObj.payouts) {
+            for (const payout of yearObj.payouts) {
+              let amount = payout.amount * shares;
+              if (origCurrency === 'USD' && baseCurrencyCode === 'SGD') {
+                amount = amount * rate;
+              } else if (origCurrency === 'SGD' && baseCurrencyCode === 'USD') {
+                amount = amount / rate;
+              }
+              dividendIncome += amount;
+              dividendPayouts.push({
+                date: payout.date,
+                amount: payout.amount,
+                amountInBase: amount,
+                year: yearObj.year,
+                shares: shares
+              });
+            }
+          }
+        }
+      }
       
       return {
         ...r,
         shares,
+        purchasePrice,
+        purchaseDate,
         priceOrig: price,
         priceInBase,
         valueInBase,
+        costBasis,
+        gain,
+        gainPct,
         annualIncomeInBase,
+        dividendIncome,
+        dividendPayouts,
         yieldPct,
         origCurrency,
         currencySymbol: r.data.currencySymbol || (origCurrency === 'SGD' ? 'S$' : '$'),
@@ -143,14 +312,18 @@ const PortfolioView = () => {
     });
   }, [data, portfolio, currency, exchangeRate]);
 
-  const totalValue = convertedHoldings.reduce((sum, h) => sum + h.valueInBase, 0);
-  const totalAnnualDividend = convertedHoldings.reduce((sum, h) => sum + h.annualIncomeInBase, 0);
+  const totalValue = holdingsWithData.reduce((sum, h) => sum + h.valueInBase, 0);
+  const totalCostBasis = holdingsWithData.reduce((sum, h) => sum + h.costBasis, 0);
+  const totalGain = holdingsWithData.reduce((sum, h) => sum + h.gain, 0);
+  const totalGainPct = totalCostBasis > 0 ? (totalGain / totalCostBasis) * 100 : 0;
+  const totalAnnualDividend = holdingsWithData.reduce((sum, h) => sum + h.annualIncomeInBase, 0);
+  const totalDividendIncome = holdingsWithData.reduce((sum, h) => sum + h.dividendIncome, 0);
   const avgYield = totalValue > 0 ? (totalAnnualDividend / totalValue) * 100 : 0;
 
   const futureExDates = useMemo(() => {
-    if (!convertedHoldings.length) return [];
+    if (!holdingsWithData.length) return [];
     const allFuture = [];
-    for (const h of convertedHoldings) {
+    for (const h of holdingsWithData) {
       const estimates = getFutureEstimates(h.dividendData, h.shares, currency, exchangeRate);
       if (estimates) {
         for (const est of estimates) {
@@ -166,10 +339,10 @@ const PortfolioView = () => {
     }
     allFuture.sort((a, b) => a.date.localeCompare(b.date));
     return allFuture;
-  }, [convertedHoldings, currency, exchangeRate]);
+  }, [holdingsWithData, currency, exchangeRate]);
 
   const incomeData = useMemo(() => {
-    if (!convertedHoldings.length) return null;
+    if (!holdingsWithData.length) return null;
     const now = new Date();
     const oneYearAgo = new Date(now);
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
@@ -178,7 +351,7 @@ const PortfolioView = () => {
     const monthMap = {};
     const weekMap = {};
 
-    for (const h of convertedHoldings) {
+    for (const h of holdingsWithData) {
       const shares = h.shares;
       const divData = h.dividendData;
       if (divData && divData.byYear) {
@@ -211,17 +384,372 @@ const PortfolioView = () => {
       }
     }
     return { quarterMap, monthMap, weekMap };
-  }, [convertedHoldings, currency, exchangeRate]);
+  }, [holdingsWithData, currency, exchangeRate]);
 
+  const toggleExpand = (symbol) => {
+    setExpandedRows(prev => ({
+      ...prev,
+      [symbol]: !prev[symbol]
+    }));
+  };
+
+  const handleEdit = (holding) => {
+    setEditingHolding(holding);
+  };
+
+  const handleEditSave = (symbol, updatedData) => {
+    updatePortfolioItem(symbol, updatedData);
+    setEditingHolding(null);
+  };
+
+  // ---------- PDF Export using html2canvas with clean white background ----------
+  const handleExportPDF = async () => {
+    try {
+      // Build a clean HTML report
+      const reportHTML = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body { 
+                font-family: Arial, Helvetica, sans-serif; 
+                background: #ffffff; 
+                color: #1a1a2e;
+                padding: 40px;
+                width: 800px;
+                margin: 0 auto;
+              }
+              .header {
+                background: #0a0e1a;
+                padding: 25px 30px;
+                border-radius: 8px 8px 0 0;
+                margin-bottom: 0;
+              }
+              .header h1 {
+                color: #ffffff;
+                font-size: 24px;
+                font-weight: bold;
+              }
+              .header .subtitle {
+                color: #9ca3af;
+                font-size: 12px;
+                margin-top: 4px;
+              }
+              .header .date {
+                color: #9ca3af;
+                font-size: 11px;
+                float: right;
+                margin-top: -30px;
+              }
+              .section-title {
+                font-size: 18px;
+                font-weight: bold;
+                color: #1a1a2e;
+                margin-top: 25px;
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+                border-bottom: 2px solid #3b82f6;
+              }
+              .kpi-grid {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 12px;
+                margin: 20px 0;
+              }
+              .kpi-card {
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 14px 16px;
+                text-align: center;
+              }
+              .kpi-card .label {
+                font-size: 10px;
+                color: #6b7280;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              }
+              .kpi-card .value {
+                font-size: 16px;
+                font-weight: bold;
+                color: #1a1a2e;
+                margin-top: 4px;
+              }
+              .kpi-card .value.green { color: #10b981; }
+              .kpi-card .value.blue { color: #3b82f6; }
+              .kpi-card .value.gold { color: #f59e0b; }
+              table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+                margin-top: 15px;
+              }
+              th {
+                background: #3b82f6;
+                color: #ffffff;
+                padding: 10px 12px;
+                text-align: left;
+                font-weight: bold;
+              }
+              th.right { text-align: right; }
+              td {
+                padding: 9px 12px;
+                border-bottom: 1px solid #e5e7eb;
+              }
+              td.right { text-align: right; }
+              td.green { color: #10b981; font-weight: 600; }
+              td.red { color: #ef4444; font-weight: 600; }
+              td.dividend { color: #10b981; font-weight: 600; }
+              tr:nth-child(even) { background: #f9fafb; }
+              .footer {
+                margin-top: 30px;
+                padding-top: 15px;
+                border-top: 1px solid #e5e7eb;
+                font-size: 10px;
+                color: #6b7280;
+                text-align: center;
+              }
+              .footer a {
+                color: #3b82f6;
+                text-decoration: none;
+                font-weight: bold;
+              }
+              .footer .brand {
+                color: #3b82f6;
+                font-weight: bold;
+                font-size: 12px;
+              }
+              .dividend-section {
+                margin-top: 25px;
+                padding: 20px;
+                background: #f0fdf4;
+                border-radius: 8px;
+                border: 1px solid #10b981;
+              }
+              .dividend-section h3 {
+                color: #10b981;
+                font-size: 16px;
+                margin-bottom: 8px;
+              }
+              .dividend-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 6px 0;
+                border-bottom: 1px solid #d1fae5;
+                font-size: 12px;
+              }
+              .dividend-item:last-child { border-bottom: none; }
+              .dividend-item .amount { color: #10b981; font-weight: bold; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <h1>📊 DividendBro</h1>
+              <div class="subtitle">Smart Dividend Investing</div>
+              <div class="date">${new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}</div>
+            </div>
+
+            <div style="padding: 0 0 10px 0;">
+              <h2 style="font-size: 20px; margin: 20px 0 5px 0;">Investment Portfolio Report</h2>
+              <p style="color: #6b7280; font-size: 12px;">Portfolio Summary • ${holdingsWithData.length} holdings • ${currency.toUpperCase()}</p>
+            </div>
+
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div class="label">Total Value</div>
+                <div class="value blue">${formatCurrency(totalValue, curSymbol)}</div>
+              </div>
+              <div class="kpi-card">
+                <div class="label">Total Cost</div>
+                <div class="value">${formatCurrency(totalCostBasis, curSymbol)}</div>
+              </div>
+              <div class="kpi-card">
+                <div class="label">Total Gain/Loss</div>
+                <div class="value ${totalGain >= 0 ? 'green' : ''}">${totalGain >= 0 ? '+' : ''}${formatCurrency(totalGain, curSymbol)}</div>
+                <div style="font-size: 10px; color: ${totalGain >= 0 ? '#10b981' : '#ef4444'};">${totalGainPct >= 0 ? '+' : ''}${formatPercent(totalGainPct)}</div>
+              </div>
+              <div class="kpi-card">
+                <div class="label">Portfolio Yield</div>
+                <div class="value gold">${formatPercent(avgYield)}</div>
+              </div>
+              <div class="kpi-card">
+                <div class="label">Dividend Income</div>
+                <div class="value green">+${formatCurrency(totalDividendIncome, curSymbol)}</div>
+              </div>
+            </div>
+
+            <h3 class="section-title">📈 Holdings</h3>
+            <p style="color: #6b7280; font-size: 11px; margin-bottom: 10px;">Detailed breakdown of your ${holdingsWithData.length} stock holdings</p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>Stock</th>
+                  <th class="right">Shares</th>
+                  <th class="right">Price</th>
+                  <th class="right">Value</th>
+                  <th class="right">Gain</th>
+                  <th class="right">Yield</th>
+                  <th class="right">Div Income</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${holdingsWithData.slice(0, 25).map(row => `
+                  <tr>
+                    <td>${row.name.length > 14 ? row.name.slice(0, 12) + '…' : row.name}</td>
+                    <td class="right">${row.shares}</td>
+                    <td class="right">${formatCurrency(row.priceInBase, '')}</td>
+                    <td class="right">${formatCurrency(row.valueInBase, '')}</td>
+                    <td class="right ${row.gain >= 0 ? 'green' : 'red'}">${row.gain >= 0 ? '+' : ''}${formatCurrency(row.gain, '')}</td>
+                    <td class="right">${row.yieldPct ? row.yieldPct.toFixed(2) + '%' : '—'}</td>
+                    <td class="right dividend">+${formatCurrency(row.dividendIncome, '')}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+
+            ${totalDividendIncome > 0 ? `
+              <div class="dividend-section">
+                <h3>💰 Dividend Income Summary</h3>
+                <p style="font-size: 12px; color: #6b7280; margin-bottom: 10px;">Total dividends received across all holdings: <strong style="color: #10b981;">${formatCurrency(totalDividendIncome, curSymbol)}</strong></p>
+                ${holdingsWithData.filter(h => h.dividendIncome > 0).map(h => `
+                  <div class="dividend-item">
+                    <span>${h.name.length > 20 ? h.name.slice(0, 18) + '…' : h.name}</span>
+                    <span class="amount">+${formatCurrency(h.dividendIncome, curSymbol)}</span>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+
+            <div class="footer">
+              <span>Generated by <span class="brand">DividendBro</span> — Smart Dividend Investing</span><br>
+              <span style="font-size: 9px; color: #9ca3af;">Visit us at <a href="https://dividendbro.com">dividendbro.com</a></span>
+            </div>
+          </body>
+        </html>
+      `;
+
+      // Create a temporary div to render the report
+      const container = document.createElement('div');
+      container.innerHTML = reportHTML;
+      container.style.position = 'fixed';
+      container.style.top = '-9999px';
+      container.style.left = '0';
+      container.style.width = '800px';
+      container.style.background = '#ffffff';
+      container.style.zIndex = '-9999';
+      document.body.appendChild(container);
+
+      // Wait for rendering
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(container, {
+        scale: 2.5,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        logging: false,
+        width: 800,
+        height: container.scrollHeight,
+      });
+
+      document.body.removeChild(container);
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const { jsPDF } = await import('jspdf');
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = 190;
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      // Add the image to PDF
+      doc.addImage(imgData, 'JPEG', 10, 10, pdfWidth, pdfHeight);
+
+      // Add footer with hyperlink
+      const pageHeight = doc.internal.pageSize.getHeight();
+      doc.setDrawColor(209, 213, 219);
+      doc.line(15, pageHeight - 12, 195, pageHeight - 12);
+
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(107, 114, 128);
+      doc.text('Generated by', 15, pageHeight - 5);
+
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(59, 130, 246);
+      doc.text('DividendBro', 40, pageHeight - 5);
+      doc.link(40, pageHeight - 10, 35, 8, { url: 'https://dividendbro.com' });
+
+      doc.setTextColor(107, 114, 128);
+      doc.text('dividendbro.com', 195, pageHeight - 5, { align: 'right' });
+      doc.link(195 - 45, pageHeight - 10, 45, 8, { url: 'https://dividendbro.com' });
+
+      doc.save(`DividendBro_Portfolio_${new Date().toISOString().slice(0, 10)}.pdf`);
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      alert(`Failed to generate PDF: ${error.message || 'Unknown error'}`);
+    }
+  };
+
+  // ---------- CSV Export ----------
   const getHoldingsCSV = () => {
-    return convertedHoldings.map(h => ({
+    return holdingsWithData.map(h => ({
       Stock: h.name,
       Symbol: h.symbol,
       Shares: h.shares,
-      Price: h.priceInBase,
-      Yield: h.yieldPct,
+      'Purchase Price': h.purchasePrice || '—',
+      'Current Price': h.priceInBase,
       Value: h.valueInBase,
+      'Cost Basis': h.costBasis,
+      Gain: h.gain,
+      'Gain %': h.gainPct,
+      Yield: h.yieldPct,
+      'Dividend Income': h.dividendIncome,
     }));
+  };
+
+  const handleExportCSV = () => {
+    const data = getHoldingsCSV();
+    if (!data || data.length === 0) return;
+    
+    const headers = ['Stock','Symbol','Shares','Purchase Price','Current Price','Value','Cost Basis','Gain','Gain %','Yield','Dividend Income'];
+    const headerRow = headers.join(',');
+    const rows = data.map(row => {
+      return headers.map(h => {
+        const val = row[h] !== undefined ? row[h] : '';
+        return `"${String(val).replace(/"/g, '""')}"`;
+      }).join(',');
+    });
+    
+    const csv = [headerRow, ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `portfolio_holdings_${new Date().toISOString().slice(0,10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
+  // ---------- WhatsApp Share ----------
+  const handleShare = () => {
+    let message = '📊 *DividendBro Portfolio Report*\n\n';
+    message += `📅 ${new Date().toLocaleDateString()}\n\n`;
+    message += `• Total Value: *${formatCurrency(totalValue, curSymbol)}*\n`;
+    message += `• Total Cost: *${formatCurrency(totalCostBasis, curSymbol)}*\n`;
+    message += `• Total Gain: *${totalGain >= 0 ? '+' : ''}${formatCurrency(totalGain, curSymbol)} (${totalGainPct >= 0 ? '+' : ''}${formatPercent(totalGainPct)})\n`;
+    message += `• Portfolio Yield: *${formatPercent(avgYield)}*\n`;
+    message += `• Dividend Income: *${formatCurrency(totalDividendIncome, curSymbol)}*\n`;
+    message += `• Holdings: *${holdingsWithData.length} stocks*\n\n`;
+    message += `🔗 View full report: dividendbro.com/portfolio`;
+    message += `\n\nBuilt with ❤️ by DividendBro`;
+    
+    const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
   };
 
   if (!symbols.length) {
@@ -247,33 +775,6 @@ const PortfolioView = () => {
 
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
 
-  const getCSVDataForView = () => {
-    if (view === 'holdings') {
-      return getHoldingsCSV();
-    }
-    if (view === 'income') {
-      const qData = Object.entries(incomeData?.quarterMap || {}).map(([label, amount]) => ({ Period: label, Amount: amount }));
-      return qData;
-    }
-    if (view === 'calendar') {
-      return futureExDates.map(d => ({
-        Date: d.date,
-        Stock: d.name,
-        Symbol: d.symbol,
-        Amount: d.amount,
-        'Per Share': d.perShare,
-      }));
-    }
-    return [];
-  };
-
-  const getCSVHeaders = () => {
-    if (view === 'holdings') return ['Stock','Symbol','Shares','Price','Yield','Value'];
-    if (view === 'income') return ['Period','Amount'];
-    if (view === 'calendar') return ['Date','Stock','Symbol','Amount','Per Share'];
-    return [];
-  };
-
   return (
     <>
       <Helmet>
@@ -281,22 +782,40 @@ const PortfolioView = () => {
         <meta name="description" content="View your dividend portfolio, total value, yield, and upcoming ex‑dividend dates." />
       </Helmet>
       <div ref={portfolioRef} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           <div className="bg-bg-surface border border-border rounded-xl p-4">
             <div className="text-xs uppercase text-text-muted">Total Value</div>
-            <div className="text-2xl font-bold text-accent-teal">
+            <div className="text-xl font-bold text-accent-teal">
               {formatCurrency(totalValue, curSymbol)}
             </div>
           </div>
           <div className="bg-bg-surface border border-border rounded-xl p-4">
+            <div className="text-xs uppercase text-text-muted">Total Cost</div>
+            <div className="text-xl font-bold">
+              {formatCurrency(totalCostBasis, curSymbol)}
+            </div>
+          </div>
+          <div className={`bg-bg-surface border border-border rounded-xl p-4 ${totalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
+            <div className="text-xs uppercase text-text-muted">Total Gain/Loss</div>
+            <div className="text-xl font-bold">
+              {totalGain >= 0 ? '+' : ''}{formatCurrency(totalGain, curSymbol)}
+            </div>
+            <div className="text-xs">
+              {totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}
+            </div>
+          </div>
+          <div className="bg-bg-surface border border-border rounded-xl p-4">
             <div className="text-xs uppercase text-text-muted">Portfolio Yield</div>
-            <div className="text-2xl font-bold">
+            <div className="text-xl font-bold">
               {formatPercent(avgYield)}
             </div>
           </div>
           <div className="bg-bg-surface border border-border rounded-xl p-4">
-            <div className="text-xs uppercase text-text-muted">Holdings</div>
-            <div className="text-2xl font-bold">{convertedHoldings.length}</div>
+            <div className="text-xs uppercase text-text-muted">Dividend Income</div>
+            <div className="text-xl font-bold text-accent-green">
+              +{formatCurrency(totalDividendIncome, curSymbol)}
+            </div>
+            <div className="text-xs text-text-muted">All time</div>
           </div>
         </div>
 
@@ -321,14 +840,26 @@ const PortfolioView = () => {
               📅 Calendar
             </button>
           </div>
-          <ExportButtons
-            data={getCSVDataForView()}
-            filename={`portfolio_${view}`}
-            headers={getCSVHeaders()}
-            elementRef={portfolioRef}
-            title={`Portfolio - ${view.charAt(0).toUpperCase() + view.slice(1)}`}
-            shareMessage={`Check out my dividend portfolio (${view}) on DividendBro!`}
-          />
+          <div className="flex gap-2">
+            <button
+              onClick={handleExportCSV}
+              className="text-xs px-3 py-1.5 bg-bg-surface border border-border rounded-full hover:bg-bg-surface-hover transition flex items-center gap-1"
+            >
+              📊 CSV
+            </button>
+            <button
+              onClick={handleExportPDF}
+              className="text-xs px-3 py-1.5 bg-bg-surface border border-border rounded-full hover:bg-bg-surface-hover transition flex items-center gap-1"
+            >
+              📄 PDF
+            </button>
+            <button
+              onClick={handleShare}
+              className="text-xs px-3 py-1.5 bg-accent-green/10 border border-accent-green/30 rounded-full hover:bg-accent-green/20 transition flex items-center gap-1 text-accent-green"
+            >
+              📤 Share
+            </button>
+          </div>
         </div>
 
         {view === 'holdings' && (
@@ -340,32 +871,110 @@ const PortfolioView = () => {
                   <tr className="border-b border-border">
                     <th className="text-left py-2 px-3 text-text-muted font-semibold text-xs uppercase">Stock</th>
                     <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Shares</th>
-                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Price</th>
-                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Yield</th>
+                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Avg Cost</th>
+                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Current</th>
                     <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Value</th>
-                    <th className="text-right py-2 px-3"></th>
+                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Gain</th>
+                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Yield</th>
+                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase text-accent-green">Dividend Income</th>
+                    <th className="text-right py-2 px-3 text-text-muted font-semibold text-xs uppercase">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {convertedHoldings.map((h) => (
-                    <tr key={h.symbol} className="border-b border-border hover:bg-bg-surface-hover">
-                      <td className="py-2 px-3 font-semibold">
-                        {h.name}
-                        <span className="text-text-muted text-xs ml-1 font-mono">{h.symbol}</span>
-                      </td>
-                      <td className="py-2 px-3 text-right">{formatNumber(h.shares, 0)}</td>
-                      <td className="py-2 px-3 text-right">{formatCurrency(h.priceInBase, curSymbol)}</td>
-                      <td className="py-2 px-3 text-right">{h.yieldPct ? formatPercent(h.yieldPct) : '—'}</td>
-                      <td className="py-2 px-3 text-right font-semibold">{formatCurrency(h.valueInBase, curSymbol)}</td>
-                      <td className="py-2 px-3 text-right">
-                        <button
-                          onClick={() => removeFromPortfolio(h.symbol)}
-                          className="text-accent-red hover:text-red-400 transition text-sm px-2 py-1 rounded hover:bg-accent-red/10"
-                        >
-                          ✕
-                        </button>
-                      </td>
-                    </tr>
+                  {holdingsWithData.map((h) => (
+                    <React.Fragment key={h.symbol}>
+                      <tr className="border-b border-border hover:bg-bg-surface-hover">
+                        <td className="py-2 px-3 font-semibold">
+                          <button
+                            onClick={() => toggleExpand(h.symbol)}
+                            className="mr-2 text-text-muted hover:text-text-primary transition-transform"
+                            style={{ transform: expandedRows[h.symbol] ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                          >
+                            ▶
+                          </button>
+                          {h.name}
+                          <span className="text-text-muted text-xs ml-1 font-mono">{h.symbol}</span>
+                        </td>
+                        <td className="py-2 px-3 text-right">{formatNumber(h.shares, 0)}</td>
+                        <td className="py-2 px-3 text-right">
+                          {h.purchasePrice ? formatCurrency(h.purchasePrice, curSymbol) : '—'}
+                        </td>
+                        <td className="py-2 px-3 text-right">{formatCurrency(h.priceInBase, curSymbol)}</td>
+                        <td className="py-2 px-3 text-right font-semibold">{formatCurrency(h.valueInBase, curSymbol)}</td>
+                        <td className={`py-2 px-3 text-right ${h.gain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
+                          {h.gain >= 0 ? '+' : ''}{formatCurrency(h.gain, curSymbol)}
+                          <div className="text-xs">
+                            {h.gainPct >= 0 ? '+' : ''}{formatPercent(h.gainPct)}
+                          </div>
+                        </td>
+                        <td className="py-2 px-3 text-right">{h.yieldPct ? formatPercent(h.yieldPct) : '—'}</td>
+                        <td className="py-2 px-3 text-right text-accent-green font-semibold">
+                          +{formatCurrency(h.dividendIncome, curSymbol)}
+                        </td>
+                        <td className="py-2 px-3 text-right">
+                          <div className="flex justify-end gap-1">
+                            <button
+                              onClick={() => handleEdit(h)}
+                              className="text-accent-blue hover:text-blue-400 transition text-sm px-2 py-1 rounded hover:bg-accent-blue/10"
+                              title="Edit holding"
+                            >
+                              ✏️
+                            </button>
+                            <button
+                              onClick={() => removeFromPortfolio(h.symbol)}
+                              className="text-accent-red hover:text-red-400 transition text-sm px-2 py-1 rounded hover:bg-accent-red/10"
+                              title="Remove holding"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                      {expandedRows[h.symbol] && (
+                        <tr>
+                          <td colSpan="9" className="py-3 px-3 bg-bg-secondary/50">
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <h4 className="font-semibold text-sm">📊 Dividend History</h4>
+                                <span className="text-xs text-text-muted">
+                                  Total: <span className="text-accent-green font-semibold">+{formatCurrency(h.dividendIncome, curSymbol)}</span>
+                                </span>
+                              </div>
+                              {h.dividendPayouts && h.dividendPayouts.length > 0 ? (
+                                <div className="max-h-48 overflow-y-auto">
+                                  <table className="w-full text-xs">
+                                    <thead className="sticky top-0 bg-bg-secondary/50">
+                                      <tr className="border-b border-border">
+                                        <th className="text-left py-1 text-text-muted font-semibold">Date</th>
+                                        <th className="text-right py-1 text-text-muted font-semibold">Per Share</th>
+                                        <th className="text-right py-1 text-text-muted font-semibold">Shares</th>
+                                        <th className="text-right py-1 text-text-muted font-semibold text-accent-green">Amount</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {h.dividendPayouts
+                                        .sort((a, b) => b.date.localeCompare(a.date))
+                                        .map((payout, idx) => (
+                                          <tr key={idx} className="border-b border-border/50">
+                                            <td className="py-1 font-mono">{payout.date}</td>
+                                            <td className="py-1 text-right">{formatCurrency(payout.amount, curSymbol)}</td>
+                                            <td className="py-1 text-right">{formatNumber(payout.shares, 0)}</td>
+                                            <td className="py-1 text-right text-accent-green font-semibold">
+                                              +{formatCurrency(payout.amountInBase, curSymbol)}
+                                            </td>
+                                          </tr>
+                                        ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              ) : (
+                                <p className="text-text-muted text-sm">No dividend history available.</p>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))}
                 </tbody>
               </table>
@@ -470,6 +1079,16 @@ const PortfolioView = () => {
           </div>
         )}
       </div>
+
+      {editingHolding && (
+        <EditHoldingModal
+          isOpen={!!editingHolding}
+          onClose={() => setEditingHolding(null)}
+          onSave={handleEditSave}
+          holding={editingHolding}
+          currencySymbol={curSymbol}
+        />
+      )}
     </>
   );
 };

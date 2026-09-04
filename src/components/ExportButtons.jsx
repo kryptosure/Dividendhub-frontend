@@ -1,12 +1,12 @@
 import React from 'react';
-import { downloadCSV, generatePDF, shareViaWhatsApp } from '../utils/exportUtils';
+import { downloadCSV, shareViaWhatsApp } from '../utils/exportUtils';
+import { generatePDFReport } from '../utils/pdfExport';
 
-const ExportButtons = ({ 
-  data, 
-  filename, 
-  headers, 
-  elementRef, 
-  title, 
+const ExportButtons = ({
+  data,
+  filename,
+  headers,
+  reportData,      // For PDF: { title, subtitle, kpis, tables, currencySymbol }
   shareMessage,
   showCSV = true,
   showPDF = true,
@@ -19,13 +19,24 @@ const ExportButtons = ({
   };
 
   const handlePDF = async () => {
-    if (!elementRef?.current) return;
-    await generatePDF(elementRef.current, filename);
+    if (!reportData) {
+      console.warn('No report data for PDF');
+      return;
+    }
+    try {
+      await generatePDFReport({
+        ...reportData,
+        filename: filename || 'report',
+      });
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      alert(`Failed to generate PDF: ${error.message || 'Unknown error'}`);
+    }
   };
 
-  const handleShare = async () => {
-    if (!elementRef?.current) return;
-    await shareViaWhatsApp(elementRef.current, title, shareMessage);
+  const handleShare = () => {
+    const message = shareMessage || 'Check out my portfolio on DividendBro!';
+    shareViaWhatsApp(message);
   };
 
   return (

@@ -25,6 +25,10 @@ import { getMe } from './services/api';
 
 const queryClient = new QueryClient();
 
+// ⚠️ CHANGE THIS TO YOUR REAL DOMAIN (no trailing slash)
+const SITE_URL = "https://dividendbro.com"; 
+const DEFAULT_IMAGE = `${SITE_URL}/images/cover.png`;
+
 function App() {
   const { theme, token, setUser, setToken, setPortfolio, logout } = useStore();
 
@@ -53,6 +57,23 @@ function App() {
     <AppErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          {/* Global Meta Tags for WhatsApp / Social Media */}
+          <Helmet>
+            <meta property="og:type" content="website" />
+            <meta property="og:site_name" content="DividendBro" />
+            <meta property="og:url" content={window.location.href} />
+            <meta property="og:image" content={DEFAULT_IMAGE} />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:image" content={DEFAULT_IMAGE} />
+            
+            {/* Fallback text if page doesn't have specific tags */}
+            <meta property="og:title" content="DividendBro – Best Dividend Analysis & Management Tool" />
+            <meta property="og:description" content="Analyse dividends, track yields, and manage your portfolio for US and SGX stocks." />
+          </Helmet>
+
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col">
             <Header />
             <main className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full pb-20 md:pb-6">

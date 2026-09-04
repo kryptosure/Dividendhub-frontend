@@ -63,6 +63,33 @@ const TopStocks = () => {
     }));
   };
 
+  // Build report data for PDF
+  const reportData = {
+    title: `Top Dividend ${type === 'stock' ? 'Stocks' : 'ETFs'} (${market.toUpperCase()})`,
+    subtitle: `Sorted by yield • ${data?.length || 0} entries`,
+    kpis: [
+      { label: 'Total Entries', value: data?.length || 0 },
+      { label: 'Market', value: market.toUpperCase() },
+      { label: 'Type', value: type === 'stock' ? 'Stocks' : 'ETFs' },
+    ],
+    tables: [
+      {
+        title: 'Top Dividend Rankings',
+        headers: ['#', 'Name', 'Symbol', 'Price', 'Yield', 'Payouts', 'Safety'],
+        rows: (data || []).map((item, i) => [
+          i + 1,
+          item.name || item.symbol,
+          item.symbol,
+          item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '—',
+          item.currentYield ? `${item.currentYield.toFixed(2)}%` : '—',
+          item.payoutCount || 0,
+          item.safetyScore || '—',
+        ]),
+      }
+    ],
+    currencySymbol: curSymbol,
+  };
+
   if (isLoading) return <LoadingSpinner fullPage />;
   if (error) {
     return (
@@ -123,7 +150,7 @@ const TopStocks = () => {
             data={getCSVData()}
             filename={`top_${type}_${market}`}
             headers={['Name','Symbol','Price','Yield','Payouts','Safety']}
-            elementRef={topStocksRef}
+            reportData={reportData}
             title={`Top Dividend ${type === 'stock' ? 'Stocks' : 'ETFs'} (${market.toUpperCase()})`}
             shareMessage={`Check out the top dividend ${type === 'stock' ? 'stocks' : 'ETFs'} on DividendBro!`}
           />

@@ -4,6 +4,8 @@ import useStore from '../store/useStore';
 import LoadingSpinner from './LoadingSpinner';
 import { formatCurrency, formatNumber, formatPercent } from '../utils/formatters';
 import Chart from 'chart.js/auto';
+import DatePicker from './DatePicker';
+import SimulatorExport from './SimulatorExport';
 
 const DCASimulator = ({ symbol, market }) => {
   const [amount, setAmount] = useState('');
@@ -18,20 +20,13 @@ const DCASimulator = ({ symbol, market }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!amount || !startDate || !symbol) return;
-
-    // ✅ Debug log – shows what we're sending to the API
-    console.log('DCASimulator called with:', { 
-      symbol, 
-      market, 
-      amount: parseFloat(amount), 
-      startDate 
-    });
-
+    console.log('DCASimulator called with:', { symbol, market, amount: parseFloat(amount), startDate });
     setLoading(true);
     setError(null);
     setResult(null);
     try {
       const data = await simulateDCA(symbol, parseFloat(amount), startDate, market);
+      console.log('✅ DCA Result received:', data);
       setResult(data);
     } catch (err) {
       console.error('DCA error:', err);
@@ -41,7 +36,6 @@ const DCASimulator = ({ symbol, market }) => {
     }
   };
 
-  // Build chart data when result changes
   useEffect(() => {
     if (!result || !result.schedule || result.schedule.length === 0) {
       if (chartInstance.current) {
@@ -57,10 +51,18 @@ const DCASimulator = ({ symbol, market }) => {
     if (totalMonths > 120) groupBy = 'yearly';
     else if (totalMonths > 60) groupBy = 'quarterly';
 
-    const groupedData = [];
-    let currentGroup = null;
-    let groupInvested = 0;
-    let groupValue = 0;
+    const groups = {};
+    const getGroupKey = (dateStr, groupType) => {
+      const d = new Date(dateStr + 'T00:00:00Z');
+      const year = d.getUTCFullYear();
+      const month = d.getUTCMonth() + 1;
+      if (groupType === 'yearly') return `${year}`;
+      if (groupType === 'quarterly') {
+        const quarter = Math.ceil(month / 3);
+        return `${year}-Q${quarter}`;
+      }
+      return `${year}-${String(month).padStart(2, '0')}`;
+    };
 
     const getLabel = (dateStr, groupType) => {
       const d = new Date(dateStr + 'T00:00:00Z');
@@ -75,19 +77,6 @@ const DCASimulator = ({ symbol, market }) => {
       return `${monthNames[month-1]} ${year}`;
     };
 
-    const getGroupKey = (dateStr, groupType) => {
-      const d = new Date(dateStr + 'T00:00:00Z');
-      const year = d.getUTCFullYear();
-      const month = d.getUTCMonth() + 1;
-      if (groupType === 'yearly') return `${year}`;
-      if (groupType === 'quarterly') {
-        const quarter = Math.ceil(month / 3);
-        return `${year}-Q${quarter}`;
-      }
-      return `${year}-${String(month).padStart(2, '0')}`;
-    };
-
-    const groups = {};
     for (const item of schedule) {
       const key = getGroupKey(item.date, groupBy);
       if (!groups[key]) {
@@ -235,11 +224,9 @@ const DCASimulator = ({ symbol, market }) => {
           <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
             Start Date
           </label>
-          <input
-            type="date"
+          <DatePicker
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-full bg-bg-secondary border border-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-blue"
             required
           />
         </div>
@@ -260,7 +247,6 @@ const DCASimulator = ({ symbol, market }) => {
 
       {result && (
         <div className="space-y-4">
-          {/* Summary Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="bg-bg-secondary p-3 rounded-lg">
               <div className="text-xs uppercase text-text-muted">Total Invested</div>
@@ -288,7 +274,6 @@ const DCASimulator = ({ symbol, market }) => {
             </div>
           </div>
 
-          {/* DRIP Section */}
           <div className="bg-bg-secondary p-3 rounded-lg">
             <div className="text-xs uppercase text-text-muted font-semibold mb-2">With Dividend Reinvestment (DRIP)</div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -311,7 +296,6 @@ const DCASimulator = ({ symbol, market }) => {
             </div>
           </div>
 
-          {/* Chart */}
           {result.schedule && result.schedule.length > 0 && (
             <div className="bg-bg-secondary p-3 rounded-lg">
               <div className="text-xs uppercase text-text-muted font-semibold mb-2">Portfolio Growth</div>
@@ -324,7 +308,6 @@ const DCASimulator = ({ symbol, market }) => {
             </div>
           )}
 
-          {/* Investment Schedule */}
           <div className="bg-bg-secondary p-3 rounded-lg">
             <div className="text-xs uppercase text-text-muted font-semibold mb-2">Investment Schedule</div>
             <div className="max-h-40 overflow-y-auto text-xs">
@@ -366,6 +349,13 @@ const DCASimulator = ({ symbol, market }) => {
             * Simulation assumes investments are made on the first trading day of each month.
             Dividends are reinvested at the next trading day's closing price.
           </div>
+
+          <SimulatorExport 
+            result={result} 
+            symbol={symbol} 
+            currencySymbol={currencySymbol} 
+            type="dca" 
+          />
         </div>
       )}
     </div>

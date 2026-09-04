@@ -15,7 +15,7 @@ const useStore = create(
       currency: 'sgd',
       isLoading: false,
       error: null,
-      _isSyncing: false, // prevent infinite loops
+      _isSyncing: false,
 
       // ---------- Auth ----------
       setUser: (user) => set({ user }),
@@ -30,8 +30,6 @@ const useStore = create(
 
       logout: () => {
         localStorage.removeItem('token');
-        // ✅ Keep portfolio in localStorage (do NOT clear it)
-        // The persist middleware will keep it
         set({ user: null, token: null });
       },
 
@@ -41,7 +39,6 @@ const useStore = create(
       // Sync portfolio to server
       syncPortfolio: async () => {
         const { portfolio, token, _isSyncing } = get();
-        // Only sync if logged in and not already syncing
         if (!token || _isSyncing) return;
         set({ _isSyncing: true });
         try {
@@ -54,19 +51,36 @@ const useStore = create(
         }
       },
 
+      // ✅ Updated – adds purchaseDate and purchasePrice
       addToPortfolio: (item) => {
         const { portfolio } = get();
         const exists = portfolio.some(p => p.symbol === item.symbol);
         let newPortfolio;
         if (exists) {
           newPortfolio = portfolio.map(p =>
-            p.symbol === item.symbol ? { ...p, shares: item.shares || p.shares } : p
+            p.symbol === item.symbol
+              ? {
+                  ...p,
+                  shares: item.shares || p.shares,
+                  purchaseDate: item.purchaseDate || p.purchaseDate,
+                  purchasePrice: item.purchasePrice || p.purchasePrice,
+                }
+              : p
           );
         } else {
-          newPortfolio = [...portfolio, { ...item, shares: item.shares || 1 }];
+          newPortfolio = [
+            ...portfolio,
+            {
+              symbol: item.symbol,
+              name: item.name || item.symbol,
+              market: item.market || 'us',
+              shares: item.shares || 1,
+              purchaseDate: item.purchaseDate || null,
+              purchasePrice: item.purchasePrice || null,
+            },
+          ];
         }
         set({ portfolio: newPortfolio });
-        // Sync to server after state update
         setTimeout(() => get().syncPortfolio(), 100);
       },
 
@@ -74,7 +88,6 @@ const useStore = create(
         const { portfolio } = get();
         const newPortfolio = portfolio.filter(item => item.symbol !== symbol);
         set({ portfolio: newPortfolio });
-        // Sync to server after state update
         setTimeout(() => get().syncPortfolio(), 100);
       },
 

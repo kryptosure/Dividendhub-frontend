@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getStock } from '../services/api';
 import { handleApiError } from '../services/api';
@@ -11,10 +11,12 @@ import SafetyScore from './SafetyScore';
 import PortfolioCalculator from './PortfolioCalculator';
 import DCASimulator from './DCASimulator';
 import ExportButtons from './ExportButtons';
+import AddToPortfolioModal from './AddToPortfolioModal';
 
 const Results = ({ symbol, market = 'us' }) => {
   const resultsRef = useRef(null);
   const { addToPortfolio, portfolio } = useStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['stock', symbol, market],
@@ -34,13 +36,20 @@ const Results = ({ symbol, market = 'us' }) => {
   const isInPortfolio = symbol && portfolio.some(item => item.symbol === symbol);
 
   const handleAddToPortfolio = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalAdd = (item) => {
     if (!data) return;
     addToPortfolio({
       symbol: data.symbol,
       name: data.name || data.symbol,
       market: data.market || market,
-      shares: 1,
+      shares: item.shares,
+      purchaseDate: item.purchaseDate,
+      purchasePrice: item.purchasePrice,
     });
+    setIsModalOpen(false);
   };
 
   if (!symbol) {
@@ -87,8 +96,63 @@ const Results = ({ symbol, market = 'us' }) => {
     { Metric: 'Safety', Value: data.safetyScore },
   ];
 
+  // Build report data for PDF
+  const reportData = {
+    title: `${data.symbol} Dividend Analysis`,
+    subtitle: `${data.name} (${data.exchange || 'NASDAQ'}) • ${data.currency}`,
+    kpis: [
+      { label: 'Total Dividends', value: `${data.currencySymbol || '$'}${data.totalDividend.toFixed(2)}` },
+      { label: 'Current Price', value: `${data.currencySymbol || '$'}${data.currentPrice?.toFixed(2) || '—'}` },
+      { label: 'Yield', value: data.currentYield ? `${data.currentYield.toFixed(2)}%` : '—' },
+      { label: '5-Yr CAGR', value: data.dividendCAGR != null ? `${data.dividendCAGR >= 0 ? '+' : ''}${data.dividendCAGR.toFixed(2)}%` : '—' },
+      { label: 'Latest Ex-Date', value: data.lastExDate || '—' },
+      { label: 'Safety', value: data.safetyScore || '—' },
+    ],
+    tables: data.byYear && data.byYear.length > 0 ? [
+      {
+        title: 'Dividend History by Year',
+        headers: ['Year', 'Total Dividend', 'Payouts'],
+        rows: data.byYear.map(y => [
+          y.year,
+          `${data.currencySymbol || '$'}${y.total.toFixed(2)}`,
+          y.count,
+        ]),
+      }
+    ] : [],
+    currencySymbol: data.currencySymbol || '$',
+  };
+
   return (
     <div ref={resultsRef} id="results-section" className="mt-6 space-y-6">
+      {/* Stock Name & Symbol */}
+      <div className="bg-bg-surface border border-border rounded-xl p-4">
+        <h2 className="text-2xl font-bold gradient-text">
+          {data.name || data.symbol}
+        </h2>
+        <div className="flex items-center gap-3 mt-1">
+          <span className="font-mono text-lg text-accent-teal font-semibold">
+            {data.symbol}
+          </span>
+          <span className="text-sm text-text-muted">
+            {data.exchange || (data.market === 'sg' ? 'SGX' : 'NASDAQ')}
+          </span>
+          {data.currency && (
+            <span className="text-sm text-text-muted">
+              · {data.currency}
+            </span>
+          )}
+          {data.safetyScore && (
+            <span className={`text-xs px-2 py-0.5 rounded-full ${
+              data.safetyScore === 'Safe' ? 'bg-accent-green/20 text-accent-green' :
+              data.safetyScore === 'Moderate' ? 'bg-accent-yellow/20 text-accent-yellow' :
+              'bg-accent-red/20 text-accent-red'
+            }`}>
+              {data.safetyScore}
+            </span>
+          )}
+        </div>
+      </div>
+
       {/* KPI Cards */}
       <KPIList data={data} />
 
@@ -110,6 +174,7 @@ const Results = ({ symbol, market = 'us' }) => {
           data={exportData}
           filename={`${symbol}_dividend_data`}
           headers={['Metric', 'Value']}
+          reportData={reportData}
           elementRef={resultsRef}
           title={`${symbol} Dividend Analysis`}
           shareMessage={`Check out ${symbol} dividend data on DividendBro!`}
@@ -125,6 +190,15 @@ const Results = ({ symbol, market = 'us' }) => {
       {/* Investment Tools */}
       <PortfolioCalculator symbol={symbol} market={market} />
       <DCASimulator symbol={symbol} market={market} />
+
+      {/* Add to Portfolio Modal */}
+      <AddToPortfolioModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleModalAdd}
+        symbol={data.symbol}
+        name={data.name}
+      />
     </div>
   );
 };
