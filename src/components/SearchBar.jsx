@@ -8,7 +8,7 @@ const SearchBar = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [stockList, setStockList] = useState([]);
+  const [stockList, setStockList] = useState([]); // default empty array
   const { market } = useStore();
   const navigate = useNavigate();
   const wrapperRef = useRef(null);
@@ -21,16 +21,26 @@ const SearchBar = () => {
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          setStockList(parsed);
-          return;
-        } catch (e) {}
+          if (Array.isArray(parsed)) {
+            setStockList(parsed);
+            return;
+          }
+        } catch (e) {
+          console.warn('Invalid cached stock list:', e);
+        }
       }
       try {
         const data = await getStockList();
-        setStockList(data);
-        localStorage.setItem('stockList', JSON.stringify(data));
+        if (Array.isArray(data)) {
+          setStockList(data);
+          localStorage.setItem('stockList', JSON.stringify(data));
+        } else {
+          console.warn('Stock list API did not return an array:', data);
+          setStockList([]);
+        }
       } catch (error) {
         console.error('Failed to fetch stock list:', error);
+        setStockList([]);
       }
     };
     fetchStockList();
@@ -49,7 +59,7 @@ const SearchBar = () => {
         item.symbol.toLowerCase().includes(q) ||
         (item.name && item.name.toLowerCase().includes(q))
     );
-    setSuggestions(filtered.slice(0, 10)); // limit to 10
+    setSuggestions(filtered.slice(0, 10));
     setIsOpen(filtered.length > 0);
   }, [query, stockList]);
 
@@ -89,7 +99,7 @@ const SearchBar = () => {
       if (exactMatch) {
         handleSelect(exactMatch.symbol);
       } else {
-        // If not in local list, you could optionally fallback to searchStocks API
+        // Fallback: navigate to the symbol entered
         setSuggestions([]);
         setIsOpen(false);
         if (inputRef.current) inputRef.current.blur();
@@ -98,7 +108,7 @@ const SearchBar = () => {
     }
   };
 
-  // Quick links (unchanged, but use market from store)
+  // Quick links (unchanged)
   const quickLinks = {
     us: {
       stocks: [

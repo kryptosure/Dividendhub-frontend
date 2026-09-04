@@ -8,29 +8,34 @@ const SimulatorSearchInput = ({ symbol, setSymbol, market, placeholder = 'Search
   const [stockList, setStockList] = useState([]);
   const wrapperRef = useRef(null);
 
-  // Fetch and cache stock list (same as SearchBar)
   useEffect(() => {
     const fetchStockList = async () => {
       const cached = localStorage.getItem('stockList');
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          setStockList(parsed);
-          return;
+          if (Array.isArray(parsed)) {
+            setStockList(parsed);
+            return;
+          }
         } catch (e) {}
       }
       try {
         const data = await getStockList();
-        setStockList(data);
-        localStorage.setItem('stockList', JSON.stringify(data));
+        if (Array.isArray(data)) {
+          setStockList(data);
+          localStorage.setItem('stockList', JSON.stringify(data));
+        } else {
+          setStockList([]);
+        }
       } catch (error) {
         console.error('Failed to fetch stock list:', error);
+        setStockList([]);
       }
     };
     fetchStockList();
   }, []);
 
-  // Filter suggestions from local cache
   useEffect(() => {
     if (query.length < 2) {
       setSuggestions([]);
