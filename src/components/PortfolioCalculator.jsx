@@ -138,39 +138,39 @@ const PortfolioCalculator = ({ symbol, market }) => {
             </div>
           </div>
 
-          {/* DRIP Section */}
+          {/* DRIP Section – now with consistent font sizes */}
           {result.reinvest && (
-            <div className="bg-bg-secondary p-3 rounded-lg">
-              <div className="text-xs uppercase text-text-muted font-semibold mb-2">
+            <div className="bg-bg-secondary p-4 rounded-lg">
+              <div className="text-sm uppercase text-text-muted font-semibold mb-3">
                 Dividend Reinvestment (DRIP)
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <div className="text-xs text-text-muted">Final Shares</div>
-                  <div className="font-bold">{formatNumber(result.reinvest.finalShares, 2)}</div>
-                  <div className="text-xs text-accent-green">
+                  <div className="text-sm text-text-muted">Final Shares</div>
+                  <div className="text-lg font-bold">{formatNumber(result.reinvest.finalShares, 2)}</div>
+                  <div className="text-sm text-accent-green">
                     +{formatNumber(result.reinvest.extraShares, 2)}
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-text-muted">Final Value</div>
-                  <div className="font-bold">
+                  <div className="text-sm text-text-muted">Final Value</div>
+                  <div className="text-lg font-bold">
                     {formatCurrency(result.reinvest.finalValue, currencySymbol)}
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-text-muted">Extra Value</div>
-                  <div className="font-bold text-accent-green">
+                  <div className="text-sm text-text-muted">Extra Value</div>
+                  <div className="text-lg font-bold text-accent-green">
                     +{formatCurrency(result.reinvest.extraValue, currencySymbol)}
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-text-muted">Total Return (DRIP)</div>
-                  <div className="font-bold text-accent-green">
+                  <div className="text-sm text-text-muted">Total Return (DRIP)</div>
+                  <div className="text-lg font-bold text-accent-green">
                     {result.reinvest.totalReturnPct >= 0 ? '+' : ''}
                     {formatPercent(result.reinvest.totalReturnPct)}
                   </div>
-                  <div className="text-xs text-text-muted">
+                  <div className="text-sm text-text-muted">
                     vs {result.netGainPct >= 0 ? '+' : ''}{formatPercent(result.netGainPct)} without DRIP
                   </div>
                 </div>
