@@ -22,7 +22,7 @@
     --bg-secondary: #0a0a0a;
     --bg-surface: #0a0a0a;
     --bg-surface-hover: #141414;
-    /* ✅ Ultra-soft borders – opacity 0.02 / 0.05 */
+    /* Ultra-soft borders – opacity 0.02 / 0.05 */
     --border-color: rgba(255, 255, 255, 0.02);
     --border-hover: rgba(255, 255, 255, 0.05);
     --text-primary: #f8fafc;
@@ -193,4 +193,12 @@ input[type="date"] {
 [data-theme="light"] input[type="date"] {
   color: #0f172a !important;
   background-color: #ffffff !important;
+}
+
+/* ---------- Global header/footer border removal ---------- */
+header {
+  border-bottom: none !important;
+}
+footer {
+  border-top: none !important;
 }
