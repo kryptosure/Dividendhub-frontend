@@ -10,6 +10,7 @@ import DividendTable from './DividendTable';
 import SafetyScore from './SafetyScore';
 import PortfolioCalculator from './PortfolioCalculator';
 import DCASimulator from './DCASimulator';
+import LongTermValueChart from './LongTermValueChart'; // <--- NEW IMPORT ADDED
 import ExportButtons from './ExportButtons';
 import AddToPortfolioModal from './AddToPortfolioModal';
 
@@ -163,6 +164,9 @@ const Results = ({ symbol, market = 'us' }) => {
       <div className="h-[1px] bg-border/40 my-4" />
       <PortfolioCalculator symbol={symbol} market={market} />
       <DCASimulator symbol={symbol} market={market} />
+      
+      {/* New Long Term Growth Chart Added Below DCA Simulator */}
+      <LongTermValueChart symbol={symbol} market={market} />
 
       <AddToPortfolioModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={handleModalAdd} symbol={data.symbol} name={data.name} market={market} />
     </div>

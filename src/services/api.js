@@ -106,6 +106,14 @@ export const simulateDCA = async (symbol, amount, startDate, market = 'us') => {
   return res.data;
 };
 
+// ✅ NEW: Long Term Growth Data
+export const getLongTermGrowth = async (symbol, market, amount = 1000) => {
+  const res = await api.get('/api/stocks/long-term-growth', {
+    params: { symbol, market, amount }
+  });
+  return res.data;
+};
+
 // ---------- Health ----------
 export const healthCheck = async () => {
   const res = await api.get('/api/health');
