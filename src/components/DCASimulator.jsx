@@ -164,18 +164,43 @@ const DCASimulator = ({ symbol, market }) => {
       {result && (
         <div className="space-y-6 animate-in fade-in duration-200">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4"><span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Net Principal</span><div className="text-xl font-black text-text-primary mt-1">{formatCurrency(result.totalInvested, currencySymbol)}</div></div>
-            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4"><span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Baseline Yield Value</span><div className="text-xl font-black text-text-primary mt-1">{formatCurrency(result.currentValueNoDRIP, currencySymbol)}</div></div>
-            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4"><span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Dividends Captured</span><div className="text-xl font-black text-accent-green mt-1">+{formatCurrency(result.totalDividendsNoDRIP, currencySymbol)}</div></div>
-            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4"><span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Compounded Cash Value</span><div className="text-xl font-black text-accent-teal mt-1">{formatCurrency(result.currentValueDRIP, currencySymbol)}</div></div>
+            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4">
+              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Net Principal</span>
+              <div className="text-xl font-black text-text-primary mt-1">{formatCurrency(result.totalInvested, currencySymbol)}</div>
+            </div>
+            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4">
+              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Baseline Yield Value</span>
+              <div className="text-xl font-black text-text-primary mt-1">{formatCurrency(result.currentValueNoDRIP, currencySymbol)}</div>
+            </div>
+            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4">
+              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Dividends Captured</span>
+              <div className="text-xl font-black text-accent-green mt-1">+{formatCurrency(result.totalDividendsNoDRIP, currencySymbol)}</div>
+            </div>
+            <div className="bg-bg-secondary/60 border border-border/40 rounded-xl p-4">
+              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Compounded Cash Value</span>
+              <div className="text-xl font-black text-accent-teal mt-1">{formatCurrency(result.currentValueDRIP, currencySymbol)}</div>
+            </div>
           </div>
 
           <div className="bg-gradient-to-br from-accent-teal/5 to-accent-blue/5 border border-accent-teal/10 rounded-xl p-4">
             <span className="text-[10px] text-accent-teal font-black uppercase tracking-widest">DRIP Optimization Vectors</span>
             <div className="grid grid-cols-3 gap-2 mt-3 text-center">
-              <div><span className="text-[11px] text-text-muted font-medium">Aggregated Shares</span><div className="text-base font-extrabold text-text-primary mt-0.5">{formatNumber(result.sharesDRIP, 2)}</div></div>
-              <div><span className="text-[11px] text-text-muted font-medium">Total Return Matrix</span><div className="text-base font-extrabold text-accent-green mt-0.5">{formatPercent(result.totalReturnDRIP || ((result.currentValueDRIP - result.totalInvested) / result.totalInvested * 100))}</div></div>
-              <div><span className="text-[11px] text-text-muted font-medium">Efficiency Index</span><div className="text-base font-extrabold text-accent-blue mt-0.5">+{formatPercent(((result.currentValueDRIP - result.currentValueNoDRIP) / result.currentValueNoDRIP) * 100)}</div></div>
+              <div>
+                <span className="text-[11px] text-text-muted font-medium">Aggregated Shares</span>
+                <div className="text-base font-extrabold text-text-primary mt-0.5">{formatNumber(result.sharesDRIP, 2)}</div>
+              </div>
+              <div>
+                <span className="text-[11px] text-text-muted font-medium">Total Return Matrix</span>
+                <div className="text-base font-extrabold text-accent-green mt-0.5">
+                  {formatPercent(result.totalReturnDRIP || ((result.currentValueDRIP - result.totalInvested) / result.totalInvested * 100))}
+                </div>
+              </div>
+              <div>
+                <span className="text-[11px] text-text-muted font-medium">Efficiency Index</span>
+                <div className="text-base font-extrabold text-accent-blue mt-0.5">
+                  +{formatPercent(((result.currentValueDRIP - result.currentValueNoDRIP) / result.currentValueNoDRIP) * 100)}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -185,4 +210,43 @@ const DCASimulator = ({ symbol, market }) => {
           </div>
 
           <div className="border border-border/40 rounded-xl overflow-hidden bg-bg-secondary/20">
-            <div className="px-4 py-3 border-b border-border/40 bg-bg-secondary/50"><span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Ledger Schedule Breakdown</span></div>
+            <div className="px-4 py-3 border-b border-border/40 bg-bg-secondary/50">
+              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Ledger Schedule Breakdown</span>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-text-muted border-b border-border/20">
+                    <th className="px-4 py-2 text-left">Date</th>
+                    <th className="px-4 py-2 text-right">Input Principal</th>
+                    <th className="px-4 py-2 text-right">Close Val</th>
+                    <th className="px-4 py-2 text-right">Base Position</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.schedule?.map((item, idx) => (
+                    <tr key={idx} className="border-b border-border/10">
+                      <td className="px-4 py-2">{item.date}</td>
+                      <td className="px-4 py-2 text-right">{formatCurrency(item.amount, currencySymbol)}</td>
+                      <td className="px-4 py-2 text-right">{formatCurrency(item.price, currencySymbol)}</td>
+                      <td className="px-4 py-2 text-right">{formatNumber(item.sharesNoDRIP, 2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {result.schedule && result.schedule.length > 20 && (
+              <div className="px-4 py-2 text-sm text-text-muted border-t border-border/20">
+                Showing all {result.schedule.length} entries
+              </div>
+            )}
+          </div>
+
+          <SimulatorExport result={result} symbol={symbol} currencySymbol={currencySymbol} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default DCASimulator;
