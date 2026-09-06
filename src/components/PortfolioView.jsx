@@ -40,7 +40,7 @@ function getFutureEstimates(dividendData, shares, currency, exchangeRate) {
   payouts.sort((a, b) => a.date.localeCompare(b.date));
   let totalDays = 0, intervals = 0;
   for (let i = 1; i < payouts.length; i++) {
-    const days = Math.round((new Date(payouts[i].date) - new Date(payouts[i - 1].date)) / (1000 * 60 * 60 * 24));
+    const days = Math.round((new Date(payouts[i].date) - new Date(payouts[i -1].date)) / (1000 * 60 * 60 * 24));
     if (days > 0 && days < 400) {
       totalDays += days;
       intervals++;
