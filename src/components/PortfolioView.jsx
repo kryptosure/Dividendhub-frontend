@@ -261,7 +261,3 @@ const PortfolioView = () => {
   const toggleExpand = (symbol) => {
     setExpandedRows(prev => ({
       ...prev,
-      [symbol]: !prev[symbol]
-    }));
-  };
-
