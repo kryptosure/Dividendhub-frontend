@@ -143,7 +143,7 @@ const Results = ({ symbol, market = 'us' }) => {
             isInPortfolio ? 'bg-bg-surface border border-border/60 text-text-muted cursor-not-allowed' : 'bg-gradient-to-r from-accent-blue to-accent-teal text-white shadow-sm hover:opacity-95'
           }`}
         >
-          {isInPortfolio ? '✓ Synchronized to Profile' : '➕ Capture to Asset Ledger'}
+          {isInPortfolio ? '✓ Synchronized to Profile' : '➕ Add Investment To My Portfolio'}
         </button>
 
         <ExportButtons data={exportData} filename={`${symbol}_dividend_matrix`} headers={['Metric', 'Value']} reportData={reportData} title={`${symbol} Analytics Matrix`} shareMessage={`Reviewing ${symbol} performance loops on DividendBro.`} />

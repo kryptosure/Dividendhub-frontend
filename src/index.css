@@ -202,3 +202,42 @@ header {
 footer {
   border-top: none !important;
 }
+
+/* ---------- CUSTOM DROPDOWN FIX (90% Opaque) ---------- */
+.search-dropdown-50 {
+  /* Ensures it is always on top and perfectly positioned */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
+
+  /* 90% opaque background - Clean, professional, and no bleed-through */
+  background-color: rgba(10, 10, 10, 0.9) !important; 
+
+  /* Adds a subtle blur for smooth rendering */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  /* Keep your matching border and shadow */
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-hover);
+}
+/* Fix invisible text in dark mode for ALL native inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #0a0a0a !important;
+  color: #ffffff !important;
+  caret-color: #ffffff !important;
+}
+
+/* Fix Chrome/Firefox autofill white backgrounds in dark mode */
+[data-theme="dark"] input:-webkit-autofill,
+[data-theme="dark"] input:-webkit-autofill:hover, 
+[data-theme="dark"] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+}

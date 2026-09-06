@@ -47,11 +47,11 @@ const PortfolioCalculator = ({ symbol, market }) => {
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end bg-bg-primary/40 border border-border/30 p-4 rounded-xl mb-6">
         <div>
-          <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Purchase Ingestion Date</label>
+          <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Date of purchase</label>
           <DatePicker value={purchaseDate} onChange={(e) => setPurchaseDate(e.target.value)} required />
         </div>
         <div>
-          <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Volume Shares Quantity</label>
+          <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Number of shares bought</label>
           <input
             type="number"
             value={quantity}

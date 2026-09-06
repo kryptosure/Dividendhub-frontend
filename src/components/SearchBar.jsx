@@ -159,7 +159,7 @@ const SearchBar = () => {
 
       {/* Floating Modern Suggestion Dropdown */}
       {isOpen && suggestions.length > 0 && (
-        <ul className="absolute z-50 w-full left-0 right-0 mt-2 bg-bg-secondary/95 backdrop-blur-md border border-border/80 rounded-xl shadow-xl overflow-hidden max-h-64 overflow-y-auto divide-y divide-border/40 animate-in fade-in slide-in-from-top-2 duration-200">
+        <ul className="search-dropdown-50 w-full mt-2 overflow-hidden max-h-64 overflow-y-auto divide-y divide-border/40 animate-in fade-in slide-in-from-top-2 duration-200">
           {suggestions.map((item) => (
             <li
               key={item.symbol}

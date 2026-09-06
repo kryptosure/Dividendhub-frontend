@@ -122,7 +122,7 @@ const TopStocks = () => {
       <div ref={topStocksRef} className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-300">
         <div className="p-5 border-b border-border/40 flex justify-between items-start flex-wrap gap-4 bg-bg-secondary/20">
           <div>
-            <h2 className="text-xl font-black text-text-primary tracking-tight">🏆 High-Yield Vector Board</h2>
+            <h2 className="text-xl font-black text-text-primary tracking-tight">🏆 High-Dividend Yield Board</h2>
             <p className="text-xs text-text-muted font-medium mt-0.5">Segmented and rank ordered via trailing distribution returns loops.</p>
             <div className="flex gap-1.5 mt-3 bg-bg-primary/40 border border-border/30 p-0.5 rounded-lg text-xs font-bold w-fit">
               <button

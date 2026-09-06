@@ -83,7 +83,7 @@ const DividendChart = ({ data }) => {
 
   return (
     <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
-      <h3 className="font-black tracking-tight text-lg text-text-primary mb-4">📈 Growth Delta Chart</h3>
+      <h3 className="font-black tracking-tight text-lg text-text-primary mb-4">📈 Dividend Growth View</h3>
       <div className="h-60 relative">
         <canvas ref={chartRef} />
       </div>

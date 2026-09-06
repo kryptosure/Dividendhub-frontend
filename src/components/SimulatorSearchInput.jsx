@@ -74,7 +74,7 @@ const SimulatorSearchInput = ({ symbol, setSymbol, market, placeholder = 'Search
       </div>
       
       {isOpen && suggestions.length > 0 && (
-        <ul className="absolute z-50 w-full mt-2 bg-bg-secondary border border-border/80 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto divide-y divide-border/40 animate-in fade-in slide-in-from-top-2 duration-200">
+        <ul className="search-dropdown-50 w-full mt-2 overflow-hidden max-h-60 overflow-y-auto divide-y divide-border/40 animate-in fade-in slide-in-from-top-2 duration-200">
           {suggestions.map((item) => (
             <li
               key={item.symbol}

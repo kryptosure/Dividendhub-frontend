@@ -42,8 +42,8 @@ const SimulatorSingle = () => {
           </p>
         </div>
 
-        {/* Input Card Container */}
-        <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 mb-6 max-w-md shadow-sm backdrop-blur-sm">
+        {/* Input Card Container - REMOVED TRANSPARENCY */}
+        <div className="bg-bg-secondary border border-border/60 rounded-2xl p-5 mb-6 max-w-md shadow-sm">
           <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
             Target Stock Name or Ticker Symbol
           </label>
@@ -57,7 +57,7 @@ const SimulatorSingle = () => {
 
         {/* Loading Framework View */}
         {isLoading && (
-          <div className="py-12 bg-bg-surface/30 rounded-2xl border border-border/30 flex items-center justify-center">
+          <div className="py-12 bg-bg-secondary/30 rounded-2xl border border-border/30 flex items-center justify-center">
             <LoadingSpinner />
           </div>
         )}
@@ -77,9 +77,9 @@ const SimulatorSingle = () => {
           </div>
         )}
 
-        {/* Aesthetic Placeholder Empty State */}
+        {/* Aesthetic Placeholder Empty State - MADE FULLY SOLID */}
         {!symbol && !isLoading && !error && (
-          <div className="bg-bg-surface/50 border border-border/40 border-dashed rounded-2xl p-10 text-center relative overflow-hidden">
+          <div className="bg-bg-secondary border border-border/40 border-dashed rounded-2xl p-10 text-center relative overflow-hidden">
             <p className="text-text-secondary font-bold text-base">Select a ticker asset to calculate returns</p>
             <p className="text-xs text-text-muted font-medium mt-1">
               Provides detailed multi-year analytics tracking back asset growth performance metrics cleanly.

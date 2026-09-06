@@ -129,7 +129,7 @@ const DCASimulator = ({ symbol, market }) => {
   return (
     <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
       <div className="mb-4">
-        <h3 className="font-black tracking-tight text-lg text-text-primary">📊 Periodic Model Sandbox</h3>
+        <h3 className="font-black tracking-tight text-lg text-text-primary">📊 Regular Investment DCA Simulator</h3>
         <p className="text-text-muted text-xs font-medium">Test regular capital expansion alongside automated yield reinvestment streams.</p>
       </div>
 
@@ -147,7 +147,7 @@ const DCASimulator = ({ symbol, market }) => {
           />
         </div>
         <div>
-          <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Origin Epoch Date</label>
+          <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Date of purchase</label>
           <DatePicker value={startDate} onChange={(e) => setStartDate(e.target.value)} required />
         </div>
         <button
@@ -186,7 +186,7 @@ const DCASimulator = ({ symbol, market }) => {
             <span className="text-[10px] text-accent-teal font-black uppercase tracking-widest">DRIP Optimization Vectors</span>
             <div className="grid grid-cols-3 gap-2 mt-3 text-center">
               <div>
-                <span className="text-[11px] text-text-muted font-medium">Aggregated Shares</span>
+                <span className="text-[11px] text-text-muted font-medium">Number of shares bought</span>
                 <div className="text-base font-extrabold text-text-primary mt-0.5">{formatNumber(result.sharesDRIP, 2)}</div>
               </div>
               <div>
@@ -220,7 +220,7 @@ const DCASimulator = ({ symbol, market }) => {
                     <th className="px-4 py-2 text-left">Date</th>
                     <th className="px-4 py-2 text-right">Input Principal</th>
                     <th className="px-4 py-2 text-right">Close Val</th>
-                    <th className="px-4 py-2 text-right">Base Position</th>
+                    <th className="px-4 py-2 text-right">Number of shares bought</th>
                   </tr>
                 </thead>
                 <tbody>

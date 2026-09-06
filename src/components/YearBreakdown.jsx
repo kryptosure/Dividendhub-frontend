@@ -15,7 +15,7 @@ const YearBreakdown = ({ data }) => {
   return (
     <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
       <div className="mb-4">
-        <h3 className="font-black tracking-tight text-lg text-text-primary">📆 Macro Annual Timeline</h3>
+        <h3 className="font-black tracking-tight text-lg text-text-primary">📆 Dividend Payout Record</h3>
         <p className="text-text-muted text-xs font-medium">Select an accounting epoch year tracking block to audit segmented payout lines.</p>
       </div>
 
