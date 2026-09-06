@@ -2,33 +2,17 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border mt-auto py-4 px-4 text-center text-text-muted text-xs">
-      <div className="max-w-7xl mx-auto">
-        <p>Dividend data from Yahoo Finance. Unofficial data – verify before investing.</p>
-        <p className="mt-1">© {new Date().getFullYear()} DividendBro — Built for passive income investors.</p>
-
-        {/* Trust Badges */}
-        <div className="mt-3 flex flex-wrap justify-center gap-4 text-xs">
-          <span className="inline-flex items-center gap-1">
-            ⭐ Rated #1 for US & SGX dividend analysis
-          </span>
-          <span className="inline-flex items-center gap-1">
-            📈 Trusted by 1,000+ investors
-          </span>
-          <span className="inline-flex items-center gap-1">
-            🔒 Secure & Free
-          </span>
+    <footer className="border-t border-border/40 bg-bg-secondary/20 mt-20 py-8 px-4 text-center text-text-muted text-[11px] font-medium leading-relaxed">
+      <div className="max-w-4xl mx-auto space-y-4">
+        <p>Market parsing telemetry supplied raw via Yahoo Finance. Analytical loops do not contain explicit fiduciary portfolio suggestions.</p>
+        
+        {/* Modern Trust Chips */}
+        <div className="flex flex-wrap justify-center gap-2 text-[10px] uppercase font-bold tracking-wider">
+          <span className="bg-bg-surface border border-border/40 px-3 py-1 rounded-md text-accent-teal">⭐ US & SGX ANALYTICS NODE</span>
+          <span className="bg-bg-surface border border-border/40 px-3 py-1 rounded-md text-accent-blue">🔒 SECURE CLIENT ENVELOPE</span>
         </div>
 
-        <div className="mt-3 flex flex-wrap justify-center gap-3 text-xs text-text-muted/70">
-          <a href="/blog" className="hover:text-accent-blue transition">Blog</a>
-          <span>·</span>
-          <a href="/" className="hover:text-accent-blue transition">Home</a>
-          <span>·</span>
-          <a href="/top" className="hover:text-accent-blue transition">Top Stocks</a>
-          <span>·</span>
-          <a href="/portfolio" className="hover:text-accent-blue transition">Portfolio</a>
-        </div>
+        <p className="text-text-muted/60 font-mono mt-2">© {new Date().getFullYear()} DividendBro Hub Ecosystem. All property bounds reserved.</p>
       </div>
     </footer>
   );

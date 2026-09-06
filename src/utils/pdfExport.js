@@ -2,48 +2,39 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
 /**
- * Generate a professional PDF report from data
- * @param {Object} options
- * @param {string} options.title - Report title
- * @param {string} options.subtitle - Subtitle
- * @param {Array<{label: string, value: string, color?: string}>} options.kpis - KPI cards
- * @param {Array<{headers: string[], rows: any[][]}>} options.tables - Tables to include
- * @param {string} options.currencySymbol - Currency symbol
- * @param {string} options.filename - Filename (without .pdf)
+ * Generate a professional, responsive PDF report directly from data models.
  */
 export async function generatePDFReport(options) {
   const {
-    title = 'Report',
+    title = 'Simulation Audit Report',
     subtitle = '',
     kpis = [],
     tables = [],
     currencySymbol = '$',
-    filename = 'report',
+    filename = 'report_dump',
   } = options;
 
   try {
-    // Build HTML content
     let tableHTML = '';
     tables.forEach((table, idx) => {
       tableHTML += `
-        <h4 style="font-size:14px; font-weight:bold; margin:20px 0 8px 0; color:#1a1a2e;">${table.title || `Table ${idx+1}`}</h4>
-        <table style="width:100%; border-collapse:collapse; font-size:11px;">
+        <h4 style="font-size:13px; font-weight:800; margin:24px 0 8px 0; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px;">${table.title || `Data Stream Matrix ${idx+1}`}</h4>
+        <table style="width:100%; border-collapse:collapse; font-size:10px; font-weight:500;">
           <thead>
-            <tr>
-              ${table.headers.map(h => `<th style="background:#3b82f6; color:#ffffff; padding:6px 10px; text-align:left; font-weight:bold;">${h}</th>`).join('')}
+            <tr style="background-color:#3b82f6;">
+              ${table.headers.map(h => `<th style="color:#ffffff; padding:8px 12px; text-align:left; font-weight:700; text-transform:uppercase; font-size:9px; letter-spacing:0.5px;">${h}</th>`).join('')}
             </tr>
           </thead>
-          <tbody>
-            ${table.rows.map(row => `
-              <tr>
+          <tbody style="color:#334155;">
+            ${table.rows.map((row, rIdx) => `
+              <tr style="background-color: ${rIdx % 2 === 1 ? '#f8fafc' : '#ffffff'};">
                 ${row.map((cell, i) => {
                   const isNumeric = !isNaN(parseFloat(cell)) && i > 0;
                   const align = isNumeric ? 'text-align:right;' : 'text-align:left;';
-                  // Color coding if cell starts with + (green) or - (red)
-                  let color = '';
-                  if (typeof cell === 'string' && cell.startsWith('+')) color = 'color:#10b981;';
-                  else if (typeof cell === 'string' && cell.startsWith('-')) color = 'color:#ef4444;';
-                  return `<td style="padding:5px 10px; border-bottom:1px solid #e5e7eb; ${align} ${color}">${cell}</td>`;
+                  let styleColor = '';
+                  if (typeof cell === 'string' && cell.startsWith('+')) styleColor = 'color:#10b981; font-weight:700;';
+                  else if (typeof cell === 'string' && cell.startsWith('-')) styleColor = 'color:#ef4444; font-weight:700;';
+                  return `<td style="padding:7px 12px; border-bottom:1px solid #f1f5f9; ${align} ${styleColor}">${cell}</td>`;
                 }).join('')}
               </tr>
             `).join('')}
@@ -53,11 +44,11 @@ export async function generatePDFReport(options) {
     });
 
     const kpiHTML = kpis.length > 0 ? `
-      <div style="display:grid; grid-template-columns:repeat(${Math.min(kpis.length, 4)}, 1fr); gap:10px; margin:15px 0;">
+      <div style="display:grid; grid-template-columns:repeat(${Math.min(kpis.length, 4)}, 1fr); gap:12px; margin:20px 0;">
         ${kpis.map(kpi => `
-          <div style="background:#f9fafb; border:1px solid #e5e7eb; border-radius:6px; padding:10px 12px; text-align:center;">
-            <div style="font-size:9px; color:#6b7280; text-transform:uppercase;">${kpi.label}</div>
-            <div style="font-size:16px; font-weight:bold; color:#1a1a2e; ${kpi.color ? `color:${kpi.color};` : ''}">${kpi.value}</div>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; box-shadow:0 1px 2px rgba(0,0,0,0.02);">
+            <div style="font-size:9px; color:#64748b; text-transform:uppercase; font-weight:700; letter-spacing:0.5px;">${kpi.label}</div>
+            <div style="font-size:15px; font-weight:900; color:#0f172a; margin-top:4px; ${kpi.color ? `color:${kpi.color};` : ''}">${kpi.value}</div>
           </div>
         `).join('')}
       </div>
@@ -69,22 +60,24 @@ export async function generatePDFReport(options) {
         <head>
           <style>
             * { margin:0; padding:0; box-sizing:border-box; }
-            body { font-family: Arial, Helvetica, sans-serif; background:#ffffff; color:#1a1a2e; padding:30px; width:800px; margin:0 auto; }
-            .header { background:#0a0e1a; padding:20px 25px; border-radius:6px 6px 0 0; }
-            .header h1 { color:#ffffff; font-size:20px; font-weight:bold; }
-            .header .sub { color:#9ca3af; font-size:11px; }
-            .header .date { color:#9ca3af; font-size:10px; float:right; margin-top:-22px; }
-            .title { font-size:18px; font-weight:bold; margin:20px 0 4px 0; }
-            .subtitle { font-size:11px; color:#6b7280; margin-bottom:15px; }
-            .footer { margin-top:25px; padding-top:12px; border-top:1px solid #e5e7eb; font-size:9px; color:#6b7280; text-align:center; }
-            .footer a { color:#3b82f6; text-decoration:none; font-weight:bold; }
-            .footer .brand { color:#3b82f6; font-weight:bold; }
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background:#ffffff; color:#0f172a; padding:32px; width:780px; margin:0 auto; }
+            .header { background:#0a0e1a; padding:24px 28px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; }
+            .header h1 { color:#ffffff; font-size:18px; font-weight:900; tracking-tight; }
+            .header .sub { color:#64748b; font-size:11px; font-weight:600; margin-top:2px; }
+            .header .date { color:#64748b; font-size:11px; font-weight:600; text-align:right; }
+            .title { font-size:20px; font-weight:900; margin:24px 0 4px 0; color:#0f172a; tracking-tight; }
+            .subtitle { font-size:11px; color:#64748b; font-weight:500; margin-bottom:16px; }
+            .footer { margin-top:32px; padding-top:16px; border-t:1px solid #e2e8f0; font-size:10px; color:#64748b; text-align:center; font-weight:500; }
+            .footer a { color:#3b82f6; text-decoration:none; font-weight:700; }
+            .footer .brand { color:#3b82f6; font-weight:800; }
           </style>
         </head>
         <body>
           <div class="header">
-            <h1>📊 DividendBro</h1>
-            <div class="sub">Smart Dividend Investing</div>
+            <div>
+              <h1>📊 DividendBro</h1>
+              <div class="sub">Smart Dividend Analysis Hub</div>
+            </div>
             <div class="date">${new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })}</div>
           </div>
 
@@ -92,36 +85,34 @@ export async function generatePDFReport(options) {
           ${subtitle ? `<div class="subtitle">${subtitle}</div>` : ''}
 
           ${kpiHTML}
-
           ${tableHTML}
 
           <div class="footer">
-            <span>Generated by <span class="brand">DividendBro</span> — Smart Dividend Investing</span><br>
-            <span style="font-size:8px; color:#9ca3af;">Visit us at <a href="https://dividendbro.com">dividendbro.com</a></span>
+            <span>Generated via <span class="brand">DividendBro</span> — High Yield Matrix Engine</span><br>
+            <span style="font-size:9px; color:#94a3b8; margin-top:4px; display:inline-block;">Audit performance lines live at <a href="https://dividendbro.com">dividendbro.com</a></span>
           </div>
         </body>
       </html>
     `;
 
-    // Create a temporary container
     const container = document.createElement('div');
     container.innerHTML = html;
     container.style.position = 'fixed';
     container.style.top = '-9999px';
     container.style.left = '0';
-    container.style.width = '800px';
+    container.style.width = '780px';
     container.style.background = '#ffffff';
     container.style.zIndex = '-9999';
     document.body.appendChild(container);
 
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise(resolve => setTimeout(resolve, 250));
 
     const canvas = await html2canvas(container, {
-      scale: 2.5,
+      scale: 2.2,
       backgroundColor: '#ffffff',
       useCORS: true,
       logging: false,
-      width: 800,
+      width: 780,
       height: container.scrollHeight,
     });
 
@@ -133,30 +124,9 @@ export async function generatePDFReport(options) {
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     doc.addImage(imgData, 'JPEG', 10, 10, pdfWidth, pdfHeight);
-
-    // Footer hyperlink
-    const pageHeight = doc.internal.pageSize.getHeight();
-    doc.setDrawColor(209, 213, 219);
-    doc.line(15, pageHeight - 12, 195, pageHeight - 12);
-
-    doc.setFontSize(7);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(107, 114, 128);
-    doc.text('Generated by', 15, pageHeight - 5);
-
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(59, 130, 246);
-    doc.text('DividendBro', 40, pageHeight - 5);
-    doc.link(40, pageHeight - 10, 35, 8, { url: 'https://dividendbro.com' });
-
-    doc.setTextColor(107, 114, 128);
-    doc.text('dividendbro.com', 195, pageHeight - 5, { align: 'right' });
-    doc.link(195 - 45, pageHeight - 10, 45, 8, { url: 'https://dividendbro.com' });
-
-    doc.save(`${filename}_${new Date().toISOString().slice(0,10)}.pdf`);
+    doc.save(`${filename}_audit_${new Date().toISOString().slice(0,10)}.pdf`);
   } catch (error) {
-    console.error('PDF generation error:', error);
+    console.error('PDF layer canvas write failure:', error);
     throw error;
   }
 }

@@ -1,69 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
-import { getStockList } from '../services/api';
+import { searchStocks } from '../services/api'; // Make sure to add this function to your api services!
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [stockList, setStockList] = useState([]); // default empty array
   const { market } = useStore();
   const navigate = useNavigate();
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Fetch and cache stock list
+  // Live Backend Search with Debouncing (Cleans up network spam and fetches EVERYTHING)
   useEffect(() => {
-    const fetchStockList = async () => {
-      const cached = localStorage.getItem('stockList');
-      if (cached) {
-        try {
-          const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed)) {
-            setStockList(parsed);
-            return;
-          }
-        } catch (e) {
-          console.warn('Invalid cached stock list:', e);
-        }
-      }
-      try {
-        const data = await getStockList();
-        if (Array.isArray(data)) {
-          setStockList(data);
-          localStorage.setItem('stockList', JSON.stringify(data));
-        } else {
-          console.warn('Stock list API did not return an array:', data);
-          setStockList([]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch stock list:', error);
-        setStockList([]);
-      }
-    };
-    fetchStockList();
-  }, []);
-
-  // Filter suggestions from local cache
-  useEffect(() => {
-    if (query.length < 2) {
+    if (query.trim().length < 2) {
       setSuggestions([]);
       setIsOpen(false);
       return;
     }
-    const q = query.toLowerCase();
-    const filtered = stockList.filter(
-      (item) =>
-        item.symbol.toLowerCase().includes(q) ||
-        (item.name && item.name.toLowerCase().includes(q))
-    );
-    setSuggestions(filtered.slice(0, 10));
-    setIsOpen(filtered.length > 0);
-  }, [query, stockList]);
 
-  // Click outside
+    setIsLoading(true);
+    const delayDebounce = setTimeout(async () => {
+      try {
+        // Calls the new backend endpoints we fixed earlier
+        // Make sure your api service sends a GET request to `/api/stocks/search?q=${query}&market=${market}`
+        const res = await searchStocks(query.trim(), market);
+        if (Array.isArray(res)) {
+          setSuggestions(res);
+          setIsOpen(res.length > 0);
+        }
+      } catch (err) {
+        console.error('Live database search failed:', err);
+        setSuggestions([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 300); // 300ms delay protects your backend server
+
+    return () => clearTimeout(delayDebounce);
+  }, [query, market]);
+
+  // Click outside to collapse menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -79,36 +58,17 @@ const SearchBar = () => {
     setSuggestions([]);
     setIsOpen(false);
     if (inputRef.current) inputRef.current.blur();
-    navigate(`/?symbol=${encodeURIComponent(symbol)}`);
-  };
-
-  const handleQuickClick = (symbol) => {
-    setSuggestions([]);
-    setIsOpen(false);
-    setQuery('');
-    if (inputRef.current) inputRef.current.blur();
-    navigate(`/?symbol=${encodeURIComponent(symbol)}`);
+    navigate(`/?symbol=${encodeURIComponent(symbol.toUpperCase())}`);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
-      const exactMatch = suggestions.find(
-        (s) => s.symbol.toUpperCase() === query.trim().toUpperCase()
-      );
-      if (exactMatch) {
-        handleSelect(exactMatch.symbol);
-      } else {
-        // Fallback: navigate to the symbol entered
-        setSuggestions([]);
-        setIsOpen(false);
-        if (inputRef.current) inputRef.current.blur();
-        navigate(`/?symbol=${encodeURIComponent(query.trim())}`);
-      }
+      handleSelect(query.trim());
     }
   };
 
-  // Quick links (unchanged)
+  // Quick action collections
   const quickLinks = {
     us: {
       stocks: [
@@ -119,10 +79,9 @@ const SearchBar = () => {
         { symbol: 'KO', name: 'Coca-Cola' },
       ],
       etfs: [
-        { symbol: 'SPY', name: 'S&P 500 ETF' },
-        { symbol: 'QQQ', name: 'Nasdaq 100 ETF' },
-        { symbol: 'VTI', name: 'Total Stock ETF' },
-        { symbol: 'BND', name: 'Total Bond ETF' },
+        { symbol: 'SPY', name: 'S&P 500' },
+        { symbol: 'QQQ', name: 'Nasdaq 100' },
+        { symbol: 'VTI', name: 'Total Stock' },
       ],
     },
     sg: {
@@ -130,12 +89,11 @@ const SearchBar = () => {
         { symbol: 'D05.SI', name: 'DBS' },
         { symbol: 'O39.SI', name: 'OCBC' },
         { symbol: 'U11.SI', name: 'UOB' },
-        { symbol: 'C6L.SI', name: 'Singapore Airlines' },
+        { symbol: 'C6L.SI', name: 'SIA' },
       ],
       etfs: [
         { symbol: 'ES3.SI', name: 'STI ETF' },
-        { symbol: 'G3B.SI', name: 'Nikko AM STI ETF' },
-        { symbol: 'CFA.SI', name: 'Corp Bond ETF' },
+        { symbol: 'G3B.SI', name: 'Nikko AM' },
       ],
     },
   };
@@ -143,42 +101,47 @@ const SearchBar = () => {
   const links = quickLinks[market] || quickLinks.us;
 
   return (
-    <div ref={wrapperRef} className="relative w-full max-w-xl mx-auto mb-6">
-      <form onSubmit={handleSubmit} className="relative">
-        <svg
-          className="absolute left-3 top-3 w-4 h-4 text-text-muted"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="11" cy="11" r="7" strokeWidth="2" />
-          <path d="M21 21l-4.3-4.3" strokeWidth="2" />
-        </svg>
+    <div ref={wrapperRef} className="relative w-full max-w-xl mx-auto mb-8 px-4 sm:px-0">
+      {/* Search Input Container */}
+      <form onSubmit={handleSubmit} className="relative group">
+        <div className="absolute left-4 top-3.5 flex items-center pointer-events-none">
+          <svg
+            className="w-5 h-5 text-text-muted group-focus-within:text-accent-blue transition-colors duration-200"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="11" cy="11" r="7" strokeWidth="2.5" />
+            <path d="M21 21l-4.3-4.3" strokeWidth="2.5" strokeLinecap="round" />
+          </svg>
+        </div>
+        
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => suggestions.length > 0 && setIsOpen(true)}
-          placeholder="Search stocks or ETFs by name or symbol..."
-          className="w-full pl-10 pr-4 py-3 bg-bg-surface border border-border rounded-full text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent"
-          aria-label="Search stocks or ETFs"
+          placeholder="Search tickers, companies, REITs..."
+          className="w-full pl-12 pr-12 py-3.5 bg-bg-surface border border-border/60 rounded-xl text-text-primary placeholder-text-muted/60 transition-all duration-200 ease-out focus:outline-none focus:bg-bg-primary focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/10 text-base sm:text-sm font-medium shadow-sm"
           autoComplete="off"
         />
+
+        {/* Loading Spinner */}
         {isLoading && (
-          <div className="absolute right-4 top-3.5">
+          <div className="absolute right-4 top-4">
             <div className="animate-spin h-4 w-4 border-2 border-accent-blue border-t-transparent rounded-full"></div>
           </div>
         )}
       </form>
 
-      <div className="flex flex-wrap gap-1.5 mt-2 justify-center">
-        <span className="text-xs text-text-muted mr-1 self-center">Popular:</span>
+      {/* Modern Trending Badges */}
+      <div className="flex flex-wrap gap-2 mt-3 items-center justify-start overflow-x-auto no-scrollbar py-1">
+        <span className="text-xs font-semibold uppercase tracking-wider text-text-muted/80 mr-1">Popular:</span>
         {links.stocks.map((item) => (
           <button
             key={item.symbol}
-            onClick={() => handleQuickClick(item.symbol)}
-            className="text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2 min-h-[36px] sm:min-h-[40px] bg-bg-surface border border-border rounded-full hover:bg-bg-surface-hover transition touch-manipulation"
+            onClick={() => handleSelect(item.symbol)}
+            className="text-xs font-medium px-3.5 py-1.5 bg-bg-surface hover:bg-bg-surface-hover border border-border/40 rounded-lg text-text-secondary hover:text-text-primary active:scale-95 transition-all duration-150 ease-out shadow-sm"
           >
             {item.name}
           </button>
@@ -186,32 +149,35 @@ const SearchBar = () => {
         {links.etfs.map((item) => (
           <button
             key={item.symbol}
-            onClick={() => handleQuickClick(item.symbol)}
-            className="text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2 min-h-[36px] sm:min-h-[40px] bg-accent-teal/10 border border-accent-teal/20 rounded-full hover:bg-accent-teal/20 transition text-accent-teal touch-manipulation"
+            onClick={() => handleSelect(item.symbol)}
+            className="text-xs font-medium px-3.5 py-1.5 bg-accent-teal/5 hover:bg-accent-teal/10 border border-accent-teal/20 rounded-lg text-accent-teal active:scale-95 transition-all duration-150 ease-out"
           >
             {item.name}
           </button>
         ))}
       </div>
 
+      {/* Floating Modern Suggestion Dropdown */}
       {isOpen && suggestions.length > 0 && (
-        <ul className="absolute z-10 w-full mt-1 bg-bg-secondary border border-border rounded-lg shadow-lg overflow-hidden max-h-60 overflow-y-auto">
+        <ul className="absolute z-50 w-full left-0 right-0 mt-2 bg-bg-secondary/95 backdrop-blur-md border border-border/80 rounded-xl shadow-xl overflow-hidden max-h-64 overflow-y-auto divide-y divide-border/40 animate-in fade-in slide-in-from-top-2 duration-200">
           {suggestions.map((item) => (
             <li
               key={item.symbol}
-              className="px-4 py-2 hover:bg-bg-surface-hover cursor-pointer flex flex-col border-b border-border last:border-b-0"
-              onMouseDown={() => handleSelect(item.symbol)}
+              onClick={() => handleSelect(item.symbol)}
+              className="px-4 py-3.5 hover:bg-bg-surface-hover/80 cursor-pointer flex items-center justify-between transition-colors duration-150"
             >
-              <div className="flex items-center justify-between">
-                <span className="text-text-primary font-medium">
-                  {item.name || item.symbol}
+              <div className="flex flex-col min-w-0 pr-4">
+                <span className="text-text-primary font-semibold text-sm truncate">
+                  {item.longname || item.shortname || item.symbol}
                 </span>
-                <span className="font-mono text-accent-teal text-sm ml-2 flex-shrink-0">
-                  {item.symbol}
+                <span className="text-xs text-text-muted font-medium mt-0.5 tracking-wide uppercase">
+                  {item.exchange || (market === 'sg' ? 'SGX' : 'NASDAQ')}
                 </span>
               </div>
-              <div className="text-xs text-text-muted mt-0.5">
-                {item.market === 'sg' ? 'SGX' : 'NASDAQ'}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span className="font-mono bg-bg-surface border border-border/60 text-accent-teal text-xs px-2.5 py-1 rounded-md font-bold tracking-wider">
+                  {item.symbol}
+                </span>
               </div>
             </li>
           ))}

@@ -4,63 +4,56 @@ const KPIList = ({ data }) => {
   const cur = data.currencySymbol || '$';
 
   const safetyColors = {
-    Safe: 'bg-accent-green/20 text-accent-green',
-    Moderate: 'bg-accent-yellow/20 text-accent-yellow',
-    Caution: 'bg-accent-red/20 text-accent-red',
+    Safe: 'bg-accent-green/10 border-accent-green/20 text-accent-green',
+    Moderate: 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow',
+    Caution: 'bg-accent-red/10 border-accent-red/20 text-accent-red',
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-      <div className="bg-bg-surface border border-border rounded-lg p-3">
-        <div className="text-xs uppercase text-text-muted font-semibold">Total dividends</div>
-        <div className="text-xl font-bold gradient-text">
-          {cur}{data.totalDividend.toFixed(2)}
-        </div>
-        <div className="text-xs text-text-muted">{data.payoutCount} ex-dates</div>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Gross Capital</span>
+        <div className="text-lg font-black text-text-primary mt-1">{cur}{data.totalDividend.toFixed(2)}</div>
+        <div className="text-[10px] font-semibold text-text-muted mt-0.5">{data.payoutCount} Tracked Logs</div>
       </div>
 
-      <div className="bg-bg-surface border border-border rounded-lg p-3">
-        <div className="text-xs uppercase text-text-muted font-semibold">Current Price</div>
-        <div className="text-xl font-bold">
+      <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Spot Value</span>
+        <div className="text-lg font-black text-text-primary mt-1">
           {data.currentPrice ? cur + data.currentPrice.toFixed(2) : '—'}
         </div>
-        <div className="text-xs text-text-muted">Last traded</div>
+        <div className="text-[10px] font-semibold text-text-muted mt-0.5">Real-time Feed</div>
       </div>
 
-      <div className="bg-bg-surface border border-border rounded-lg p-3">
-        <div className="text-xs uppercase text-text-muted font-semibold">Yield</div>
-        <div className="text-xl font-bold">
+      <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Yield Parameter</span>
+        <div className="text-lg font-black text-accent-green mt-1">
           {data.currentYield ? data.currentYield.toFixed(2) + '%' : '—'}
         </div>
-        <div className="text-xs text-text-muted">Trailing 12 months</div>
+        <div className="text-[10px] font-semibold text-text-muted mt-0.5">TTM Metric Variance</div>
       </div>
 
-      <div className="bg-bg-surface border border-border rounded-lg p-3">
-        <div className="text-xs uppercase text-text-muted font-semibold">5-Yr CAGR</div>
-        <div className={`text-xl font-bold ${
-          data.dividendCAGR && data.dividendCAGR >= 0 ? 'text-accent-green' : 'text-accent-red'
-        }`}>
-          {data.dividendCAGR != null 
-            ? (data.dividendCAGR >= 0 ? '+' : '') + data.dividendCAGR.toFixed(2) + '%' 
-            : '—'}
+      <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">5-Yr CAGR Alpha</span>
+        <div className={`text-lg font-black mt-1 ${data.dividendCAGR && data.dividendCAGR >= 0 ? 'text-accent-teal' : 'text-accent-red'}`}>
+          {data.dividendCAGR != null ? (data.dividendCAGR >= 0 ? '+' : '') + data.dividendCAGR.toFixed(2) + '%' : '—'}
         </div>
-        <div className="text-xs text-text-muted">Annualized growth</div>
+        <div className="text-[10px] font-semibold text-text-muted mt-0.5">Compounded Delta</div>
       </div>
 
-      <div className="bg-bg-surface border border-border rounded-lg p-3">
-        <div className="text-xs uppercase text-text-muted font-semibold">Latest Ex-Date</div>
-        <div className="text-xl font-bold">{data.lastExDate || '—'}</div>
-        <div className="text-xs text-text-muted">Most recent</div>
+      <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Ex-Date Node</span>
+        <div className="text-sm font-bold text-text-primary mt-2 truncate font-mono tracking-tight">{data.lastExDate || '—'}</div>
+        <div className="text-[10px] font-semibold text-text-muted mt-1">Most Recent Event</div>
       </div>
 
-      <div className="bg-bg-surface border border-border rounded-lg p-3">
-        <div className="text-xs uppercase text-text-muted font-semibold">Safety</div>
-        <div className={`text-xl font-bold px-2 py-0.5 rounded-full inline-block ${
-          safetyColors[data.safetyScore] || 'bg-bg-surface text-text-muted'
-        }`}>
-          {data.safetyScore || '—'}
+      <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm flex flex-col justify-between">
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Risk Layer</span>
+        <div className="mt-1">
+          <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border ${safetyColors[data.safetyScore] || 'bg-bg-primary text-text-muted border-border/40'}`}>
+            {data.safetyScore || '—'}
+          </span>
         </div>
-        <div className="text-xs text-text-muted">Risk assessment</div>
       </div>
     </div>
   );

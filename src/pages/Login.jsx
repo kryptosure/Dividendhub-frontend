@@ -1,3 +1,4 @@
+// Replacement for src/pages/Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -27,7 +28,6 @@ const Login = () => {
 
       const serverPortfolio = data.portfolio || [];
       if (portfolio.length > 0 && serverPortfolio.length === 0) {
-        console.log('📤 Syncing local portfolio to server...');
         await syncPortfolio();
         setPortfolio(portfolio);
       } else {
@@ -48,37 +48,42 @@ const Login = () => {
         <title>Login – DividendBro</title>
         <meta name="description" content="Sign in to your DividendBro account to manage your dividend portfolio." />
       </Helmet>
-      <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
-        <div className="max-w-md w-full bg-bg-surface border border-border rounded-xl p-8 shadow-card">
+      <div className="min-h-[75vh] flex items-center justify-center px-4 py-8 relative overflow-hidden">
+        {/* Aesthetic Background Light Flare */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-accent-blue/10 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="max-w-md w-full bg-bg-surface border border-border/60 rounded-2xl p-6 sm:p-8 shadow-card relative backdrop-blur-sm transition-all duration-300 hover:border-border">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-extrabold gradient-text">Welcome Back</h1>
-            <p className="text-text-muted text-sm mt-1">Sign in to your DividendBro account</p>
+            <h1 className="text-3xl font-black tracking-tight text-text-primary">
+              Welcome <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Back</span>
+            </h1>
+            <p className="text-text-muted text-xs font-medium uppercase tracking-wider mt-1">Manage your active cash flow</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
+              <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">
                 Email Address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-bg-secondary border border-border rounded-lg px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-blue"
-                placeholder="you@example.com"
+                className="w-full bg-bg-primary/50 border border-border/60 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/40 transition-all focus:outline-none focus:bg-bg-primary focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/5"
+                placeholder="name@domain.com"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
+              <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-bg-secondary border border-border rounded-lg px-4 py-2.5 text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-blue"
+                className="w-full bg-bg-primary/50 border border-border/60 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/40 transition-all focus:outline-none focus:bg-bg-primary focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/5"
                 placeholder="••••••••"
                 required
                 minLength={6}
@@ -86,23 +91,23 @@ const Login = () => {
             </div>
 
             {error && (
-              <div className="bg-accent-red/10 border border-accent-red/20 rounded-lg p-3 text-accent-red text-sm">
-                {error}
+              <div className="bg-accent-red/5 border border-accent-red/20 rounded-xl p-3.5 text-accent-red text-xs font-medium flex items-center gap-2">
+                <span>⚠️</span> {error}
               </div>
             )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-gradient-to-r from-accent-blue to-accent-teal text-white font-semibold rounded-full hover:shadow-lg transition disabled:opacity-50"
+              className="w-full py-3 mt-2 bg-gradient-to-r from-accent-blue to-accent-teal hover:opacity-95 text-white font-bold rounded-xl shadow-md transition-all active:scale-[0.99] disabled:opacity-50 text-sm tracking-wide"
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? 'Verifying Account...' : 'Sign In'}
             </button>
 
-            <p className="text-center text-text-muted text-sm">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-accent-blue hover:underline font-medium">
-                Sign Up
+            <p className="text-center text-text-muted text-xs font-medium pt-2">
+              New to the platform?{' '}
+              <Link to="/signup" className="text-accent-blue hover:text-accent-teal transition-colors font-semibold">
+                Create Account
               </Link>
             </p>
           </form>

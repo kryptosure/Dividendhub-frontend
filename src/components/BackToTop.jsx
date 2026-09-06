@@ -6,33 +6,21 @@ const BackToTop = () => {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 400) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(window.scrollY > 400);
     };
-
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
   return (
     <button
-      onClick={scrollToTop}
-      className={`fixed bottom-24 right-4 z-50 p-3 rounded-full bg-gradient-to-r from-accent-blue to-accent-teal text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className={`fixed bottom-24 right-4 sm:bottom-8 sm:right-6 z-50 p-3 rounded-xl bg-gradient-to-r from-accent-blue to-accent-teal text-white shadow-lg transition-all duration-300 hover:scale-105 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
       }`}
-      aria-label="Back to top"
+      aria-label="Scroll frame block directly back to top viewport node position"
     >
-      <ChevronUp size={24} />
+      <ChevronUp size={20} strokeWidth={2.5} />
     </button>
   );
 };

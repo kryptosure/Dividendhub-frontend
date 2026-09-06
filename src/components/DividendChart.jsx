@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto';
 
 const DividendChart = ({ data }) => {
   const chartRef = useRef(null);
@@ -8,6 +7,7 @@ const DividendChart = ({ data }) => {
   useEffect(() => {
     if (!chartRef.current || !data || !data.byYear || data.byYear.length === 0) return;
 
+    let isMounted = true;
     const ctx = chartRef.current.getContext('2d');
     const sorted = [...data.byYear].sort((a, b) => a.year - b.year);
     const years = sorted.map(y => y.year);
@@ -17,74 +17,75 @@ const DividendChart = ({ data }) => {
       chartInstance.current.destroy();
     }
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    const gradient = ctx.createLinearGradient(0, 0, 0, 240);
     gradient.addColorStop(0, '#3b82f6');
-    gradient.addColorStop(1, '#06b6d4');
+    gradient.addColorStop(1, '#3b82f605');
 
-    chartInstance.current = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: years,
-        datasets: [{
-          label: 'Dividend per share',
-          data: values,
-          backgroundColor: gradient,
-          borderRadius: 4,
-          maxBarThickness: 40,
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: (context) => {
-                const cur = data.currencySymbol || '$';
-                return `${cur}${context.raw.toFixed(2)} / share`;
+    import('chart.js/auto').then(({ default: Chart }) => {
+      if (!isMounted || !chartRef.current) return;
+      
+      chartInstance.current = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: years,
+          datasets: [{
+            label: 'Dividend Distribution',
+            data: values,
+            backgroundColor: gradient,
+            borderColor: '#3b82f6',
+            borderWidth: 1.5,
+            borderRadius: 6,
+            maxBarThickness: 32,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0a0e1a',
+              titleFont: { family: 'Inter', weight: '700' },
+              bodyFont: { family: 'Inter' },
+              callbacks: {
+                label: (context) => ` ${data.currencySymbol || '$'}${context.raw.toFixed(2)} / position share`
               }
             }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: { color: 'rgba(255,255,255,0.05)' },
-            ticks: {
-              callback: (value) => (data.currencySymbol || '$') + value.toFixed(2),
-              color: '#94a3b8',
-            }
           },
-          x: {
-            grid: { display: false },
-            ticks: { color: '#94a3b8' }
+          scales: {
+            y: {
+              grid: { color: 'rgba(255,255,255,0.03)' },
+              ticks: {
+                callback: (val) => (data.currencySymbol || '$') + val.toFixed(2),
+                color: '#94a3b8',
+                font: { family: 'JetBrains Mono', size: 10 }
+              }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }
+            }
           }
         }
-      }
+      });
     });
 
     return () => {
+      isMounted = false;
       if (chartInstance.current) {
         chartInstance.current.destroy();
+        chartInstance.current = null;
       }
     };
   }, [data]);
 
-  if (!data || !data.byYear || data.byYear.length === 0) {
-    return (
-      <div className="bg-bg-surface border border-border rounded-xl p-4">
-        <h3 className="font-bold text-lg mb-2">Dividends by Year</h3>
-        <p className="text-text-muted text-sm">No dividend data available for chart.</p>
-      </div>
-    );
-  }
+  if (!data || !data.byYear || data.byYear.length === 0) return null;
 
   return (
-    <div className="bg-bg-surface border border-border rounded-xl p-4">
-      <h3 className="font-bold text-lg mb-2">Dividends by Year</h3>
-      <div className="h-64">
-        <canvas ref={chartRef}></canvas>
+    <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
+      <h3 className="font-black tracking-tight text-lg text-text-primary mb-4">📈 Growth Delta Chart</h3>
+      <div className="h-60 relative">
+        <canvas ref={chartRef} />
       </div>
     </div>
   );

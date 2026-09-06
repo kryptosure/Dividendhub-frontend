@@ -17,15 +17,20 @@ import Signup from './pages/Signup';
 import BackToTop from './components/BackToTop';
 import Blog from './pages/Blog';
 import Article from './pages/Article';
-// New imports for simulator pages
 import SimulatorSingle from './pages/SimulatorSingle';
 import SimulatorDCA from './pages/SimulatorDCA';
 
 import { getMe } from './services/api';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
 
-// ⚠️ CHANGE THIS TO YOUR REAL DOMAIN (no trailing slash)
 const SITE_URL = "https://dividendbro.com"; 
 const DEFAULT_IMAGE = `${SITE_URL}/images/cover.png`;
 
@@ -51,32 +56,25 @@ function App() {
       }
     };
     initAuth();
-  }, []);
+  }, [setToken, setUser, setPortfolio, logout]);
 
   return (
     <AppErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          {/* Global Meta Tags for WhatsApp / Social Media */}
           <Helmet>
             <meta property="og:type" content="website" />
             <meta property="og:site_name" content="DividendBro" />
             <meta property="og:url" content={window.location.href} />
             <meta property="og:image" content={DEFAULT_IMAGE} />
-            <meta property="og:image:width" content="1200" />
-            <meta property="og:image:height" content="630" />
-            
             <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:image" content={DEFAULT_IMAGE} />
-            
-            {/* Fallback text if page doesn't have specific tags */}
-            <meta property="og:title" content="DividendBro – Best Dividend Analysis & Management Tool" />
-            <meta property="og:description" content="Analyse dividends, track yields, and manage your portfolio for US and SGX stocks." />
+            <meta property="og:title" content="DividendBro – Premium Dividend Analysis & Management Hub" />
+            <meta property="og:description" content="Track yields, compound simulations, and manage income assets cleanly for US & SGX stock markets." />
           </Helmet>
 
-          <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col">
+          <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col font-sans antialiased selection:bg-accent-blue/20">
             <Header />
-            <main className="flex-1 max-w-7xl mx-auto px-4 py-6 w-full pb-20 md:pb-6">
+            <main className="flex-1 max-w-6xl mx-auto px-4 py-8 w-full pb-24 md:pb-8 animate-in fade-in duration-300">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/portfolio" element={<PortfolioView />} />
@@ -85,7 +83,6 @@ function App() {
                 <Route path="/blog/:slug" element={<Article />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
-                {/* New simulator routes */}
                 <Route path="/simulate/one-time" element={<SimulatorSingle />} />
                 <Route path="/simulate/dca" element={<SimulatorDCA />} />
                 <Route path="*" element={<Navigate to="/" />} />
@@ -106,12 +103,12 @@ function Home() {
   const symbol = searchParams.get('symbol') || '';
 
   const pageTitle = symbol
-    ? `${symbol} Dividend History – Yield, Ex‑Dates & Safety`
+    ? `${symbol} Dividend History – Yield, Ex‑Dates & Risk Assessment`
     : 'DividendBro – Best Dividend Analysis & Management Tool for US & SGX Stocks';
 
   const pageDescription = symbol
-    ? `View dividend history, current yield, safety score, and ex‑dates for ${symbol}. Track your portfolio and passive income.`
-    : 'Analyse dividends, track yields, and manage your portfolio for US and SGX stocks. The ultimate tool for passive income investors.';
+    ? `View complete payout histories, current yields metrics, capital safety scores, and ex‑dividend dates for ${symbol}.`
+    : 'Analyze distributions records, verify trailing yield positions, and manage portfolio assets cleanly.';
 
   return (
     <>
@@ -119,29 +116,20 @@ function Home() {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <link rel="canonical" href={window.location.href} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
       </Helmet>
 
-      <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-extrabold gradient-text">
-          The Best Dividend Analysis & Management Tool
+      <div className="text-center mb-10 max-w-2xl mx-auto">
+        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary leading-tight">
+          Smart Dividend Tracking <br />
+          For <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Modern Investors</span>
         </h1>
-        <p className="text-text-secondary text-base md:text-lg mt-2 max-w-2xl mx-auto">
-          For US and SGX stocks. Track dividends, yields, safety, and build your passive income portfolio.
+        <p className="text-text-secondary text-sm mt-3 font-medium">
+          Analyse cash flows, calculate asset growth caps, and track passive dividend revenue across US and SGX channels seamlessly.
         </p>
-        <div className="flex flex-wrap justify-center gap-2 mt-4">
-          <span className="bg-accent-blue/10 text-accent-blue text-xs font-semibold px-3 py-1 rounded-full border border-accent-blue/20">
-            🇺🇸 US Stocks
-          </span>
-          <span className="bg-accent-teal/10 text-accent-teal text-xs font-semibold px-3 py-1 rounded-full border border-accent-teal/20">
-            🇸🇬 SGX Stocks
-          </span>
-          <span className="bg-accent-green/10 text-accent-green text-xs font-semibold px-3 py-1 rounded-full border border-accent-green/20">
-            📊 REITs & ETFs
-          </span>
+        <div className="flex flex-wrap justify-center gap-1.5 mt-4 text-[10px] font-bold uppercase tracking-wider">
+          <span className="bg-accent-blue/5 text-accent-blue px-3 py-1 rounded-md border border-accent-blue/10">🇺🇸 US Equities</span>
+          <span className="bg-accent-teal/5 text-accent-teal px-3 py-1 rounded-md border border-accent-teal/10">🇸🇬 SGX Vectors</span>
+          <span className="bg-accent-purple/5 text-accent-purple px-3 py-1 rounded-md border border-accent-purple/10">📊 REIT Frameworks</span>
         </div>
       </div>
 

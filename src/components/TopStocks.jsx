@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import ExportButtons from './ExportButtons';
 
 async function fetchExchangeRate() {
   try {
-    const resp = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+    const resp = await fetch('https://exchangerate-api.com');
     const data = await resp.json();
     return data.rates.SGD;
   } catch {
@@ -63,7 +63,6 @@ const TopStocks = () => {
     }));
   };
 
-  // Build report data for PDF
   const reportData = {
     title: `Top Dividend ${type === 'stock' ? 'Stocks' : 'ETFs'} (${market.toUpperCase()})`,
     subtitle: `Sorted by yield • ${data?.length || 0} entries`,
@@ -93,29 +92,25 @@ const TopStocks = () => {
   if (isLoading) return <LoadingSpinner fullPage />;
   if (error) {
     return (
-      <div className="bg-accent-red/10 border border-accent-red/20 rounded-xl p-4 text-accent-red">
-        Error loading top stocks: {error.message}
+      <div className="bg-accent-red/5 border border-accent-red/20 rounded-2xl p-5 text-accent-red text-xs font-semibold">
+        🛑 Internal feed synchronization channel failed: {error.message}
       </div>
     );
   }
 
   if (!data || data.length === 0) {
     return (
-      <div className="text-center py-12 text-text-secondary">
-        <div className="text-5xl mb-4">📊</div>
-        <p>No {type === 'stock' ? 'stocks' : 'ETFs'} found yet. Please check back later.</p>
+      <div className="text-center py-12 text-text-secondary border border-dashed border-border/40 rounded-2xl bg-bg-surface/40">
+        <div className="text-4xl mb-3">📊</div>
+        <p className="text-sm font-bold">No active indices available inside target region criteria loops.</p>
       </div>
     );
   }
 
-  const handleClick = (symbol) => {
-    navigate(`/?symbol=${encodeURIComponent(symbol)}`);
-  };
-
   const safetyColors = {
-    Safe: 'bg-accent-green/20 text-accent-green',
-    Moderate: 'bg-accent-yellow/20 text-accent-yellow',
-    Caution: 'bg-accent-red/20 text-accent-red',
+    Safe: 'bg-accent-green/10 border-accent-green/20 text-accent-green',
+    Moderate: 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow',
+    Caution: 'bg-accent-red/10 border-accent-red/20 text-accent-red',
   };
 
   return (
@@ -124,72 +119,63 @@ const TopStocks = () => {
         <title>Top Dividend Stocks – US & SGX High Yield</title>
         <meta name="description" content="Discover the highest dividend yield stocks and ETFs in the US and SGX markets. Sorted by yield." />
       </Helmet>
-      <div ref={topStocksRef} className="bg-bg-surface border border-border rounded-xl overflow-hidden">
-        <div className="p-4 border-b border-border flex justify-between items-center flex-wrap gap-2">
+      <div ref={topStocksRef} className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-300">
+        <div className="p-5 border-b border-border/40 flex justify-between items-start flex-wrap gap-4 bg-bg-secondary/20">
           <div>
-            <h2 className="text-xl font-bold">🏆 Top Dividend {type === 'stock' ? 'Stocks' : 'ETFs'}</h2>
-            <p className="text-sm text-text-muted">
-              {market === 'sg' ? 'SGX' : 'US'} {type === 'stock' ? 'stocks' : 'ETFs'} sorted by yield
-            </p>
-            <div className="flex gap-2 mt-2">
+            <h2 className="text-xl font-black text-text-primary tracking-tight">🏆 High-Yield Vector Board</h2>
+            <p className="text-xs text-text-muted font-medium mt-0.5">Segmented and rank ordered via trailing distribution returns loops.</p>
+            <div className="flex gap-1.5 mt-3 bg-bg-primary/40 border border-border/30 p-0.5 rounded-lg text-xs font-bold w-fit">
               <button
-                className={`px-3 py-1 rounded-full text-sm font-semibold transition ${type === 'stock' ? 'bg-accent-blue text-white' : 'bg-bg-surface text-text-muted hover:text-text-primary'}`}
+                className={`px-4 py-1.5 rounded-md transition-all ${type === 'stock' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm font-extrabold' : 'text-text-muted'}`}
                 onClick={() => setType('stock')}
               >
                 📈 Stocks
               </button>
               <button
-                className={`px-3 py-1 rounded-full text-sm font-semibold transition ${type === 'etf' ? 'bg-accent-blue text-white' : 'bg-bg-surface text-text-muted hover:text-text-primary'}`}
+                className={`px-4 py-1.5 rounded-md transition-all ${type === 'etf' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm font-extrabold' : 'text-text-muted'}`}
                 onClick={() => setType('etf')}
               >
                 📊 ETFs
               </button>
             </div>
           </div>
-          <ExportButtons
-            data={getCSVData()}
-            filename={`top_${type}_${market}`}
-            headers={['Name','Symbol','Price','Yield','Payouts','Safety']}
-            reportData={reportData}
-            title={`Top Dividend ${type === 'stock' ? 'Stocks' : 'ETFs'} (${market.toUpperCase()})`}
-            shareMessage={`Check out the top dividend ${type === 'stock' ? 'stocks' : 'ETFs'} on DividendBro!`}
-          />
+          <ExportButtons data={getCSVData()} filename={`top_${type}_${market}`} headers={['Name','Symbol','Price','Yield','Payouts','Safety']} reportData={reportData} shareMessage={`Reviewing top high yield dividend index sets maps on DividendBro.`} />
         </div>
 
-        <div className="table-wrapper">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border">
-                <th className="text-left py-3 px-4 text-text-muted font-semibold text-xs uppercase">#</th>
-                <th className="text-left py-3 px-4 text-text-muted font-semibold text-xs uppercase">Name</th>
-                <th className="text-right py-3 px-4 text-text-muted font-semibold text-xs uppercase">Price</th>
-                <th className="text-right py-3 px-4 text-text-muted font-semibold text-xs uppercase">Yield</th>
-                <th className="text-right py-3 px-4 text-text-muted font-semibold text-xs uppercase">Payouts</th>
-                <th className="text-right py-3 px-4 text-text-muted font-semibold text-xs uppercase">Safety</th>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm divide-y divide-border/20">
+            <thead className="bg-bg-secondary/40 text-[10px] uppercase font-bold text-text-muted tracking-wider">
+              <tr>
+                <th className="px-4 py-3">Rank</th>
+                <th className="px-4 py-3">Asset Instrument</th>
+                <th className="px-4 py-3 text-right">Value Close</th>
+                <th className="px-4 py-3 text-right">Yield Return</th>
+                <th className="px-4 py-3 text-right">Frequency</th>
+                <th className="px-4 py-3 text-right">Risk Factor</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-border/10 font-medium">
               {data.map((item, index) => (
                 <tr
                   key={item.symbol}
-                  className="border-b border-border hover:bg-bg-surface-hover cursor-pointer transition"
-                  onClick={() => handleClick(item.symbol)}
+                  className="hover:bg-bg-secondary/30 cursor-pointer transition-colors"
+                  onClick={() => navigate(`/?symbol=${encodeURIComponent(item.symbol)}`)}
                 >
-                  <td className="py-2 px-4 text-text-muted">{index + 1}</td>
-                  <td className="py-2 px-4">
-                    <span className="font-semibold">{item.name || item.symbol}</span>
-                    <span className="font-mono text-accent-teal text-xs ml-2">{item.symbol}</span>
+                  <td className="px-4 py-3.5 text-text-muted font-mono text-xs">{index + 1}</td>
+                  <td className="px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-1">
+                    <span className="font-bold text-text-primary">{item.name || item.symbol}</span>
+                    <span className="font-mono text-accent-teal text-xs tracking-wide bg-bg-secondary px-1.5 py-0.5 border border-border/30 rounded w-fit">{item.symbol}</span>
                   </td>
-                  <td className="py-2 px-4 text-right">
+                  <td className="px-4 py-3.5 text-right font-mono text-xs text-text-secondary">
                     {item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '—'}
                   </td>
-                  <td className="py-2 px-4 text-right font-bold text-accent-green">
+                  <td className="px-4 py-3.5 text-right font-mono text-sm font-black text-accent-green">
                     {item.currentYield ? formatPercent(item.currentYield) : '—'}
                   </td>
-                  <td className="py-2 px-4 text-right">{item.payoutCount || 0}</td>
-                  <td className="py-2 px-4 text-right">
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                      safetyColors[item.safetyScore] || 'bg-bg-surface text-text-muted'
+                  <td className="px-4 py-3.5 text-right font-mono text-xs text-text-muted">{item.payoutCount || 0} intervals</td>
+                  <td className="px-4 py-3.5 text-right">
+                    <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${
+                      safetyColors[item.safetyScore] || 'bg-bg-primary text-text-muted border-border/40'
                     }`}>
                       {item.safetyScore || '—'}
                     </span>
@@ -199,9 +185,6 @@ const TopStocks = () => {
             </tbody>
           </table>
         </div>
-        <p className="text-text-muted text-xs p-4 border-t border-border">
-          Data from Yahoo Finance · Updated periodically
-        </p>
       </div>
     </>
   );

@@ -5,19 +5,19 @@ import { updatePortfolio } from '../services/api';
 const useStore = create(
   persist(
     (set, get) => ({
-      // ---------- State ----------
+      // ---------- State Matrix ----------
       user: null,
       token: null,
       portfolio: [],
       watchlist: [],
       theme: 'dark',
       market: 'us',
-      currency: 'sgd',
+      currency: 'usd',
       isLoading: false,
       error: null,
       _isSyncing: false,
 
-      // ---------- Auth ----------
+      // ---------- Auth Handles ----------
       setUser: (user) => set({ user }),
       setToken: (token) => {
         if (token) {
@@ -30,35 +30,35 @@ const useStore = create(
 
       logout: () => {
         localStorage.removeItem('token');
-        set({ user: null, token: null });
+        set({ user: null, token: null, portfolio: [], watchlist: [] });
       },
 
-      // ---------- Portfolio ----------
+      // ---------- Portfolio Engine ----------
       setPortfolio: (portfolio) => set({ portfolio }),
 
-      // Sync portfolio to server
       syncPortfolio: async () => {
         const { portfolio, token, _isSyncing } = get();
         if (!token || _isSyncing) return;
         set({ _isSyncing: true });
         try {
           await updatePortfolio(portfolio);
-          console.log('✅ Portfolio synced to server');
+          console.log('📤 Profile ledger synced to server.');
         } catch (e) {
-          console.warn('Failed to sync portfolio:', e);
+          console.warn('Portfolio sync channel dropped:', e);
         } finally {
           set({ _isSyncing: false });
         }
       },
 
-      // ✅ Updated – adds purchaseDate and purchasePrice
       addToPortfolio: (item) => {
         const { portfolio } = get();
-        const exists = portfolio.some(p => p.symbol === item.symbol);
+        const upperSymbol = item.symbol.toUpperCase().trim();
+        const exists = portfolio.some(p => p.symbol.toUpperCase() === upperSymbol);
         let newPortfolio;
+        
         if (exists) {
           newPortfolio = portfolio.map(p =>
-            p.symbol === item.symbol
+            p.symbol.toUpperCase() === upperSymbol
               ? {
                   ...p,
                   shares: item.shares || p.shares,
@@ -71,7 +71,7 @@ const useStore = create(
           newPortfolio = [
             ...portfolio,
             {
-              symbol: item.symbol,
+              symbol: upperSymbol,
               name: item.name || item.symbol,
               market: item.market || 'us',
               shares: item.shares || 1,
@@ -81,50 +81,54 @@ const useStore = create(
           ];
         }
         set({ portfolio: newPortfolio });
-        setTimeout(() => get().syncPortfolio(), 100);
+        setTimeout(() => get().syncPortfolio(), 150);
       },
 
       removeFromPortfolio: (symbol) => {
         const { portfolio } = get();
-        const newPortfolio = portfolio.filter(item => item.symbol !== symbol);
+        const upperSymbol = symbol.toUpperCase().trim();
+        const newPortfolio = portfolio.filter(item => item.symbol.toUpperCase() !== upperSymbol);
         set({ portfolio: newPortfolio });
-        setTimeout(() => get().syncPortfolio(), 100);
+        setTimeout(() => get().syncPortfolio(), 150);
       },
 
       updatePortfolioItem: (symbol, updates) => {
         const { portfolio } = get();
+        const upperSymbol = symbol.toUpperCase().trim();
         const newPortfolio = portfolio.map(item =>
-          item.symbol === symbol ? { ...item, ...updates } : item
+          item.symbol.toUpperCase() === upperSymbol ? { ...item, ...updates } : item
         );
         set({ portfolio: newPortfolio });
-        setTimeout(() => get().syncPortfolio(), 100);
+        setTimeout(() => get().syncPortfolio(), 150);
       },
 
       clearPortfolio: () => {
         set({ portfolio: [] });
-        setTimeout(() => get().syncPortfolio(), 100);
+        setTimeout(() => get().syncPortfolio(), 150);
       },
 
-      // ---------- Watchlist ----------
+      // ---------- Watchlist Engine ----------
       setWatchlist: (watchlist) => set({ watchlist }),
       addToWatchlist: (item) => {
         const { watchlist } = get();
-        const exists = watchlist.some(w => w.symbol === item.symbol);
+        const upperSymbol = item.symbol.toUpperCase().trim();
+        const exists = watchlist.some(w => w.symbol.toUpperCase() === upperSymbol);
         if (!exists) {
-          set({ watchlist: [...watchlist, item] });
+          set({ watchlist: [...watchlist, { ...item, symbol: upperSymbol }] });
         }
       },
       removeFromWatchlist: (symbol) => {
         const { watchlist } = get();
-        set({ watchlist: watchlist.filter(item => item.symbol !== symbol) });
+        const upperSymbol = symbol.toUpperCase().trim();
+        set({ watchlist: watchlist.filter(item => item.symbol.toUpperCase() !== upperSymbol) });
       },
       isInWatchlist: (symbol) => {
         const { watchlist } = get();
-        return watchlist.some(item => item.symbol === symbol);
+        return watchlist.some(item => item.symbol.toUpperCase() === symbol.toUpperCase().trim());
       },
       clearWatchlist: () => set({ watchlist: [] }),
 
-      // ---------- Theme ----------
+      // ---------- Adaptive UI Themes Control ----------
       toggleTheme: () => {
         set((state) => {
           const newTheme = state.theme === 'dark' ? 'light' : 'dark';
@@ -137,43 +141,25 @@ const useStore = create(
         set({ theme });
       },
 
-      // ---------- Market & Currency ----------
+      // ---------- Global Segment Anchors ----------
       setMarket: (market) => set({ market }),
       setCurrency: (currency) => set({ currency }),
 
-      // ---------- Loading / Error ----------
-      setLoading: (isLoading) => set({ isLoading }),
+      // ---------- Global Loading Hooks ----------
+      setLoading: (isLoading) => set({ setLoading: isLoading }),
       setError: (error) => set({ error }),
       clearError: () => set({ error: null }),
 
-      // ---------- Getters ----------
-      getPortfolioSymbols: () => {
-        const { portfolio } = get();
-        return portfolio.map(item => item.symbol);
-      },
-      getPortfolioCount: () => {
-        const { portfolio } = get();
-        return portfolio.length;
-      },
-      isInPortfolio: (symbol) => {
-        const { portfolio } = get();
-        return portfolio.some(item => item.symbol === symbol);
-      },
-      getWatchlistSymbols: () => {
-        const { watchlist } = get();
-        return watchlist.map(item => item.symbol);
-      },
-      getWatchlistCount: () => {
-        const { watchlist } = get();
-        return watchlist.length;
-      },
-      getCurrencySymbol: () => {
-        const { currency } = get();
-        return currency === 'sgd' ? 'S$' : '$';
-      },
+      // ---------- Global State Selectors ----------
+      getPortfolioSymbols: () => get().portfolio.map(item => item.symbol),
+      getPortfolioCount: () => get().portfolio.length,
+      isInPortfolio: (symbol) => get().portfolio.some(item => item.symbol.toUpperCase() === symbol.toUpperCase().trim()),
+      getWatchlistSymbols: () => get().watchlist.map(item => item.symbol),
+      getWatchlistCount: () => get().watchlist.length,
+      getCurrencySymbol: () => get().currency === 'sgd' ? 'S$' : '$',
     }),
     {
-      name: 'DividendBro-storage',
+      name: 'DividendBro-State-Layer',
       partialize: (state) => ({
         user: state.user,
         token: state.token,
@@ -185,9 +171,7 @@ const useStore = create(
       }),
       onRehydrateStorage: () => {
         return (state, error) => {
-          if (error) {
-            console.error('Error rehydrating store:', error);
-          } else if (state) {
+          if (!error && state) {
             document.documentElement.setAttribute('data-theme', state.theme || 'dark');
           }
         };

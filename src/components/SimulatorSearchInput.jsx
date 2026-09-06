@@ -1,56 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getStockList } from '../services/api';
+import { searchStocks } from '../services/api';
 
 const SimulatorSearchInput = ({ symbol, setSymbol, market, placeholder = 'Search stocks...' }) => {
   const [query, setQuery] = useState(symbol || '');
   const [suggestions, setSuggestions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [stockList, setStockList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
-    const fetchStockList = async () => {
-      const cached = localStorage.getItem('stockList');
-      if (cached) {
-        try {
-          const parsed = JSON.parse(cached);
-          if (Array.isArray(parsed)) {
-            setStockList(parsed);
-            return;
-          }
-        } catch (e) {}
-      }
-      try {
-        const data = await getStockList();
-        if (Array.isArray(data)) {
-          setStockList(data);
-          localStorage.setItem('stockList', JSON.stringify(data));
-        } else {
-          setStockList([]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch stock list:', error);
-        setStockList([]);
-      }
-    };
-    fetchStockList();
-  }, []);
-
-  useEffect(() => {
-    if (query.length < 2) {
+    if (query.trim().length < 2) {
       setSuggestions([]);
       setIsOpen(false);
       return;
     }
-    const q = query.toLowerCase();
-    const filtered = stockList.filter(
-      (item) =>
-        item.symbol.toLowerCase().includes(q) ||
-        (item.name && item.name.toLowerCase().includes(q))
-    );
-    setSuggestions(filtered.slice(0, 10));
-    setIsOpen(filtered.length > 0);
-  }, [query, stockList]);
+
+    setIsLoading(true);
+    const delayDebounce = setTimeout(async () => {
+      try {
+        const res = await searchStocks(query.trim(), market);
+        if (Array.isArray(res)) {
+          setSuggestions(res);
+          setIsOpen(res.length > 0);
+        }
+      } catch (err) {
+        console.error('Search input route layer failure:', err);
+        setSuggestions([]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounce);
+  }, [query, market]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -71,37 +53,45 @@ const SimulatorSearchInput = ({ symbol, setSymbol, market, placeholder = 'Search
 
   return (
     <div ref={wrapperRef} className="relative w-full">
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setSymbol(e.target.value.toUpperCase());
-        }}
-        onFocus={() => suggestions.length > 0 && setIsOpen(true)}
-        placeholder={placeholder}
-        className="w-full bg-bg-surface border border-border rounded-lg px-4 py-2 text-text-primary placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-accent-blue"
-        autoComplete="off"
-      />
+      <div className="relative">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setSymbol(e.target.value.toUpperCase());
+          }}
+          onFocus={() => suggestions.length > 0 && setIsOpen(true)}
+          placeholder={placeholder}
+          className="w-full bg-bg-surface border border-border/60 rounded-xl px-4 py-3 text-sm font-medium text-text-primary placeholder-text-muted/60 focus:outline-none focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/5 shadow-sm transition-all duration-200"
+          autoComplete="off"
+        />
+        {isLoading && (
+          <div className="absolute right-4 top-3.5">
+            <div className="animate-spin h-4 w-4 border-2 border-accent-blue border-t-transparent rounded-full" />
+          </div>
+        )}
+      </div>
+      
       {isOpen && suggestions.length > 0 && (
-        <ul className="absolute z-10 w-full mt-1 bg-bg-secondary border border-border rounded-lg shadow-lg overflow-hidden max-h-60 overflow-y-auto">
+        <ul className="absolute z-50 w-full mt-2 bg-bg-secondary/95 backdrop-blur-md border border-border/80 rounded-xl shadow-xl overflow-hidden max-h-60 overflow-y-auto divide-y divide-border/40 animate-in fade-in slide-in-from-top-2 duration-200">
           {suggestions.map((item) => (
             <li
               key={item.symbol}
-              className="px-4 py-2 hover:bg-bg-surface-hover cursor-pointer flex flex-col border-b border-border last:border-b-0"
+              className="px-4 py-3 hover:bg-bg-surface-hover/80 cursor-pointer flex items-center justify-between transition-colors duration-150"
               onMouseDown={() => handleSelect(item.symbol)}
             >
-              <div className="flex items-center justify-between">
-                <span className="text-text-primary font-medium">
-                  {item.name || item.symbol}
+              <div className="flex flex-col min-w-0 pr-4">
+                <span className="text-text-primary font-semibold text-sm truncate">
+                  {item.longname || item.shortname || item.symbol}
                 </span>
-                <span className="font-mono text-accent-teal text-sm ml-2 flex-shrink-0">
-                  {item.symbol}
+                <span className="text-[10px] font-bold tracking-wider uppercase text-text-muted mt-0.5">
+                  {item.exchange || (market === 'sg' ? 'SGX' : 'NASDAQ')}
                 </span>
               </div>
-              <div className="text-xs text-text-muted mt-0.5">
-                {item.market === 'sg' ? 'SGX' : 'NASDAQ'}
-              </div>
+              <span className="font-mono bg-bg-surface border border-border/60 text-accent-teal text-xs px-2.5 py-1 rounded-md font-bold tracking-wider flex-shrink-0">
+                {item.symbol}
+              </span>
             </li>
           ))}
         </ul>

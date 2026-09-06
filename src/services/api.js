@@ -1,10 +1,17 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://dividendhub-api.onrender.com/api',
+  baseURL: 'https://onrender.com',
   headers: { 'Content-Type': 'application/json' },
   timeout: 60000,
 });
+
+// Cache map to save server bandwidth and give users instant 0ms response times
+const sessionCache = {
+  search: {},
+  stocks: {},
+  calculations: {}
+};
 
 // Interceptors (unchanged)
 api.interceptors.request.use(
@@ -48,14 +55,26 @@ export const updatePortfolio = async (portfolio) => {
   return res.data;
 };
 
-// Stocks
+// Stocks (Optimized with live dynamic session caching for premium snappiness)
 export const searchStocks = async (q, market = 'us') => {
+  const cacheKey = `${market}:${q.toLowerCase().trim()}`;
+  if (sessionCache.search[cacheKey]) {
+    return sessionCache.search[cacheKey];
+  }
+  
   const res = await api.get('/stocks/search', { params: { q, market } });
+  sessionCache.search[cacheKey] = res.data;
   return res.data;
 };
 
 export const getStock = async (symbol, market = 'us') => {
+  const cacheKey = `${market}:${symbol.toUpperCase().trim()}`;
+  if (sessionCache.stocks[cacheKey]) {
+    return sessionCache.stocks[cacheKey];
+  }
+
   const res = await api.get(`/stocks/${encodeURIComponent(symbol)}`, { params: { market } });
+  sessionCache.stocks[cacheKey] = res.data;
   return res.data;
 };
 
@@ -69,17 +88,23 @@ export const getTopStocks = async (market = 'us', type = 'stock') => {
   return res.data;
 };
 
-// ✅ Updated – uses /stocks-list (with a dash)
+// Fallback legacy link support
 export const getStockList = async () => {
   const res = await api.get('/stocks-list');
   return res.data;
 };
 
-// Portfolio Calculator
+// Portfolio Calculator (Cached to handle instant adjustments safely)
 export const calculatePortfolio = async (symbol, purchaseDate, quantity, market = 'us') => {
+  const cacheKey = `${market}:${symbol}:${purchaseDate}:${quantity}`;
+  if (sessionCache.calculations[cacheKey]) {
+    return sessionCache.calculations[cacheKey];
+  }
+
   const res = await api.get('/portfolio/calculate', {
     params: { ticker: symbol, purchaseDate, quantity, market },
   });
+  sessionCache.calculations[cacheKey] = res.data;
   return res.data;
 };
 

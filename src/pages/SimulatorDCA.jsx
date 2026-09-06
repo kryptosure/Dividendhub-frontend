@@ -1,3 +1,4 @@
+// Replacement for src/pages/SimulatorDCA.jsx
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
@@ -27,15 +28,21 @@ const SimulatorDCA = () => {
         <title>Regular Investment (DCA) Simulator – DividendBro</title>
         <meta name="description" content="Simulate dollar-cost averaging (DCA) with monthly investments and dividend reinvestment." />
       </Helmet>
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-2">📊 Regular Investment (DCA) Simulator</h1>
-        <p className="text-text-muted text-sm mb-6">
-          Simulate investing a fixed amount every month, with dividend reinvestment (DRIP) over time.
-        </p>
+      <div className="max-w-4xl mx-auto px-4 sm:px-0">
+        {/* Banner Block */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-black tracking-tight text-text-primary">
+            📊 Dollar-Cost Averaging <span className="bg-gradient-to-r from-accent-blue to-accent-purple bg-clip-text text-transparent">Simulator</span>
+          </h1>
+          <p className="text-text-secondary text-sm mt-1 font-medium">
+            See the math behind compounding interest. Simulate monthly inputs alongside dividend reinvestment (DRIP).
+          </p>
+        </div>
 
-        <div className="mb-6 max-w-sm">
-          <label className="block text-xs uppercase text-text-muted font-semibold mb-1">
-            Enter Stock Name or Symbol
+        {/* Input Wrapper Card */}
+        <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 mb-6 max-w-md shadow-sm">
+          <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
+            Target Stock Name or Ticker Symbol
           </label>
           <SimulatorSearchInput
             symbol={symbol}
@@ -45,25 +52,31 @@ const SimulatorDCA = () => {
           />
         </div>
 
-        {isLoading && <LoadingSpinner />}
+        {isLoading && (
+          <div className="py-12 bg-bg-surface/30 rounded-2xl border border-border/30 flex items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
 
         {error && (
-          <div className="bg-accent-red/10 border border-accent-red/20 rounded-xl p-4 text-accent-red">
-            <p className="font-semibold">⚠️ {err?.message || 'Failed to load stock data'}</p>
-            <p className="text-sm mt-1">Please try again or choose a different symbol.</p>
+          <div className="bg-accent-red/5 border border-accent-red/20 rounded-2xl p-5 text-accent-red text-sm font-medium">
+            <p className="font-bold text-base flex items-center gap-1">⚠️ {err?.message || 'Failed to load stock data'}</p>
+            <p className="opacity-80 mt-1">Please try again or select an alternative symbol asset entry.</p>
           </div>
         )}
 
         {data && !isLoading && !error && (
-          <div id="simulation-results" className="space-y-4">
+          <div id="simulation-results" className="space-y-4 animate-in fade-in duration-300">
             <DCASimulator symbol={symbol} market={market} />
           </div>
         )}
 
         {!symbol && !isLoading && !error && (
-          <div className="bg-bg-surface border border-border rounded-xl p-12 text-center text-text-secondary">
-            <p className="text-lg">Enter a stock name or symbol above to start your DCA simulation.</p>
-            <p className="text-sm text-text-muted mt-2">Try Apple, Microsoft, DBS, or OCBC</p>
+          <div className="bg-bg-surface/50 border border-border/40 border-dashed rounded-2xl p-10 text-center relative overflow-hidden">
+            <p className="text-text-secondary font-bold text-base">Select a ticker asset to configure model parameters</p>
+            <p className="text-xs text-text-muted font-medium mt-1">
+              Supports micro-caps, major equity positions, REIT distributions, and international ETFs.
+            </p>
           </div>
         )}
       </div>

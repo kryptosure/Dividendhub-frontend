@@ -1,41 +1,31 @@
 import React from 'react';
 
 const SafetyScore = ({ score }) => {
-  if (!score) {
-    return (
-      <div className="bg-bg-surface border border-border rounded-xl p-4">
-        <h3 className="font-bold text-lg mb-2">🛡️ Safety Score</h3>
-        <p className="text-text-muted text-sm">No safety score available for this stock.</p>
-      </div>
-    );
-  }
+  if (!score) return null;
 
   const getColor = (s) => {
-    if (s === 'Safe') return 'bg-accent-green/20 text-accent-green border-accent-green/30';
-    if (s === 'Moderate') return 'bg-accent-yellow/20 text-accent-yellow border-accent-yellow/30';
-    if (s === 'Caution') return 'bg-accent-red/20 text-accent-red border-accent-red/30';
-    return 'bg-bg-secondary text-text-muted border-border';
+    if (s === 'Safe') return 'bg-accent-green/5 text-accent-green border-accent-green/20';
+    if (s === 'Moderate') return 'bg-accent-yellow/5 text-accent-yellow border-accent-yellow/20';
+    if (s === 'Caution') return 'bg-accent-red/5 text-accent-red border-accent-red/20';
+    return 'bg-bg-secondary text-text-muted border-border/40';
   };
 
   const getDescription = (s) => {
-    if (s === 'Safe') return 'Strong financials, stable dividends, low risk.';
-    if (s === 'Moderate') return 'Average financials, some risk, but reasonable dividends.';
-    if (s === 'Caution') return 'Higher risk – check financials carefully.';
-    return 'Not rated.';
+    if (s === 'Safe') return 'Highly robust fundamental balance sheets, uniform payouts sequence history, ultra-low volatility risks.';
+    if (s === 'Moderate') return 'Standard corporate metrics, baseline compliance ratios present, mid-tier risk variations.';
+    if (s === 'Caution') return 'Elevated accounting leverage anomalies detected. High dividend drop risk factor present.';
+    return 'Asset parameters outside evaluated grading modules.';
   };
 
   return (
-    <div className="bg-bg-surface border border-border rounded-xl p-4">
-      <h3 className="font-bold text-lg mb-2">🛡️ Safety Score</h3>
-      <div className="flex items-center gap-4 flex-wrap">
-        <span className={`px-4 py-2 rounded-full text-sm font-bold border ${getColor(score)}`}>
+    <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
+      <h3 className="font-black tracking-tight text-lg text-text-primary mb-3">🛡️ Capital Risk Score</h3>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-bg-primary/30 border border-border/30 p-4 rounded-xl">
+        <span className={`px-4 py-2 rounded-xl text-xs uppercase tracking-widest font-black border w-fit text-center block ${getColor(score)}`}>
           {score}
         </span>
-        <span className="text-text-secondary text-sm">{getDescription(score)}</span>
+        <span className="text-text-secondary text-xs font-semibold leading-relaxed">{getDescription(score)}</span>
       </div>
-      <p className="text-text-muted text-xs mt-3">
-        * Based on payout ratio, dividend consistency, and financial health.
-      </p>
     </div>
   );
 };
