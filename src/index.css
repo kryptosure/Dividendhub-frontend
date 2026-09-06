@@ -22,8 +22,9 @@
     --bg-secondary: #0a0a0a;
     --bg-surface: #0a0a0a;
     --bg-surface-hover: #141414;
-    --border-color: #1c1f26;
-    --border-hover: #2d3139;
+    /* ✅ Softer borders – low‑opacity white instead of solid dark grey */
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.15);
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #475569;
@@ -45,7 +46,6 @@
     @apply min-h-screen flex flex-col;
   }
   
-  /* FIXED: Changed bg-border-color to native bg-border mapping system */
   ::-webkit-scrollbar {
     @apply w-1.5 h-1.5;
   }
