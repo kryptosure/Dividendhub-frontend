@@ -12,7 +12,7 @@ function getWeekStart(date) {
   const day = d.getUTCDay();
   const diff = d.getUTCDate() - day + (day === 0 ? -6 : 1);
   d.setUTCDate(diff);
-  d.setUTCHours(0,0,0,0);
+  d.setUTCHours(0, 0, 0, 0);
   return d;
 }
 
@@ -51,7 +51,7 @@ function getFutureEstimates(dividendData, shares, currency, exchangeRate) {
   const lastDate = new Date(payouts[payouts.length-1].date + 'T00:00:00Z');
   const lastAmount = payouts[payouts.length-1].amount;
   const recentAmounts = payouts.slice(-3).map(p => p.amount);
-  const avgAmount = recentAmounts.reduce((a,b) => a+b, 0) / recentAmounts.length;
+  const avgAmount = recentAmounts.reduce((a, b) => a + b, 0) / recentAmounts.length;
   const futureDates = [];
   let currentDate = new Date(lastDate);
   let totalProjected = 0;
@@ -70,7 +70,7 @@ function getFutureEstimates(dividendData, shares, currency, exchangeRate) {
       amountInBase = amountInBase / rate;
     }
     futureDates.push({
-      date: currentDate.toISOString().slice(0,10),
+      date: currentDate.toISOString().slice(0, 10),
       amount: amountInBase,
       shares: shares,
       perShare: estAmount,
