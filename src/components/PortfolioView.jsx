@@ -40,7 +40,7 @@ function getFutureEstimates(dividendData, shares, currency, exchangeRate) {
   payouts.sort((a, b) => a.date.localeCompare(b.date));
   let totalDays = 0, intervals = 0;
   for (let i = 1; i < payouts.length; i++) {
-    const days = Math.round((new Date(payouts[i].date) - new Date(payouts[i-1].date)) / (1000 * 60 * 60 * 24));
+    const days = Math.round((new Date(payouts[i].date) - new Date(payouts[i -1].date)) / (1000 * 60 * 60 * 24));
     if (days > 0 && days < 400) {
       totalDays += days;
       intervals++;
@@ -48,8 +48,8 @@ function getFutureEstimates(dividendData, shares, currency, exchangeRate) {
   }
   if (intervals === 0) return null;
   const avgInterval = Math.round(totalDays / intervals);
-  const lastDate = new Date(payouts[payouts.length-1].date + 'T00:00:00Z');
-  const lastAmount = payouts[payouts.length-1].amount;
+  const lastDate = new Date(payouts[payouts.length - 1].date + 'T00:00:00Z');
+  const lastAmount = payouts[payouts.length - 1].amount;
   const recentAmounts = payouts.slice(-3).map(p => p.amount);
   const avgAmount = recentAmounts.reduce((a, b) => a + b, 0) / recentAmounts.length;
   const futureDates = [];
@@ -244,10 +244,10 @@ const PortfolioView = () => {
                 const q = Math.floor(date.getUTCMonth() / 3) + 1;
                 const quarterKey = `Q${q} ${date.getUTCFullYear()}`;
                 quarterMap[quarterKey] = (quarterMap[quarterKey] || 0) + amount;
-                const monthKey = `${date.getUTCFullYear()}-${String(date.getUTCMonth()+1).padStart(2,'0')}`;
+                const monthKey = `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
                 monthMap[monthKey] = (monthMap[monthKey] || 0) + amount;
                 const weekStart = getWeekStart(date);
-                const weekKey = weekStart.toISOString().slice(0,10);
+                const weekKey = weekStart.toISOString().slice(0, 10);
                 weekMap[weekKey] = (weekMap[weekKey] || 0) + amount;
               }
             }
@@ -261,4 +261,3 @@ const PortfolioView = () => {
   const toggleExpand = (symbol) => {
     setExpandedRows(prev => ({
       ...prev,
-      [symbol]: !prev[symbol]
