@@ -262,6 +262,3 @@ const PortfolioView = () => {
     setExpandedRows(prev => ({
       ...prev,
       [symbol]: !prev[symbol]
-    }));
-  };
-
