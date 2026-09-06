@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getLongTermGrowth } from '../services/api';
 import LoadingSpinner from './LoadingSpinner';
 import { formatCurrency } from '../utils/formatters';
+// Import the datalabels plugin
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const LongTermValueChart = ({ symbol, market }) => {
   const chartRef = useRef(null);
@@ -9,6 +11,15 @@ const LongTermValueChart = ({ symbol, market }) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Helper function to format large numbers into short form (K, M, B)
+  const formatShortNumber = (num) => {
+    if (!num || isNaN(num)) return '$0';
+    if (num >= 1000000000) return '$' + (num / 1000000000).toFixed(1) + 'B';
+    if (num >= 1000000) return '$' + (num / 1000000).toFixed(1) + 'M';
+    if (num >= 1000) return '$' + (num / 1000).toFixed(1) + 'K';
+    return '$' + num.toFixed(0);
+  };
 
   useEffect(() => {
     if (!symbol) return;
@@ -70,13 +81,30 @@ const LongTermValueChart = ({ symbol, market }) => {
           maintainAspectRatio: false,
           plugins: {
             legend: { labels: { color: '#94a3b8', font: { weight: '600', size: 11 } } },
-            tooltip: { backgroundColor: '#0a0e1a', callbacks: { label: (context) => ` ${context.dataset.label}: ${formatCurrency(context.raw, data.currencySymbol || '$')}` } }
+            tooltip: { 
+              backgroundColor: '#0a0e1a', 
+              callbacks: { 
+                label: (context) => ` ${context.dataset.label}: ${formatCurrency(context.raw, data.currencySymbol || '$')}` 
+              } 
+            },
+            // CONFIGURATION FOR DATA LABELS
+            datalabels: {
+              anchor: 'end',
+              align: 'top',
+              color: '#ffffff',
+              font: { weight: 'bold', size: 11 },
+              formatter: (value) => {
+                return formatShortNumber(value);
+              }
+            }
           },
           scales: {
             x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
-            y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#94a3b8', callback: (val) => (data.currencySymbol || '$') + val.toLocaleString() } }
+            y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#94a3b8', callback: (val) => formatShortNumber(val) } }
           }
-        }
+        },
+        // REGISTER THE PLUGIN HERE
+        plugins: [ChartDataLabels] 
       });
     });
 
