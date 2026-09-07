@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Main Homepage (Search) -->
+  <url>
+    <loc>https://dividendbro.com/</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Top Dividend Stocks -->
+  <url>
+    <loc>https://dividendbro.com/top</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Stock Comparison Tool -->
+  <url>
+    <loc>https://dividendbro.com/compare</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Watchlist (User-specific, medium priority) -->
+  <url>
+    <loc>https://dividendbro.com/watchlist</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Portfolio (User-specific, medium priority) -->
+  <url>
+    <loc>https://dividendbro.com/portfolio</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- One-Time Investment Simulator -->
+  <url>
+    <loc>https://dividendbro.com/simulate/one-time</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Regular Investment DCA Simulator -->
+  <url>
+    <loc>https://dividendbro.com/simulate/dca</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog / Insights Hub -->
+  <url>
+    <loc>https://dividendbro.com/blog</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ⚠️ DYNAMIC BLOG POSTS: 
+       Replace the placeholder below with your actual blog slugs (e.g., /blog/best-dividend-stocks-2026).
+       If you have many articles, you can duplicate this block for each one. -->
+  <!-- 
+  <url>
+    <loc>https://dividendbro.com/blog/YOUR-BLOG-SLUG-HERE</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  -->
+
+</urlset>
