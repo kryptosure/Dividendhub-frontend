@@ -12,13 +12,13 @@ const KPIList = ({ data }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
-        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Gross Capital</span>
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Total Dividends Paid Per Share</span>
         <div className="text-lg font-black text-text-primary mt-1">{cur}{data.totalDividend.toFixed(2)}</div>
         <div className="text-[10px] font-semibold text-text-muted mt-0.5">{data.payoutCount} Tracked Logs</div>
       </div>
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
-        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Spot Value</span>
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Current Market Price</span>
         <div className="text-lg font-black text-text-primary mt-1">
           {data.currentPrice ? cur + data.currentPrice.toFixed(2) : '—'}
         </div>
@@ -26,7 +26,7 @@ const KPIList = ({ data }) => {
       </div>
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
-        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Yield Parameter</span>
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Div Yield</span>
         <div className="text-lg font-black text-accent-green mt-1">
           {data.currentYield ? data.currentYield.toFixed(2) + '%' : '—'}
         </div>
@@ -42,7 +42,7 @@ const KPIList = ({ data }) => {
       </div>
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
-        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Ex-Date Node</span>
+        <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Last Div Ex-Date</span>
         <div className="text-sm font-bold text-text-primary mt-2 truncate font-mono tracking-tight">{data.lastExDate || '—'}</div>
         <div className="text-[10px] font-semibold text-text-muted mt-1">Most Recent Event</div>
       </div>

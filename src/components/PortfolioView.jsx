@@ -454,7 +454,7 @@ const PortfolioView = () => {
             <div className="text-xl font-bold">{formatCurrency(totalCostBasis, curSymbol)}</div>
           </div>
           <div className={`bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm flex flex-col justify-between ${totalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
-            <div className="text-sm text-text-muted">Capital Delta</div>
+            <div className="text-sm text-text-muted">Total Capital Gains</div>
             <div className="text-xl font-bold">
               {totalGain >= 0 ? '+' : ''}{formatCurrency(totalGain, curSymbol)}
               <span className="text-sm ml-1">{totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}</span>
@@ -479,13 +479,13 @@ const PortfolioView = () => {
             className={`px-4 py-2 rounded-lg transition-all ${view === 'income' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
             onClick={() => setView('income')}
           >
-            💰 Income Flows
+            💰 Dividend Income Flows
           </button>
           <button
             className={`px-4 py-2 rounded-lg transition-all ${view === 'calendar' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
             onClick={() => setView('calendar')}
           >
-            📅 Schedule
+            📅 Upcoming Dividends Calendar
           </button>
           <button className="px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm" onClick={handleExportCSV}>
             📊 CSV
@@ -533,7 +533,7 @@ const PortfolioView = () => {
                     <div className="font-medium">{formatCurrency(h.valueInBase, curSymbol)}</div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Gains Matrix</span>
+                    <span className="text-text-muted">Capital Gain</span>
                     <div className={`font-medium ${h.gain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
                       {h.gain >= 0 ? '+' : ''}{formatCurrency(h.gain, curSymbol)} ({h.gainPct >= 0 ? '+' : ''}{formatPercent(h.gainPct)})
                     </div>
@@ -558,9 +558,9 @@ const PortfolioView = () => {
                       <thead>
                         <tr className="text-text-muted">
                           <th className="px-4 py-2 text-left">Declaration Date</th>
-                          <th className="px-4 py-2 text-left">Per Share Allocation</th>
-                          <th className="px-4 py-2 text-left">Volume Base</th>
-                          <th className="px-4 py-2 text-left">Net Cash Credit</th>
+                          <th className="px-4 py-2 text-left">Dividend Per Share</th>
+                          <th className="px-4 py-2 text-left">Total No of Shares</th>
+                          <th className="px-4 py-2 text-left">Net Dividend Credit</th>
                         </tr>
                       </thead>
                       <tbody>

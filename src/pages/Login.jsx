@@ -57,7 +57,7 @@ const Login = () => {
             <h1 className="text-3xl font-black tracking-tight text-text-primary">
               Welcome <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Back</span>
             </h1>
-            <p className="text-text-muted text-xs font-medium uppercase tracking-wider mt-1">Manage your active cash flow</p>
+            <p className="text-text-muted text-xs font-medium uppercase tracking-wider mt-1">Manage your active dividend cash flow</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">

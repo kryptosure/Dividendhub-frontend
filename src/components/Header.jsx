@@ -95,7 +95,7 @@ const Header = () => {
               <div className="flex items-center gap-3 bg-bg-surface/60 border border-border/40 pl-3 pr-2 py-1 rounded-xl text-xs font-bold text-text-secondary">
                 <span className="truncate max-w-[100px]">👤 {displayName.split('@')[0]}</span>
                 <button onClick={handleLogout} className="px-2.5 py-1 bg-accent-red/10 border border-accent-red/20 text-accent-red rounded-lg hover:bg-accent-red/20 transition-colors">
-                  Exit
+                  Signout
                 </button>
               </div>
             ) : (

@@ -32,7 +32,7 @@ const PortfolioCalculator = ({ symbol, market }) => {
   if (!symbol) {
     return (
       <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
-        <h3 className="font-black tracking-tight text-lg text-text-primary">📈 Single Purchase Return Matrix</h3>
+        <h3 className="font-black tracking-tight text-lg text-text-primary">📈 Single Purchase Return Analysis</h3>
         <p className="text-text-muted text-xs font-medium">Please process an active asset vector configuration above to track growth limits.</p>
       </div>
     );
@@ -41,8 +41,8 @@ const PortfolioCalculator = ({ symbol, market }) => {
   return (
     <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
       <div className="mb-4">
-        <h3 className="font-black tracking-tight text-lg text-text-primary">📈 Single Purchase Return Matrix</h3>
-        <p className="text-text-muted text-xs font-medium">Verify absolute historical capital performance metrics across single ledger acquisitions.</p>
+        <h3 className="font-black tracking-tight text-lg text-text-primary">📈 Single Purchase Return Analysis</h3>
+        <p className="text-text-muted text-xs font-medium">Verify absolute historical capital performance metrics across single historical purchase.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end bg-bg-primary/40 border border-border/30 p-4 rounded-xl mb-6">
@@ -87,7 +87,7 @@ const PortfolioCalculator = ({ symbol, market }) => {
               <div className="text-[11px] text-text-muted font-medium mt-0.5">@{formatCurrency(result.buyPrice, currencySymbol)}</div>
             </div>
             <div className={`bg-bg-secondary/60 border border-border/40 rounded-xl p-4 ${result.capitalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
-              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Capital Delta Balance</span>
+              <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Total Capital Gains Balance</span>
               <div className="text-lg font-black mt-1">{result.capitalGain >= 0 ? '+' : ''}{formatCurrency(result.capitalGain, currencySymbol)}</div>
               <div className="text-[11px] font-bold mt-0.5">{result.capitalGainPct >= 0 ? '+' : ''}{formatPercent(result.capitalGainPct)}</div>
             </div>

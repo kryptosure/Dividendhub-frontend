@@ -51,7 +51,7 @@ const Results = ({ symbol, market = 'us' }) => {
     return (
       <div className="text-center py-16 bg-bg-surface/30 border border-dashed border-border/50 rounded-2xl p-8 max-w-xl mx-auto mt-8">
         <div className="text-4xl mb-3">🔍</div>
-        <h4 className="text-base font-bold text-text-primary">Awaiting Ledger Parameters</h4>
+        <h4 className="text-base font-bold text-text-primary">Awaiting Your Input Parameters</h4>
         <p className="text-text-muted text-xs font-medium mt-1">Search for an active tracking ticker position to render cash flow histories.</p>
       </div>
     );
@@ -144,7 +144,7 @@ const Results = ({ symbol, market = 'us' }) => {
             isInPortfolio ? 'bg-bg-surface border border-border/60 text-text-muted cursor-not-allowed' : 'bg-gradient-to-r from-accent-blue to-accent-teal text-white shadow-sm hover:opacity-95'
           }`}
         >
-          {isInPortfolio ? '✓ Synchronized to Profile' : '➕ Add Investment To My Portfolio'}
+          {isInPortfolio ? '✓ ADDED TO MY PORTFOLIO' : '➕ Add Investment To My Portfolio'}
         </button>
 
         <ExportButtons data={exportData} filename={`${symbol}_dividend_matrix`} headers={['Metric', 'Value']} reportData={reportData} title={`${symbol} Analytics Matrix`} shareMessage={`Reviewing ${symbol} performance loops on DividendBro.`} />
