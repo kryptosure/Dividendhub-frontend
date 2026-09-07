@@ -215,7 +215,6 @@ const PortfolioView = () => {
     return allFuture;
   }, [holdingsWithData, currency, exchangeRate]);
 
-  // ✅ NEW: Group future dates by Week
   const weeklyExDates = useMemo(() => {
     const groups = {};
     for (const item of futureExDates) {
@@ -287,7 +286,6 @@ const PortfolioView = () => {
     setEditingHolding(null);
   };
 
-  // ---------- PDF Export ----------
   const handleExportPDF = async () => {
     try {
       const { jsPDF } = await import('jspdf');
@@ -368,7 +366,6 @@ const PortfolioView = () => {
     }
   };
 
-  // ---------- CSV Export ----------
   const getHoldingsCSV = () => {
     return holdingsWithData.map(h => ({
       Stock: h.name,
@@ -405,7 +402,6 @@ const PortfolioView = () => {
     URL.revokeObjectURL(link.href);
   };
 
-  // ---------- WhatsApp Share ----------
   const handleShare = () => {
     let message = '📊 DividendBro Portfolio Report\n\n';
     message += `📅 ${new Date().toLocaleDateString()}\n\n`;
@@ -421,10 +417,9 @@ const PortfolioView = () => {
     window.open(url, '_blank');
   };
 
-  // ---------- Render ----------
   if (!symbols.length) {
     return (
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <h2 className="text-xl font-bold">📭 Ledger Balance Clear</h2>
         <p className="text-text-muted">
           Your active portfolio ledger is completely empty. Search for security ticker assets
@@ -437,7 +432,7 @@ const PortfolioView = () => {
   if (isLoading) return <LoadingSpinner />;
   if (error) {
     return (
-      <div className="p-6 text-accent-red">
+      <div className="p-4 sm:p-6 text-accent-red">
         🛑 Channel linkage failure across active indices: {error.message}
       </div>
     );
@@ -448,26 +443,30 @@ const PortfolioView = () => {
       <Helmet>
         <title>My Dividend Portfolio – Track Your Passive Income</title>
       </Helmet>
-      <div className="p-6 space-y-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="p-3 sm:p-6 space-y-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
             <div className="text-sm text-text-muted">Account Balance</div>
-            <div className="text-xl font-bold">{formatCurrency(totalValue, curSymbol)}</div>
+            <div className="text-lg font-bold break-words">{formatCurrency(totalValue, curSymbol)}</div>
           </div>
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
             <div className="text-sm text-text-muted">Invested Costs</div>
-            <div className="text-xl font-bold">{formatCurrency(totalCostBasis, curSymbol)}</div>
+            <div className="text-lg font-bold break-words">{formatCurrency(totalCostBasis, curSymbol)}</div>
           </div>
+
+          {/* ✅ FIXED TOTAL CAPITAL GAINS BLOCK */}
           <div className={`bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm flex flex-col justify-between ${totalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
             <div className="text-sm text-text-muted">Total Capital Gains</div>
-            <div className="text-xl font-bold">
+            {/* Changed flex-wrap to a block layout, putting the % on its own line */}
+            <div className="text-lg font-bold break-words">
               {totalGain >= 0 ? '+' : ''}{formatCurrency(totalGain, curSymbol)}
-              <span className="text-sm ml-1">{totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}</span>
+              <span className="block text-sm mt-0.5 font-semibold">{totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}</span>
             </div>
           </div>
+
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
             <div className="text-sm text-text-muted">Weighted Yield</div>
-            <div className="text-xl font-bold">{formatPercent(avgYield)}</div>
+            <div className="text-lg font-bold break-words">{formatPercent(avgYield)}</div>
             <div className="text-sm text-text-muted">Annual Income +{formatCurrency(totalAnnualDividend, curSymbol)}</div>
           </div>
         </div>
@@ -518,7 +517,7 @@ const PortfolioView = () => {
                     {expandedRows[h.symbol] ? '▲' : '▼'}
                   </button>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2 text-sm">
                   <div>
                     <span className="text-text-muted">Shares</span>
                     <div className="font-medium">{formatNumber(h.shares, 0)}</div>
@@ -537,7 +536,7 @@ const PortfolioView = () => {
                   </div>
                   <div>
                     <span className="text-text-muted">Capital Gain</span>
-                    <div className={`font-medium ${h.gain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
+                    <div className={`font-medium break-words ${h.gain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
                       {h.gain >= 0 ? '+' : ''}{formatCurrency(h.gain, curSymbol)} ({h.gainPct >= 0 ? '+' : ''}{formatPercent(h.gainPct)})
                     </div>
                   </div>
@@ -551,8 +550,10 @@ const PortfolioView = () => {
                   </div>
                   <div>
                     <span className="text-text-muted">Actions</span>
-                    <button className="text-xs text-accent-blue hover:underline" onClick={() => handleEdit(h)}>Edit</button>
-                    <button className="text-xs text-accent-red hover:underline ml-2" onClick={() => removeFromPortfolio(h.symbol)}>Remove</button>
+                    <div className="flex items-center justify-end gap-2 mt-1">
+                      <button className="text-xs text-accent-blue hover:underline" onClick={() => handleEdit(h)}>Edit</button>
+                      <button className="text-xs text-accent-red hover:underline" onClick={() => removeFromPortfolio(h.symbol)}>Remove</button>
+                    </div>
                   </div>
                 </div>
                 {expandedRows[h.symbol] && (
@@ -658,7 +659,6 @@ const PortfolioView = () => {
           </div>
         )}
 
-        {/* ✅ UPDATED: Weekly Calendar View */}
         {view === 'calendar' && (
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
             <h3 className="font-bold text-lg mb-2">Upcoming Weekly Dividend Timeline (90-Day Outlook)</h3>
