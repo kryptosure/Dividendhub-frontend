@@ -1,21 +1,21 @@
 {
-  "name": "DividendHub – Dividend Tracker",
-  "short_name": "DividendHub",
-  "description": "Track dividends, yields, and portfolio performance for US and SGX stocks.",
+  "name": "DividendBro",
+  "short_name": "DividendBro",
+  "description": "Track dividends, High Yield Dividend Stocks, Dividend Payout Calendar and portfolio performance for US and Singapore stocks.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0e1a",
+  "background_color": "#000000",
   "theme_color": "#3b82f6",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/images/favicon.png",
+      "src": "/images/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/favicon.png",
+      "src": "/images/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

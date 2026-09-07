@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getLongTermGrowth } from '../services/api';
 import LoadingSpinner from './LoadingSpinner';
 import { formatCurrency } from '../utils/formatters';
-// Import the datalabels plugin
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const LongTermValueChart = ({ symbol, market }) => {
@@ -60,9 +59,11 @@ const LongTermValueChart = ({ symbol, market }) => {
 
     import('chart.js/auto').then(({ default: Chart }) => {
       if (!isMounted || !chartRef.current) return;
+
       const g1 = ctx.createLinearGradient(0, 0, 0, 300);
       g1.addColorStop(0, '#3b82f6');
       g1.addColorStop(1, '#3b82f620');
+
       const g2 = ctx.createLinearGradient(0, 0, 0, 300);
       g2.addColorStop(0, '#10b981');
       g2.addColorStop(1, '#10b98120');
@@ -87,12 +88,14 @@ const LongTermValueChart = ({ symbol, market }) => {
                 label: (context) => ` ${context.dataset.label}: ${formatCurrency(context.raw, data.currencySymbol || '$')}` 
               } 
             },
-            // CONFIGURATION FOR DATA LABELS
+            // ✅ UPDATED DATA LABELS CONFIGURATION (Vertical Text)
             datalabels: {
               anchor: 'end',
-              align: 'top',
+              align: 'end', // Aligns to the top end of the bar
+              rotation: -90, // ✅ Rotates text bottom-to-top
+              textAlign: 'center', // Centers the text vertically over the bar
               color: '#ffffff',
-              font: { weight: 'bold', size: 11 },
+              font: { weight: 'normal', size: 10 }, // Cleaner, not bold
               formatter: (value) => {
                 return formatShortNumber(value);
               }
@@ -103,7 +106,6 @@ const LongTermValueChart = ({ symbol, market }) => {
             y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#94a3b8', callback: (val) => formatShortNumber(val) } }
           }
         },
-        // REGISTER THE PLUGIN HERE
         plugins: [ChartDataLabels] 
       });
     });
