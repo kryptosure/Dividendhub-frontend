@@ -1,69 +1,26 @@
-// Replacement for src/pages/Blog.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
-import { articles } from '../data/articles.jsx';
+import { articles } from '../content/articles';
 
 const Blog = () => {
   return (
-    <>
-      <Helmet>
-        <title>Dividend Investing Blog – DividendBro</title>
-        <meta name="description" content="Read articles on dividend investing, stock picks, portfolio building, and more." />
-      </Helmet>
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-0">
-        <div className="mb-10 text-left sm:text-center max-w-2xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
-            🧠 The <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Dividend Academy</span>
-          </h1>
-          <p className="text-text-secondary text-sm mt-2 font-medium">
-            No jargon. Just practical strategies, analytics, and framework updates to scale your passive cash flow.
-          </p>
-        </div>
-
-        {/* Upgraded from a generic stack to a premium responsive grid */}
-        <div className="grid gap-6 md:grid-cols-2">
-          {articles.map((article) => (
-            <article
-              key={article.slug}
-              className="bg-bg-surface border border-border/50 rounded-2xl p-5 hover:border-border transition-all duration-300 flex flex-col justify-between group hover:shadow-card"
-            >
+    <div className="max-w-6xl mx-auto px-4 py-8">
+      <h1 className="text-3xl font-black tracking-tight text-text-primary mb-6">Financial Academy</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {articles.map((article) => (
+          <Link key={article.slug} to={`/blog/${article.slug}`} className="group">
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm h-full flex flex-col justify-between hover:border-accent-blue/50 transition-all">
               <div>
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-2xl bg-bg-secondary p-2 rounded-xl border border-border/40 group-hover:scale-110 transition-transform duration-300">
-                    {article.image}
-                  </span>
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-accent-teal bg-accent-teal/5 border border-accent-teal/10 px-2.5 py-1 rounded-md">
-                    {article.category}
-                  </span>
-                  <span className="text-[11px] font-medium text-text-muted ml-auto">{article.date}</span>
-                </div>
-                
-                <Link to={`/blog/${article.slug}`}>
-                  <h2 className="text-lg font-bold text-text-primary hover:text-accent-blue transition-colors leading-snug">
-                    {article.title}
-                  </h2>
-                </Link>
-                <p className="text-text-muted text-xs font-medium leading-relaxed mt-2 line-clamp-2">
-                  {article.excerpt}
-                </p>
+                <span className="text-xs font-bold uppercase tracking-wider text-accent-teal">{article.category}</span>
+                <h2 className="text-lg font-black text-text-primary mt-2 group-hover:text-accent-blue transition-colors">{article.title}</h2>
+                <p className="text-sm text-text-muted mt-2">{article.excerpt}</p>
               </div>
-
-              <div className="flex items-center justify-between mt-5 pt-3 border-t border-border/30 text-xs font-semibold">
-                <span className="text-text-muted flex items-center gap-1">⏱ {article.readTime}</span>
-                <Link
-                  to={`/blog/${article.slug}`}
-                  className="text-accent-blue group-hover:text-accent-teal transition-colors flex items-center gap-1"
-                >
-                  Read Post <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+              <div className="mt-4 text-xs font-semibold text-text-muted">{article.date}</div>
+            </div>
+          </Link>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 
