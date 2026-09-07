@@ -162,7 +162,7 @@ const Header = () => {
               </div>
             ) : (
               <Link to="/login" className="block text-center w-full py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-md">
-                Initialize Security Session
+                Login to my Account
               </Link>
             )}
           </div>

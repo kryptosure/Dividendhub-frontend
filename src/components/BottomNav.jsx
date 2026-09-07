@@ -13,15 +13,15 @@ const BottomNav = () => {
       </Link>
       <Link to="/portfolio" className={`flex flex-col items-center text-[9px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all active:scale-95 ${isActive('/portfolio') ? 'text-accent-blue bg-accent-blue/5' : 'text-text-muted'}`}>
         <span className="text-base mb-0.5">📊</span>
-        <span>Ledger</span>
+        <span>PORTFOLIO</span>
       </Link>
       <Link to="/top" className={`flex flex-col items-center text-[9px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all active:scale-95 ${isActive('/top') ? 'text-accent-blue bg-accent-blue/5' : 'text-text-muted'}`}>
         <span className="text-base mb-0.5">🏆</span>
-        <span>Boards</span>
+        <span>TOP DIV STOCKS</span>
       </Link>
       <Link to="/blog" className={`flex flex-col items-center text-[9px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all active:scale-95 ${isActive('/blog') ? 'text-accent-blue bg-accent-blue/5' : 'text-text-muted'}`}>
         <span className="text-base mb-0.5">📝</span>
-        <span>Academy</span>
+        <span>LEARNING</span>
       </Link>
     </nav>
   );
