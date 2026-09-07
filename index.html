@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 
   <title>DividendBro – The Best Dividend Analysis & Management Tool</title>
-  <meta name="description" content="Analyse dividends, track yields, and manage your portfolio for US and Singapore stocks. The ultimate tool for passive income investors." />
+  
+  <!-- ✅ UPDATED: Option 1 Meta Description -->
+  <meta name="description" content="Build a $100 or $1,000 monthly dividend portfolio with DividendBro. Track DBS, OCBC, UOB payouts, screen weekly & monthly US dividend ETFs, and simulate DRIP growth. The ultimate SGX & US passive income tracker." />
   <link rel="canonical" href="https://dividendbro.com/" />
   <meta property="og:title" content="DividendBro – Best Dividend Analysis & Management Tool" />
-  <meta property="og:description" content="Analyse dividends, track yields, and manage your portfolio for US and SGX stocks. The ultimate tool for passive income investors." />
+  
+  <!-- ✅ UPDATED: Option 1 OG Description -->
+  <meta property="og:description" content="Build a $100 or $1,000 monthly dividend portfolio with DividendBro. Track DBS, OCBC, UOB payouts, screen weekly & monthly US dividend ETFs, and simulate DRIP growth. The ultimate SGX & US passive income tracker." />
   <meta property="og:url" content="https://dividendbro.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://dividendbro.com/images/cover.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="DividendBro – Best Dividend Analysis & Management Tool" />
-  <meta name="twitter:description" content="Analyse dividends, track yields, and manage your portfolio for US and SGX stocks." />
+  <meta name="twitter:description" content="Build a $100 or $1,000 monthly dividend portfolio with DividendBro. Track DBS, OCBC, UOB payouts, screen weekly & monthly US dividend ETFs, and simulate DRIP growth." />
   <meta name="twitter:image" content="https://dividendbro.com/images/cover.png" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#0a0e1a" />
@@ -31,44 +35,73 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
   <script defer src="https://cloud.umami.is/script.js" data-website-id="7af1b2fd-4dbd-4b1e-958e-14db342b2bf7"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0WCY5D37PD"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WCY5D37PD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-0WCY5D37PD');
+  </script>
 
-  gtag('config', 'G-0WCY5D37PD');
-</script>
   <link rel="preload" as="style" href="/src/index.css" />
   <link rel="preload" as="script" href="/src/main.jsx" />
 
   <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
 
-  <!-- 1. WebApplication (brand) -->
+  <!-- 1. Organization (Brand & Logo) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "DividendBro",
+    "legalName": "DividendBro",
+    "alternateName": "DividendBro",
+    "url": "https://dividendbro.com",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://dividendbro.com/images/android-chrome-512x512.png",
+      "width": 512,
+      "height": 512
+    },
+    "description": "DividendBro is the best dividend analysis and portfolio management tool for US and Singapore (SGX) stocks. Track yields, safety scores, ex-dividend dates, and compound your passive income.",
+    "sameAs": [
+      "https://www.facebook.com/dividendbro",
+      "https://twitter.com/dividendbro",
+      "https://www.linkedin.com/company/dividendbro"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "support@dividendbro.com"
+    }
+  }
+  </script>
+
+  <!-- 2. WebApplication (Product) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "DividendBro",
-    "description": "Best dividend analysis and management tool for US and SGX stocks. Track dividends, yields, safety, and build your passive income portfolio.",
+    "url": "https://dividendbro.com",
     "applicationCategory": "FinanceApplication",
     "operatingSystem": "All",
-    "browserRequirements": "Requires JavaScript",
-    "url": "https://dividendbro.com",
-    "author": {
-      "@type": "Organization",
-      "name": "DividendBro"
-    },
+    "description": "Analyze dividends, track yields, and manage your portfolio for US and SGX stocks.",
     "offers": {
       "@type": "Offer",
       "price": "0",
       "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "DividendBro"
     }
   }
   </script>
 
-  <!-- 2. FAQPage (common investor questions) -->
+  <!-- 3. FAQPage (common investor questions) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -105,12 +138,28 @@
           "@type": "Answer",
           "text": "Dividend yield is the annual dividend per share divided by the current stock price, expressed as a percentage. It shows the return you're getting from dividends alone."
         }
+      },
+      {
+        "@type": "Question",
+        "name": "How much do I need to invest to make $1,000 a month in dividends?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "To earn $1,000 per month ($12,000 per year) in dividends, you generally need to invest between $150,000 and $200,000, depending on the average yield of your portfolio. Use DividendBro's Dividend Calculator to simulate exact monthly income based on your specific SGX and US holdings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which stocks in Singapore pay the highest dividends?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "DBS, OCBC, and UOB are highly popular among Singaporean investors for their stable yields. DividendBro helps you track their exact ex-dividend dates and payout histories, while also allowing you to search for high-yield US monthly and weekly dividend ETFs."
+        }
       }
     ]
   }
   </script>
 
-  <!-- 3. BreadcrumbList (for search result breadcrumbs) -->
+  <!-- 4. BreadcrumbList (for search result breadcrumbs) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
