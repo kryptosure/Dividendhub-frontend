@@ -10,13 +10,13 @@ import DividendTable from './DividendTable';
 import SafetyScore from './SafetyScore';
 import PortfolioCalculator from './PortfolioCalculator';
 import DCASimulator from './DCASimulator';
-import LongTermValueChart from './LongTermValueChart'; // <--- NEW IMPORT ADDED
+import LongTermValueChart from './LongTermValueChart';
 import ExportButtons from './ExportButtons';
 import AddToPortfolioModal from './AddToPortfolioModal';
 
 const Results = ({ symbol, market = 'us' }) => {
   const resultsRef = useRef(null);
-  const { addToPortfolio, portfolio } = useStore();
+  const { addToPortfolio, portfolio, isInWatchlist, addToWatchlist, removeFromWatchlist, isInCompare, addToCompare, removeFromCompare } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery({
@@ -37,12 +37,8 @@ const Results = ({ symbol, market = 'us' }) => {
   const handleModalAdd = (item) => {
     if (!data) return;
     addToPortfolio({
-      symbol: data.symbol,
-      name: data.name || data.symbol,
-      market: data.market || market,
-      shares: item.shares,
-      purchaseDate: item.purchaseDate,
-      purchasePrice: item.purchasePrice,
+      symbol: data.symbol, name: data.name || data.symbol, market: data.market || market,
+      shares: item.shares, purchaseDate: item.purchaseDate, purchasePrice: item.purchasePrice,
     });
     setIsModalOpen(false);
   };
@@ -89,6 +85,7 @@ const Results = ({ symbol, market = 'us' }) => {
     { Metric: 'Safety', Value: data.safetyScore },
   ];
 
+  // ✅ FIXED: Added the missing reportData definition
   const reportData = {
     title: `${data.symbol} Dividend Analysis`,
     subtitle: `${data.name} (${data.exchange || 'NASDAQ'})`,
@@ -137,15 +134,36 @@ const Results = ({ symbol, market = 'us' }) => {
 
       {/* Trigger Call Action Bar */}
       <div className="bg-bg-secondary/40 border border-border/30 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 backdrop-blur-sm">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          disabled={isInPortfolio}
-          className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] ${
-            isInPortfolio ? 'bg-bg-surface border border-border/60 text-text-muted cursor-not-allowed' : 'bg-gradient-to-r from-accent-blue to-accent-teal text-white shadow-sm hover:opacity-95'
-          }`}
-        >
-          {isInPortfolio ? '✓ ADDED TO MY PORTFOLIO' : '➕ Add Investment To My Portfolio'}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            disabled={isInPortfolio}
+            className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] ${
+              isInPortfolio ? 'bg-bg-surface border border-border/60 text-text-muted cursor-not-allowed' : 'bg-gradient-to-r from-accent-blue to-accent-teal text-white shadow-sm hover:opacity-95'
+            }`}
+          >
+            {isInPortfolio ? '✓ ADDED TO MY PORTFOLIO' : '➕ Add Investment To My Portfolio'}
+          </button>
+
+          <button
+            onClick={() => isInWatchlist(data.symbol) ? removeFromWatchlist(data.symbol) : addToWatchlist({ symbol: data.symbol, name: data.name, market: market })}
+            className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] border ${
+              isInWatchlist(data.symbol) ? 'bg-accent-yellow/10 border-accent-yellow/30 text-accent-yellow' : 'bg-bg-surface border-border/60 text-text-secondary hover:text-accent-blue'
+            }`}
+          >
+            {isInWatchlist(data.symbol) ? '★ In Watchlist' : '☆ Add to Watchlist'}
+          </button>
+
+          {/* NEW: Add to Compare Button */}
+          <button
+            onClick={() => isInCompare(data.symbol) ? removeFromCompare(data.symbol) : addToCompare({ symbol: data.symbol, name: data.name, market: market })}
+            className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] border ${
+              isInCompare(data.symbol) ? 'bg-accent-teal/10 border-accent-teal/30 text-accent-teal' : 'bg-bg-surface border-border/60 text-text-secondary hover:text-accent-teal'
+            }`}
+          >
+            {isInCompare(data.symbol) ? '✓ In Comparison' : '➕ Add to Compare'}
+          </button>
+        </div>
 
         <ExportButtons data={exportData} filename={`${symbol}_dividend_matrix`} headers={['Metric', 'Value']} reportData={reportData} title={`${symbol} Analytics Matrix`} shareMessage={`Reviewing ${symbol} performance loops on DividendBro.`} />
       </div>
@@ -165,7 +183,6 @@ const Results = ({ symbol, market = 'us' }) => {
       <PortfolioCalculator symbol={symbol} market={market} />
       <DCASimulator symbol={symbol} market={market} />
       
-      {/* New Long Term Growth Chart Added Below DCA Simulator */}
       <LongTermValueChart symbol={symbol} market={market} />
 
       <AddToPortfolioModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={handleModalAdd} symbol={data.symbol} name={data.name} market={market} />

@@ -55,6 +55,12 @@ export const updatePortfolio = async (portfolio) => {
   return res.data;
 };
 
+// ✅ NEW: Update Watchlist
+export const updateWatchlist = async (watchlist) => {
+  const res = await api.put('/api/auth/watchlist', { watchlist });
+  return res.data;
+};
+
 // ---------- Stocks ----------
 export const searchStocks = async (q, market = 'us') => {
   const cacheKey = `${market}:${q.toLowerCase().trim()}`;

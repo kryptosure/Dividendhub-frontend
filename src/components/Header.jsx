@@ -27,11 +27,9 @@ const Header = () => {
 
   return (
     <header className="bg-bg-secondary/80 backdrop-blur-md sticky top-0 z-50 border-b border-border/50 transition-all duration-200">
-      {/* Changed py-3 to py-4 to give the larger logo breathing room */}
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
         
         {/* Brand Identity Vector Asset */}
-        {/* Changed h-10 sm:h-12 to h-12 sm:h-16 to increase the logo size */}
         <Link to="/" className="flex items-center flex-shrink-0 active:scale-[0.98] transition-transform">
           <img src="/images/logo.svg" alt="DividendBro" className="h-12 sm:h-16 w-auto object-contain" />
         </Link>
@@ -74,6 +72,8 @@ const Header = () => {
 
           <div className="flex items-center gap-5 text-sm font-semibold tracking-tight">
             <Link to="/top" className="text-text-secondary hover:text-accent-blue transition-colors">Top Dividend Stocks</Link>
+            <Link to="/compare" className="text-text-secondary hover:text-accent-blue transition-colors">Compare</Link> {/* Added */}
+            <Link to="/watchlist" className="text-text-secondary hover:text-accent-blue transition-colors">Watchlist</Link>
             <Link to="/portfolio" className="text-text-secondary hover:text-accent-blue transition-colors">My Portfolio</Link>
             <SimulatorDropdown />
             <Link to="/blog" className="text-text-secondary hover:text-accent-blue transition-colors">Insights</Link>
@@ -149,6 +149,8 @@ const Header = () => {
 
           <div className="flex flex-col text-sm font-semibold divide-y divide-border/20">
             <Link to="/top" className="py-3 flex items-center text-text-primary">🏆 High Dividend Yield Board</Link>
+            <Link to="/compare" className="py-3 flex items-center text-text-primary">📊 Compare Stocks</Link> {/* Added */}
+            <Link to="/watchlist" className="py-3 flex items-center text-text-primary">⭐ Watchlist</Link>
             <Link to="/portfolio" className="py-3 flex items-center text-text-primary">💼 My Portfolio</Link>
             <Link to="/simulate/one-time" className="py-3 flex items-center text-text-primary">📈 Single Purchase Engine</Link>
             <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">📊 Regular Investment DCA Simulator</Link>

@@ -19,6 +19,8 @@ import Blog from './pages/Blog';
 import Article from './pages/Article';
 import SimulatorSingle from './pages/SimulatorSingle';
 import SimulatorDCA from './pages/SimulatorDCA';
+import Watchlist from './pages/Watchlist'; 
+import StockComparison from './pages/StockComparison'; // ✅ NEW IMPORT
 
 import { getMe } from './services/api';
 
@@ -35,7 +37,7 @@ const SITE_URL = "https://dividendbro.com";
 const DEFAULT_IMAGE = `${SITE_URL}/images/cover.png`;
 
 function App() {
-  const { theme, token, setUser, setToken, setPortfolio, logout } = useStore();
+  const { theme, token, setUser, setToken, setPortfolio, setWatchlist, logout } = useStore();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -50,13 +52,14 @@ function App() {
           const userData = await getMe();
           setUser({ email: userData.email });
           setPortfolio(userData.portfolio || []);
+          setWatchlist(userData.watchlist || []);
         } catch (e) {
           logout();
         }
       }
     };
     initAuth();
-  }, [setToken, setUser, setPortfolio, logout]);
+  }, [setToken, setUser, setPortfolio, setWatchlist, logout]);
 
   return (
     <AppErrorBoundary>
@@ -78,6 +81,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/portfolio" element={<PortfolioView />} />
+                <Route path="/watchlist" element={<Watchlist />} />
+                <Route path="/compare" element={<StockComparison />} /> {/* ✅ NEW ROUTE */}
                 <Route path="/top" element={<TopStocks />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<Article />} />
