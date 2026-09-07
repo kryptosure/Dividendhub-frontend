@@ -28,7 +28,7 @@ const Header = () => {
   return (
     <header className="bg-bg-secondary/80 backdrop-blur-md sticky top-0 z-50 border-b border-border/50 transition-all duration-200">
       {/* Reduced width on mobile: max-w-3xl on mobile, max-w-6xl on desktop */}
-      <div className="max-w-3xl md:max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div className="max-w-3xl md:max-w-6xl mx-auto px-2 sm:px-4 py-4 flex items-center justify-between gap-4">
         
         {/* Brand Identity Vector Asset */}
         <Link to="/" className="flex items-center flex-shrink-0 active:scale-[0.98] transition-transform">
@@ -38,7 +38,6 @@ const Header = () => {
         {/* Pro Desktop Interface Links */}
         <nav className="hidden md:flex items-center gap-6">
           <div className="flex gap-4 border border-border/40 bg-bg-primary/40 rounded-xl p-1">
-            {/* Market Trigger Options */}
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
               <button
                 onClick={() => handleMarketChange('us')}
@@ -53,8 +52,6 @@ const Header = () => {
                 SGX
               </button>
             </div>
-
-            {/* Currency Multi-tier Configuration Options */}
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
               <button
                 onClick={() => setCurrency('usd')}
@@ -82,7 +79,6 @@ const Header = () => {
 
           <div className="h-4 w-[1px] bg-border/60" />
 
-          {/* Core App Mechanics Controls */}
           <div className="flex items-center gap-3">
             <button
               onClick={toggleTheme}
@@ -107,18 +103,18 @@ const Header = () => {
           </div>
         </nav>
 
-        {/* Compact Ergonomic Mobile System Hub Controls */}
+        {/* Compact Ergonomic Mobile System Hub Controls - Reduced button size */}
         <div className="flex md:hidden items-center gap-2 ml-auto">
           <button
             onClick={toggleTheme}
-            className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 text-sm"
+            className="w-8 h-8 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 text-sm"
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
           
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="w-9 h-9 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors"
+            className="w-8 h-8 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors"
             aria-label="Navigation Drawer"
           >
             <div className={`w-4 h-0.5 bg-text-primary mb-1 transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
