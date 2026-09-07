@@ -85,7 +85,6 @@ const Results = ({ symbol, market = 'us' }) => {
     { Metric: 'Safety', Value: data.safetyScore },
   ];
 
-  // ✅ FIXED: Added the missing reportData definition
   const reportData = {
     title: `${data.symbol} Dividend Analysis`,
     subtitle: `${data.name} (${data.exchange || 'NASDAQ'})`,
@@ -98,6 +97,8 @@ const Results = ({ symbol, market = 'us' }) => {
     tables: [],
     currencySymbol: data.currencySymbol || '$',
   };
+
+  const hasNoDividends = !data.totalDividend || data.payoutCount === 0 || !data.byYear || data.byYear.length === 0;
 
   return (
     <div ref={resultsRef} className="mt-8 space-y-6 animate-in fade-in duration-300">
@@ -130,6 +131,15 @@ const Results = ({ symbol, market = 'us' }) => {
         )}
       </div>
 
+      {/* ✅ NEW: No Dividend Notice */}
+      {hasNoDividends && (
+        <div className="bg-accent-yellow/5 border border-accent-yellow/20 rounded-2xl p-5 text-center flex flex-col items-center gap-2">
+          <span className="text-3xl">📭</span>
+          <p className="text-sm font-bold text-accent-yellow">The stock you searched for has not declared any dividends yet</p>
+          <p className="text-xs text-text-muted font-medium">We will update this page as soon as the company starts issuing payouts. You can still track its performance below.</p>
+        </div>
+      )}
+
       <KPIList data={data} />
 
       {/* Trigger Call Action Bar */}
@@ -154,7 +164,6 @@ const Results = ({ symbol, market = 'us' }) => {
             {isInWatchlist(data.symbol) ? '★ In Watchlist' : '☆ Add to Watchlist'}
           </button>
 
-          {/* NEW: Add to Compare Button */}
           <button
             onClick={() => isInCompare(data.symbol) ? removeFromCompare(data.symbol) : addToCompare({ symbol: data.symbol, name: data.name, market: market })}
             className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] border ${
@@ -170,12 +179,12 @@ const Results = ({ symbol, market = 'us' }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <DividendChart data={data} />
-          <YearBreakdown data={data} />
+          {!hasNoDividends && <DividendChart data={data} />}
+          {!hasNoDividends && <YearBreakdown data={data} />}
         </div>
         <div className="space-y-6">
           <SafetyScore score={data.safetyScore} />
-          <DividendTable data={data} />
+          {!hasNoDividends && <DividendTable data={data} />}
         </div>
       </div>
 
@@ -183,6 +192,7 @@ const Results = ({ symbol, market = 'us' }) => {
       <PortfolioCalculator symbol={symbol} market={market} />
       <DCASimulator symbol={symbol} market={market} />
       
+      {/* New Long Term Growth Chart Added Below DCA Simulator */}
       <LongTermValueChart symbol={symbol} market={market} />
 
       <AddToPortfolioModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={handleModalAdd} symbol={data.symbol} name={data.name} market={market} />

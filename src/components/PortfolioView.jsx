@@ -420,7 +420,7 @@ const PortfolioView = () => {
   if (!symbols.length) {
     return (
       <div className="p-4 sm:p-6">
-        <h2 className="text-xl font-bold">📭 Ledger Balance Clear</h2>
+        <h2 className="text-xl font-bold">📭 Portfolio Is Empty</h2>
         <p className="text-text-muted">
           Your active portfolio ledger is completely empty. Search for security ticker assets
           and execute an integration link capture to verify returns.

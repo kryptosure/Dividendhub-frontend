@@ -9,12 +9,16 @@ const KPIList = ({ data }) => {
     Caution: 'bg-accent-red/10 border-accent-red/20 text-accent-red',
   };
 
+  const hasNoDividends = !data.totalDividend || data.payoutCount === 0;
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
         <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Total Dividends Paid Per Share</span>
-        <div className="text-lg font-black text-text-primary mt-1">{cur}{data.totalDividend.toFixed(2)}</div>
-        <div className="text-[10px] font-semibold text-text-muted mt-0.5">{data.payoutCount} Tracked Logs</div>
+        <div className="text-lg font-black text-text-primary mt-1">
+          {hasNoDividends ? 'No History' : `${cur}${data.totalDividend.toFixed(2)}`}
+        </div>
+        <div className="text-[10px] font-semibold text-text-muted mt-0.5">{hasNoDividends ? '—' : `${data.payoutCount} Tracked Logs`}</div>
       </div>
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
