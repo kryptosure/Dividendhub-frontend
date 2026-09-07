@@ -5,27 +5,23 @@ import { updatePortfolio, updateWatchlist } from '../services/api';
 const useStore = create(
   persist(
     (set, get) => ({
-      // ---------- State Matrix ----------
       user: null,
       token: null,
       portfolio: [],
       watchlist: [],
-      compareList: [], // NEW
+      compareList: [],
       theme: 'dark',
       market: 'us',
       currency: 'usd',
       isLoading: false,
       error: null,
-      _isSyncing: false,
+      _isSyncingPortfolio: false, 
+      _isSyncingWatchlist: false, 
 
-      // ---------- Auth Handles ----------
       setUser: (user) => set({ user }),
       setToken: (token) => {
-        if (token) {
-          localStorage.setItem('token', token);
-        } else {
-          localStorage.removeItem('token');
-        }
+        if (token) localStorage.setItem('token', token);
+        else localStorage.removeItem('token');
         set({ token });
       },
 
@@ -34,19 +30,15 @@ const useStore = create(
         set({ user: null, token: null, portfolio: [], watchlist: [], compareList: [] });
       },
 
-      // ---------- Portfolio Engine ----------
+      // Portfolio
       setPortfolio: (portfolio) => set({ portfolio }),
       syncPortfolio: async () => {
-        const { portfolio, token, _isSyncing } = get();
-        if (!token || _isSyncing) return;
-        set({ _isSyncing: true });
-        try {
-          await updatePortfolio(portfolio);
-        } catch (e) {
-          console.warn('Portfolio sync channel dropped:', e);
-        } finally {
-          set({ _isSyncing: false });
-        }
+        const { portfolio, token, _isSyncingPortfolio } = get();
+        if (!token || _isSyncingPortfolio) return;
+        set({ _isSyncingPortfolio: true });
+        try { await updatePortfolio(portfolio); } 
+        catch (e) { console.warn('Portfolio sync failed:', e); } 
+        finally { set({ _isSyncingPortfolio: false }); }
       },
       addToPortfolio: (item) => {
         const { portfolio } = get();
@@ -54,47 +46,34 @@ const useStore = create(
         const exists = portfolio.some(p => p.symbol.toUpperCase() === upperSymbol);
         let newPortfolio;
         if (exists) {
-          newPortfolio = portfolio.map(p =>
-            p.symbol.toUpperCase() === upperSymbol
-              ? { ...p, shares: item.shares || p.shares, purchaseDate: item.purchaseDate || p.purchaseDate, purchasePrice: item.purchasePrice || p.purchasePrice }
-              : p
-          );
+          newPortfolio = portfolio.map(p => p.symbol.toUpperCase() === upperSymbol ? { ...p, ...item } : p);
         } else {
-          newPortfolio = [...portfolio, { symbol: upperSymbol, name: item.name || item.symbol, market: item.market || 'us', shares: item.shares || 1, purchaseDate: item.purchaseDate || null, purchasePrice: item.purchasePrice || null }];
+          newPortfolio = [...portfolio, { ...item, symbol: upperSymbol }];
         }
         set({ portfolio: newPortfolio });
         setTimeout(() => get().syncPortfolio(), 150);
       },
       removeFromPortfolio: (symbol) => {
         const { portfolio } = get();
-        const upperSymbol = symbol.toUpperCase().trim();
-        set({ portfolio: portfolio.filter(item => item.symbol.toUpperCase() !== upperSymbol) });
+        set({ portfolio: portfolio.filter(item => item.symbol.toUpperCase() !== symbol.toUpperCase().trim()) });
         setTimeout(() => get().syncPortfolio(), 150);
       },
       updatePortfolioItem: (symbol, updates) => {
         const { portfolio } = get();
-        const upperSymbol = symbol.toUpperCase().trim();
-        set({ portfolio: portfolio.map(item => item.symbol.toUpperCase() === upperSymbol ? { ...item, ...updates } : item) });
+        set({ portfolio: portfolio.map(item => item.symbol.toUpperCase() === symbol.toUpperCase().trim() ? { ...item, ...updates } : item) });
         setTimeout(() => get().syncPortfolio(), 150);
       },
-      clearPortfolio: () => {
-        set({ portfolio: [] });
-        setTimeout(() => get().syncPortfolio(), 150);
-      },
+      clearPortfolio: () => { set({ portfolio: [] }); setTimeout(() => get().syncPortfolio(), 150); },
 
-      // ---------- Watchlist Engine ----------
+      // Watchlist
       setWatchlist: (watchlist) => set({ watchlist }),
       syncWatchlist: async () => {
-        const { watchlist, token, _isSyncing } = get();
-        if (!token || _isSyncing) return;
-        set({ _isSyncing: true });
-        try {
-          await updateWatchlist(watchlist);
-        } catch (e) {
-          console.warn('Watchlist sync channel dropped:', e);
-        } finally {
-          set({ _isSyncing: false });
-        }
+        const { watchlist, token, _isSyncingWatchlist } = get();
+        if (!token || _isSyncingWatchlist) return;
+        set({ _isSyncingWatchlist: true });
+        try { await updateWatchlist(watchlist); } 
+        catch (e) { console.warn('Watchlist sync failed:', e); } 
+        finally { set({ _isSyncingWatchlist: false }); }
       },
       addToWatchlist: (item) => {
         const { watchlist } = get();
@@ -106,8 +85,7 @@ const useStore = create(
       },
       removeFromWatchlist: (symbol) => {
         const { watchlist } = get();
-        const upperSymbol = symbol.toUpperCase().trim();
-        set({ watchlist: watchlist.filter(item => item.symbol.toUpperCase() !== upperSymbol) });
+        set({ watchlist: watchlist.filter(item => item.symbol.toUpperCase() !== symbol.toUpperCase().trim()) });
         setTimeout(() => get().syncWatchlist(), 150);
       },
       isInWatchlist: (symbol) => {
@@ -115,20 +93,19 @@ const useStore = create(
         return watchlist.some(item => item.symbol.toUpperCase() === symbol.toUpperCase().trim());
       },
 
-      // ---------- Compare Engine (Max 5) ----------
+      // Compare Engine (Max 5)
       setCompareList: (compareList) => set({ compareList }),
       addToCompare: (item) => {
         const { compareList } = get();
         const upperSymbol = item.symbol.toUpperCase().trim();
-        if (compareList.length >= 5) return; // Hard limit
+        if (compareList.length >= 5) return;
         if (!compareList.some(c => c.symbol.toUpperCase() === upperSymbol)) {
           set({ compareList: [...compareList, { ...item, symbol: upperSymbol }] });
         }
       },
       removeFromCompare: (symbol) => {
         const { compareList } = get();
-        const upperSymbol = symbol.toUpperCase().trim();
-        set({ compareList: compareList.filter(item => item.symbol.toUpperCase() !== upperSymbol) });
+        set({ compareList: compareList.filter(item => item.symbol.toUpperCase() !== symbol.toUpperCase().trim()) });
       },
       isInCompare: (symbol) => {
         const { compareList } = get();
@@ -136,7 +113,7 @@ const useStore = create(
       },
       clearCompare: () => set({ compareList: [] }),
 
-      // ---------- Adaptive UI Themes Control ----------
+      // Theme & Misc
       toggleTheme: () => {
         set((state) => {
           const newTheme = state.theme === 'dark' ? 'light' : 'dark';
@@ -148,15 +125,11 @@ const useStore = create(
         document.documentElement.setAttribute('data-theme', theme);
         set({ theme });
       },
-
-      // ---------- Global Segment Anchors ----------
       setMarket: (market) => set({ market }),
       setCurrency: (currency) => set({ currency }),
-
-      setLoading: (isLoading) => set({ setLoading: isLoading }),
+      setLoading: (isLoading) => set({ isLoading }),
       setError: (error) => set({ error }),
       clearError: () => set({ error: null }),
-
       getPortfolioSymbols: () => get().portfolio.map(item => item.symbol),
       getPortfolioCount: () => get().portfolio.length,
       isInPortfolio: (symbol) => get().portfolio.some(item => item.symbol.toUpperCase() === symbol.toUpperCase().trim()),
@@ -167,20 +140,13 @@ const useStore = create(
     {
       name: 'DividendBro-State-Layer',
       partialize: (state) => ({
-        user: state.user,
-        token: state.token,
-        portfolio: state.portfolio,
-        watchlist: state.watchlist,
-        compareList: state.compareList, // Persist
-        theme: state.theme,
-        market: state.market,
-        currency: state.currency,
+        user: state.user, token: state.token, portfolio: state.portfolio,
+        watchlist: state.watchlist, compareList: state.compareList,
+        theme: state.theme, market: state.market, currency: state.currency,
       }),
       onRehydrateStorage: () => {
         return (state, error) => {
-          if (!error && state) {
-            document.documentElement.setAttribute('data-theme', state.theme || 'dark');
-          }
+          if (!error && state) document.documentElement.setAttribute('data-theme', state.theme || 'dark');
         };
       },
     }

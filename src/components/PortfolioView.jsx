@@ -88,7 +88,6 @@ const PortfolioView = () => {
   const symbols = portfolio.map(item => item.symbol);
   const portfolioRef = useRef(null);
 
-  // Currency symbol for display
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
 
   useEffect(() => {
@@ -216,6 +215,17 @@ const PortfolioView = () => {
     return allFuture;
   }, [holdingsWithData, currency, exchangeRate]);
 
+  // ✅ NEW: Group future dates by Week
+  const weeklyExDates = useMemo(() => {
+    const groups = {};
+    for (const item of futureExDates) {
+      const weekStart = getWeekStart(new Date(item.date)).toISOString().slice(0, 10);
+      if (!groups[weekStart]) groups[weekStart] = [];
+      groups[weekStart].push(item);
+    }
+    return Object.entries(groups).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [futureExDates]);
+
   const incomeData = useMemo(() => {
     if (!holdingsWithData.length) return null;
     const now = new Date();
@@ -289,12 +299,10 @@ const PortfolioView = () => {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
       doc.setTextColor(100, 116, 139);
-      // FIXED: added backticks
       doc.text(`Generated Epoch: ${new Date().toLocaleDateString()} • Base: ${currency.toUpperCase()}`, 15, 26);
       doc.setDrawColor(226, 232, 240);
       doc.line(15, 32, 195, 32);
 
-      // Render Dashboard Data Boxes
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9);
       doc.text('AGGREGATE BALANCES', 15, 42);
@@ -322,7 +330,6 @@ const PortfolioView = () => {
       doc.text(formatCurrency(totalAnnualDividend, curSymbol), 160, 56);
       doc.line(15, 70, 195, 70);
 
-      // Holdings ledger
       doc.setFont('helvetica', 'bold');
       doc.text('ASSET POSITION INDEX', 15, 78);
       let verticalOffset = 88;
@@ -410,7 +417,6 @@ const PortfolioView = () => {
     message += `• Holdings: *${holdingsWithData.length} stocks*\n\n`;
     message += '🔗 View full report: https://dividendbro.com\n';
     message += '\nBuilt with ❤️ by DividendBro';
-    // FIXED: correct WhatsApp URL
     const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
@@ -443,7 +449,6 @@ const PortfolioView = () => {
         <title>My Dividend Portfolio – Track Your Passive Income</title>
       </Helmet>
       <div className="p-6 space-y-6">
-        {/* Core Metric Banner Board Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
             <div className="text-sm text-text-muted">Account Balance</div>
@@ -467,7 +472,6 @@ const PortfolioView = () => {
           </div>
         </div>
 
-        {/* Workspace Operations Action Control Strip Bar */}
         <div className="flex flex-wrap gap-2 items-center border-b border-border/20 pb-4">
           <button
             className={`px-4 py-2 rounded-lg transition-all ${view === 'holdings' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
@@ -498,7 +502,6 @@ const PortfolioView = () => {
           </button>
         </div>
 
-        {/* View Component Blocks Routing Section */}
         {view === 'holdings' && (
           <div className="space-y-4">
             {holdingsWithData.map((h) => (
@@ -589,7 +592,6 @@ const PortfolioView = () => {
 
         {view === 'income' && incomeData && (
           <div className="space-y-6">
-            {/* Quarterly */}
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
               <h3 className="font-bold text-lg mb-2">Quarterly Realized Flux</h3>
               {Object.keys(incomeData.quarterMap).length === 0 ? (
@@ -609,7 +611,6 @@ const PortfolioView = () => {
               )}
             </div>
 
-            {/* Monthly */}
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
               <h3 className="font-bold text-lg mb-2">Monthly Distributed Flow</h3>
               {Object.keys(incomeData.monthMap).length === 0 ? (
@@ -633,7 +634,6 @@ const PortfolioView = () => {
               )}
             </div>
 
-            {/* Weekly */}
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
               <h3 className="font-bold text-lg mb-2">Weekly Inflow Snapshot</h3>
               {Object.keys(incomeData.weekMap).length === 0 ? (
@@ -658,19 +658,27 @@ const PortfolioView = () => {
           </div>
         )}
 
+        {/* ✅ UPDATED: Weekly Calendar View */}
         {view === 'calendar' && (
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-            <h3 className="font-bold text-lg mb-2">Upcoming Ex-Dividend Timelines (90-Day Outlook)</h3>
-            {futureExDates.length === 0 ? (
+            <h3 className="font-bold text-lg mb-2">Upcoming Weekly Dividend Timeline (90-Day Outlook)</h3>
+            {weeklyExDates.length === 0 ? (
               <p className="text-text-muted">No estimated future distribution events found matching active records profile vectors.</p>
             ) : (
-              <div className="space-y-2">
-                {futureExDates.slice(0, 12).map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-2 text-sm">
-                    <span className="font-medium">{item.name}</span>
-                    <span className="text-text-muted">{item.symbol}</span>
-                    <span className="text-text-muted">{item.date}</span>
-                    <span className="text-accent-green ml-auto">+{formatCurrency(item.amount, curSymbol)}</span>
+              <div className="space-y-4">
+                {weeklyExDates.map(([weekStart, items]) => (
+                  <div key={weekStart} className="border border-border/20 rounded-xl p-3 bg-bg-secondary/20">
+                    <div className="text-xs font-bold uppercase tracking-wider text-accent-teal mb-2">Week of {weekStart}</div>
+                    <div className="space-y-2">
+                      {items.sort((a, b) => a.date.localeCompare(b.date)).map((item, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm">
+                          <span className="font-medium">{item.name}</span>
+                          <span className="text-text-muted">{item.symbol}</span>
+                          <span className="text-text-muted">{item.date}</span>
+                          <span className="text-accent-green ml-auto">+{formatCurrency(item.amount, curSymbol)}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ))}
               </div>

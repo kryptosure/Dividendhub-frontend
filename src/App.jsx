@@ -20,7 +20,7 @@ import Article from './pages/Article';
 import SimulatorSingle from './pages/SimulatorSingle';
 import SimulatorDCA from './pages/SimulatorDCA';
 import Watchlist from './pages/Watchlist'; 
-import StockComparison from './pages/StockComparison'; // ✅ NEW IMPORT
+import StockComparison from './pages/StockComparison';
 
 import { getMe } from './services/api';
 
@@ -82,7 +82,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/portfolio" element={<PortfolioView />} />
                 <Route path="/watchlist" element={<Watchlist />} />
-                <Route path="/compare" element={<StockComparison />} /> {/* ✅ NEW ROUTE */}
+                <Route path="/compare" element={<StockComparison />} />
                 <Route path="/top" element={<TopStocks />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<Article />} />

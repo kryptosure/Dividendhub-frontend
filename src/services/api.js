@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // Use environment variable – works for both CRA and Vite
 const API_BASE =
-  import.meta.env?.VITE_API_URL ||
-  process.env.REACT_APP_API_URL ||
-  'http://localhost:8000';
+import.meta.env?.VITE_API_URL ||
+process.env.REACT_APP_API_URL ||
+'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE,
