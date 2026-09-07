@@ -1,7 +1,9 @@
+import typography from '@tailwindcss/typography';
+
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx,md}",
   ],
   darkMode: 'class',
   theme: {
@@ -36,15 +38,9 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
-      borderRadius: {
-        xl: '1rem',
-        full: '9999px',
-      },
-      boxShadow: {
-        card: '0 8px 32px rgba(0,0,0,0.3)',
-        'card-hover': '0 12px 48px rgba(0,0,0,0.4)',
-      },
     },
   },
-  plugins: [],
-};
+  plugins: [
+    typography, // ✅ This is the secret sauce for beautiful articles
+  ],
+}
