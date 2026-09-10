@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getLongTermGrowth } from '../services/api';
+import useStore from '../store/useStore';
 import LoadingSpinner from './LoadingSpinner';
 import { formatCurrency } from '../utils/formatters';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -10,10 +11,11 @@ const LongTermValueChart = ({ symbol, market }) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const theme = useStore(state => state.theme); // ✅ Read current theme
 
-  // Helper function to format large numbers into short form (K, M, B)
+  // Short-form formatter (K/M/B)
   const formatShortNumber = (num) => {
-    if (!num || isNaN(num)) return '$0';
+    if (num === null || num === undefined || isNaN(num)) return 'N/A';
     if (num >= 1000000000) return '$' + (num / 1000000000).toFixed(1) + 'B';
     if (num >= 1000000) return '$' + (num / 1000000).toFixed(1) + 'M';
     if (num >= 1000) return '$' + (num / 1000).toFixed(1) + 'K';
@@ -27,7 +29,7 @@ const LongTermValueChart = ({ symbol, market }) => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await getLongTermGrowth(symbol, market, 1000); 
+        const response = await getLongTermGrowth(symbol, market, 1000);
         if (response && response.noDrip && response.drip) {
           setData(response);
         } else {
@@ -52,10 +54,39 @@ const LongTermValueChart = ({ symbol, market }) => {
     const noDripValues = data.noDrip;
     const dripValues = data.drip;
 
+    // ✅ Theme-aware colors
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const labelColor = isLight ? '#0f172a' : '#ffffff';
+    const mutedColor = isLight ? '#64748b' : '#94a3b8';
+    const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)';
+
     if (chartInstance.current) {
       chartInstance.current.destroy();
       chartInstance.current = null;
     }
+
+    // ✅ Custom plugin: draw "Not Available" for null periods
+    const naPlugin = {
+      id: 'naPlugin',
+      afterDraw(chart) {
+        const { ctx, chartArea, scales } = chart;
+        const xScale = scales.x;
+        const dataset = chart.data.datasets[0];
+
+        dataset.data.forEach((value, index) => {
+          if (value === null || value === undefined) {
+            const x = xScale.getPixelForValue(index);
+            const y = chartArea.bottom - 15;
+            ctx.save();
+            ctx.font = '600 11px Inter, system-ui, sans-serif';
+            ctx.fillStyle = mutedColor;
+            ctx.textAlign = 'center';
+            ctx.fillText('Not Available', x, y);
+            ctx.restore();
+          }
+        });
+      }
+    };
 
     import('chart.js/auto').then(({ default: Chart }) => {
       if (!isMounted || !chartRef.current) return;
@@ -73,45 +104,85 @@ const LongTermValueChart = ({ symbol, market }) => {
         data: {
           labels,
           datasets: [
-            { label: 'Pure Capital Value (No DRIP)', data: noDripValues, backgroundColor: g1, borderColor: '#3b82f6', borderWidth: 1, borderRadius: 6 },
-            { label: 'Total Return (With DRIP)', data: dripValues, backgroundColor: g2, borderColor: '#10b981', borderWidth: 1, borderRadius: 6 }
+            {
+              label: 'Pure Capital Value (No DRIP)',
+              data: noDripValues,
+              backgroundColor: g1,
+              borderColor: '#3b82f6',
+              borderWidth: 1,
+              borderRadius: 6,
+            },
+            {
+              label: 'Total Return (With DRIP)',
+              data: dripValues,
+              backgroundColor: g2,
+              borderColor: '#10b981',
+              borderWidth: 1,
+              borderRadius: 6,
+            }
           ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          layout: { padding: { bottom: 20 } },
           plugins: {
-            legend: { labels: { color: '#94a3b8', font: { weight: '600', size: 11 } } },
-            tooltip: { 
-              backgroundColor: '#0a0e1a', 
-              callbacks: { 
-                label: (context) => ` ${context.dataset.label}: ${formatCurrency(context.raw, data.currencySymbol || '$')}` 
-              } 
+            legend: {
+              labels: { color: mutedColor, font: { weight: '600', size: 11 } }
             },
-            // ✅ UPDATED DATA LABELS CONFIGURATION (Vertical Text)
+            tooltip: {
+              backgroundColor: '#0a0e1a',
+              titleFont: { family: 'Inter', weight: '700' },
+              bodyFont: { family: 'Inter' },
+              callbacks: {
+                label: (context) => {
+                  if (context.raw === null || context.raw === undefined) {
+                    return ` ${context.dataset.label}: Not Available`;
+                  }
+                  return ` ${context.dataset.label}: ${formatCurrency(context.raw, data.currencySymbol || '$')}`;
+                }
+              }
+            },
             datalabels: {
               anchor: 'end',
-              align: 'end', // Aligns to the top end of the bar
-              rotation: -90, // ✅ Rotates text bottom-to-top
-              textAlign: 'center', // Centers the text vertically over the bar
-              color: '#ffffff',
-              font: { weight: 'normal', size: 10 }, // Cleaner, not bold
+              align: 'end',
+              rotation: -90,
+              textAlign: 'center',
+              color: labelColor, // ✅ Theme-adaptive
+              font: { weight: 'normal', size: 10 },
               formatter: (value) => {
+                // ✅ Skip label for null values (custom plugin draws "Not Available")
+                if (value === null || value === undefined) return '';
                 return formatShortNumber(value);
               }
             }
           },
           scales: {
-            x: { grid: { display: false }, ticks: { color: '#94a3b8' } },
-            y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#94a3b8', callback: (val) => formatShortNumber(val) } }
+            x: {
+              grid: { display: false },
+              ticks: { color: mutedColor }
+            },
+            y: {
+              grid: { color: gridColor },
+              ticks: {
+                color: mutedColor,
+                callback: (val) => formatShortNumber(val)
+              }
+            }
           }
         },
-        plugins: [ChartDataLabels] 
+        plugins: [ChartDataLabels, naPlugin]
       });
     });
 
-    return () => { isMounted = false; if (chartInstance.current) { chartInstance.current.destroy(); chartInstance.current = null; } };
-  }, [data]);
+    return () => {
+      isMounted = false;
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+        chartInstance.current = null;
+      }
+    };
+  }, [data, theme]); // ✅ Recreate chart when theme changes
 
   return (
     <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">

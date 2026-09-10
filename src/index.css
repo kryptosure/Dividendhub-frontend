@@ -22,7 +22,6 @@
     --bg-secondary: #0a0a0a;
     --bg-surface: #0a0a0a;
     --bg-surface-hover: #141414;
-    /* Ultra-soft borders – opacity 0.02 / 0.05 */
     --border-color: rgba(255, 255, 255, 0.02);
     --border-hover: rgba(255, 255, 255, 0.05);
     --text-primary: #f8fafc;
@@ -203,9 +202,8 @@ footer {
   border-top: none !important;
 }
 
-/* ---------- CUSTOM DROPDOWN FIX (90% Opaque) ---------- */
+/* ---------- SEARCH DROPDOWN (Theme-Adaptive) ---------- */
 .search-dropdown-50 {
-  /* Ensures it is always on top and perfectly positioned */
   position: absolute;
   top: 100%;
   left: 0;
@@ -213,18 +211,33 @@ footer {
   width: 100%;
   z-index: 9999;
 
-  /* 90% opaque background - Clean, professional, and no bleed-through */
-  background-color: rgba(10, 10, 10, 0.9) !important; 
+  /* ✅ Adapts to light/dark theme */
+  background-color: var(--bg-surface) !important;
 
-  /* Adds a subtle blur for smooth rendering */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* Strong blur + high opacity = no text bleed-through */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0.98;
 
-  /* Keep your matching border and shadow */
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: var(--shadow-hover);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
 }
+
+/* Ensure the dropdown text inside adapts to theme */
+.search-dropdown-50 li,
+.search-dropdown-50 li span {
+  color: var(--text-primary);
+}
+
+.search-dropdown-50 li {
+  border-color: var(--border-color) !important;
+}
+
+.search-dropdown-50 li:hover {
+  background-color: var(--bg-surface-hover) !important;
+}
+
 /* Fix invisible text in dark mode for ALL native inputs */
 [data-theme="dark"] input,
 [data-theme="dark"] select,
@@ -240,4 +253,358 @@ footer {
 [data-theme="dark"] input:-webkit-autofill:focus {
   -webkit-text-fill-color: #ffffff;
   transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ===== ARTICLE TYPOGRAPHY (Magazine Style) ===== */
+.article-body {
+  max-width: 720px;
+  margin: 0 auto;
+  color: var(--text-secondary);
+  font-size: 17px;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.article-body h2 {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.article-body h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body p {
+  margin-bottom: 1.4rem;
+}
+
+.article-body strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.article-body a {
+  color: #3b82f6;
+  text-decoration: underline;
+  text-decoration-color: rgba(59, 130, 246, 0.35);
+  text-underline-offset: 4px;
+  transition: all 0.2s;
+}
+
+.article-body a:hover {
+  text-decoration-color: #3b82f6;
+}
+
+.article-body ul, .article-body ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.article-body li {
+  margin-bottom: 0.6rem;
+}
+
+.article-body blockquote {
+  border-left: 4px solid #3b82f6;
+  padding: 0.5rem 1.5rem;
+  margin: 1.75rem 0;
+  font-style: italic;
+  color: var(--text-muted);
+  background: rgba(59, 130, 246, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+
+.article-body img {
+  width: 100%;
+  border-radius: 12px;
+  margin: 2rem 0;
+  border: 1px solid var(--border-color);
+}
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.article-body th {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.article-body td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.article-body tr:hover {
+  background: var(--bg-surface-hover);
+}
+
+.article-body code {
+  background: var(--bg-surface);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  border: 1px solid var(--border-color);
+}
+
+.article-body hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 3rem 0;
+}
+
+@media (max-width: 768px) {
+  .article-body { font-size: 16px; line-height: 1.7; }
+  .article-body h2 { font-size: 24px; margin-top: 2rem; }
+  .article-body h3 { font-size: 20px; }
+  .article-body table { font-size: 13px; }
+  .article-body th, .article-body td { padding: 10px 12px; }
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =========================================================
+   ===== BRANDED INFOGRAPHICS (DividendBro) - Theme Adaptive =====
+   ========================================================= */
+
+.db-ig {
+  margin: 2rem 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.db-ig-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(59, 130, 246, 0.06);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.db-ig-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.db-ig-logo {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  border-radius: 5px;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 12px;
+  color: #fff;
+}
+
+.db-ig-link {
+  font-size: 10px;
+  font-weight: 700;
+  color: #06b6d4;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: rgba(6, 182, 212, 0.1);
+}
+
+.db-ig-title {
+  padding: 16px 18px 4px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.db-ig-sub {
+  padding: 0 18px 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.db-ig-body { padding: 6px 18px 16px; }
+
+.db-ig-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.db-ig-row-label {
+  width: 95px;
+  flex-shrink: 0;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.db-ig-row-track {
+  flex: 1;
+  height: 26px;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-color);
+}
+
+.db-ig-row-track:hover { border-color: #3b82f6; }
+
+.db-ig-row-fill { height: 100%; border-radius: 5px; }
+
+.db-ig-row-val {
+  width: 70px;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.db-ig-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 6px 18px 16px;
+}
+
+.db-ig-stat {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.db-ig-stat-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.db-ig-stat-val {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-top: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.1;
+}
+
+.db-ig-stat-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.db-ig-footer {
+  padding: 10px 18px;
+  background: rgba(59, 130, 246, 0.03);
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.db-ig-footer a {
+  color: #06b6d4;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.db-ig-footer a:hover { text-decoration: underline; }
+
+/* ===== Make infographics render inside article-body ===== */
+.article-body .db-ig { margin: 2rem 0; font-size: 14px; }
+.article-body .db-ig p { margin: 0 !important; padding: 0 !important; color: inherit; }
+.article-body .db-ig h4 { margin: 0 !important; font-size: 15px !important; color: var(--text-primary) !important; font-weight: 800 !important; }
+.article-body .db-ig div { color: inherit; }
+.article-body .db-ig a { color: inherit; text-decoration: none; }
+.article-body .db-ig a.db-ig-footer-link,
+.article-body .db-ig-footer a { color: #06b6d4 !important; text-decoration: none; }
+.article-body .db-ig a.db-ig-link { color: #06b6d4 !important; text-decoration: none; }
+.article-body .db-ig .db-ig-row-val { color: inherit; }
+.article-body .db-ig .db-ig-stat-val { color: inherit; }
+
+@media (max-width: 640px) {
+  .db-ig { margin: 1.5rem 0; }
+  .db-ig-row-label { width: 75px; font-size: 11px; }
+  .db-ig-row-val { width: 60px; font-size: 11px; }
+  .db-ig-stat-val { font-size: 15px; }
+  .db-ig-title { font-size: 14px !important; }
+  .db-ig-grid { gap: 6px; }
+}
+
+/* ===== ARTICLE DISCLAIMER FOOTER ===== */
+.article-disclaimer {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+.article-disclaimer p {
+  margin-bottom: 0.75rem;
+}
+.article-disclaimer p:last-child {
+  margin-bottom: 0;
+}
+.article-disclaimer strong {
+  color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  .article-disclaimer {
+    padding: 1.25rem;
+    font-size: 11px;
+  }
 }

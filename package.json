@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "publish": "node scripts/update-articles.cjs",
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "node scripts/update-articles.cjs",
+    "covers": "node scripts/generate-covers.cjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
