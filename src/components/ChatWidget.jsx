@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import useStore from '../store/useStore';
 import { sendChatMessage } from '../services/api';
+import { track } from '../services/tracker'; // ✅ NEW
 
 const GENERIC_PROMPTS = [
   "What is a safe dividend yield?",
@@ -60,6 +61,12 @@ const ChatWidget = () => {
     setIsLoading(true);
     setError(null);
 
+    // ✅ NEW: Track chat message
+    track('chat_message', {
+      context: chatContext?.type === 'portfolio' ? 'portfolio' : chatContext?.symbol ? 'stock' : 'generic',
+      symbol: chatContext?.symbol || null,
+    });
+
     try {
       const data = await sendChatMessage(newMessages, chatContext);
       setMessages([
@@ -110,7 +117,6 @@ const ChatWidget = () => {
       ? `Ask about ${chatContext.symbol}...`
       : 'Ask about dividends...';
 
-  // Get the last assistant's suggestions (if any)
   const lastAssistantMessage = [...messages].reverse().find(m => m.role === 'assistant');
   const followUpSuggestions = lastAssistantMessage?.suggestions?.length > 0
     ? lastAssistantMessage.suggestions
@@ -137,7 +143,6 @@ const ChatWidget = () => {
 
       {isChatOpen && (
         <div className="fixed bottom-36 md:bottom-24 right-4 md:right-6 z-50 w-[calc(100vw-2rem)] max-w-md h-[70vh] max-h-[600px] bg-bg-secondary border border-border/60 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
-          {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border/40 bg-gradient-to-r from-accent-blue/10 to-accent-teal/5">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-accent-blue to-accent-teal flex items-center justify-center text-white font-black text-xs">
@@ -156,7 +161,6 @@ const ChatWidget = () => {
             </button>
           </div>
 
-          {/* Context Chip */}
           {contextLabel && (
             <div className={`px-4 py-2 border-b flex items-center justify-between ${isPortfolio ? 'bg-accent-purple/5 border-accent-purple/10' : 'bg-accent-blue/5 border-accent-blue/10'}`}>
               <div className="flex items-center gap-2 min-w-0">
@@ -182,14 +186,12 @@ const ChatWidget = () => {
             </div>
           )}
 
-          {/* Disclaimer */}
           <div className="px-4 py-1.5 bg-accent-yellow/5 border-b border-accent-yellow/10">
             <p className="text-[10px] text-accent-yellow font-medium leading-tight">
               ⚠️ Educational only. Not financial advice.
             </p>
           </div>
 
-          {/* Messages */}
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
             {messages.length === 0 && (
               <div className="space-y-3">
@@ -234,7 +236,6 @@ const ChatWidget = () => {
                     </div>
                   </div>
 
-                  {/* ✅ Follow-up suggestions under the last AI response */}
                   {isLastAssistant && (
                     <div className="ml-1 pt-1">
                       <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mb-2">
@@ -279,7 +280,6 @@ const ChatWidget = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input */}
           <form onSubmit={handleSubmit} className="px-3 py-3 border-t border-border/40 bg-bg-primary/40">
             <div className="flex gap-2">
               <input

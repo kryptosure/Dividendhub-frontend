@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { getBatchStocks } from '../services/api';
 import useStore from '../store/useStore';
+import { track } from '../services/tracker'; // ✅ NEW
 import LoadingSpinner from '../components/LoadingSpinner';
 import EditHoldingModal from './EditHoldingModal';
 import { formatCurrency, formatNumber, formatPercent } from '../utils/formatters';
@@ -286,7 +287,6 @@ const PortfolioView = () => {
     setEditingHolding(null);
   };
 
-  // ✅ NEW: Send portfolio context to AI chat
   const handleAskAI = () => {
     if (!holdingsWithData.length) return;
     setChatContext({
@@ -318,6 +318,8 @@ const PortfolioView = () => {
   };
 
   const handleExportPDF = async () => {
+    // ✅ NEW: Track PDF export
+    track('export_pdf', { count: holdingsWithData.length });
     try {
       const { jsPDF } = await import('jspdf');
       const doc = new jsPDF('p', 'mm', 'a4');
@@ -414,6 +416,8 @@ const PortfolioView = () => {
   };
 
   const handleExportCSV = () => {
+    // ✅ NEW: Track CSV export
+    track('export_csv', { count: holdingsWithData.length });
     const data = getHoldingsCSV();
     if (!data || data.length === 0) return;
     const headers = ['Stock','Symbol','Shares','Purchase Price','Current Price','Value','Cost Basis','Gain','Gain %','Yield','Dividend Income'];
@@ -434,6 +438,8 @@ const PortfolioView = () => {
   };
 
   const handleShare = () => {
+    // ✅ NEW: Track WhatsApp share
+    track('share_whatsapp', { count: holdingsWithData.length });
     let message = '📊 DividendBro Portfolio Report\n\n';
     message += `📅 ${new Date().toLocaleDateString()}\n\n`;
     message += `• Total Value: *${formatCurrency(totalValue, curSymbol)}*\n`;
@@ -484,7 +490,6 @@ const PortfolioView = () => {
             <div className="text-sm text-text-muted">Invested Costs</div>
             <div className="text-lg font-bold break-words">{formatCurrency(totalCostBasis, curSymbol)}</div>
           </div>
-
           <div className={`bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm flex flex-col justify-between ${totalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
             <div className="text-sm text-text-muted">Total Capital Gains</div>
             <div className="text-lg font-bold break-words">
@@ -492,7 +497,6 @@ const PortfolioView = () => {
               <span className="block text-sm mt-0.5 font-semibold">{totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}</span>
             </div>
           </div>
-
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
             <div className="text-sm text-text-muted">Weighted Yield</div>
             <div className="text-lg font-bold break-words">{formatPercent(avgYield)}</div>
@@ -528,7 +532,6 @@ const PortfolioView = () => {
           <button className="px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm" onClick={handleShare}>
             📤 WhatsApp
           </button>
-          {/* ✅ NEW: Ask AI about portfolio */}
           <button
             className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple/10 to-accent-blue/10 text-accent-purple border border-accent-purple/30 hover:from-accent-purple/20 hover:to-accent-blue/20 shadow-sm font-bold"
             onClick={handleAskAI}

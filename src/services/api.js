@@ -124,6 +124,27 @@ export const sendChatMessage = async (messages, context = null) => {
   return res.data;
 };
 
+// ---------- Analytics Events ----------
+export const logEvent = async (events) => {
+  try {
+    const res = await api.post('/api/events', { events });
+    return res.data;
+  } catch (e) {
+    return null;
+  }
+};
+
+// ---------- Admin Analytics ----------
+export const getAnalyticsDashboard = async () => {
+  const res = await api.get('/api/analytics/dashboard');
+  return res.data;
+};
+
+export const getAdminUsers = async ({ limit = 100, offset = 0, search = '' } = {}) => {
+  const res = await api.get('/api/analytics/users', { params: { limit, offset, search } });
+  return res.data;
+};
+
 // ---------- Health ----------
 export const healthCheck = async () => {
   const res = await api.get('/api/health');

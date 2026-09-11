@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { articles } from '../content/articles/index.js';
+import { track } from '../services/tracker'; // ✅ NEW
 
-// Helper: Convert image path to WebP variant
 const toWebp = (imagePath) => imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
 
 const Article = () => {
@@ -12,7 +12,6 @@ const Article = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [heroLoaded, setHeroLoaded] = useState(false);
 
-  // Reading progress bar
   useEffect(() => {
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -23,6 +22,13 @@ const Article = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // ✅ NEW: Track article view
+  useEffect(() => {
+    if (article?.slug) {
+      track('view_article', { slug: article.slug });
+    }
+  }, [article?.slug]);
+
   if (!article) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
@@ -32,11 +38,9 @@ const Article = () => {
     );
   }
 
-  // Reading time
   const wordCount = article.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
   const readingTime = Math.max(1, Math.round(wordCount / 200));
 
-  // Related articles (same category, exclude current, limit 2)
   const related = articles
     .filter(a => a.slug !== slug && a.category === article.category)
     .slice(0, 2);
@@ -66,14 +70,12 @@ const Article = () => {
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
       </Helmet>
 
-      {/* Reading Progress Bar */}
       <div
         className="fixed top-0 left-0 h-1 bg-gradient-to-r from-accent-blue to-accent-teal z-[60] transition-all duration-100"
         style={{ width: `${scrollProgress}%` }}
       />
 
       <div className="max-w-4xl mx-auto px-4 pt-8 pb-16">
-        {/* Back Button */}
         <Link
           to="/blog"
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-text-muted hover:text-accent-blue transition-colors mb-8"
@@ -81,7 +83,6 @@ const Article = () => {
           ← Back to Academy
         </Link>
 
-        {/* Hero Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-accent-teal">
             <span>{article.category}</span>
@@ -101,9 +102,7 @@ const Article = () => {
           </div>
         </div>
 
-        {/* ✅ Cover Image — Eager Load + WebP + Blur Skeleton */}
         <div className="w-full rounded-2xl overflow-hidden mb-12 border border-border/40 bg-bg-surface relative">
-          {/* Skeleton loader shown until image loads */}
           {!heroLoaded && (
             <div className="absolute inset-0 aspect-video w-full animate-pulse bg-gradient-to-r from-bg-primary via-bg-surface to-bg-primary" />
           )}
@@ -123,13 +122,11 @@ const Article = () => {
           </picture>
         </div>
 
-        {/* Article Body */}
         <article
           className="article-body"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
 
-        {/* ✅ STATUTORY DISCLAIMER */}
         <div className="article-disclaimer">
           <p><strong>⚠️ Important Disclosures</strong></p>
           <p><strong>Not Financial Advice.</strong> The content on this page is for general informational and educational purposes only. It does not constitute investment advice, a recommendation, or a solicitation to buy or sell any securities. DividendBro is not a licensed financial adviser under the Financial Advisers Act (Singapore) and is not registered as an investment adviser with the U.S. Securities and Exchange Commission.</p>
@@ -139,7 +136,6 @@ const Article = () => {
           <p><strong>No Liability.</strong> DividendBro and its team shall not be liable for any loss or damage arising from reliance on the information provided. Use of this site is at your own risk.</p>
         </div>
 
-        {/* Author Bio */}
         <div className="mt-8 p-6 bg-bg-surface border border-border/50 rounded-2xl flex items-start gap-4">
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent-blue to-accent-teal flex items-center justify-center text-white font-black text-lg flex-shrink-0">
             D
@@ -152,7 +148,6 @@ const Article = () => {
           </div>
         </div>
 
-        {/* Related Articles */}
         {related.length > 0 && (
           <div className="mt-16 pt-10 border-t border-border/40">
             <h3 className="text-xl font-black text-text-primary mb-6">Related Reading</h3>
@@ -172,7 +167,6 @@ const Article = () => {
           </div>
         )}
 
-        {/* CTA */}
         <div className="mt-16 pt-10 border-t border-border/40 text-center">
           <p className="text-text-secondary mb-4 font-medium">Ready to put this into practice?</p>
           <Link

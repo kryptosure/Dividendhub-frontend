@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
-import { searchStocks } from '../services/api'; // Make sure to add this function to your api services!
+import { searchStocks } from '../services/api';
+import { track } from '../services/tracker'; // ✅ NEW
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -13,7 +14,6 @@ const SearchBar = () => {
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Live Backend Search with Debouncing (Cleans up network spam and fetches EVERYTHING)
   useEffect(() => {
     if (query.trim().length < 2) {
       setSuggestions([]);
@@ -24,8 +24,6 @@ const SearchBar = () => {
     setIsLoading(true);
     const delayDebounce = setTimeout(async () => {
       try {
-        // Calls the new backend endpoints we fixed earlier
-        // Make sure your api service sends a GET request to `/api/stocks/search?q=${query}&market=${market}`
         const res = await searchStocks(query.trim(), market);
         if (Array.isArray(res)) {
           setSuggestions(res);
@@ -37,12 +35,11 @@ const SearchBar = () => {
       } finally {
         setIsLoading(false);
       }
-    }, 300); // 300ms delay protects your backend server
+    }, 300);
 
     return () => clearTimeout(delayDebounce);
   }, [query, market]);
 
-  // Click outside to collapse menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -54,6 +51,8 @@ const SearchBar = () => {
   }, []);
 
   const handleSelect = (symbol) => {
+    // ✅ NEW: Track search event
+    track('search', { query: symbol, market });
     setQuery('');
     setSuggestions([]);
     setIsOpen(false);
@@ -68,7 +67,6 @@ const SearchBar = () => {
     }
   };
 
-  // Quick action collections
   const quickLinks = {
     us: {
       stocks: [
@@ -102,7 +100,6 @@ const SearchBar = () => {
 
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl mx-auto mb-8 px-4 sm:px-0">
-      {/* Search Input Container */}
       <form onSubmit={handleSubmit} className="relative group">
         <div className="absolute left-4 top-3.5 flex items-center pointer-events-none">
           <svg
@@ -126,7 +123,6 @@ const SearchBar = () => {
           autoComplete="off"
         />
 
-        {/* Loading Spinner */}
         {isLoading && (
           <div className="absolute right-4 top-4">
             <div className="animate-spin h-4 w-4 border-2 border-accent-blue border-t-transparent rounded-full"></div>
@@ -134,7 +130,6 @@ const SearchBar = () => {
         )}
       </form>
 
-      {/* Modern Trending Badges */}
       <div className="flex flex-wrap gap-2 mt-3 items-center justify-start overflow-x-auto no-scrollbar py-1">
         <span className="text-xs font-semibold uppercase tracking-wider text-text-muted/80 mr-1">Popular:</span>
         {links.stocks.map((item) => (
@@ -157,7 +152,6 @@ const SearchBar = () => {
         ))}
       </div>
 
-      {/* Floating Modern Suggestion Dropdown */}
       {isOpen && suggestions.length > 0 && (
         <ul className="search-dropdown-50 w-full mt-2 overflow-hidden max-h-64 overflow-y-auto divide-y divide-border/40 animate-in fade-in slide-in-from-top-2 duration-200">
           {suggestions.map((item) => (

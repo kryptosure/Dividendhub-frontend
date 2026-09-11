@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getStock, handleApiError } from '../services/api';
 import useStore from '../store/useStore';
+import { track } from '../services/tracker'; // ✅ NEW
 import KPIList from './KPIList';
 import DividendChart from './DividendChart';
 import YearBreakdown from './YearBreakdown';
@@ -25,7 +26,7 @@ const Results = ({ symbol, market = 'us' }) => {
     isInCompare,
     addToCompare,
     removeFromCompare,
-    setChatContext, // ✅ NEW
+    setChatContext,
   } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -42,6 +43,13 @@ const Results = ({ symbol, market = 'us' }) => {
     }
   }, [data]);
 
+  // ✅ NEW: Track stock view
+  useEffect(() => {
+    if (data?.symbol) {
+      track('view_stock', { symbol: data.symbol, market });
+    }
+  }, [data?.symbol, market]);
+
   const isInPortfolio = symbol && portfolio.some(item => item.symbol.toUpperCase() === symbol.toUpperCase());
 
   const handleModalAdd = (item) => {
@@ -57,9 +65,9 @@ const Results = ({ symbol, market = 'us' }) => {
     setIsModalOpen(false);
   };
 
-  // ✅ NEW: Open chat with this stock's context
   const handleExplainThis = () => {
     if (!data) return;
+    track('explain_this', { symbol: data.symbol }); // ✅ NEW
     setChatContext({
       symbol: data.symbol,
       name: data.name || data.symbol,
@@ -74,6 +82,24 @@ const Results = ({ symbol, market = 'us' }) => {
       lastExDate: data.lastExDate,
       currencySymbol: data.currencySymbol,
     });
+  };
+
+  // ✅ NEW: Track watchlist/portfolio/compare actions
+  const handleAddWatchlist = () => {
+    track('add_watchlist', { symbol: data.symbol });
+    addToWatchlist({ symbol: data.symbol, name: data.name, market });
+  };
+  const handleRemoveWatchlist = () => {
+    track('remove_watchlist', { symbol: data.symbol });
+    removeFromWatchlist(data.symbol);
+  };
+  const handleAddCompare = () => {
+    track('add_compare', { symbol: data.symbol });
+    addToCompare({ symbol: data.symbol, name: data.name, market });
+  };
+  const handleRemoveCompare = () => {
+    track('remove_compare', { symbol: data.symbol });
+    removeFromCompare(data.symbol);
   };
 
   if (!symbol) {
@@ -136,7 +162,6 @@ const Results = ({ symbol, market = 'us' }) => {
   return (
     <div ref={resultsRef} className="mt-8 space-y-6 animate-in fade-in duration-300">
       
-      {/* Title Header Card */}
       <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-black text-text-primary tracking-tight">{data.name || data.symbol}</h2>
@@ -149,7 +174,6 @@ const Results = ({ symbol, market = 'us' }) => {
           </div>
         </div>
         
-        {/* Dynamic Safety Flags */}
         {data.safetyScore && (
           <div className="sm:text-right">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
@@ -164,7 +188,6 @@ const Results = ({ symbol, market = 'us' }) => {
         )}
       </div>
 
-      {/* ✅ NEW: No Dividend Notice */}
       {hasNoDividends && (
         <div className="bg-accent-yellow/5 border border-accent-yellow/20 rounded-2xl p-5 text-center flex flex-col items-center gap-2">
           <span className="text-3xl">📭</span>
@@ -175,7 +198,6 @@ const Results = ({ symbol, market = 'us' }) => {
 
       <KPIList data={data} />
 
-      {/* Trigger Call Action Bar */}
       <div className="bg-bg-secondary/40 border border-border/30 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3 backdrop-blur-sm">
         <div className="flex flex-wrap gap-2">
           <button
@@ -189,7 +211,7 @@ const Results = ({ symbol, market = 'us' }) => {
           </button>
 
           <button
-            onClick={() => isInWatchlist(data.symbol) ? removeFromWatchlist(data.symbol) : addToWatchlist({ symbol: data.symbol, name: data.name, market: market })}
+            onClick={() => isInWatchlist(data.symbol) ? handleRemoveWatchlist() : handleAddWatchlist()}
             className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] border ${
               isInWatchlist(data.symbol) ? 'bg-accent-yellow/10 border-accent-yellow/30 text-accent-yellow' : 'bg-bg-surface border-border/60 text-text-secondary hover:text-accent-blue'
             }`}
@@ -198,7 +220,7 @@ const Results = ({ symbol, market = 'us' }) => {
           </button>
 
           <button
-            onClick={() => isInCompare(data.symbol) ? removeFromCompare(data.symbol) : addToCompare({ symbol: data.symbol, name: data.name, market: market })}
+            onClick={() => isInCompare(data.symbol) ? handleRemoveCompare() : handleAddCompare()}
             className={`px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] border ${
               isInCompare(data.symbol) ? 'bg-accent-teal/10 border-accent-teal/30 text-accent-teal' : 'bg-bg-surface border-border/60 text-text-secondary hover:text-accent-teal'
             }`}
@@ -206,7 +228,6 @@ const Results = ({ symbol, market = 'us' }) => {
             {isInCompare(data.symbol) ? '✓ In Comparison' : '➕ Add to Compare'}
           </button>
 
-          {/* ✅ NEW: Explain This button — opens AI chat with this stock's context */}
           <button
             onClick={handleExplainThis}
             className="px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] border bg-gradient-to-r from-accent-purple/10 to-accent-blue/10 border-accent-purple/30 text-accent-purple hover:from-accent-purple/20 hover:to-accent-blue/20"
@@ -240,7 +261,6 @@ const Results = ({ symbol, market = 'us' }) => {
       <PortfolioCalculator symbol={symbol} market={market} />
       <DCASimulator symbol={symbol} market={market} />
       
-      {/* New Long Term Growth Chart Added Below DCA Simulator */}
       <LongTermValueChart symbol={symbol} market={market} />
 
       <AddToPortfolioModal
