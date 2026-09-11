@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // Use environment variable – works for both CRA and Vite
 const API_BASE =
-import.meta.env?.VITE_API_URL ||
-process.env.REACT_APP_API_URL ||
-'http://localhost:8000';
+  import.meta.env?.VITE_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  'http://localhost:8000';
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -55,7 +55,6 @@ export const updatePortfolio = async (portfolio) => {
   return res.data;
 };
 
-// ✅ NEW: Update Watchlist
 export const updateWatchlist = async (watchlist) => {
   const res = await api.put('/api/auth/watchlist', { watchlist });
   return res.data;
@@ -112,11 +111,16 @@ export const simulateDCA = async (symbol, amount, startDate, market = 'us') => {
   return res.data;
 };
 
-// ✅ NEW: Long Term Growth Data
 export const getLongTermGrowth = async (symbol, market, amount = 1000) => {
   const res = await api.get('/api/stocks/long-term-growth', {
     params: { symbol, market, amount }
   });
+  return res.data;
+};
+
+// ---------- AI Chat ----------
+export const sendChatMessage = async (messages) => {
+  const res = await api.post('/api/chat', { messages });
   return res.data;
 };
 

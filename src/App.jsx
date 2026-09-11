@@ -21,6 +21,7 @@ import SimulatorSingle from './pages/SimulatorSingle';
 import SimulatorDCA from './pages/SimulatorDCA';
 import Watchlist from './pages/Watchlist'; 
 import StockComparison from './pages/StockComparison';
+import ChatWidget from './components/ChatWidget'; // ✅ NEW
 
 import { getMe } from './services/api';
 
@@ -77,7 +78,6 @@ function App() {
 
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col font-sans antialiased selection:bg-accent-blue/20">
             <Header />
-            {/* CHANGED px-4 to px-2 sm:px-4 for wider mobile view */}
             <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8 animate-in fade-in duration-300">
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -97,6 +97,7 @@ function App() {
             <Footer />
             <BottomNav />
             <BackToTop />
+            <ChatWidget /> {/* ✅ NEW: AI chat widget */}
           </div>
         </BrowserRouter>
       </QueryClientProvider>
