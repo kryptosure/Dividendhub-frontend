@@ -8,7 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "publish": "node scripts/update-articles.cjs",
-    "covers": "node scripts/generate-covers.cjs"
+    "covers": "node scripts/generate-covers.cjs",
+    "split-articles": "node scripts/split-articles.cjs",
+    "optimize-images": "node scripts/optimize-images.cjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.0.0",
@@ -31,6 +33,7 @@
     "@vitejs/plugin-react": "^4.3.0",
     "autoprefixer": "^10.4.0",
     "postcss": "^8.4.0",
+    "sharp": "^0.35.4",
     "tailwindcss": "^3.4.0",
     "vite": "^5.4.0"
   }

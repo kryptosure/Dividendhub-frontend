@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { articles } from '../content/articles.js';
+import { articles } from '../content/articles/index.js';
+
+// Helper: Convert image path to WebP variant
+const toWebp = (imagePath) => imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
 
 const Article = () => {
   const { slug } = useParams();
   const article = articles.find(a => a.slug === slug);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [heroLoaded, setHeroLoaded] = useState(false);
 
   // Reading progress bar
   useEffect(() => {
@@ -46,8 +50,8 @@ const Article = () => {
     "datePublished": article.date,
     "dateModified": article.date,
     "author": { "@type": "Organization", "name": article.author || "DividendBro" },
-    "publisher": { 
-      "@type": "Organization", 
+    "publisher": {
+      "@type": "Organization",
       "name": "DividendBro",
       "logo": { "@type": "ImageObject", "url": "https://dividendbro.com/images/android-chrome-512x512.png" }
     }
@@ -63,15 +67,15 @@ const Article = () => {
       </Helmet>
 
       {/* Reading Progress Bar */}
-      <div 
+      <div
         className="fixed top-0 left-0 h-1 bg-gradient-to-r from-accent-blue to-accent-teal z-[60] transition-all duration-100"
         style={{ width: `${scrollProgress}%` }}
       />
 
       <div className="max-w-4xl mx-auto px-4 pt-8 pb-16">
         {/* Back Button */}
-        <Link 
-          to="/blog" 
+        <Link
+          to="/blog"
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-text-muted hover:text-accent-blue transition-colors mb-8"
         >
           ← Back to Academy
@@ -97,19 +101,32 @@ const Article = () => {
           </div>
         </div>
 
-        {/* Cover Image */}
-        <div className="w-full rounded-2xl overflow-hidden mb-12 border border-border/40">
-          <img 
-            src={article.image} 
-            alt={article.title} 
-            className="w-full h-auto object-cover"
-          />
+        {/* ✅ Cover Image — Eager Load + WebP + Blur Skeleton */}
+        <div className="w-full rounded-2xl overflow-hidden mb-12 border border-border/40 bg-bg-surface relative">
+          {/* Skeleton loader shown until image loads */}
+          {!heroLoaded && (
+            <div className="absolute inset-0 aspect-video w-full animate-pulse bg-gradient-to-r from-bg-primary via-bg-surface to-bg-primary" />
+          )}
+          <picture>
+            <source srcSet={toWebp(article.image)} type="image/webp" />
+            <img
+              src={article.image}
+              alt={article.title}
+              width="1200"
+              height="630"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+              onLoad={() => setHeroLoaded(true)}
+              className={`w-full h-auto object-cover transition-opacity duration-500 ${heroLoaded ? 'opacity-100' : 'opacity-0'}`}
+            />
+          </picture>
         </div>
 
         {/* Article Body */}
-        <article 
+        <article
           className="article-body"
-          dangerouslySetInnerHTML={{ __html: article.content }} 
+          dangerouslySetInnerHTML={{ __html: article.content }}
         />
 
         {/* ✅ STATUTORY DISCLAIMER */}
@@ -158,7 +175,7 @@ const Article = () => {
         {/* CTA */}
         <div className="mt-16 pt-10 border-t border-border/40 text-center">
           <p className="text-text-secondary mb-4 font-medium">Ready to put this into practice?</p>
-          <Link 
+          <Link
             to="/"
             className="inline-block px-8 py-3.5 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-sm font-bold rounded-xl shadow-md hover:opacity-95 active:scale-[0.98] transition-all"
           >
