@@ -23,7 +23,7 @@ const Admin = () => {
   return (
     <div style={{ padding: '40px', fontFamily: 'monospace', background: '#000', color: '#0f0', minHeight: '100vh' }}>
       <h1 style={{ fontSize: '24px', marginBottom: '20px' }}>🔍 ADMIN DIAGNOSTIC PAGE</h1>
-      
+
       <div style={{ marginBottom: '20px', padding: '15px', border: '1px solid #0f0' }}>
         <strong>Page loaded:</strong> ✅ Yes, you're seeing the Admin component render.
       </div>
