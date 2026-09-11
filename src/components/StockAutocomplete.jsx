@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { searchStocks } from '../services/api';
 
-/**
- * Reusable stock autocomplete input.
- * Type a company name or ticker → get suggestions → pick one.
- */
 const StockAutocomplete = ({
   value,
   onChange,
@@ -19,26 +15,30 @@ const StockAutocomplete = ({
   const [highlightIdx, setHighlightIdx] = useState(-1);
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
+  // ✅ Flag to skip the search right after a programmatic value change
+  const skipNextSearchRef = useRef(false);
 
-  // Sync external value → internal query (e.g. when loaded from leaderboard)
+  // Sync external value when it changes from OUTSIDE (leaderboard click, etc.)
   useEffect(() => {
     if (value !== undefined && value !== query) {
+      skipNextSearchRef.current = true;
       setQuery(value || '');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  // Debounced search
+  // ✅ Debounced search — depends ONLY on query and market (not value)
   useEffect(() => {
+    // Skip if the query change came from a selection
+    if (skipNextSearchRef.current) {
+      skipNextSearchRef.current = false;
+      return;
+    }
+
     const trimmed = query.trim();
     if (trimmed.length < 2) {
       setSuggestions([]);
       setIsOpen(false);
-      return;
-    }
-
-    // Don't search if the input exactly matches the selected value (avoids dropdown after select)
-    if (trimmed.toUpperCase() === String(value || '').toUpperCase()) {
       return;
     }
 
@@ -60,7 +60,7 @@ const StockAutocomplete = ({
     }, 250);
 
     return () => clearTimeout(timer);
-  }, [query, market, value]);
+  }, [query, market]);
 
   // Click outside → close
   useEffect(() => {
@@ -75,6 +75,8 @@ const StockAutocomplete = ({
 
   const handleSelect = (item) => {
     const symbol = String(item.symbol || '').toUpperCase();
+    // ✅ Set flag BEFORE updating query to prevent re-search
+    skipNextSearchRef.current = true;
     setQuery(item.symbol);
     setSuggestions([]);
     setIsOpen(false);
