@@ -9,7 +9,6 @@ const GENERIC_PROMPTS = [
   "What's the difference between REITs and dividend stocks?",
 ];
 
-// Stock-specific suggested prompts
 const buildStockPrompts = (ctx) => {
   const name = ctx.name || ctx.symbol;
   const shortName = name.split(' ')[0];
@@ -21,7 +20,6 @@ const buildStockPrompts = (ctx) => {
   ];
 };
 
-// Portfolio-specific suggested prompts
 const buildPortfolioPrompts = () => [
   "What's my total annual dividend income?",
   "Which holding has the highest yield?",
@@ -38,17 +36,14 @@ const ChatWidget = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  // Focus input when opened
   useEffect(() => {
     if (isChatOpen) setTimeout(() => inputRef.current?.focus(), 300);
   }, [isChatOpen]);
 
-  // Reset conversation when context changes
   useEffect(() => {
     setMessages([]);
     setError(null);
@@ -67,7 +62,14 @@ const ChatWidget = () => {
 
     try {
       const data = await sendChatMessage(newMessages, chatContext);
-      setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+      setMessages([
+        ...newMessages,
+        {
+          role: 'assistant',
+          content: data.reply,
+          suggestions: Array.isArray(data.suggestions) ? data.suggestions : [],
+        },
+      ]);
     } catch (err) {
       const msg = err.response?.data?.error || err.message || 'Something went wrong. Please try again.';
       setError(msg);
@@ -87,11 +89,10 @@ const ChatWidget = () => {
     clearChatContext();
   };
 
-  // Determine context type & suggested prompts
   const isPortfolio = chatContext?.type === 'portfolio';
   const isStock = !isPortfolio && chatContext?.symbol;
 
-  const suggestedPrompts = isPortfolio
+  const initialPrompts = isPortfolio
     ? buildPortfolioPrompts()
     : isStock
       ? buildStockPrompts(chatContext)
@@ -108,6 +109,12 @@ const ChatWidget = () => {
     : isStock
       ? `Ask about ${chatContext.symbol}...`
       : 'Ask about dividends...';
+
+  // Get the last assistant's suggestions (if any)
+  const lastAssistantMessage = [...messages].reverse().find(m => m.role === 'assistant');
+  const followUpSuggestions = lastAssistantMessage?.suggestions?.length > 0
+    ? lastAssistantMessage.suggestions
+    : null;
 
   return (
     <>
@@ -194,7 +201,7 @@ const ChatWidget = () => {
                       : "Hi! I'm here to help you understand dividend investing. Try one of these:"}
                 </p>
                 <div className="grid grid-cols-1 gap-2">
-                  {suggestedPrompts.map((prompt) => (
+                  {initialPrompts.map((prompt) => (
                     <button
                       key={prompt}
                       onClick={() => handleSend(prompt)}
@@ -207,22 +214,49 @@ const ChatWidget = () => {
               </div>
             )}
 
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
-                    msg.role === 'user'
-                      ? 'bg-accent-blue text-white rounded-br-md'
-                      : 'bg-bg-surface border border-border/40 text-text-secondary rounded-bl-md'
-                  }`}
-                >
-                  {msg.content}
+            {messages.map((msg, idx) => {
+              const isLastAssistant =
+                msg.role === 'assistant' &&
+                idx === messages.length - 1 &&
+                msg.suggestions?.length > 0;
+
+              return (
+                <div key={idx} className="space-y-2">
+                  <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div
+                      className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-wrap ${
+                        msg.role === 'user'
+                          ? 'bg-accent-blue text-white rounded-br-md'
+                          : 'bg-bg-surface border border-border/40 text-text-secondary rounded-bl-md'
+                      }`}
+                    >
+                      {msg.content}
+                    </div>
+                  </div>
+
+                  {/* ✅ Follow-up suggestions under the last AI response */}
+                  {isLastAssistant && (
+                    <div className="ml-1 pt-1">
+                      <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mb-2">
+                        Suggested follow-ups
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {msg.suggestions.map((s, i) => (
+                          <button
+                            key={i}
+                            onClick={() => handleSend(s)}
+                            disabled={isLoading}
+                            className="text-[11px] px-2.5 py-1.5 bg-bg-surface border border-border/40 rounded-lg hover:border-accent-blue/40 hover:bg-bg-surface-hover transition-all text-text-secondary disabled:opacity-50 text-left"
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             {isLoading && (
               <div className="flex justify-start">
