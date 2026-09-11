@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import useStore from '../store/useStore';
-import { getAnalyticsDashboard, getAdminUsers } from '../services/api';
+import { getAnalyticsDashboard, getAdminUsers, getMe } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 
-// ---------- Helpers ----------
 const StatCard = ({ label, value, sub, accent = 'blue' }) => {
   const map = {
     blue: 'text-accent-blue', teal: 'text-accent-teal', green: 'text-accent-green',
@@ -24,7 +23,6 @@ const SectionTitle = ({ children }) => (
   <h2 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3 mt-2">{children}</h2>
 );
 
-// Simple bar chart component
 const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'count' }) => {
   const colors = {
     blue: 'from-accent-blue/60 to-accent-blue hover:from-accent-teal/60 hover:to-accent-teal',
@@ -55,18 +53,41 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
 };
 
 const Admin = () => {
-  const { user, isAdmin } = useStore();
+  const { user } = useStore();
+  const [authState, setAuthState] = useState('checking'); // 'checking' | 'admin' | 'denied' | 'anonymous'
   const [data, setData] = useState(null);
   const [users, setUsers] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
-  const [tab, setTab] = useState('overview');
   const pageSize = 50;
 
+  // Step 1: Verify admin status with the backend
   useEffect(() => {
-    if (!isAdmin) return;
+    const verify = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setAuthState('anonymous');
+        return;
+      }
+      try {
+        const me = await getMe();
+        if (me?.isAdmin) {
+          setAuthState('admin');
+        } else {
+          setAuthState('denied');
+        }
+      } catch (e) {
+        setAuthState('anonymous');
+      }
+    };
+    verify();
+  }, []);
+
+  // Step 2: Once verified as admin, fetch the data
+  useEffect(() => {
+    if (authState !== 'admin') return;
     const fetchAll = async () => {
       setIsLoading(true);
       setError(null);
@@ -84,15 +105,34 @@ const Admin = () => {
       }
     };
     fetchAll();
-  }, [isAdmin, page, search]);
+  }, [authState, page, search]);
 
-  if (!user || !isAdmin) return <Navigate to="/" replace />;
+  if (authState === 'checking') return <LoadingSpinner />;
+  if (authState === 'anonymous') return <Navigate to="/login" replace />;
+  if (authState === 'denied') {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-20 text-center">
+        <h1 className="text-2xl font-black mb-2">Access Denied</h1>
+        <p className="text-text-muted text-sm">Your account does not have admin privileges.</p>
+        <Link to="/" className="inline-block mt-6 px-5 py-2 bg-accent-blue text-white text-xs font-bold rounded-xl">
+          Return Home
+        </Link>
+      </div>
+    );
+  }
+
   if (isLoading && !data) return <LoadingSpinner />;
   if (error) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12 text-center">
         <div className="bg-accent-red/5 border border-accent-red/20 rounded-2xl p-6">
           <p className="text-accent-red font-bold">⚠️ {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-5 py-2 bg-accent-red/10 border border-accent-red/20 text-accent-red text-xs font-bold rounded-xl"
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
@@ -113,7 +153,6 @@ const Admin = () => {
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-        {/* Header */}
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h1 className="text-3xl font-black tracking-tight text-text-primary">Admin Dashboard</h1>
@@ -126,17 +165,15 @@ const Admin = () => {
           </span>
         </div>
 
-        {/* ---------- TOP KPI ROW ---------- */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           <StatCard label="Total Users" value={data.users.total} accent="blue" />
           <StatCard label="Signups Today" value={data.users.signupsToday} sub={`${data.users.signups7d} in 7d`} accent="teal" />
           <StatCard label="DAU (Today)" value={data.users.activeToday} sub={`${data.users.active7d} WAU`} accent="green" />
-          <StatCard label="Stickiness" value={`${data.users.stickiness}%`} sub={`DAU/MAU ratio`} accent="yellow" />
+          <StatCard label="Stickiness" value={`${data.users.stickiness}%`} sub="DAU/MAU ratio" accent="yellow" />
           <StatCard label="Portfolio Adopt" value={`${data.users.portfolioAdoptionPct}%`} sub={`${data.users.usersWithPortfolio} users`} accent="purple" />
           <StatCard label="Watchlist Adopt" value={`${data.users.watchlistAdoptionPct}%`} sub={`${data.users.usersWithWatchlist} users`} accent="teal" />
         </div>
 
-        {/* ---------- SIGNUPS + DAU TIMELINES ---------- */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <SectionTitle>Signups (Last 30 Days)</SectionTitle>
@@ -160,7 +197,6 @@ const Admin = () => {
           </div>
         </div>
 
-        {/* ---------- FEATURE USAGE + CHAT BREAKDOWN ---------- */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <SectionTitle>Feature Usage (Last 30 Days)</SectionTitle>
@@ -207,7 +243,6 @@ const Admin = () => {
           </div>
         </div>
 
-        {/* ---------- TOP SEARCHES + TOP VIEWED ---------- */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <SectionTitle>Top Searched Tickers (Last 30 Days)</SectionTitle>
@@ -247,7 +282,6 @@ const Admin = () => {
           </div>
         </div>
 
-        {/* ---------- TOP ARTICLES + GEOGRAPHY ---------- */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <SectionTitle>Top Articles (Last 30 Days)</SectionTitle>
@@ -288,7 +322,6 @@ const Admin = () => {
           </div>
         </div>
 
-        {/* ---------- COHORT RETENTION ---------- */}
         {data.cohorts.length > 0 && (
           <div>
             <SectionTitle>Cohort Retention (Weekly Signup Groups)</SectionTitle>
@@ -308,15 +341,9 @@ const Admin = () => {
                     <tr key={i}>
                       <td className="px-3 py-2 font-mono text-text-secondary">{c.week}</td>
                       <td className="px-3 py-2 text-right font-bold text-accent-blue">{c.size}</td>
-                      <td className="px-3 py-2 text-right">
-                        <span className={`font-bold ${c.w1 >= 40 ? 'text-accent-green' : c.w1 >= 20 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w1}%</span>
-                      </td>
-                      <td className="px-3 py-2 text-right">
-                        <span className={`font-bold ${c.w2 >= 30 ? 'text-accent-green' : c.w2 >= 15 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w2}%</span>
-                      </td>
-                      <td className="px-3 py-2 text-right">
-                        <span className={`font-bold ${c.w4 >= 20 ? 'text-accent-green' : c.w4 >= 10 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w4}%</span>
-                      </td>
+                      <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w1 >= 40 ? 'text-accent-green' : c.w1 >= 20 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w1}%</span></td>
+                      <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w2 >= 30 ? 'text-accent-green' : c.w2 >= 15 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w2}%</span></td>
+                      <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w4 >= 20 ? 'text-accent-green' : c.w4 >= 10 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w4}%</span></td>
                     </tr>
                   ))}
                 </tbody>
@@ -325,7 +352,6 @@ const Admin = () => {
           </div>
         )}
 
-        {/* ---------- USERS TABLE ---------- */}
         <div>
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
             <SectionTitle>All Users ({users?.total || 0})</SectionTitle>
