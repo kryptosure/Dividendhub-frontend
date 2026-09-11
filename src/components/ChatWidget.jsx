@@ -9,7 +9,7 @@ const GENERIC_PROMPTS = [
   "What's the difference between REITs and dividend stocks?",
 ];
 
-// Context-specific suggested prompts
+// Stock-specific suggested prompts
 const buildStockPrompts = (ctx) => {
   const name = ctx.name || ctx.symbol;
   const shortName = name.split(' ')[0];
@@ -21,8 +21,16 @@ const buildStockPrompts = (ctx) => {
   ];
 };
 
+// Portfolio-specific suggested prompts
+const buildPortfolioPrompts = () => [
+  "What's my total annual dividend income?",
+  "Which holding has the highest yield?",
+  "Which holding contributes the most income?",
+  "How many holdings do I have?",
+];
+
 const ChatWidget = () => {
-  const { isChatOpen, chatContext, setChatContext, clearChatContext, toggleChat, closeChat } = useStore();
+  const { isChatOpen, chatContext, setChatContext, clearChatContext, toggleChat } = useStore();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -40,13 +48,11 @@ const ChatWidget = () => {
     if (isChatOpen) setTimeout(() => inputRef.current?.focus(), 300);
   }, [isChatOpen]);
 
-  // Reset conversation when context changes (new stock clicked)
+  // Reset conversation when context changes
   useEffect(() => {
-    if (chatContext) {
-      setMessages([]);
-      setError(null);
-    }
-  }, [chatContext?.symbol]);
+    setMessages([]);
+    setError(null);
+  }, [chatContext?.symbol, chatContext?.type]);
 
   const handleSend = async (text) => {
     const trimmed = (text || input).trim();
@@ -81,14 +87,30 @@ const ChatWidget = () => {
     clearChatContext();
   };
 
-  // Determine suggested prompts based on context
-  const suggestedPrompts = chatContext?.symbol
-    ? buildStockPrompts(chatContext)
-    : GENERIC_PROMPTS;
+  // Determine context type & suggested prompts
+  const isPortfolio = chatContext?.type === 'portfolio';
+  const isStock = !isPortfolio && chatContext?.symbol;
+
+  const suggestedPrompts = isPortfolio
+    ? buildPortfolioPrompts()
+    : isStock
+      ? buildStockPrompts(chatContext)
+      : GENERIC_PROMPTS;
+
+  const contextLabel = isPortfolio
+    ? `My Portfolio (${chatContext.holdings?.length || 0})`
+    : isStock
+      ? chatContext.symbol
+      : null;
+
+  const placeholder = isPortfolio
+    ? 'Ask about your portfolio...'
+    : isStock
+      ? `Ask about ${chatContext.symbol}...`
+      : 'Ask about dividends...';
 
   return (
     <>
-      {/* Floating Button */}
       <button
         onClick={toggleChat}
         aria-label="Ask DividendBro AI"
@@ -106,7 +128,6 @@ const ChatWidget = () => {
         )}
       </button>
 
-      {/* Chat Panel */}
       {isChatOpen && (
         <div className="fixed bottom-36 md:bottom-24 right-4 md:right-6 z-50 w-[calc(100vw-2rem)] max-w-md h-[70vh] max-h-[600px] bg-bg-secondary border border-border/60 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
           {/* Header */}
@@ -129,14 +150,16 @@ const ChatWidget = () => {
           </div>
 
           {/* Context Chip */}
-          {chatContext?.symbol && (
-            <div className="px-4 py-2 bg-accent-blue/5 border-b border-accent-blue/10 flex items-center justify-between">
+          {contextLabel && (
+            <div className={`px-4 py-2 border-b flex items-center justify-between ${isPortfolio ? 'bg-accent-purple/5 border-accent-purple/10' : 'bg-accent-blue/5 border-accent-blue/10'}`}>
               <div className="flex items-center gap-2 min-w-0">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-accent-blue">📊 Asking about</span>
-                <span className="text-xs font-bold text-text-primary truncate">
-                  {chatContext.symbol}
+                <span className={`text-[10px] font-bold uppercase tracking-wider ${isPortfolio ? 'text-accent-purple' : 'text-accent-blue'}`}>
+                  {isPortfolio ? '💼 Asking about' : '📊 Asking about'}
                 </span>
-                {chatContext.yield != null && (
+                <span className="text-xs font-bold text-text-primary truncate">
+                  {contextLabel}
+                </span>
+                {isStock && chatContext.yield != null && (
                   <span className="text-[10px] text-accent-teal font-bold flex-shrink-0">
                     {chatContext.yield.toFixed(2)}%
                   </span>
@@ -145,7 +168,7 @@ const ChatWidget = () => {
               <button
                 onClick={clearChatContext}
                 className="text-[10px] text-text-muted hover:text-accent-red transition-colors flex-shrink-0 ml-2"
-                title="Remove stock context"
+                title="Remove context"
               >
                 ✕
               </button>
@@ -164,9 +187,11 @@ const ChatWidget = () => {
             {messages.length === 0 && (
               <div className="space-y-3">
                 <p className="text-xs text-text-muted text-center">
-                  {chatContext?.symbol
-                    ? `Ask me anything about ${chatContext.name || chatContext.symbol}:`
-                    : "Hi! I'm here to help you understand dividend investing. Try one of these:"}
+                  {isPortfolio
+                    ? 'Ask me anything about your portfolio:'
+                    : isStock
+                      ? `Ask me anything about ${chatContext.name || chatContext.symbol}:`
+                      : "Hi! I'm here to help you understand dividend investing. Try one of these:"}
                 </p>
                 <div className="grid grid-cols-1 gap-2">
                   {suggestedPrompts.map((prompt) => (
@@ -228,7 +253,7 @@ const ChatWidget = () => {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={chatContext?.symbol ? `Ask about ${chatContext.symbol}...` : "Ask about dividends..."}
+                placeholder={placeholder}
                 disabled={isLoading}
                 className="flex-1 bg-bg-surface border border-border/60 rounded-xl px-3.5 py-2.5 text-sm text-text-primary placeholder-text-muted/60 focus:outline-none focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/10 disabled:opacity-50"
               />

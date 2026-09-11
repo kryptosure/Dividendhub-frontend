@@ -80,7 +80,7 @@ function getFutureEstimates(dividendData, shares, currency, exchangeRate) {
 }
 
 const PortfolioView = () => {
-  const { portfolio, market, currency, removeFromPortfolio, updatePortfolioItem } = useStore();
+  const { portfolio, market, currency, removeFromPortfolio, updatePortfolioItem, setChatContext } = useStore();
   const [view, setView] = useState('holdings');
   const [exchangeRate, setExchangeRate] = useState(null);
   const [editingHolding, setEditingHolding] = useState(null);
@@ -286,6 +286,37 @@ const PortfolioView = () => {
     setEditingHolding(null);
   };
 
+  // ✅ NEW: Send portfolio context to AI chat
+  const handleAskAI = () => {
+    if (!holdingsWithData.length) return;
+    setChatContext({
+      type: 'portfolio',
+      currency: currency.toUpperCase(),
+      currencySymbol: curSymbol,
+      holdings: holdingsWithData.map(h => ({
+        symbol: h.symbol,
+        name: h.name,
+        shares: h.shares,
+        valueInBase: h.valueInBase,
+        yieldPct: h.yieldPct,
+        annualIncomeInBase: h.annualIncomeInBase,
+        gain: h.gain,
+        gainPct: h.gainPct,
+        safetyScore: h.safetyScore,
+      })),
+      totals: {
+        totalValue,
+        totalCostBasis,
+        totalGain,
+        totalGainPct,
+        totalAnnualDividend,
+        totalDividendIncome,
+        avgYield,
+        holdingCount: holdingsWithData.length,
+      },
+    });
+  };
+
   const handleExportPDF = async () => {
     try {
       const { jsPDF } = await import('jspdf');
@@ -454,10 +485,8 @@ const PortfolioView = () => {
             <div className="text-lg font-bold break-words">{formatCurrency(totalCostBasis, curSymbol)}</div>
           </div>
 
-          {/* ✅ FIXED TOTAL CAPITAL GAINS BLOCK */}
           <div className={`bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm flex flex-col justify-between ${totalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
             <div className="text-sm text-text-muted">Total Capital Gains</div>
-            {/* Changed flex-wrap to a block layout, putting the % on its own line */}
             <div className="text-lg font-bold break-words">
               {totalGain >= 0 ? '+' : ''}{formatCurrency(totalGain, curSymbol)}
               <span className="block text-sm mt-0.5 font-semibold">{totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}</span>
@@ -498,6 +527,13 @@ const PortfolioView = () => {
           </button>
           <button className="px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm" onClick={handleShare}>
             📤 WhatsApp
+          </button>
+          {/* ✅ NEW: Ask AI about portfolio */}
+          <button
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple/10 to-accent-blue/10 text-accent-purple border border-accent-purple/30 hover:from-accent-purple/20 hover:to-accent-blue/20 shadow-sm font-bold"
+            onClick={handleAskAI}
+          >
+            💬 Ask AI
           </button>
         </div>
 
