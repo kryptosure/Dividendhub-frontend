@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { formatYears, formatCompactCurrency } from '../utils/millionaire';
+import { track } from '../services/tracker';
 
 const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsToTarget, finalValue, currencySymbol = '$' }) => {
   const cardRef = useRef(null);
@@ -9,12 +10,13 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
 
   const handleDownload = async () => {
     if (!cardRef.current) return;
+    track('millionaire_share_download', { symbol: metrics?.symbol });
     setIsGenerating(true);
     try {
       const html2canvas = (await import('html2canvas')).default;
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: '#000000',
-        scale: 2,           // 2x for retina quality
+        scale: 2,
         logging: false,
         useCORS: true,
       });
@@ -31,6 +33,7 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
   };
 
   const handleTweet = () => {
+    track('millionaire_share_tweet', { symbol: metrics?.symbol });
     const yearsText = yearsToTarget !== null ? formatYears(yearsToTarget) : '40+ years';
     const text = `I'll reach $1M in ${yearsText} investing ${currencySymbol}${monthlyAmount.toLocaleString()}/month in ${metrics.symbol} ${drip ? 'with DRIP 🔄' : 'without DRIP'}\n\nSimulate yours 👇`;
     const url = 'https://dividendbro.com/millionaire';
@@ -38,7 +41,17 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
     window.open(tweetUrl, '_blank');
   };
 
+  // ✅ NEW: WhatsApp share
+  const handleWhatsApp = () => {
+    track('millionaire_share_whatsapp', { symbol: metrics?.symbol });
+    const yearsText = yearsToTarget !== null ? formatYears(yearsToTarget) : '40+ years';
+    const text = `📊 My DividendBro projection:\n\n💰 $1,000,000 in ${yearsText}\n📅 Investing ${currencySymbol}${monthlyAmount.toLocaleString()}/month\n📈 Stock: ${metrics.symbol} (${metrics.name || metrics.symbol})\n🔄 DRIP: ${drip ? 'On' : 'Off'}\n\nSimulate yours 👇\nhttps://dividendbro.com/millionaire`;
+    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  };
+
   const handleCopy = async () => {
+    track('millionaire_share_copy', { symbol: metrics?.symbol });
     const yearsText = yearsToTarget !== null ? formatYears(yearsToTarget) : '40+ years';
     const text = `I'll reach $1M in ${yearsText} investing ${currencySymbol}${monthlyAmount.toLocaleString()}/month in ${metrics.symbol} ${drip ? 'with DRIP' : 'without DRIP'}. Simulate yours at dividendbro.com/millionaire`;
     try {
@@ -73,16 +86,11 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
           {/* Header with brand */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '28px' }}>
             <div style={{
-              width: '32px',
-              height: '32px',
+              width: '32px', height: '32px',
               background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
               borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 900,
-              fontSize: '16px',
-              color: '#ffffff',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontWeight: 900, fontSize: '16px', color: '#ffffff',
             }}>D</div>
             <div>
               <div style={{ fontWeight: 800, fontSize: '15px', letterSpacing: '-0.01em' }}>DividendBro</div>
@@ -96,16 +104,11 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
               {metrics.name || metrics.symbol}
             </div>
             <div style={{
-              display: 'inline-block',
-              marginTop: '6px',
-              padding: '3px 10px',
+              display: 'inline-block', marginTop: '6px', padding: '3px 10px',
               background: 'rgba(6, 182, 212, 0.1)',
               border: '1px solid rgba(6, 182, 212, 0.3)',
-              borderRadius: '6px',
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              fontSize: '13px',
-              color: '#06b6d4',
+              borderRadius: '6px', fontFamily: 'monospace',
+              fontWeight: 700, fontSize: '13px', color: '#06b6d4',
               letterSpacing: '0.05em',
             }}>{metrics.symbol}</div>
           </div>
@@ -116,24 +119,15 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
               Time to reach $1,000,000
             </div>
             <div style={{
-              fontSize: '60px',
-              fontWeight: 900,
-              lineHeight: 1,
+              fontSize: '60px', fontWeight: 900, lineHeight: 1,
               background: 'linear-gradient(90deg, #3b82f6, #06b6d4, #10b981)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              letterSpacing: '-0.03em',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text', letterSpacing: '-0.03em',
             }}>{yearsText}</div>
           </div>
 
           {/* Detail row */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr 1fr',
-            gap: '10px',
-            marginBottom: '24px',
-          }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px', marginBottom: '24px' }}>
             <div style={{ background: '#0f172a', border: '1px solid #1e293b', borderRadius: '10px', padding: '12px 10px' }}>
               <div style={{ fontSize: '9px', color: '#64748b', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Monthly</div>
               <div style={{ fontSize: '16px', fontWeight: 900, marginTop: '4px', fontFamily: 'monospace' }}>{currencySymbol}{monthlyAmount.toLocaleString()}</div>
@@ -153,33 +147,26 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
           </div>
 
           {/* Footer */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingTop: '16px',
-            borderTop: '1px solid #1e293b',
-          }}>
-            <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 600 }}>
-              Simulate yours free →
-            </div>
-            <div style={{
-              fontSize: '11px',
-              fontWeight: 800,
-              color: '#06b6d4',
-              letterSpacing: '-0.01em',
-            }}>dividendbro.com/millionaire</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '16px', borderTop: '1px solid #1e293b' }}>
+            <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 600 }}>Simulate yours free →</div>
+            <div style={{ fontSize: '11px', fontWeight: 800, color: '#06b6d4', letterSpacing: '-0.01em' }}>dividendbro.com/millionaire</div>
           </div>
         </div>
 
-        {/* Action buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {/* Action buttons — now 4 total */}
+        <div className="grid grid-cols-2 gap-2">
           <button
             onClick={handleDownload}
             disabled={isGenerating}
             className="px-4 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 disabled:opacity-50 transition-all"
           >
             {isGenerating ? 'Generating...' : '⬇️ Download PNG'}
+          </button>
+          <button
+            onClick={handleWhatsApp}
+            className="px-4 py-3 bg-[#25D366]/10 border border-[#25D366]/30 text-[#25D366] text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-[#25D366]/20 active:scale-95 transition-all"
+          >
+            💬 WhatsApp
           </button>
           <button
             onClick={handleTweet}
@@ -190,7 +177,7 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
           <button
             id="copy-btn"
             onClick={handleCopy}
-            className="px-4 py-3 bg-bg-surface border border-border/60 text-text-primary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover active:scale-95 transition-all col-span-2 sm:col-span-1"
+            className="px-4 py-3 bg-bg-surface border border-border/60 text-text-primary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover active:scale-95 transition-all"
           >
             📋 Copy Text
           </button>
