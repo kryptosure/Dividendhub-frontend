@@ -40,6 +40,14 @@ const SimulatorDropdown = () => {
           >
             📊 Periodic (DCA)
           </Link>
+          {/* ✅ NEW: Millionaire Simulator */}
+          <Link
+            to="/millionaire"
+            className="block px-4 py-3 text-xs uppercase font-bold tracking-wider text-text-primary hover:bg-bg-surface-hover/80 transition-colors border-t border-border/40"
+            onClick={() => setIsOpen(false)}
+          >
+            💰 Millionaire Simulator
+          </Link>
         </div>
       )}
     </div>

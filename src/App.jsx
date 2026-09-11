@@ -22,7 +22,8 @@ import SimulatorDCA from './pages/SimulatorDCA';
 import Watchlist from './pages/Watchlist'; 
 import StockComparison from './pages/StockComparison';
 import ChatWidget from './components/ChatWidget';
-import Admin from './pages/Admin'; // ✅ NEW IMPORT
+import Admin from './pages/Admin';
+import MillionaireSimulator from './pages/MillionaireSimulator'; // ✅ NEW IMPORT
 
 import { getMe } from './services/api';
 
@@ -52,7 +53,6 @@ function App() {
         setToken(storedToken);
         try {
           const userData = await getMe();
-          // ✅ UPDATED: pass isAdmin to setUser
           setUser({ email: userData.email, isAdmin: userData.isAdmin });
           setPortfolio(userData.portfolio || []);
           setWatchlist(userData.watchlist || []);
@@ -93,7 +93,8 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/simulate/one-time" element={<SimulatorSingle />} />
                 <Route path="/simulate/dca" element={<SimulatorDCA />} />
-                <Route path="/admin" element={<Admin />} /> {/* ✅ NEW ROUTE */}
+                <Route path="/millionaire" element={<MillionaireSimulator />} /> {/* ✅ NEW ROUTE */}
+                <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </main>
