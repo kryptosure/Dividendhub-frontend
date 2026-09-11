@@ -11,7 +11,7 @@ const LongTermValueChart = ({ symbol, market }) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const theme = useStore(state => state.theme); // ✅ Read current theme
+  const theme = useStore(state => state.theme);
 
   // Short-form formatter (K/M/B)
   const formatShortNumber = (num) => {
@@ -50,7 +50,12 @@ const LongTermValueChart = ({ symbol, market }) => {
 
     let isMounted = true;
     const ctx = chartRef.current.getContext('2d');
-    const labels = ['1 Year Ago', '5 Years Ago', '10 Years Ago', '20 Years Ago', '30 Years Ago'];
+
+    // ✅ Use dynamic labels from backend, fall back to defaults
+    const labels = (data.labels && data.labels.length > 0)
+      ? data.labels.map(l => l === null ? '' : l)
+      : ['1 Year Ago', '5 Years Ago', '10 Years Ago', '15 Years Ago', '20 Years Ago', '25 Years Ago', '30 Years Ago'];
+
     const noDripValues = data.noDrip;
     const dripValues = data.drip;
 
@@ -65,7 +70,7 @@ const LongTermValueChart = ({ symbol, market }) => {
       chartInstance.current = null;
     }
 
-    // ✅ Custom plugin: draw "Not Available" for null periods
+    // ✅ Custom plugin: draw "Not Available" for null slots
     const naPlugin = {
       id: 'naPlugin',
       afterDraw(chart) {
@@ -148,10 +153,9 @@ const LongTermValueChart = ({ symbol, market }) => {
               align: 'end',
               rotation: -90,
               textAlign: 'center',
-              color: labelColor, // ✅ Theme-adaptive
+              color: labelColor,
               font: { weight: 'normal', size: 10 },
               formatter: (value) => {
-                // ✅ Skip label for null values (custom plugin draws "Not Available")
                 if (value === null || value === undefined) return '';
                 return formatShortNumber(value);
               }
@@ -160,7 +164,13 @@ const LongTermValueChart = ({ symbol, market }) => {
           scales: {
             x: {
               grid: { display: false },
-              ticks: { color: mutedColor }
+              ticks: {
+                color: mutedColor,
+                font: { size: 10 },
+                maxRotation: 45,
+                minRotation: 0,
+                autoSkip: false,
+              }
             },
             y: {
               grid: { color: gridColor },
@@ -182,7 +192,7 @@ const LongTermValueChart = ({ symbol, market }) => {
         chartInstance.current = null;
       }
     };
-  }, [data, theme]); // ✅ Recreate chart when theme changes
+  }, [data, theme]);
 
   return (
     <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
