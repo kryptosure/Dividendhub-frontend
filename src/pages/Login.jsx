@@ -10,7 +10,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUser, setToken, setPortfolio, setWatchlist } = useStore(); // Clean store selection
+  const { setUser, setToken, setPortfolio, setWatchlist } = useStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,9 +21,9 @@ const Login = () => {
     try {
       const data = await login(email, password);
       setToken(data.token);
-      setUser({ email: data.email || email });
+      setUser({ email: data.email || email, isAdmin: data.isAdmin });   // ✅ Passes isAdmin
       setPortfolio(data.portfolio || []);
-      setWatchlist(data.watchlist || []); // ✅ Directly set it from API
+      setWatchlist(data.watchlist || []);
       navigate('/');
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
@@ -43,7 +43,6 @@ const Login = () => {
             <p className="text-text-muted text-xs font-medium uppercase tracking-wider mt-1">Manage your active dividend cash flow</p>
           </div>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* ... (Inputs and button same as before) ... */}
             <div>
               <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Email Address</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full bg-bg-primary/50 border border-border/60 rounded-xl px-4 py-3 text-sm text-text-primary placeholder-text-muted/40 transition-all focus:outline-none focus:bg-bg-primary focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/5" placeholder="name@domain.com" required />

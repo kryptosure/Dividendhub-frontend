@@ -14,17 +14,18 @@ const useStore = create(
       theme: 'dark',
       market: 'us',
       currency: 'usd',
+      isAdmin: false,                    // ✅ NEW
       isLoading: false,
       error: null,
       _isSyncingPortfolio: false,
       _isSyncingWatchlist: false,
 
       // ✅ NEW: AI Chat state
-      chatContext: null,       // { symbol, name, market, price, yield, ... }
-      isChatOpen: false,       // widget visibility
+      chatContext: null,
+      isChatOpen: false,
 
       // ---------- Auth ----------
-      setUser: (user) => set({ user }),
+      setUser: (user) => set({ user, isAdmin: !!user?.isAdmin }),   // ✅ Sets isAdmin
       setToken: (token) => {
         if (token) localStorage.setItem('token', token);
         else localStorage.removeItem('token');
@@ -32,7 +33,7 @@ const useStore = create(
       },
       logout: () => {
         localStorage.removeItem('token');
-        set({ user: null, token: null, portfolio: [], watchlist: [], compareList: [], chatContext: null });
+        set({ user: null, token: null, portfolio: [], watchlist: [], compareList: [], chatContext: null, isAdmin: false });   // ✅ Resets isAdmin
       },
 
       // ---------- Portfolio ----------
@@ -149,9 +150,15 @@ const useStore = create(
     {
       name: 'DividendBro-State-Layer',
       partialize: (state) => ({
-        user: state.user, token: state.token, portfolio: state.portfolio,
-        watchlist: state.watchlist, compareList: state.compareList,
-        theme: state.theme, market: state.market, currency: state.currency,
+        user: state.user,
+        token: state.token,
+        portfolio: state.portfolio,
+        watchlist: state.watchlist,
+        compareList: state.compareList,
+        theme: state.theme,
+        market: state.market,
+        currency: state.currency,
+        isAdmin: state.isAdmin,          // ✅ Persist isAdmin
       }),
       onRehydrateStorage: () => {
         return (state, error) => {
