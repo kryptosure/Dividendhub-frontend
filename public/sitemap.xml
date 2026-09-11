@@ -3,7 +3,7 @@
   <!-- Main Homepage (Search) -->
   <url>
     <loc>https://dividendbro.com/</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -11,7 +11,7 @@
   <!-- Top Dividend Stocks -->
   <url>
     <loc>https://dividendbro.com/top</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
@@ -19,23 +19,23 @@
   <!-- Stock Comparison Tool -->
   <url>
     <loc>https://dividendbro.com/compare</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Watchlist (User-specific, medium priority) -->
+  <!-- Watchlist (User-specific) -->
   <url>
     <loc>https://dividendbro.com/watchlist</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
-  <!-- Portfolio (User-specific, medium priority) -->
+  <!-- Portfolio (User-specific) -->
   <url>
     <loc>https://dividendbro.com/portfolio</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -43,7 +43,7 @@
   <!-- One-Time Investment Simulator -->
   <url>
     <loc>https://dividendbro.com/simulate/one-time</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -51,7 +51,7 @@
   <!-- Regular Investment DCA Simulator -->
   <url>
     <loc>https://dividendbro.com/simulate/dca</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -59,21 +59,75 @@
   <!-- Blog / Insights Hub -->
   <url>
     <loc>https://dividendbro.com/blog</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- ⚠️ DYNAMIC BLOG POSTS: 
-       Replace the placeholder below with your actual blog slugs (e.g., /blog/best-dividend-stocks-2026).
-       If you have many articles, you can duplicate this block for each one. -->
-  <!-- 
+  <!-- ===== BLOG ARTICLES ===== -->
+
+  <!-- How to Build a $500/Month Dividend Portfolio in the US -->
   <url>
-    <loc>https://dividendbro.com/blog/YOUR-BLOG-SLUG-HERE</loc>
-    <lastmod>2026-09-08</lastmod>
+    <loc>https://dividendbro.com/blog/build-500-month-dividend-portfolio-us</loc>
+    <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
-  -->
+
+  <!-- Best Singapore Dividend Stocks for 2026: DBS vs OCBC vs UOB -->
+  <url>
+    <loc>https://dividendbro.com/blog/best-singapore-dividend-stocks-2026</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- The 3 Metrics That Separate Safe Dividends from Yield Traps -->
+  <url>
+    <loc>https://dividendbro.com/blog/3-metrics-safe-dividends-vs-yield-traps</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Weekly vs Monthly Dividend ETFs -->
+  <url>
+    <loc>https://dividendbro.com/blog/weekly-vs-monthly-dividend-etfs</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Top 10 US Brokers Compared -->
+  <url>
+    <loc>https://dividendbro.com/blog/top-10-us-brokers-comparison</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Comparing Brokerage Fees: DBS Vickers vs POEMS vs Digital Platforms -->
+  <url>
+    <loc>https://dividendbro.com/blog/comparing-brokerage-fees-singapore</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- How to Build a Passive Income Machine with REITs -->
+  <url>
+    <loc>https://dividendbro.com/blog/reits-passive-income-guide-2026</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Dividend Kings: The 50+ Year Dividend Compounders -->
+  <url>
+    <loc>https://dividendbro.com/blog/dividend-kings-50-year-compounders</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
 </urlset>
