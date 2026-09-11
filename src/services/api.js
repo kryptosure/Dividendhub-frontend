@@ -119,8 +119,8 @@ export const getLongTermGrowth = async (symbol, market, amount = 1000) => {
 };
 
 // ---------- AI Chat ----------
-export const sendChatMessage = async (messages) => {
-  const res = await api.post('/api/chat', { messages });
+export const sendChatMessage = async (messages, context = null) => {
+  const res = await api.post('/api/chat', { messages, context });
   return res.data;
 };
 

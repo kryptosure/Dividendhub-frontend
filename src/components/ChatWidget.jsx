@@ -1,15 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
+import useStore from '../store/useStore';
 import { sendChatMessage } from '../services/api';
 
-const SUGGESTED_PROMPTS = [
+const GENERIC_PROMPTS = [
   "What is a safe dividend yield?",
   "Explain payout ratio",
   "How does DRIP work?",
   "What's the difference between REITs and dividend stocks?",
 ];
 
+// Context-specific suggested prompts
+const buildStockPrompts = (ctx) => {
+  const name = ctx.name || ctx.symbol;
+  const shortName = name.split(' ')[0];
+  return [
+    `Why is ${shortName}'s yield ${ctx.yield ? ctx.yield.toFixed(2) + '%' : 'at this level'}?`,
+    `Is ${shortName}'s dividend safe?`,
+    `Explain ${shortName}'s payout ratio`,
+    `What does ${shortName}'s safety score mean?`,
+  ];
+};
+
 const ChatWidget = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isChatOpen, chatContext, setChatContext, clearChatContext, toggleChat, closeChat } = useStore();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -17,15 +30,23 @@ const ChatWidget = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-scroll to bottom
+  // Auto-scroll
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
   // Focus input when opened
   useEffect(() => {
-    if (isOpen) setTimeout(() => inputRef.current?.focus(), 300);
-  }, [isOpen]);
+    if (isChatOpen) setTimeout(() => inputRef.current?.focus(), 300);
+  }, [isChatOpen]);
+
+  // Reset conversation when context changes (new stock clicked)
+  useEffect(() => {
+    if (chatContext) {
+      setMessages([]);
+      setError(null);
+    }
+  }, [chatContext?.symbol]);
 
   const handleSend = async (text) => {
     const trimmed = (text || input).trim();
@@ -39,7 +60,7 @@ const ChatWidget = () => {
     setError(null);
 
     try {
-      const data = await sendChatMessage(newMessages);
+      const data = await sendChatMessage(newMessages, chatContext);
       setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
     } catch (err) {
       const msg = err.response?.data?.error || err.message || 'Something went wrong. Please try again.';
@@ -57,17 +78,23 @@ const ChatWidget = () => {
   const handleClear = () => {
     setMessages([]);
     setError(null);
+    clearChatContext();
   };
+
+  // Determine suggested prompts based on context
+  const suggestedPrompts = chatContext?.symbol
+    ? buildStockPrompts(chatContext)
+    : GENERIC_PROMPTS;
 
   return (
     <>
       {/* Floating Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleChat}
         aria-label="Ask DividendBro AI"
         className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-accent-blue to-accent-teal text-white shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center"
       >
-        {isOpen ? (
+        {isChatOpen ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
@@ -80,7 +107,7 @@ const ChatWidget = () => {
       </button>
 
       {/* Chat Panel */}
-      {isOpen && (
+      {isChatOpen && (
         <div className="fixed bottom-36 md:bottom-24 right-4 md:right-6 z-50 w-[calc(100vw-2rem)] max-w-md h-[70vh] max-h-[600px] bg-bg-secondary border border-border/60 rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border/40 bg-gradient-to-r from-accent-blue/10 to-accent-teal/5">
@@ -101,8 +128,32 @@ const ChatWidget = () => {
             </button>
           </div>
 
+          {/* Context Chip */}
+          {chatContext?.symbol && (
+            <div className="px-4 py-2 bg-accent-blue/5 border-b border-accent-blue/10 flex items-center justify-between">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-accent-blue">📊 Asking about</span>
+                <span className="text-xs font-bold text-text-primary truncate">
+                  {chatContext.symbol}
+                </span>
+                {chatContext.yield != null && (
+                  <span className="text-[10px] text-accent-teal font-bold flex-shrink-0">
+                    {chatContext.yield.toFixed(2)}%
+                  </span>
+                )}
+              </div>
+              <button
+                onClick={clearChatContext}
+                className="text-[10px] text-text-muted hover:text-accent-red transition-colors flex-shrink-0 ml-2"
+                title="Remove stock context"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
           {/* Disclaimer */}
-          <div className="px-4 py-2 bg-accent-yellow/5 border-b border-accent-yellow/10">
+          <div className="px-4 py-1.5 bg-accent-yellow/5 border-b border-accent-yellow/10">
             <p className="text-[10px] text-accent-yellow font-medium leading-tight">
               ⚠️ Educational only. Not financial advice.
             </p>
@@ -113,10 +164,12 @@ const ChatWidget = () => {
             {messages.length === 0 && (
               <div className="space-y-3">
                 <p className="text-xs text-text-muted text-center">
-                  Hi! I'm here to help you understand dividend investing. Try one of these:
+                  {chatContext?.symbol
+                    ? `Ask me anything about ${chatContext.name || chatContext.symbol}:`
+                    : "Hi! I'm here to help you understand dividend investing. Try one of these:"}
                 </p>
                 <div className="grid grid-cols-1 gap-2">
-                  {SUGGESTED_PROMPTS.map((prompt) => (
+                  {suggestedPrompts.map((prompt) => (
                     <button
                       key={prompt}
                       onClick={() => handleSend(prompt)}
@@ -175,7 +228,7 @@ const ChatWidget = () => {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about dividends..."
+                placeholder={chatContext?.symbol ? `Ask about ${chatContext.symbol}...` : "Ask about dividends..."}
                 disabled={isLoading}
                 className="flex-1 bg-bg-surface border border-border/60 rounded-xl px-3.5 py-2.5 text-sm text-text-primary placeholder-text-muted/60 focus:outline-none focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/10 disabled:opacity-50"
               />

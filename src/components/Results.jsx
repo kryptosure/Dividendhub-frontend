@@ -16,7 +16,17 @@ import AddToPortfolioModal from './AddToPortfolioModal';
 
 const Results = ({ symbol, market = 'us' }) => {
   const resultsRef = useRef(null);
-  const { addToPortfolio, portfolio, isInWatchlist, addToWatchlist, removeFromWatchlist, isInCompare, addToCompare, removeFromCompare } = useStore();
+  const {
+    addToPortfolio,
+    portfolio,
+    isInWatchlist,
+    addToWatchlist,
+    removeFromWatchlist,
+    isInCompare,
+    addToCompare,
+    removeFromCompare,
+    setChatContext, // ✅ NEW
+  } = useStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data, isLoading, error, refetch } = useQuery({
@@ -37,10 +47,33 @@ const Results = ({ symbol, market = 'us' }) => {
   const handleModalAdd = (item) => {
     if (!data) return;
     addToPortfolio({
-      symbol: data.symbol, name: data.name || data.symbol, market: data.market || market,
-      shares: item.shares, purchaseDate: item.purchaseDate, purchasePrice: item.purchasePrice,
+      symbol: data.symbol,
+      name: data.name || data.symbol,
+      market: data.market || market,
+      shares: item.shares,
+      purchaseDate: item.purchaseDate,
+      purchasePrice: item.purchasePrice,
     });
     setIsModalOpen(false);
+  };
+
+  // ✅ NEW: Open chat with this stock's context
+  const handleExplainThis = () => {
+    if (!data) return;
+    setChatContext({
+      symbol: data.symbol,
+      name: data.name || data.symbol,
+      market: market,
+      price: data.currentPrice,
+      yield: data.currentYield,
+      totalDividend: data.totalDividend,
+      payoutCount: data.payoutCount,
+      payoutRatio: data.payoutRatio,
+      dividendCAGR: data.dividendCAGR,
+      safetyScore: data.safetyScore,
+      lastExDate: data.lastExDate,
+      currencySymbol: data.currencySymbol,
+    });
   };
 
   if (!symbol) {
@@ -76,6 +109,8 @@ const Results = ({ symbol, market = 'us' }) => {
 
   if (!data) return null;
 
+  const hasNoDividends = !data.totalDividend || data.payoutCount === 0 || !data.byYear || data.byYear.length === 0;
+
   const exportData = [
     { Metric: 'Total Dividends', Value: data.totalDividend },
     { Metric: 'Current Price', Value: data.currentPrice },
@@ -97,8 +132,6 @@ const Results = ({ symbol, market = 'us' }) => {
     tables: [],
     currencySymbol: data.currencySymbol || '$',
   };
-
-  const hasNoDividends = !data.totalDividend || data.payoutCount === 0 || !data.byYear || data.byYear.length === 0;
 
   return (
     <div ref={resultsRef} className="mt-8 space-y-6 animate-in fade-in duration-300">
@@ -172,9 +205,24 @@ const Results = ({ symbol, market = 'us' }) => {
           >
             {isInCompare(data.symbol) ? '✓ In Comparison' : '➕ Add to Compare'}
           </button>
+
+          {/* ✅ NEW: Explain This button — opens AI chat with this stock's context */}
+          <button
+            onClick={handleExplainThis}
+            className="px-5 py-2.5 rounded-xl font-bold text-xs tracking-wide uppercase transition-all active:scale-[0.98] border bg-gradient-to-r from-accent-purple/10 to-accent-blue/10 border-accent-purple/30 text-accent-purple hover:from-accent-purple/20 hover:to-accent-blue/20"
+          >
+            💬 Explain This
+          </button>
         </div>
 
-        <ExportButtons data={exportData} filename={`${symbol}_dividend_matrix`} headers={['Metric', 'Value']} reportData={reportData} title={`${symbol} Analytics Matrix`} shareMessage={`Reviewing ${symbol} performance loops on DividendBro.`} />
+        <ExportButtons
+          data={exportData}
+          filename={`${symbol}_dividend_matrix`}
+          headers={['Metric', 'Value']}
+          reportData={reportData}
+          title={`${symbol} Analytics Matrix`}
+          shareMessage={`Reviewing ${symbol} performance loops on DividendBro.`}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -195,7 +243,14 @@ const Results = ({ symbol, market = 'us' }) => {
       {/* New Long Term Growth Chart Added Below DCA Simulator */}
       <LongTermValueChart symbol={symbol} market={market} />
 
-      <AddToPortfolioModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={handleModalAdd} symbol={data.symbol} name={data.name} market={market} />
+      <AddToPortfolioModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleModalAdd}
+        symbol={data.symbol}
+        name={data.name}
+        market={market}
+      />
     </div>
   );
 };

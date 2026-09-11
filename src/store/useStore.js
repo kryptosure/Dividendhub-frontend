@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { updatePortfolio, updateWatchlist } from '../services/api'; 
+import { updatePortfolio, updateWatchlist } from '../services/api';
 
 const useStore = create(
   persist(
     (set, get) => ({
+      // ---------- State Matrix ----------
       user: null,
       token: null,
       portfolio: [],
@@ -15,29 +16,33 @@ const useStore = create(
       currency: 'usd',
       isLoading: false,
       error: null,
-      _isSyncingPortfolio: false, 
-      _isSyncingWatchlist: false, 
+      _isSyncingPortfolio: false,
+      _isSyncingWatchlist: false,
 
+      // ✅ NEW: AI Chat state
+      chatContext: null,       // { symbol, name, market, price, yield, ... }
+      isChatOpen: false,       // widget visibility
+
+      // ---------- Auth ----------
       setUser: (user) => set({ user }),
       setToken: (token) => {
         if (token) localStorage.setItem('token', token);
         else localStorage.removeItem('token');
         set({ token });
       },
-
       logout: () => {
         localStorage.removeItem('token');
-        set({ user: null, token: null, portfolio: [], watchlist: [], compareList: [] });
+        set({ user: null, token: null, portfolio: [], watchlist: [], compareList: [], chatContext: null });
       },
 
-      // Portfolio
+      // ---------- Portfolio ----------
       setPortfolio: (portfolio) => set({ portfolio }),
       syncPortfolio: async () => {
         const { portfolio, token, _isSyncingPortfolio } = get();
         if (!token || _isSyncingPortfolio) return;
         set({ _isSyncingPortfolio: true });
-        try { await updatePortfolio(portfolio); } 
-        catch (e) { console.warn('Portfolio sync failed:', e); } 
+        try { await updatePortfolio(portfolio); }
+        catch (e) { console.warn('Portfolio sync failed:', e); }
         finally { set({ _isSyncingPortfolio: false }); }
       },
       addToPortfolio: (item) => {
@@ -65,14 +70,14 @@ const useStore = create(
       },
       clearPortfolio: () => { set({ portfolio: [] }); setTimeout(() => get().syncPortfolio(), 150); },
 
-      // Watchlist
+      // ---------- Watchlist ----------
       setWatchlist: (watchlist) => set({ watchlist }),
       syncWatchlist: async () => {
         const { watchlist, token, _isSyncingWatchlist } = get();
         if (!token || _isSyncingWatchlist) return;
         set({ _isSyncingWatchlist: true });
-        try { await updateWatchlist(watchlist); } 
-        catch (e) { console.warn('Watchlist sync failed:', e); } 
+        try { await updateWatchlist(watchlist); }
+        catch (e) { console.warn('Watchlist sync failed:', e); }
         finally { set({ _isSyncingWatchlist: false }); }
       },
       addToWatchlist: (item) => {
@@ -93,7 +98,7 @@ const useStore = create(
         return watchlist.some(item => item.symbol.toUpperCase() === symbol.toUpperCase().trim());
       },
 
-      // Compare Engine (Max 5)
+      // ---------- Compare ----------
       setCompareList: (compareList) => set({ compareList }),
       addToCompare: (item) => {
         const { compareList } = get();
@@ -113,7 +118,14 @@ const useStore = create(
       },
       clearCompare: () => set({ compareList: [] }),
 
-      // Theme & Misc
+      // ---------- AI Chat ----------
+      setChatContext: (context) => set({ chatContext: context, isChatOpen: true }),
+      clearChatContext: () => set({ chatContext: null }),
+      openChat: () => set({ isChatOpen: true }),
+      closeChat: () => set({ isChatOpen: false }),
+      toggleChat: () => set((state) => ({ isChatOpen: !state.isChatOpen })),
+
+      // ---------- Theme & Misc ----------
       toggleTheme: () => {
         set((state) => {
           const newTheme = state.theme === 'dark' ? 'light' : 'dark';
@@ -121,10 +133,7 @@ const useStore = create(
           return { theme: newTheme };
         });
       },
-      setTheme: (theme) => {
-        document.documentElement.setAttribute('data-theme', theme);
-        set({ theme });
-      },
+      setTheme: (theme) => { document.documentElement.setAttribute('data-theme', theme); set({ theme }); },
       setMarket: (market) => set({ market }),
       setCurrency: (currency) => set({ currency }),
       setLoading: (isLoading) => set({ isLoading }),
