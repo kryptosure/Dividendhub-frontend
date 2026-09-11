@@ -6,6 +6,7 @@ import { track } from '../services/tracker';
 import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import MillionaireChart from '../components/MillionaireChart';
+import MillionaireLeaderboard from '../components/MillionaireLeaderboard';
 import { simulateMillionaire, formatYears, formatCompactCurrency } from '../utils/millionaire';
 
 const PRESETS = [100, 250, 500, 1000, 2500];
@@ -19,6 +20,7 @@ const MillionaireSimulator = () => {
 
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
 
+  // Fetch single-stock metrics
   const { data: metrics, isLoading, error, refetch } = useQuery({
     queryKey: ['millionaire', symbol, market],
     queryFn: async () => {
@@ -29,6 +31,20 @@ const MillionaireSimulator = () => {
     },
     enabled: !!symbol,
     staleTime: 10 * 60 * 1000,
+  });
+
+  // Fetch leaderboard metrics (all top stocks)
+  const {
+    data: leaderboardData,
+    isLoading: leaderboardLoading,
+    error: leaderboardError,
+  } = useQuery({
+    queryKey: ['millionaire-leaderboard', market],
+    queryFn: async () => {
+      const res = await api.get(`/api/simulate/millionaire-leaderboard/${market}`);
+      return res.data;
+    },
+    staleTime: 5 * 60 * 1000,
   });
 
   const withDripResult = useMemo(() => {
@@ -63,6 +79,14 @@ const MillionaireSimulator = () => {
     e.preventDefault();
     const cleaned = inputSymbol.trim().toUpperCase();
     if (cleaned) setSymbol(cleaned);
+  };
+
+  const handleSelectFromLeaderboard = (selectedSymbol) => {
+    setSymbol(selectedSymbol);
+    setInputSymbol(selectedSymbol);
+    track('millionaire_select_from_leaderboard', { symbol: selectedSymbol });
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const activeResult = drip ? withDripResult : noDripResult;
@@ -271,6 +295,29 @@ const MillionaireSimulator = () => {
                 withDripData={withDripResult.yearlyData}
                 noDripData={noDripResult.yearlyData}
                 currencySymbol={curSymbol}
+              />
+            </div>
+
+            {/* ============ LEADERBOARD ============ */}
+            <div className="pt-4 border-t border-border/40">
+              <div className="mb-4">
+                <h2 className="text-2xl font-black tracking-tight text-text-primary">
+                  🏆 Leaderboard: Fastest to {curSymbol}1M
+                </h2>
+                <p className="text-text-muted text-xs mt-1">
+                  Top dividend stocks ranked by how fast they'd reach $1M at your current settings.
+                  Adjust the slider above to see rankings shift live.
+                </p>
+              </div>
+
+              <MillionaireLeaderboard
+                stocks={leaderboardData?.stocks || []}
+                monthlyAmount={monthlyAmount}
+                drip={drip}
+                currencySymbol={curSymbol}
+                onSelectStock={handleSelectFromLeaderboard}
+                isLoading={leaderboardLoading}
+                error={leaderboardError?.message}
               />
             </div>
 
