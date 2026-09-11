@@ -8,7 +8,6 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import MillionaireChart from '../components/MillionaireChart';
 import { simulateMillionaire, formatYears, formatCompactCurrency } from '../utils/millionaire';
 
-// Preset amounts
 const PRESETS = [100, 250, 500, 1000, 2500];
 
 const MillionaireSimulator = () => {
@@ -20,7 +19,6 @@ const MillionaireSimulator = () => {
 
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
 
-  // Fetch stock metrics
   const { data: metrics, isLoading, error, refetch } = useQuery({
     queryKey: ['millionaire', symbol, market],
     queryFn: async () => {
@@ -33,7 +31,6 @@ const MillionaireSimulator = () => {
     staleTime: 10 * 60 * 1000,
   });
 
-  // Run the projections client-side
   const withDripResult = useMemo(() => {
     if (!metrics) return null;
     return simulateMillionaire({
@@ -58,7 +55,6 @@ const MillionaireSimulator = () => {
     });
   }, [metrics, monthlyAmount]);
 
-  // Track page view
   useEffect(() => {
     track('open_millionaire_simulator', { symbol, monthlyAmount, drip });
   }, [symbol]);
@@ -137,7 +133,6 @@ const MillionaireSimulator = () => {
               <span>{curSymbol}50</span>
               <span>{curSymbol}5,000</span>
             </div>
-            {/* Presets */}
             <div className="flex flex-wrap gap-1.5 mt-3">
               {PRESETS.map((amt) => (
                 <button
@@ -206,7 +201,7 @@ const MillionaireSimulator = () => {
               {/* Stats row */}
               <div className="grid grid-cols-3 gap-3 mt-6">
                 <div className="bg-bg-surface/60 border border-border/40 rounded-xl p-3">
-                  <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Yield</span></p>
+                  <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Yield</p>
                   <p className="text-lg font-black text-accent-teal mt-1">{(metrics.currentYield * 100).toFixed(2)}%</p>
                 </div>
                 <div className="bg-bg-surface/60 border border-border/40 rounded-xl p-3">
