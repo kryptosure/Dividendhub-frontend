@@ -7,6 +7,7 @@ import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import MillionaireChart from '../components/MillionaireChart';
 import MillionaireLeaderboard from '../components/MillionaireLeaderboard';
+import StockAutocomplete from '../components/StockAutocomplete'; // ✅ NEW
 import { simulateMillionaire, formatYears, formatCompactCurrency } from '../utils/millionaire';
 
 const PRESETS = [100, 250, 500, 1000, 2500];
@@ -14,13 +15,12 @@ const PRESETS = [100, 250, 500, 1000, 2500];
 const MillionaireSimulator = () => {
   const { market, currency } = useStore();
   const [symbol, setSymbol] = useState('KO');
-  const [inputSymbol, setInputSymbol] = useState('KO');
+  const [inputValue, setInputValue] = useState('KO'); // ✅ Track raw input text
   const [monthlyAmount, setMonthlyAmount] = useState(500);
   const [drip, setDrip] = useState(true);
 
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
 
-  // Fetch single-stock metrics
   const { data: metrics, isLoading, error, refetch } = useQuery({
     queryKey: ['millionaire', symbol, market],
     queryFn: async () => {
@@ -33,7 +33,6 @@ const MillionaireSimulator = () => {
     staleTime: 10 * 60 * 1000,
   });
 
-  // Fetch leaderboard metrics (all top stocks)
   const {
     data: leaderboardData,
     isLoading: leaderboardLoading,
@@ -75,17 +74,18 @@ const MillionaireSimulator = () => {
     track('open_millionaire_simulator', { symbol, monthlyAmount, drip });
   }, [symbol]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const cleaned = inputSymbol.trim().toUpperCase();
-    if (cleaned) setSymbol(cleaned);
+  // ✅ NEW: Handle autocomplete selection
+  const handleStockSelect = ({ symbol: newSymbol }) => {
+    const cleaned = String(newSymbol).toUpperCase();
+    setSymbol(cleaned);
+    setInputValue(cleaned);
+    track('millionaire_autocomplete_select', { symbol: cleaned });
   };
 
   const handleSelectFromLeaderboard = (selectedSymbol) => {
     setSymbol(selectedSymbol);
-    setInputSymbol(selectedSymbol);
+    setInputValue(selectedSymbol);
     track('millionaire_select_from_leaderboard', { symbol: selectedSymbol });
-    // Scroll to top smoothly
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -111,27 +111,18 @@ const MillionaireSimulator = () => {
 
         {/* Input Card */}
         <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm space-y-5">
-          {/* Stock picker */}
+          {/* ✅ NEW: Stock autocomplete */}
           <div>
             <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
-              Stock
+              Search Stock (type name or ticker)
             </label>
-            <form onSubmit={handleSearch} className="flex gap-2">
-              <input
-                type="text"
-                value={inputSymbol}
-                onChange={(e) => setInputSymbol(e.target.value)}
-                placeholder="Ticker (e.g. KO, D05.SI)"
-                className="flex-1 bg-bg-primary border border-border/60 rounded-xl px-4 py-2.5 text-sm font-mono font-bold text-text-primary focus:outline-none focus:border-accent-blue"
-                autoComplete="off"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase rounded-xl hover:opacity-95 active:scale-95"
-              >
-                Load
-              </button>
-            </form>
+            <StockAutocomplete
+              value={inputValue}
+              onChange={setInputValue}
+              onSelect={handleStockSelect}
+              market={market}
+              placeholder="e.g. Coca-Cola, DBS, Apple, Verizon..."
+            />
           </div>
 
           {/* Monthly Amount Slider */}
@@ -222,7 +213,6 @@ const MillionaireSimulator = () => {
                 {drip ? ' with DRIP' : ' without DRIP'}
               </p>
 
-              {/* Stats row */}
               <div className="grid grid-cols-3 gap-3 mt-6">
                 <div className="bg-bg-surface/60 border border-border/40 rounded-xl p-3">
                   <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Yield</p>
@@ -275,7 +265,6 @@ const MillionaireSimulator = () => {
               </button>
             </div>
 
-            {/* Savings if DRIP is on */}
             {withDripResult.yearsToTarget !== null && noDripResult.yearsToTarget !== null && (
               <div className="bg-accent-green/5 border border-accent-green/20 rounded-xl p-3 text-center">
                 <p className="text-xs text-accent-green font-bold">
@@ -288,7 +277,6 @@ const MillionaireSimulator = () => {
               </div>
             )}
 
-            {/* Chart */}
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
               <h3 className="font-black text-lg text-text-primary mb-3">📈 Portfolio Growth (40 Years)</h3>
               <MillionaireChart
@@ -298,7 +286,7 @@ const MillionaireSimulator = () => {
               />
             </div>
 
-            {/* ============ LEADERBOARD ============ */}
+            {/* Leaderboard */}
             <div className="pt-4 border-t border-border/40">
               <div className="mb-4">
                 <h2 className="text-2xl font-black tracking-tight text-text-primary">
@@ -321,7 +309,6 @@ const MillionaireSimulator = () => {
               />
             </div>
 
-            {/* Disclaimer */}
             <div className="bg-accent-yellow/5 border border-accent-yellow/20 rounded-xl p-4 text-[11px] text-text-muted leading-relaxed">
               <p><strong className="text-accent-yellow">⚠️ Important:</strong> This is a hypothetical projection based on historical price and dividend growth. Actual returns will vary. Past performance is not indicative of future results. This is educational only, not financial advice.</p>
             </div>
