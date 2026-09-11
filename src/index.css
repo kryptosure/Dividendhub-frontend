@@ -26,7 +26,7 @@
     --border-hover: rgba(255, 255, 255, 0.05);
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
-    --text-muted: #475569;
+    --text-muted: #94a3b8; /* ← Lighter for better contrast on black */
     --shadow-card: 0 4px 30 rgba(0, 0, 0, 0.4);
     --shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.6);
   }

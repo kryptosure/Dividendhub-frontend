@@ -25,8 +25,8 @@ export default {
           muted: 'var(--text-muted)',
         },
         accent: {
-          blue: '#3b82f6',
-          teal: '#06b6d4',
+          blue: '#2563eb', /* Darker blue - passes WCAG AA */
+          teal: '#0891b2', /* Darker teal - passes WCAG AA */
           green: '#34d399',
           red: '#f87171',
           yellow: '#fbbf24',
