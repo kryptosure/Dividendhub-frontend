@@ -7,17 +7,22 @@ import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import MillionaireChart from '../components/MillionaireChart';
 import MillionaireLeaderboard from '../components/MillionaireLeaderboard';
-import StockAutocomplete from '../components/StockAutocomplete'; // ✅ NEW
+import StockAutocomplete from '../components/StockAutocomplete';
+import ShareCardModal from '../components/ShareCardModal';
+import RecentSimulations from '../components/RecentSimulations';
 import { simulateMillionaire, formatYears, formatCompactCurrency } from '../utils/millionaire';
+import { saveSimulation } from '../utils/simulationHistory';
 
 const PRESETS = [100, 250, 500, 1000, 2500];
 
 const MillionaireSimulator = () => {
   const { market, currency } = useStore();
   const [symbol, setSymbol] = useState('KO');
-  const [inputValue, setInputValue] = useState('KO'); // ✅ Track raw input text
+  const [inputValue, setInputValue] = useState('KO');
   const [monthlyAmount, setMonthlyAmount] = useState(500);
   const [drip, setDrip] = useState(true);
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const [historyRefresh, setHistoryRefresh] = useState(0);
 
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
 
@@ -74,7 +79,26 @@ const MillionaireSimulator = () => {
     track('open_millionaire_simulator', { symbol, monthlyAmount, drip });
   }, [symbol]);
 
-  // ✅ NEW: Handle autocomplete selection
+  // ✅ NEW: Save simulation to localStorage when results are computed
+  useEffect(() => {
+    if (!metrics || !withDripResult || !noDripResult) return;
+    const activeResult = drip ? withDripResult : noDripResult;
+    if (activeResult.yearsToTarget === null && activeResult.finalValue < 100000) return; // Skip meaningless entries
+
+    const timer = setTimeout(() => {
+      saveSimulation({
+        symbol: metrics.symbol,
+        name: metrics.name,
+        monthlyAmount,
+        drip,
+        yearsToTarget: activeResult.yearsToTarget,
+      });
+      setHistoryRefresh((n) => n + 1);
+    }, 1500); // Debounce: only save if user stays on the result for 1.5s
+
+    return () => clearTimeout(timer);
+  }, [metrics, withDripResult, noDripResult, drip, monthlyAmount]);
+
   const handleStockSelect = ({ symbol: newSymbol }) => {
     const cleaned = String(newSymbol).toUpperCase();
     setSymbol(cleaned);
@@ -86,6 +110,20 @@ const MillionaireSimulator = () => {
     setSymbol(selectedSymbol);
     setInputValue(selectedSymbol);
     track('millionaire_select_from_leaderboard', { symbol: selectedSymbol });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // ✅ NEW: Load a saved simulation
+  const handleSelectFromHistory = (entry) => {
+    if (!entry || entry.clearOnly) {
+      setHistoryRefresh((n) => n + 1);
+      return;
+    }
+    setSymbol(entry.symbol);
+    setInputValue(entry.symbol);
+    setMonthlyAmount(entry.monthlyAmount);
+    setDrip(entry.drip);
+    track('millionaire_select_from_history', { symbol: entry.symbol });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -111,7 +149,6 @@ const MillionaireSimulator = () => {
 
         {/* Input Card */}
         <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm space-y-5">
-          {/* ✅ NEW: Stock autocomplete */}
           <div>
             <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
               Search Stock (type name or ticker)
@@ -125,7 +162,6 @@ const MillionaireSimulator = () => {
             />
           </div>
 
-          {/* Monthly Amount Slider */}
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest">
@@ -165,7 +201,6 @@ const MillionaireSimulator = () => {
             </div>
           </div>
 
-          {/* DRIP Toggle */}
           <div className="flex items-center justify-between bg-bg-primary border border-border/40 rounded-xl p-3">
             <div>
               <p className="text-xs font-bold text-text-primary">Reinvest Dividends (DRIP)</p>
@@ -200,7 +235,7 @@ const MillionaireSimulator = () => {
         {metrics && activeResult && (
           <>
             {/* Hero Card */}
-            <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6 text-center">
+            <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6 text-center relative">
               <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1">
                 {metrics.name} ({metrics.symbol})
               </p>
@@ -231,7 +266,22 @@ const MillionaireSimulator = () => {
                   </p>
                 </div>
               </div>
+
+              {/* ✅ Share button */}
+              <button
+                onClick={() => setIsShareOpen(true)}
+                className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-accent-purple/20 to-accent-blue/20 border border-accent-purple/30 text-accent-purple text-xs font-bold uppercase tracking-wider rounded-xl hover:from-accent-purple/30 hover:to-accent-blue/30 active:scale-95 transition-all"
+              >
+                📤 Share This Result
+              </button>
             </div>
+
+            {/* Recent Simulations */}
+            <RecentSimulations
+              refreshKey={historyRefresh}
+              onSelect={handleSelectFromHistory}
+              currencySymbol={curSymbol}
+            />
 
             {/* DRIP vs No-DRIP Comparison */}
             <div className="grid grid-cols-2 gap-3">
@@ -286,7 +336,6 @@ const MillionaireSimulator = () => {
               />
             </div>
 
-            {/* Leaderboard */}
             <div className="pt-4 border-t border-border/40">
               <div className="mb-4">
                 <h2 className="text-2xl font-black tracking-tight text-text-primary">
@@ -315,6 +364,18 @@ const MillionaireSimulator = () => {
           </>
         )}
       </div>
+
+      {/* ✅ Share Card Modal */}
+      <ShareCardModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        metrics={metrics}
+        monthlyAmount={monthlyAmount}
+        drip={drip}
+        yearsToTarget={activeResult?.yearsToTarget}
+        finalValue={activeResult?.finalValue}
+        currencySymbol={curSymbol}
+      />
     </>
   );
 };
