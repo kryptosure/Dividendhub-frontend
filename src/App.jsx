@@ -21,7 +21,8 @@ import SimulatorSingle from './pages/SimulatorSingle';
 import SimulatorDCA from './pages/SimulatorDCA';
 import Watchlist from './pages/Watchlist'; 
 import StockComparison from './pages/StockComparison';
-import ChatWidget from './components/ChatWidget'; // ✅ NEW
+import ChatWidget from './components/ChatWidget';
+import Admin from './pages/Admin'; // ✅ NEW IMPORT
 
 import { getMe } from './services/api';
 
@@ -51,7 +52,8 @@ function App() {
         setToken(storedToken);
         try {
           const userData = await getMe();
-          setUser({ email: userData.email });
+          // ✅ UPDATED: pass isAdmin to setUser
+          setUser({ email: userData.email, isAdmin: userData.isAdmin });
           setPortfolio(userData.portfolio || []);
           setWatchlist(userData.watchlist || []);
         } catch (e) {
@@ -91,13 +93,14 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/simulate/one-time" element={<SimulatorSingle />} />
                 <Route path="/simulate/dca" element={<SimulatorDCA />} />
+                <Route path="/admin" element={<Admin />} /> {/* ✅ NEW ROUTE */}
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </main>
             <Footer />
             <BottomNav />
             <BackToTop />
-            <ChatWidget /> {/* ✅ NEW: AI chat widget */}
+            <ChatWidget />
           </div>
         </BrowserRouter>
       </QueryClientProvider>
