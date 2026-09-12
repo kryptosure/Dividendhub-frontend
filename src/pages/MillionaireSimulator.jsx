@@ -79,11 +79,10 @@ const MillionaireSimulator = () => {
     track('open_millionaire_simulator', { symbol, monthlyAmount, drip });
   }, [symbol]);
 
-  // ✅ NEW: Save simulation to localStorage when results are computed
   useEffect(() => {
     if (!metrics || !withDripResult || !noDripResult) return;
     const activeResult = drip ? withDripResult : noDripResult;
-    if (activeResult.yearsToTarget === null && activeResult.finalValue < 100000) return; // Skip meaningless entries
+    if (activeResult.yearsToTarget === null && activeResult.finalValue < 100000) return;
 
     const timer = setTimeout(() => {
       saveSimulation({
@@ -94,7 +93,7 @@ const MillionaireSimulator = () => {
         yearsToTarget: activeResult.yearsToTarget,
       });
       setHistoryRefresh((n) => n + 1);
-    }, 1500); // Debounce: only save if user stays on the result for 1.5s
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, [metrics, withDripResult, noDripResult, drip, monthlyAmount]);
@@ -113,7 +112,6 @@ const MillionaireSimulator = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // ✅ NEW: Load a saved simulation
   const handleSelectFromHistory = (entry) => {
     if (!entry || entry.clearOnly) {
       setHistoryRefresh((n) => n + 1);
@@ -132,8 +130,20 @@ const MillionaireSimulator = () => {
   return (
     <>
       <Helmet>
-        <title>Millionaire Simulator – DividendBro</title>
-        <meta name="description" content="See how fast your monthly dividend investment reaches $1M. Interactive DRIP simulator for US and SGX stocks." />
+        <title>Millionaire Simulator – How Fast to $1M with Dividend Stocks</title>
+        <meta name="description" content="Interactive dividend simulator: see how fast $500/month reaches $1M in US and SGX stocks with DRIP. Live leaderboard of the fastest dividend compounders." />
+        {/* ✅ Fixed: Static canonical URL */}
+        <link rel="canonical" href="https://dividendbro.com/millionaire" />
+        {/* ✅ Open Graph tags for social sharing */}
+        <meta property="og:title" content="Millionaire Simulator – How Fast to $1M with Dividend Stocks" />
+        <meta property="og:description" content="See how fast your monthly dividend investment reaches $1M. Interactive DRIP simulator for US and SGX stocks." />
+        <meta property="og:url" content="https://dividendbro.com/millionaire" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://dividendbro.com/images/cover.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Millionaire Simulator – DividendBro" />
+        <meta name="twitter:description" content="See how fast your monthly dividend investment reaches $1M." />
+        <meta name="twitter:image" content="https://dividendbro.com/images/cover.png" />
       </Helmet>
 
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
@@ -267,7 +277,6 @@ const MillionaireSimulator = () => {
                 </div>
               </div>
 
-              {/* ✅ Share button */}
               <button
                 onClick={() => setIsShareOpen(true)}
                 className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-accent-purple/20 to-accent-blue/20 border border-accent-purple/30 text-accent-purple text-xs font-bold uppercase tracking-wider rounded-xl hover:from-accent-purple/30 hover:to-accent-blue/30 active:scale-95 transition-all"
@@ -365,7 +374,6 @@ const MillionaireSimulator = () => {
         )}
       </div>
 
-      {/* ✅ Share Card Modal */}
       <ShareCardModal
         isOpen={isShareOpen}
         onClose={() => setIsShareOpen(false)}

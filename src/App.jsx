@@ -23,7 +23,7 @@ import Watchlist from './pages/Watchlist';
 import StockComparison from './pages/StockComparison';
 import ChatWidget from './components/ChatWidget';
 import Admin from './pages/Admin';
-import MillionaireSimulator from './pages/MillionaireSimulator'; // ✅ NEW IMPORT
+import MillionaireSimulator from './pages/MillionaireSimulator';
 
 import { getMe } from './services/api';
 
@@ -71,7 +71,7 @@ function App() {
           <Helmet>
             <meta property="og:type" content="website" />
             <meta property="og:site_name" content="DividendBro" />
-            <meta property="og:url" content={window.location.href} />
+            <meta property="og:url" content={SITE_URL} />
             <meta property="og:image" content={DEFAULT_IMAGE} />
             <meta name="twitter:card" content="summary_large_image" />
             <meta property="og:title" content="DividendBro – Premium Dividend Analysis & Management Hub" />
@@ -93,7 +93,7 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/simulate/one-time" element={<SimulatorSingle />} />
                 <Route path="/simulate/dca" element={<SimulatorDCA />} />
-                <Route path="/millionaire" element={<MillionaireSimulator />} /> {/* ✅ NEW ROUTE */}
+                <Route path="/millionaire" element={<MillionaireSimulator />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
@@ -121,12 +121,19 @@ function Home() {
     ? `View complete payout histories, current yields metrics, capital safety scores, and ex‑dividend dates for ${symbol}.`
     : 'Analyze distributions records, verify trailing yield positions, and manage portfolio assets cleanly.';
 
+  // ✅ SEO: When a stock is loaded, keep it OUT of the canonical
+  // Canonical should always point to the clean homepage to avoid duplicate content
+  const canonicalUrl = symbol
+    ? `${SITE_URL}/` // Clean homepage — symbol is dynamic content, not a separate page
+    : `${SITE_URL}/`;
+
   return (
     <>
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={window.location.href} />
+        {/* ✅ Fixed: Always canonical to clean homepage URL */}
+        <link rel="canonical" href={canonicalUrl} />
       </Helmet>
 
       <div className="text-center mb-10 max-w-2xl mx-auto">

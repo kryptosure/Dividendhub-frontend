@@ -48,7 +48,6 @@ const StockComparison = () => {
       const frequency = lastYear ? lastYear.count : 0;
       const streak = byYear.length;
 
-      // Calculate Price CAGR from Long Term Growth (5Y value) - with safety check
       let priceCAGR = null;
       if (growthRes && Array.isArray(growthRes.noDrip) && growthRes.noDrip[1] && growthRes.noDrip[1] > 0) {
         const multiplier = growthRes.noDrip[1] / 1000;
@@ -76,7 +75,16 @@ const StockComparison = () => {
   return (
     <>
       <Helmet>
-        <title>Stock Comparison Tool – DividendBro</title>
+        <title>Stock Comparison Tool – Compare Dividend Stocks Side by Side</title>
+        <meta name="description" content="Compare up to 5 dividend stocks side by side. Yield, payout ratio, dividend CAGR, safety score, and dividend streak in one clean table." />
+        {/* ✅ Fixed: Static canonical URL */}
+        <link rel="canonical" href="https://dividendbro.com/compare" />
+        <meta property="og:title" content="Stock Comparison Tool – DividendBro" />
+        <meta property="og:description" content="Compare up to 5 dividend stocks side by side." />
+        <meta property="og:url" content="https://dividendbro.com/compare" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://dividendbro.com/images/cover.png" />
+        <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
