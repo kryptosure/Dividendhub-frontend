@@ -12,7 +12,7 @@ const StatCard = ({ label, value, sub, accent = 'blue' }) => {
   return (
     <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
       <div className="text-[10px] uppercase font-bold tracking-wider text-text-muted">{label}</div>
-      <div className={`text-2xl font-black mt-1 ${map[accent] || 'text-text-primary'}`}>{value}</div>
+      <div className={`text-xl sm:text-2xl font-black mt-1 ${map[accent] || 'text-text-primary'}`}>{value}</div>
       {sub && <div className="text-[11px] text-text-muted font-medium mt-0.5">{sub}</div>}
     </div>
   );
@@ -29,9 +29,13 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
     green: 'from-accent-green/60 to-accent-green',
     purple: 'from-accent-purple/60 to-accent-purple',
   };
+  // Show fewer bars on mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+  const visibleData = isMobile && data.length > 14 ? data.slice(-14) : data;
+  
   return (
     <div className="flex items-end gap-1 h-32">
-      {data.map((d, i) => {
+      {visibleData.map((d, i) => {
         const val = parseInt(d[valueKey]);
         const pct = max > 0 ? (val / max) * 100 : 0;
         return (
@@ -41,7 +45,7 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
               style={{ height: `${Math.max(pct, 4)}%` }}
               title={`${d[labelKey]}: ${val}`}
             />
-            <div className="text-[9px] text-text-muted mt-1 rotate-45 origin-left whitespace-nowrap">
+            <div className="text-[8px] sm:text-[9px] text-text-muted mt-1 rotate-45 origin-left whitespace-nowrap">
               {String(d[labelKey]).slice(5)}
             </div>
           </div>
@@ -164,11 +168,12 @@ const Admin = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8 space-y-6">
+        {/* Header */}
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-3xl font-black tracking-tight text-text-primary">Admin Dashboard</h1>
-            <p className="text-text-muted text-sm mt-1">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-text-primary">Admin Dashboard</h1>
+            <p className="text-text-muted text-xs sm:text-sm mt-1">
               Last updated: {new Date(data.generatedAt).toLocaleString()}
             </p>
           </div>
@@ -221,12 +226,12 @@ const Admin = () => {
               ) : (
                 <div className="space-y-2">
                   {data.featureUsage.slice(0, 12).map((f, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <span className="w-32 text-[11px] font-mono text-text-secondary truncate">{f.eventType}</span>
+                    <div key={i} className="flex items-center gap-2 sm:gap-3">
+                      <span className="w-24 sm:w-32 text-[10px] sm:text-[11px] font-mono text-text-secondary truncate">{f.eventType}</span>
                       <div className="flex-1 h-4 bg-bg-primary rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-accent-blue to-accent-teal rounded-full" style={{ width: `${(parseInt(f.count) / maxFeature) * 100}%` }} />
                       </div>
-                      <span className="text-[11px] font-bold text-accent-blue w-12 text-right">{f.count}</span>
+                      <span className="text-[10px] sm:text-[11px] font-bold text-accent-blue w-10 sm:w-12 text-right">{f.count}</span>
                     </div>
                   ))}
                 </div>
@@ -239,15 +244,15 @@ const Admin = () => {
               <div className="grid grid-cols-3 gap-3">
                 <div className="bg-bg-primary border border-border/40 rounded-xl p-3 text-center">
                   <div className="text-[10px] uppercase font-bold text-text-muted">Stock</div>
-                  <div className="text-2xl font-black text-accent-blue mt-1">{data.chat.stock}</div>
+                  <div className="text-xl sm:text-2xl font-black text-accent-blue mt-1">{data.chat.stock}</div>
                 </div>
                 <div className="bg-bg-primary border border-border/40 rounded-xl p-3 text-center">
                   <div className="text-[10px] uppercase font-bold text-text-muted">Portfolio</div>
-                  <div className="text-2xl font-black text-accent-purple mt-1">{data.chat.portfolio}</div>
+                  <div className="text-xl sm:text-2xl font-black text-accent-purple mt-1">{data.chat.portfolio}</div>
                 </div>
                 <div className="bg-bg-primary border border-border/40 rounded-xl p-3 text-center">
                   <div className="text-[10px] uppercase font-bold text-text-muted">Generic</div>
-                  <div className="text-2xl font-black text-accent-teal mt-1">{data.chat.generic}</div>
+                  <div className="text-xl sm:text-2xl font-black text-accent-teal mt-1">{data.chat.generic}</div>
                 </div>
               </div>
             </div>
@@ -266,7 +271,7 @@ const Admin = () => {
                   {data.topSearches.map((s, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm">
                       <span className="text-[10px] text-text-muted w-5">{i + 1}</span>
-                      <span className="font-mono text-text-primary flex-1">{s.query}</span>
+                      <span className="font-mono text-text-primary flex-1 truncate">{s.query}</span>
                       <span className="text-xs font-bold text-accent-blue">{s.count}</span>
                     </li>
                   ))}
@@ -284,7 +289,7 @@ const Admin = () => {
                   {data.topViewed.map((s, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm">
                       <span className="text-[10px] text-text-muted w-5">{i + 1}</span>
-                      <span className="font-mono text-text-primary flex-1">{s.symbol}</span>
+                      <span className="font-mono text-text-primary flex-1 truncate">{s.symbol}</span>
                       <span className="text-xs font-bold text-accent-teal">{s.count}</span>
                     </li>
                   ))}
@@ -339,29 +344,31 @@ const Admin = () => {
         {data.cohorts.length > 0 && (
           <div>
             <SectionTitle>Cohort Retention (Weekly Signup Groups)</SectionTitle>
-            <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead className="text-text-muted uppercase font-bold tracking-wider text-[10px]">
-                  <tr>
-                    <th className="px-3 py-2 text-left">Week of</th>
-                    <th className="px-3 py-2 text-right">Signups</th>
-                    <th className="px-3 py-2 text-right">Week 1</th>
-                    <th className="px-3 py-2 text-right">Week 2</th>
-                    <th className="px-3 py-2 text-right">Week 4</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/20">
-                  {data.cohorts.map((c, i) => (
-                    <tr key={i}>
-                      <td className="px-3 py-2 font-mono text-text-secondary">{c.week}</td>
-                      <td className="px-3 py-2 text-right font-bold text-accent-blue">{c.size}</td>
-                      <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w1 >= 40 ? 'text-accent-green' : c.w1 >= 20 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w1}%</span></td>
-                      <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w2 >= 30 ? 'text-accent-green' : c.w2 >= 15 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w2}%</span></td>
-                      <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w4 >= 20 ? 'text-accent-green' : c.w4 >= 10 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w4}%</span></td>
+            <div className="bg-bg-surface border border-border/50 rounded-2xl shadow-sm overflow-hidden">
+              <div className="mobile-scroll p-4">
+                <table className="w-full text-xs">
+                  <thead className="text-text-muted uppercase font-bold tracking-wider text-[10px]">
+                    <tr>
+                      <th className="px-3 py-2 text-left">Week of</th>
+                      <th className="px-3 py-2 text-right">Signups</th>
+                      <th className="px-3 py-2 text-right">Week 1</th>
+                      <th className="px-3 py-2 text-right">Week 2</th>
+                      <th className="px-3 py-2 text-right">Week 4</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-border/20">
+                    {data.cohorts.map((c, i) => (
+                      <tr key={i}>
+                        <td className="px-3 py-2 font-mono text-text-secondary">{c.week}</td>
+                        <td className="px-3 py-2 text-right font-bold text-accent-blue">{c.size}</td>
+                        <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w1 >= 40 ? 'text-accent-green' : c.w1 >= 20 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w1}%</span></td>
+                        <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w2 >= 30 ? 'text-accent-green' : c.w2 >= 15 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w2}%</span></td>
+                        <td className="px-3 py-2 text-right"><span className={`font-bold ${c.w4 >= 20 ? 'text-accent-green' : c.w4 >= 10 ? 'text-accent-yellow' : 'text-text-muted'}`}>{c.w4}%</span></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}
@@ -375,10 +382,49 @@ const Admin = () => {
               placeholder="Search email..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(0); }}
-              className="bg-bg-surface border border-border/60 rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-text-muted/60 focus:outline-none focus:border-accent-blue"
+              className="bg-bg-surface border border-border/60 rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-text-muted/60 focus:outline-none focus:border-accent-blue w-full sm:w-auto"
             />
           </div>
-          <div className="bg-bg-surface border border-border/50 rounded-2xl shadow-sm overflow-hidden">
+
+          {/* MOBILE VIEW — Cards */}
+          <div className="sm:hidden space-y-2">
+            {users?.users?.map((u) => (
+              <div key={u.email} className="bg-bg-surface border border-border/50 rounded-xl p-3">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <span className="font-mono text-xs text-text-primary truncate flex-1">{u.email}</span>
+                  <span className="text-[10px] text-text-muted flex-shrink-0 px-2 py-0.5 rounded bg-bg-primary border border-border/40">
+                    {u.country || '—'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-4 gap-2 text-center">
+                  <div>
+                    <div className="text-[9px] text-text-muted uppercase font-bold tracking-wider">Hold</div>
+                    <div className="text-sm font-black text-accent-purple mt-0.5">{u.holdingsCount}</div>
+                  </div>
+                  <div>
+                    <div className="text-[9px] text-text-muted uppercase font-bold tracking-wider">Watch</div>
+                    <div className="text-sm font-black text-accent-teal mt-0.5">{u.watchlistCount}</div>
+                  </div>
+                  <div>
+                    <div className="text-[9px] text-text-muted uppercase font-bold tracking-wider">Events</div>
+                    <div className="text-sm font-black text-text-primary mt-0.5">{u.eventsLast7d}</div>
+                  </div>
+                  <div>
+                    <div className="text-[9px] text-text-muted uppercase font-bold tracking-wider">Logins</div>
+                    <div className="text-sm font-black text-text-primary mt-0.5">{u.loginCount}</div>
+                  </div>
+                </div>
+                {u.lastLoginAt && (
+                  <div className="text-[10px] text-text-muted text-center mt-2 pt-2 border-t border-border/20">
+                    Last login: {new Date(u.lastLoginAt).toLocaleDateString()}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* DESKTOP VIEW — Table */}
+          <div className="hidden sm:block bg-bg-surface border border-border/50 rounded-2xl shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead className="bg-bg-primary/50 text-text-muted uppercase font-bold tracking-wider text-[10px]">
@@ -409,28 +455,30 @@ const Admin = () => {
                 </tbody>
               </table>
             </div>
-            {users && users.total > pageSize && (
-              <div className="flex items-center justify-between px-4 py-3 border-t border-border/40 bg-bg-primary/30">
-                <button
-                  onClick={() => setPage(p => Math.max(0, p - 1))}
-                  disabled={page === 0}
-                  className="text-xs font-bold text-text-secondary hover:text-accent-blue disabled:opacity-30"
-                >
-                  ← Previous
-                </button>
-                <span className="text-[10px] text-text-muted font-mono">
-                  {page * pageSize + 1}–{Math.min((page + 1) * pageSize, users.total)} of {users.total}
-                </span>
-                <button
-                  onClick={() => setPage(p => p + 1)}
-                  disabled={(page + 1) * pageSize >= users.total}
-                  className="text-xs font-bold text-text-secondary hover:text-accent-blue disabled:opacity-30"
-                >
-                  Next →
-                </button>
-              </div>
-            )}
           </div>
+
+          {/* Pagination */}
+          {users && users.total > pageSize && (
+            <div className="flex items-center justify-between px-4 py-3 border-t border-border/40 bg-bg-primary/30 rounded-b-2xl mt-2 sm:mt-0">
+              <button
+                onClick={() => setPage(p => Math.max(0, p - 1))}
+                disabled={page === 0}
+                className="text-xs font-bold text-text-secondary hover:text-accent-blue disabled:opacity-30"
+              >
+                ← Previous
+              </button>
+              <span className="text-[10px] text-text-muted font-mono">
+                {page * pageSize + 1}–{Math.min((page + 1) * pageSize, users.total)} of {users.total}
+              </span>
+              <button
+                onClick={() => setPage(p => p + 1)}
+                disabled={(page + 1) * pageSize >= users.total}
+                className="text-xs font-bold text-text-secondary hover:text-accent-blue disabled:opacity-30"
+              >
+                Next →
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

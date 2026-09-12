@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { getBatchStocks } from '../services/api';
 import useStore from '../store/useStore';
-import { track } from '../services/tracker'; // ✅ NEW
+import { track } from '../services/tracker';
 import LoadingSpinner from '../components/LoadingSpinner';
 import EditHoldingModal from './EditHoldingModal';
 import { formatCurrency, formatNumber, formatPercent } from '../utils/formatters';
@@ -318,7 +318,6 @@ const PortfolioView = () => {
   };
 
   const handleExportPDF = async () => {
-    // ✅ NEW: Track PDF export
     track('export_pdf', { count: holdingsWithData.length });
     try {
       const { jsPDF } = await import('jspdf');
@@ -416,7 +415,6 @@ const PortfolioView = () => {
   };
 
   const handleExportCSV = () => {
-    // ✅ NEW: Track CSV export
     track('export_csv', { count: holdingsWithData.length });
     const data = getHoldingsCSV();
     if (!data || data.length === 0) return;
@@ -438,7 +436,6 @@ const PortfolioView = () => {
   };
 
   const handleShare = () => {
-    // ✅ NEW: Track WhatsApp share
     track('share_whatsapp', { count: holdingsWithData.length });
     let message = '📊 DividendBro Portfolio Report\n\n';
     message += `📅 ${new Date().toLocaleDateString()}\n\n`;
@@ -483,57 +480,57 @@ const PortfolioView = () => {
       <div className="p-3 sm:p-6 space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-            <div className="text-sm text-text-muted">Account Balance</div>
-            <div className="text-lg font-bold break-words">{formatCurrency(totalValue, curSymbol)}</div>
+            <div className="text-xs sm:text-sm text-text-muted">Account Balance</div>
+            <div className="text-base sm:text-lg font-bold break-words">{formatCurrency(totalValue, curSymbol)}</div>
           </div>
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-            <div className="text-sm text-text-muted">Invested Costs</div>
-            <div className="text-lg font-bold break-words">{formatCurrency(totalCostBasis, curSymbol)}</div>
+            <div className="text-xs sm:text-sm text-text-muted">Invested Costs</div>
+            <div className="text-base sm:text-lg font-bold break-words">{formatCurrency(totalCostBasis, curSymbol)}</div>
           </div>
           <div className={`bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm flex flex-col justify-between ${totalGain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
-            <div className="text-sm text-text-muted">Total Capital Gains</div>
-            <div className="text-lg font-bold break-words">
+            <div className="text-xs sm:text-sm text-text-muted">Total Capital Gains</div>
+            <div className="text-base sm:text-lg font-bold break-words">
               {totalGain >= 0 ? '+' : ''}{formatCurrency(totalGain, curSymbol)}
-              <span className="block text-sm mt-0.5 font-semibold">{totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}</span>
+              <span className="block text-xs sm:text-sm mt-0.5 font-semibold">{totalGainPct >= 0 ? '+' : ''}{formatPercent(totalGainPct)}</span>
             </div>
           </div>
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-            <div className="text-sm text-text-muted">Weighted Yield</div>
-            <div className="text-lg font-bold break-words">{formatPercent(avgYield)}</div>
-            <div className="text-sm text-text-muted">Annual Income +{formatCurrency(totalAnnualDividend, curSymbol)}</div>
+            <div className="text-xs sm:text-sm text-text-muted">Weighted Yield</div>
+            <div className="text-base sm:text-lg font-bold break-words">{formatPercent(avgYield)}</div>
+            <div className="text-[10px] sm:text-sm text-text-muted">Annual +{formatCurrency(totalAnnualDividend, curSymbol)}</div>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-2 items-center border-b border-border/20 pb-4">
           <button
-            className={`px-4 py-2 rounded-lg transition-all ${view === 'holdings' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
+            className={`px-3 sm:px-4 py-2 rounded-lg transition-all text-xs sm:text-sm ${view === 'holdings' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
             onClick={() => setView('holdings')}
           >
             📋 Positions
           </button>
           <button
-            className={`px-4 py-2 rounded-lg transition-all ${view === 'income' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
+            className={`px-3 sm:px-4 py-2 rounded-lg transition-all text-xs sm:text-sm ${view === 'income' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
             onClick={() => setView('income')}
           >
-            💰 Dividend Income Flows
+            💰 Income Flows
           </button>
           <button
-            className={`px-4 py-2 rounded-lg transition-all ${view === 'calendar' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
+            className={`px-3 sm:px-4 py-2 rounded-lg transition-all text-xs sm:text-sm ${view === 'calendar' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
             onClick={() => setView('calendar')}
           >
-            📅 Upcoming Dividends Calendar
+            📅 Calendar
           </button>
-          <button className="px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm" onClick={handleExportCSV}>
+          <button className="px-3 sm:px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm text-xs sm:text-sm" onClick={handleExportCSV}>
             📊 CSV
           </button>
-          <button className="px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm" onClick={handleExportPDF}>
+          <button className="px-3 sm:px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm text-xs sm:text-sm" onClick={handleExportPDF}>
             📄 PDF
           </button>
-          <button className="px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm" onClick={handleShare}>
+          <button className="px-3 sm:px-4 py-2 rounded-lg bg-bg-secondary text-text-primary border border-border/20 shadow-sm text-xs sm:text-sm" onClick={handleShare}>
             📤 WhatsApp
           </button>
           <button
-            className="px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple/10 to-accent-blue/10 text-accent-purple border border-accent-purple/30 hover:from-accent-purple/20 hover:to-accent-blue/20 shadow-sm font-bold"
+            className="px-3 sm:px-4 py-2 rounded-lg bg-gradient-to-r from-accent-purple/10 to-accent-blue/10 text-accent-purple border border-accent-purple/30 hover:from-accent-purple/20 hover:to-accent-blue/20 shadow-sm font-bold text-xs sm:text-sm"
             onClick={handleAskAI}
           >
             💬 Ask AI
@@ -544,51 +541,53 @@ const PortfolioView = () => {
           <div className="space-y-4">
             {holdingsWithData.map((h) => (
               <div key={h.symbol} className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <span className="font-bold text-lg">{h.symbol}</span>
-                    <span className="text-sm text-text-muted ml-2">{h.name}</span>
+                <div className="flex justify-between items-start gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-bold text-base sm:text-lg">{h.symbol}</span>
+                      <span className="text-xs text-text-muted truncate">{h.name}</span>
+                    </div>
                   </div>
                   <button
-                    className="text-text-muted hover:text-text-primary"
+                    className="text-text-muted hover:text-text-primary flex-shrink-0"
                     onClick={() => toggleExpand(h.symbol)}
                   >
                     {expandedRows[h.symbol] ? '▲' : '▼'}
                   </button>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-3 text-sm">
                   <div>
-                    <span className="text-text-muted">Shares</span>
-                    <div className="font-medium">{formatNumber(h.shares, 0)}</div>
+                    <span className="text-xs text-text-muted">Shares</span>
+                    <div className="font-medium text-sm">{formatNumber(h.shares, 0)}</div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Avg Cost</span>
-                    <div className="font-medium">{h.purchasePrice ? formatCurrency(h.purchasePrice, curSymbol) : '—'}</div>
+                    <span className="text-xs text-text-muted">Avg Cost</span>
+                    <div className="font-medium text-sm">{h.purchasePrice ? formatCurrency(h.purchasePrice, curSymbol) : '—'}</div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Close Market</span>
-                    <div className="font-medium">{formatCurrency(h.priceInBase, curSymbol)}</div>
+                    <span className="text-xs text-text-muted">Close Market</span>
+                    <div className="font-medium text-sm">{formatCurrency(h.priceInBase, curSymbol)}</div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Current Value</span>
-                    <div className="font-medium">{formatCurrency(h.valueInBase, curSymbol)}</div>
+                    <span className="text-xs text-text-muted">Current Value</span>
+                    <div className="font-medium text-sm">{formatCurrency(h.valueInBase, curSymbol)}</div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Capital Gain</span>
-                    <div className={`font-medium break-words ${h.gain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
+                    <span className="text-xs text-text-muted">Capital Gain</span>
+                    <div className={`font-medium text-sm break-words ${h.gain >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
                       {h.gain >= 0 ? '+' : ''}{formatCurrency(h.gain, curSymbol)} ({h.gainPct >= 0 ? '+' : ''}{formatPercent(h.gainPct)})
                     </div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Yield</span>
-                    <div className="font-medium">{formatPercent(h.yieldPct)}</div>
+                    <span className="text-xs text-text-muted">Yield</span>
+                    <div className="font-medium text-sm">{formatPercent(h.yieldPct)}</div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Income Run</span>
-                    <div className="font-medium">{formatCurrency(h.annualIncomeInBase, curSymbol)}</div>
+                    <span className="text-xs text-text-muted">Income Run</span>
+                    <div className="font-medium text-sm">{formatCurrency(h.annualIncomeInBase, curSymbol)}</div>
                   </div>
                   <div>
-                    <span className="text-text-muted">Actions</span>
+                    <span className="text-xs text-text-muted">Actions</span>
                     <div className="flex items-center justify-end gap-2 mt-1">
                       <button className="text-xs text-accent-blue hover:underline" onClick={() => handleEdit(h)}>Edit</button>
                       <button className="text-xs text-accent-red hover:underline" onClick={() => removeFromPortfolio(h.symbol)}>Remove</button>
@@ -597,32 +596,35 @@ const PortfolioView = () => {
                 </div>
                 {expandedRows[h.symbol] && (
                   <div className="mt-4 border-t border-border/20 pt-4">
-                    <table className="w-full text-sm">
-                      <thead>
-                        <tr className="text-text-muted">
-                          <th className="px-4 py-2 text-left">Declaration Date</th>
-                          <th className="px-4 py-2 text-left">Dividend Per Share</th>
-                          <th className="px-4 py-2 text-left">Total No of Shares</th>
-                          <th className="px-4 py-2 text-left">Net Dividend Credit</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {h.dividendPayouts && h.dividendPayouts.length > 0 ? (
-                          h.dividendPayouts.sort((a, b) => b.date.localeCompare(a.date)).map((p, i) => (
-                            <tr key={i} className="border-b border-border/10">
-                              <td className="px-4 py-2">{p.date}</td>
-                              <td className="px-4 py-2">{formatCurrency(p.amount, curSymbol)}</td>
-                              <td className="px-4 py-2">{formatNumber(p.shares, 0)}</td>
-                              <td className="px-4 py-2">+{formatCurrency(p.amountInBase, curSymbol)}</td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="4" className="px-4 py-2 text-text-muted">No localized distribution matrix events recorded inside dynamic time frames.</td>
+                    {/* ✅ Wrapped in mobile-scroll for horizontal overflow */}
+                    <div className="mobile-scroll">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-text-muted">
+                            <th className="px-4 py-2 text-left text-xs">Declaration Date</th>
+                            <th className="px-4 py-2 text-left text-xs">Dividend Per Share</th>
+                            <th className="px-4 py-2 text-left text-xs">Total No of Shares</th>
+                            <th className="px-4 py-2 text-left text-xs">Net Dividend Credit</th>
                           </tr>
-                        )}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {h.dividendPayouts && h.dividendPayouts.length > 0 ? (
+                            h.dividendPayouts.sort((a, b) => b.date.localeCompare(a.date)).map((p, i) => (
+                              <tr key={i} className="border-b border-border/10">
+                                <td className="px-4 py-2 text-xs">{p.date}</td>
+                                <td className="px-4 py-2 text-xs">{formatCurrency(p.amount, curSymbol)}</td>
+                                <td className="px-4 py-2 text-xs">{formatNumber(p.shares, 0)}</td>
+                                <td className="px-4 py-2 text-xs">+{formatCurrency(p.amountInBase, curSymbol)}</td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="4" className="px-4 py-2 text-text-muted text-xs">No distribution events recorded.</td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
               </div>
@@ -633,18 +635,18 @@ const PortfolioView = () => {
         {view === 'income' && incomeData && (
           <div className="space-y-6">
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-              <h3 className="font-bold text-lg mb-2">Quarterly Realized Flux</h3>
+              <h3 className="font-bold text-base sm:text-lg mb-3">Quarterly Realized Flux</h3>
               {Object.keys(incomeData.quarterMap).length === 0 ? (
                 <p className="text-text-muted">No recorded movements.</p>
               ) : (
                 <div className="space-y-2">
                   {Object.entries(incomeData.quarterMap).sort().map(([label, val]) => (
                     <div key={label} className="flex items-center gap-2">
-                      <span className="w-20 text-sm">{label}</span>
+                      <span className="w-14 sm:w-20 text-[11px] sm:text-sm">{label}</span>
                       <div className="flex-1 h-4 bg-bg-secondary rounded-full overflow-hidden">
                         <div className="h-full bg-accent-blue rounded-full" style={{ width: `${(val / Math.max(...Object.values(incomeData.quarterMap))) * 100}%` }} />
                       </div>
-                      <span className="text-sm font-medium">{formatCurrency(val, curSymbol)}</span>
+                      <span className="text-[11px] sm:text-sm font-medium w-16 sm:w-auto text-right">{formatCurrency(val, curSymbol)}</span>
                     </div>
                   ))}
                 </div>
@@ -652,7 +654,7 @@ const PortfolioView = () => {
             </div>
 
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-              <h3 className="font-bold text-lg mb-2">Monthly Distributed Flow</h3>
+              <h3 className="font-bold text-base sm:text-lg mb-3">Monthly Distributed Flow</h3>
               {Object.keys(incomeData.monthMap).length === 0 ? (
                 <p className="text-text-muted">No recorded movements.</p>
               ) : (
@@ -662,11 +664,11 @@ const PortfolioView = () => {
                     const name = new Date(y, m-1).toLocaleString('default', { month: 'short' });
                     return (
                       <div key={key} className="flex items-center gap-2">
-                        <span className="w-20 text-sm">{name} {y}</span>
+                        <span className="w-14 sm:w-20 text-[11px] sm:text-sm">{name} {y}</span>
                         <div className="flex-1 h-4 bg-bg-secondary rounded-full overflow-hidden">
                           <div className="h-full bg-accent-teal rounded-full" style={{ width: `${(val / Math.max(...Object.values(incomeData.monthMap))) * 100}%` }} />
                         </div>
-                        <span className="text-sm font-medium">{formatCurrency(val, curSymbol)}</span>
+                        <span className="text-[11px] sm:text-sm font-medium w-16 sm:w-auto text-right">{formatCurrency(val, curSymbol)}</span>
                       </div>
                     );
                   })}
@@ -675,7 +677,7 @@ const PortfolioView = () => {
             </div>
 
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-              <h3 className="font-bold text-lg mb-2">Weekly Inflow Snapshot</h3>
+              <h3 className="font-bold text-base sm:text-lg mb-3">Weekly Inflow Snapshot</h3>
               {Object.keys(incomeData.weekMap).length === 0 ? (
                 <p className="text-text-muted">No recorded movements.</p>
               ) : (
@@ -684,11 +686,11 @@ const PortfolioView = () => {
                     const label = new Date(key + 'T00:00:00Z').toLocaleDateString('default', { month: 'short', day: 'numeric' });
                     return (
                       <div key={key} className="flex items-center gap-2">
-                        <span className="w-20 text-sm">W/C {label}</span>
+                        <span className="w-16 sm:w-20 text-[11px] sm:text-sm">W/C {label}</span>
                         <div className="flex-1 h-4 bg-bg-secondary rounded-full overflow-hidden">
                           <div className="h-full bg-accent-purple rounded-full" style={{ width: `${(val / Math.max(...Object.values(incomeData.weekMap))) * 100}%` }} />
                         </div>
-                        <span className="text-sm font-medium">{formatCurrency(val, curSymbol)}</span>
+                        <span className="text-[11px] sm:text-sm font-medium w-16 sm:w-auto text-right">{formatCurrency(val, curSymbol)}</span>
                       </div>
                     );
                   })}
@@ -700,7 +702,7 @@ const PortfolioView = () => {
 
         {view === 'calendar' && (
           <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
-            <h3 className="font-bold text-lg mb-2">Upcoming Weekly Dividend Timeline (90-Day Outlook)</h3>
+            <h3 className="font-bold text-base sm:text-lg mb-3">Upcoming Weekly Dividend Timeline (90-Day Outlook)</h3>
             {weeklyExDates.length === 0 ? (
               <p className="text-text-muted">No estimated future distribution events found matching active records profile vectors.</p>
             ) : (
@@ -710,10 +712,10 @@ const PortfolioView = () => {
                     <div className="text-xs font-bold uppercase tracking-wider text-accent-teal mb-2">Week of {weekStart}</div>
                     <div className="space-y-2">
                       {items.sort((a, b) => a.date.localeCompare(b.date)).map((item, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm">
-                          <span className="font-medium">{item.name}</span>
-                          <span className="text-text-muted">{item.symbol}</span>
-                          <span className="text-text-muted">{item.date}</span>
+                        <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm flex-wrap">
+                          <span className="font-medium truncate">{item.name}</span>
+                          <span className="text-text-muted font-mono">{item.symbol}</span>
+                          <span className="text-text-muted hidden sm:inline">{item.date}</span>
                           <span className="text-accent-green ml-auto">+{formatCurrency(item.amount, curSymbol)}</span>
                         </div>
                       ))}
