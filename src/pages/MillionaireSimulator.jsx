@@ -17,8 +17,9 @@ const PRESETS = [100, 250, 500, 1000, 2500];
 
 const MillionaireSimulator = () => {
   const { market, currency } = useStore();
-  const [symbol, setSymbol] = useState('KO');
-  const [inputValue, setInputValue] = useState('KO');
+  // ✅ Start with empty state - no default stock
+  const [symbol, setSymbol] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [monthlyAmount, setMonthlyAmount] = useState(500);
   const [drip, setDrip] = useState(true);
   const [isShareOpen, setIsShareOpen] = useState(false);
@@ -34,7 +35,7 @@ const MillionaireSimulator = () => {
       });
       return res.data;
     },
-    enabled: !!symbol,
+    enabled: !!symbol, // ✅ Only fetch when user has picked a stock
     staleTime: 10 * 60 * 1000,
   });
 
@@ -75,10 +76,13 @@ const MillionaireSimulator = () => {
     });
   }, [metrics, monthlyAmount]);
 
+  // Track page open (with or without symbol)
   useEffect(() => {
-    track('open_millionaire_simulator', { symbol, monthlyAmount, drip });
+    track('open_millionaire_simulator', { symbol: symbol || null, monthlyAmount, drip });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol]);
 
+  // Save simulation only when we have valid results
   useEffect(() => {
     if (!metrics || !withDripResult || !noDripResult) return;
     const activeResult = drip ? withDripResult : noDripResult;
@@ -126,15 +130,14 @@ const MillionaireSimulator = () => {
   };
 
   const activeResult = drip ? withDripResult : noDripResult;
+  const hasSelection = !!symbol; // ✅ Track whether a stock has been picked
 
   return (
     <>
       <Helmet>
         <title>Millionaire Simulator – How Fast to $1M with Dividend Stocks</title>
         <meta name="description" content="Interactive dividend simulator: see how fast $500/month reaches $1M in US and SGX stocks with DRIP. Live leaderboard of the fastest dividend compounders." />
-        {/* ✅ Fixed: Static canonical URL */}
         <link rel="canonical" href="https://dividendbro.com/millionaire" />
-        {/* ✅ Open Graph tags for social sharing */}
         <meta property="og:title" content="Millionaire Simulator – How Fast to $1M with Dividend Stocks" />
         <meta property="og:description" content="See how fast your monthly dividend investment reaches $1M. Interactive DRIP simulator for US and SGX stocks." />
         <meta property="og:url" content="https://dividendbro.com/millionaire" />
@@ -233,15 +236,34 @@ const MillionaireSimulator = () => {
           </div>
         </div>
 
-        {/* Results */}
-        {isLoading && <div className="py-12"><LoadingSpinner /></div>}
-        {error && (
+        {/* ✅ NEW: Empty state prompt - only shows when no stock is selected */}
+        {!hasSelection && (
+          <div className="bg-bg-surface border border-dashed border-border/50 rounded-2xl p-8 sm:p-12 text-center">
+            <div className="text-5xl mb-4">🔍</div>
+            <h3 className="text-lg font-black text-text-primary">Pick a stock to begin</h3>
+            <p className="text-text-muted text-xs mt-2 max-w-md mx-auto">
+              Search for any US or SGX dividend stock above to see how fast your monthly investment reaches $1M.
+            </p>
+            <p className="text-text-muted text-[10px] mt-4 italic">
+              Or scroll down to explore the leaderboard of the fastest dividend compounders
+            </p>
+          </div>
+        )}
+
+        {/* Loading state (only when a stock IS selected and loading) */}
+        {hasSelection && isLoading && (
+          <div className="py-12"><LoadingSpinner /></div>
+        )}
+
+        {/* Error state */}
+        {hasSelection && error && (
           <div className="bg-accent-red/5 border border-accent-red/20 rounded-2xl p-5 text-center">
             <p className="text-accent-red text-sm font-bold">⚠️ {error.response?.data?.error || error.message}</p>
             <button onClick={() => refetch()} className="mt-3 text-xs text-accent-blue font-bold hover:underline">Retry</button>
           </div>
         )}
 
+        {/* Results - only renders when stock is selected and data is loaded */}
         {metrics && activeResult && (
           <>
             {/* Hero Card */}
@@ -345,35 +367,38 @@ const MillionaireSimulator = () => {
               />
             </div>
 
-            <div className="pt-4 border-t border-border/40">
-              <div className="mb-4">
-                <h2 className="text-2xl font-black tracking-tight text-text-primary">
-                  🏆 Leaderboard: Fastest to {curSymbol}1M
-                </h2>
-                <p className="text-text-muted text-xs mt-1">
-                  Top dividend stocks ranked by how fast they'd reach $1M at your current settings.
-                  Adjust the slider above to see rankings shift live.
-                </p>
-              </div>
-
-              <MillionaireLeaderboard
-                stocks={leaderboardData?.stocks || []}
-                monthlyAmount={monthlyAmount}
-                drip={drip}
-                currencySymbol={curSymbol}
-                onSelectStock={handleSelectFromLeaderboard}
-                isLoading={leaderboardLoading}
-                error={leaderboardError?.message}
-              />
-            </div>
-
             <div className="bg-accent-yellow/5 border border-accent-yellow/20 rounded-xl p-4 text-[11px] text-text-muted leading-relaxed">
               <p><strong className="text-accent-yellow">⚠️ Important:</strong> This is a hypothetical projection based on historical price and dividend growth. Actual returns will vary. Past performance is not indicative of future results. This is educational only, not financial advice.</p>
             </div>
           </>
         )}
+
+        {/* Leaderboard - always visible */}
+        <div className={`pt-4 ${metrics ? 'border-t border-border/40' : ''}`}>
+          <div className="mb-4">
+            <h2 className="text-2xl font-black tracking-tight text-text-primary">
+              🏆 Leaderboard: Fastest to {curSymbol}1M
+            </h2>
+            <p className="text-text-muted text-xs mt-1">
+              Top dividend stocks ranked by how fast they'd reach $1M at your current settings.
+              {hasSelection && ' Adjust the slider above to see rankings shift live.'}
+              {!hasSelection && ' Adjust the slider above to see how rankings change.'}
+            </p>
+          </div>
+
+          <MillionaireLeaderboard
+            stocks={leaderboardData?.stocks || []}
+            monthlyAmount={monthlyAmount}
+            drip={drip}
+            currencySymbol={curSymbol}
+            onSelectStock={handleSelectFromLeaderboard}
+            isLoading={leaderboardLoading}
+            error={leaderboardError?.message}
+          />
+        </div>
       </div>
 
+      {/* Share Card Modal */}
       <ShareCardModal
         isOpen={isShareOpen}
         onClose={() => setIsShareOpen(false)}
