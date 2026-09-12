@@ -4,14 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
 
+  <!-- ✅ Cache-busting meta tags for mobile browsers -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <title>DividendBro – The Best Dividend Analysis & Management Tool</title>
   
-  <!-- ✅ UPDATED: Option 1 Meta Description -->
+  <!-- Meta Description -->
   <meta name="description" content="Build a $100 or $1,000 monthly dividend portfolio with DividendBro. Track DBS, OCBC, UOB payouts, screen weekly & monthly US dividend ETFs, and simulate DRIP growth. The ultimate SGX & US passive income tracker." />
   <link rel="canonical" href="https://dividendbro.com/" />
   <meta property="og:title" content="DividendBro – Best Dividend Analysis & Management Tool" />
   
-  <!-- ✅ UPDATED: Option 1 OG Description -->
+  <!-- OG Description -->
   <meta property="og:description" content="Build a $100 or $1,000 monthly dividend portfolio with DividendBro. Track DBS, OCBC, UOB payouts, screen weekly & monthly US dividend ETFs, and simulate DRIP growth. The ultimate SGX & US passive income tracker." />
   <meta property="og:url" content="https://dividendbro.com/" />
   <meta property="og:type" content="website" />
@@ -27,7 +32,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link rel="manifest" href="/manifest.json" />
   
-  <!-- ✅ UPDATED: Favicons and Apple Touch Icon -->
+  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
@@ -46,7 +51,7 @@
     gtag('config', 'G-0WCY5D37PD');
   </script>
 
-   <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
+  <!-- ===== STRUCTURED DATA (JSON-LD) ===== -->
 
   <!-- 1. Organization (Brand & Logo) -->
   <script type="application/ld+json">
@@ -172,5 +177,31 @@
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+
+  <!-- ✅ Stale Service Worker Cleanup -->
+  <script>
+    // Unregister any old service workers that might serve stale content
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+          console.log('[DividendBro] Unregistered stale service worker');
+        }
+      }).catch(function(err) {
+        console.log('[DividendBro] SW unregister error:', err);
+      });
+    }
+    // Clear any old caches
+    if ('caches' in window) {
+      caches.keys().then(function(names) {
+        for (let name of names) {
+          caches.delete(name);
+          console.log('[DividendBro] Cleared cache:', name);
+        }
+      }).catch(function(err) {
+        console.log('[DividendBro] Cache clear error:', err);
+      });
+    }
+  </script>
 </body>
 </html>
