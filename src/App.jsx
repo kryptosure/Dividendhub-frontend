@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import useStore from './store/useStore';
+import { trackPageView } from './services/tracker';
 
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
@@ -19,7 +20,7 @@ import Blog from './pages/Blog';
 import Article from './pages/Article';
 import SimulatorSingle from './pages/SimulatorSingle';
 import SimulatorDCA from './pages/SimulatorDCA';
-import Watchlist from './pages/Watchlist'; 
+import Watchlist from './pages/Watchlist';
 import StockComparison from './pages/StockComparison';
 import ChatWidget from './components/ChatWidget';
 import Admin from './pages/Admin';
@@ -36,8 +37,17 @@ const queryClient = new QueryClient({
   },
 });
 
-const SITE_URL = "https://dividendbro.com"; 
+const SITE_URL = "https://dividendbro.com";
 const DEFAULT_IMAGE = `${SITE_URL}/images/cover.png`;
+
+// ✅ NEW: Fires a page_view event on every route change
+function RouteTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    trackPageView(location.pathname + location.search);
+  }, [location.pathname, location.search]);
+  return null;
+}
 
 function App() {
   const { theme, token, setUser, setToken, setPortfolio, setWatchlist, logout } = useStore();
@@ -68,6 +78,7 @@ function App() {
     <AppErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <RouteTracker />
           <Helmet>
             <meta property="og:type" content="website" />
             <meta property="og:site_name" content="DividendBro" />
@@ -121,10 +132,8 @@ function Home() {
     ? `View complete payout histories, current yields metrics, capital safety scores, and ex‑dividend dates for ${symbol}.`
     : 'Analyze distributions records, verify trailing yield positions, and manage portfolio assets cleanly.';
 
-  // ✅ SEO: When a stock is loaded, keep it OUT of the canonical
-  // Canonical should always point to the clean homepage to avoid duplicate content
   const canonicalUrl = symbol
-    ? `${SITE_URL}/` // Clean homepage — symbol is dynamic content, not a separate page
+    ? `${SITE_URL}/`
     : `${SITE_URL}/`;
 
   return (
@@ -132,7 +141,6 @@ function Home() {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        {/* ✅ Fixed: Always canonical to clean homepage URL */}
         <link rel="canonical" href={canonicalUrl} />
       </Helmet>
 

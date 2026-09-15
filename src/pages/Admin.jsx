@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { getMe, getAnalyticsDashboard, getAdminUsers } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
+import useStore from '../store/useStore';
 
 const StatCard = ({ label, value, sub, accent = 'blue' }) => {
   const map = {
@@ -22,6 +24,20 @@ const SectionTitle = ({ children }) => (
   <h2 className="text-xs font-bold uppercase tracking-widest text-text-muted mb-3 mt-2">{children}</h2>
 );
 
+// ---------- Shared date label formatter ----------
+const formatDateLabel = (raw) => {
+  if (!raw) return '';
+  const s = String(raw).slice(0, 10);
+  const parts = s.split('-');
+  if (parts.length < 3) return s;
+  const [, m, d] = parts;
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthIdx = parseInt(m, 10) - 1;
+  if (isNaN(monthIdx) || !months[monthIdx]) return s;
+  return `${months[monthIdx]} ${parseInt(d, 10)}`;
+};
+
+// ---------- Bar Chart ----------
 const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'count' }) => {
   const colors = {
     blue: 'from-accent-blue/60 to-accent-blue',
@@ -29,22 +45,8 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
     green: 'from-accent-green/60 to-accent-green',
     purple: 'from-accent-purple/60 to-accent-purple',
   };
-  // Show fewer bars on mobile
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
   const visibleData = isMobile && data.length > 14 ? data.slice(-14) : data;
-
-  // ✅ Robust YYYY-MM-DD → "Sep 15" formatting (fixes the August/September bug)
-  const formatLabel = (raw) => {
-    if (!raw) return '';
-    const s = String(raw).slice(0, 10); // "2026-09-15"
-    const parts = s.split('-');
-    if (parts.length < 3) return s;
-    const [y, m, d] = parts;
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const monthIdx = parseInt(m, 10) - 1;
-    if (isNaN(monthIdx) || !months[monthIdx]) return s;
-    return `${months[monthIdx]} ${parseInt(d, 10)}`;
-  };
 
   return (
     <div className="flex items-end gap-1 h-32">
@@ -56,10 +58,10 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
             <div
               className={`w-full bg-gradient-to-t ${colors[color]} rounded-t transition-all`}
               style={{ height: `${Math.max(pct, 4)}%` }}
-              title={`${formatLabel(d[labelKey])}: ${val}`}
+              title={`${formatDateLabel(d[labelKey])}: ${val}`}
             />
             <div className="text-[8px] sm:text-[9px] text-text-muted mt-1 rotate-45 origin-left whitespace-nowrap">
-              {formatLabel(d[labelKey])}
+              {formatDateLabel(d[labelKey])}
             </div>
           </div>
         );
@@ -67,6 +69,151 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
     </div>
   );
 };
+
+// ---------- Line Chart with data labels ----------
+const LineChart = ({
+  data,
+  labelKey = 'date',
+  valueKey = 'count',
+  color = '#3b82f6',
+  yLabel = 'Count',
+  height = 'h-48',
+}) => {
+  const chartRef = useRef(null);
+  const chartInstance = useRef(null);
+  const theme = useStore(state => state.theme);
+
+  useEffect(() => {
+    if (!chartRef.current || !data || data.length === 0) return;
+    let isMounted = true;
+
+    const labels = data.map(d => formatDateLabel(d[labelKey]));
+    const values = data.map(d => parseInt(d[valueKey], 10));
+
+    import('chart.js/auto').then(({ default: Chart }) => {
+      if (!isMounted || !chartRef.current) return;
+      if (chartInstance.current) chartInstance.current.destroy();
+
+      const ctx = chartRef.current.getContext('2d');
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      const mutedColor = isLight ? '#64748b' : '#94a3b8';
+      const labelColor = isLight ? '#0f172a' : '#f8fafc';
+      const gridColor = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.04)';
+
+      const gradient = ctx.createLinearGradient(0, 0, 0, 240);
+      gradient.addColorStop(0, hexToRgba(color, 0.28));
+      gradient.addColorStop(1, hexToRgba(color, 0));
+
+      const maxVal = Math.max(...values, 1);
+
+      chartInstance.current = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: yLabel,
+            data: values,
+            borderColor: color,
+            backgroundColor: gradient,
+            borderWidth: 2.5,
+            fill: true,
+            tension: 0.35,
+            pointRadius: 4,
+            pointBackgroundColor: color,
+            pointBorderColor: isLight ? '#ffffff' : '#0a0a0a',
+            pointBorderWidth: 2,
+            pointHoverRadius: 6,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: { padding: { top: 24, right: 12, left: 4, bottom: 4 } },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0a0e1a',
+              titleFont: { family: 'Inter', weight: '700' },
+              bodyFont: { family: 'Inter' },
+              padding: 10,
+              callbacks: {
+                label: (ctx) => ` ${yLabel}: ${ctx.raw}`,
+              },
+            },
+            datalabels: {
+              anchor: 'end',
+              align: 'top',
+              offset: 4,
+              color: labelColor,
+              font: { family: 'Inter', weight: '700', size: 10 },
+              formatter: (val) => (val > 0 ? val : ''),
+              display: (ctx) => {
+                const total = ctx.dataset.data.length;
+                if (total > 20) {
+                  const step = Math.ceil(total / 14);
+                  return ctx.dataIndex % step === 0;
+                }
+                return true;
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: {
+                color: mutedColor,
+                font: { size: 10 },
+                maxRotation: 0,
+                autoSkip: true,
+                maxTicksLimit: 10,
+              },
+            },
+            y: {
+              beginAtZero: true,
+              suggestedMax: maxVal + Math.ceil(maxVal * 0.2),
+              grid: { color: gridColor },
+              ticks: {
+                color: mutedColor,
+                font: { size: 10 },
+                precision: 0,
+                stepSize: maxVal <= 10 ? 1 : undefined,
+              },
+            },
+          },
+        },
+        plugins: [ChartDataLabels],
+      });
+    });
+
+    return () => {
+      isMounted = false;
+      if (chartInstance.current) {
+        chartInstance.current.destroy();
+        chartInstance.current = null;
+      }
+    };
+  }, [data, color, labelKey, valueKey, yLabel, theme]);
+
+  if (!data || data.length === 0) {
+    return <p className="text-text-muted text-sm py-8 text-center">No data yet.</p>;
+  }
+
+  return (
+    <div className={`${height} relative`}>
+      <canvas ref={chartRef} />
+    </div>
+  );
+};
+
+// ---------- Utility: hex to rgba ----------
+function hexToRgba(hex, alpha) {
+  const h = String(hex).replace('#', '');
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  if (isNaN(r) || isNaN(g) || isNaN(b)) return `rgba(59,130,246,${alpha})`;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
 
 const Admin = () => {
   const [authState, setAuthState] = useState('checking');
@@ -78,7 +225,6 @@ const Admin = () => {
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
-  // Step 1: Verify admin status with the backend
   useEffect(() => {
     const verify = async () => {
       const token = localStorage.getItem('token');
@@ -97,7 +243,6 @@ const Admin = () => {
     verify();
   }, []);
 
-  // Step 2: Fetch data once verified
   useEffect(() => {
     if (authState !== 'admin') return;
     const fetchAll = async () => {
@@ -169,8 +314,6 @@ const Admin = () => {
 
   const maxSignups = data?.timelines?.signups?.length
     ? Math.max(...data.timelines.signups.map(s => parseInt(s.count))) : 1;
-  const maxDau = data?.timelines?.dau?.length
-    ? Math.max(...data.timelines.dau.map(s => parseInt(s.count))) : 1;
   const maxFeature = data?.featureUsage?.length
     ? Math.max(...data.featureUsage.map(f => parseInt(f.count))) : 1;
 
@@ -195,7 +338,7 @@ const Admin = () => {
           </span>
         </div>
 
-        {/* KPI Row — distinguishes visitors from registered users */}
+        {/* KPI Row */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           <StatCard
             label="Visitors Today"
@@ -235,7 +378,7 @@ const Admin = () => {
           />
         </div>
 
-        {/* Timelines */}
+        {/* Signups (bar) + DAU (line) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <SectionTitle>Signups (Last 30 Days)</SectionTitle>
@@ -250,12 +393,30 @@ const Admin = () => {
           <div>
             <SectionTitle>Daily Active Visitors (Last 30 Days)</SectionTitle>
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
-              {data.timelines.dau.length === 0 ? (
-                <p className="text-text-muted text-sm py-8 text-center">No data yet.</p>
-              ) : (
-                <BarChart data={data.timelines.dau} max={maxDau} color="green" />
-              )}
+              <LineChart
+                data={data.timelines.dau}
+                labelKey="date"
+                valueKey="count"
+                color="#10b981"
+                yLabel="DAU"
+                height="h-48"
+              />
             </div>
+          </div>
+        </div>
+
+        {/* WAU (full width) */}
+        <div>
+          <SectionTitle>Weekly Active Visitors (Last 12 Weeks)</SectionTitle>
+          <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
+            <LineChart
+              data={data.timelines.wau || []}
+              labelKey="week"
+              valueKey="count"
+              color="#8b5cf6"
+              yLabel="WAU"
+              height="h-56"
+            />
           </div>
         </div>
 
@@ -302,6 +463,113 @@ const Admin = () => {
           </div>
         </div>
 
+        {/* Top Pages + Traffic Sources */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <SectionTitle>Top Landing Pages (Last 30 Days)</SectionTitle>
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
+              {(!data.topPages || data.topPages.length === 0) ? (
+                <p className="text-text-muted text-sm">No page views yet.</p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {data.topPages.map((p, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm">
+                      <span className="text-[10px] text-text-muted w-5">{i + 1}</span>
+                      <Link
+                        to={p.path}
+                        className="font-mono text-text-primary flex-1 truncate hover:text-accent-blue transition-colors text-xs"
+                      >
+                        {p.path}
+                      </Link>
+                      <span className="text-xs font-bold text-accent-blue">{p.count}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <SectionTitle>Traffic Sources (Last 30 Days)</SectionTitle>
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
+              {(!data.topSources || data.topSources.length === 0) ? (
+                <p className="text-text-muted text-sm">No traffic data yet.</p>
+              ) : (
+                <ul className="space-y-2">
+                  {data.topSources.map((s, i) => {
+                    const maxSrc = Math.max(...data.topSources.map(x => x.count));
+                    const pct = maxSrc > 0 ? (s.count / maxSrc) * 100 : 0;
+                    return (
+                      <li key={i} className="flex items-center gap-3">
+                        <span className="text-xs font-semibold text-text-secondary w-32 truncate">{s.source}</span>
+                        <div className="flex-1 h-3 bg-bg-primary rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-accent-purple to-accent-blue rounded-full"
+                            style={{ width: `${Math.max(pct, 4)}%` }}
+                          />
+                        </div>
+                        <span className="text-xs font-bold text-accent-purple w-10 text-right">{s.count}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Visitor Geography + Devices */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div>
+            <SectionTitle>Visitor Geography (Last 30 Days)</SectionTitle>
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
+              {(!data.visitorGeography || data.visitorGeography.length === 0) ? (
+                <p className="text-text-muted text-sm">No geo data yet.</p>
+              ) : (
+                <ul className="space-y-1.5">
+                  {data.visitorGeography.map((g, i) => (
+                    <li key={i} className="flex items-center gap-3 text-sm">
+                      <span className="text-[10px] text-text-muted w-5">{i + 1}</span>
+                      <span className="font-mono font-bold text-text-primary w-8">{g.country}</span>
+                      <div className="flex-1 h-3 bg-bg-primary rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-accent-teal to-accent-green rounded-full"
+                          style={{ width: `${(g.visitors / data.visitorGeography[0].visitors) * 100}%` }}
+                        />
+                      </div>
+                      <span className="text-xs font-bold text-accent-teal w-20 text-right">
+                        {g.visitors} <span className="text-text-muted font-normal">visitors</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <SectionTitle>Device Breakdown (Last 30 Days)</SectionTitle>
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
+              {(!data.devices || data.devices.length === 0) ? (
+                <p className="text-text-muted text-sm">No device data yet.</p>
+              ) : (
+                <div className="grid grid-cols-3 gap-3">
+                  {data.devices.map((d, i) => {
+                    const icons = { mobile: '📱', tablet: '📱', desktop: '💻', unknown: '❓' };
+                    return (
+                      <div key={i} className="bg-bg-primary border border-border/40 rounded-xl p-4 text-center">
+                        <div className="text-2xl mb-1">{icons[d.device] || '📊'}</div>
+                        <div className="text-[10px] uppercase font-bold tracking-wider text-text-muted">{d.device}</div>
+                        <div className="text-lg font-black text-text-primary mt-1">{d.count}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Top Searches + Top Viewed */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
@@ -342,7 +610,7 @@ const Admin = () => {
           </div>
         </div>
 
-        {/* Top Articles + Geography */}
+        {/* Top Articles + Registered User Geography */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <SectionTitle>Top Articles (Last 30 Days)</SectionTitle>
@@ -365,7 +633,7 @@ const Admin = () => {
             </div>
           </div>
           <div>
-            <SectionTitle>Geography</SectionTitle>
+            <SectionTitle>Registered User Geography</SectionTitle>
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-4 shadow-sm">
               {data.geography.countryBreakdown.length === 0 ? (
                 <p className="text-text-muted text-sm">No geo data.</p>

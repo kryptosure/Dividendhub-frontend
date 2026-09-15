@@ -30,6 +30,18 @@ const recentEvents = new Map();
 let queue = [];
 let timer = null;
 
+// ---------- Detect device type from user agent ----------
+function getDeviceType() {
+  try {
+    const ua = navigator.userAgent || '';
+    if (/tablet|ipad|playbook|silk/i.test(ua)) return 'tablet';
+    if (/mobile|iphone|ipod|android.*mobile|windows phone/i.test(ua)) return 'mobile';
+    return 'desktop';
+  } catch {
+    return 'unknown';
+  }
+}
+
 export function track(eventType, eventData = {}) {
   try {
     const key = `${eventType}:${JSON.stringify(eventData)}`;
@@ -43,7 +55,7 @@ export function track(eventType, eventData = {}) {
       event_type: eventType,
       event_data: eventData,
       session_id: sessionId,
-      visitor_id: visitorId,   // ✅ NEW
+      visitor_id: visitorId,
     });
 
     if (!timer) timer = setTimeout(flush, 2000);
@@ -51,6 +63,20 @@ export function track(eventType, eventData = {}) {
   } catch (e) {
     // never break the app
   }
+}
+
+// ---------- Page-view tracker — fires on every route change ----------
+export function trackPageView(path) {
+  try {
+    const referrer = document.referrer || '';
+    track('page_view', {
+      path: String(path || '/').slice(0, 200),
+      referrer: String(referrer).slice(0, 200),
+      device: getDeviceType(),
+      screen: `${window.innerWidth}x${window.innerHeight}`,
+      title: String(document.title || '').slice(0, 120),
+    });
+  } catch (e) {}
 }
 
 async function flush() {
@@ -76,4 +102,4 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export default { track };
+export default { track, trackPageView };
