@@ -1,14 +1,29 @@
 /* src/services/tracker.js
  * Lightweight frontend event tracker. Batches events and flushes every 2s.
+ * Sends BOTH a persistent visitorId (localStorage) and a sessionId (per page load).
  */
 
 import { logEvent } from './api';
 
-// Session ID (resets on page reload)
-const sessionId = Math.random().toString(36).slice(2, 12);
-const STORAGE_KEY = 'db_last_event';
+// ---------- Persistent visitor ID (survives page reloads) ----------
+function getVisitorId() {
+  try {
+    const KEY = 'db_visitor_id';
+    let id = localStorage.getItem(KEY);
+    if (!id) {
+      id = 'v_' + Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+      localStorage.setItem(KEY, id);
+    }
+    return id;
+  } catch {
+    return 'v_unknown';
+  }
+}
 
-// Dedup: don't log the same event type+data combo twice within X ms
+// ---------- Per-page-load session ID ----------
+const sessionId = 's_' + Math.random().toString(36).slice(2, 12);
+const visitorId = getVisitorId();
+
 const DEDUP_WINDOW_MS = 1500;
 const recentEvents = new Map();
 
@@ -17,7 +32,6 @@ let timer = null;
 
 export function track(eventType, eventData = {}) {
   try {
-    // Dedup check
     const key = `${eventType}:${JSON.stringify(eventData)}`;
     const now = Date.now();
     const last = recentEvents.get(key);
@@ -29,17 +43,13 @@ export function track(eventType, eventData = {}) {
       event_type: eventType,
       event_data: eventData,
       session_id: sessionId,
+      visitor_id: visitorId,   // ✅ NEW
     });
 
-    // Debounced flush
-    if (!timer) {
-      timer = setTimeout(flush, 2000);
-    }
-
-    // Flush immediately if queue gets large
+    if (!timer) timer = setTimeout(flush, 2000);
     if (queue.length >= 20) flush();
   } catch (e) {
-    // Never break the app
+    // never break the app
   }
 }
 
@@ -53,11 +63,9 @@ async function flush() {
   } catch (e) {}
 }
 
-// Flush on page unload
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', () => {
     if (queue.length > 0) {
-      // Use sendBeacon for reliability on unload
       try {
         const payload = JSON.stringify({ events: queue });
         const blob = new Blob([payload], { type: 'application/json' });

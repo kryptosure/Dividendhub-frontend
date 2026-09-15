@@ -32,7 +32,20 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
   // Show fewer bars on mobile
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
   const visibleData = isMobile && data.length > 14 ? data.slice(-14) : data;
-  
+
+  // ✅ Robust YYYY-MM-DD → "Sep 15" formatting (fixes the August/September bug)
+  const formatLabel = (raw) => {
+    if (!raw) return '';
+    const s = String(raw).slice(0, 10); // "2026-09-15"
+    const parts = s.split('-');
+    if (parts.length < 3) return s;
+    const [y, m, d] = parts;
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthIdx = parseInt(m, 10) - 1;
+    if (isNaN(monthIdx) || !months[monthIdx]) return s;
+    return `${months[monthIdx]} ${parseInt(d, 10)}`;
+  };
+
   return (
     <div className="flex items-end gap-1 h-32">
       {visibleData.map((d, i) => {
@@ -43,10 +56,10 @@ const BarChart = ({ data, max, color = 'blue', labelKey = 'date', valueKey = 'co
             <div
               className={`w-full bg-gradient-to-t ${colors[color]} rounded-t transition-all`}
               style={{ height: `${Math.max(pct, 4)}%` }}
-              title={`${d[labelKey]}: ${val}`}
+              title={`${formatLabel(d[labelKey])}: ${val}`}
             />
             <div className="text-[8px] sm:text-[9px] text-text-muted mt-1 rotate-45 origin-left whitespace-nowrap">
-              {String(d[labelKey]).slice(5)}
+              {formatLabel(d[labelKey])}
             </div>
           </div>
         );
@@ -182,14 +195,44 @@ const Admin = () => {
           </span>
         </div>
 
-        {/* KPI Row */}
+        {/* KPI Row — distinguishes visitors from registered users */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          <StatCard label="Total Users" value={data.users.total} accent="blue" />
-          <StatCard label="Signups Today" value={data.users.signupsToday} sub={`${data.users.signups7d} in 7d`} accent="teal" />
-          <StatCard label="DAU (Today)" value={data.users.activeToday} sub={`${data.users.active7d} WAU`} accent="green" />
-          <StatCard label="Stickiness" value={`${data.users.stickiness}%`} sub="DAU/MAU ratio" accent="yellow" />
-          <StatCard label="Portfolio Adopt" value={`${data.users.portfolioAdoptionPct}%`} sub={`${data.users.usersWithPortfolio} users`} accent="purple" />
-          <StatCard label="Watchlist Adopt" value={`${data.users.watchlistAdoptionPct}%`} sub={`${data.users.usersWithWatchlist} users`} accent="teal" />
+          <StatCard
+            label="Visitors Today"
+            value={data.users.visitorsToday ?? 0}
+            sub={`${data.users.visitors30d ?? 0} in 30d`}
+            accent="blue"
+          />
+          <StatCard
+            label="Registered Users"
+            value={data.users.total}
+            sub={`${data.users.signups30d} in 30d`}
+            accent="teal"
+          />
+          <StatCard
+            label="Signed In Today"
+            value={data.users.activeToday}
+            sub={`${data.users.active7d} this week`}
+            accent="green"
+          />
+          <StatCard
+            label="Stickiness"
+            value={`${data.users.stickiness}%`}
+            sub="Visitors DAU/MAU"
+            accent="yellow"
+          />
+          <StatCard
+            label="Portfolio Adopt"
+            value={`${data.users.portfolioAdoptionPct}%`}
+            sub={`${data.users.usersWithPortfolio} users`}
+            accent="purple"
+          />
+          <StatCard
+            label="Watchlist Adopt"
+            value={`${data.users.watchlistAdoptionPct}%`}
+            sub={`${data.users.usersWithWatchlist} users`}
+            accent="teal"
+          />
         </div>
 
         {/* Timelines */}
@@ -205,7 +248,7 @@ const Admin = () => {
             </div>
           </div>
           <div>
-            <SectionTitle>Daily Active Users (Last 30 Days)</SectionTitle>
+            <SectionTitle>Daily Active Visitors (Last 30 Days)</SectionTitle>
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
               {data.timelines.dau.length === 0 ? (
                 <p className="text-text-muted text-sm py-8 text-center">No data yet.</p>
