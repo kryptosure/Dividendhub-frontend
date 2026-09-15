@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useQueries } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { getBatchStocks, getLongTermGrowth } from '../services/api';
@@ -30,20 +30,33 @@ const StockComparison = () => {
     })),
   });
 
-  const growthQueries = useQueries({
-    queries: symbols.map(sym => ({
-      queryKey: ['compare-growth', sym, market],
-      queryFn: () => getLongTermGrowth(sym, market, 1000),
-      enabled: !!sym,
-    })),
+  // ✅ Serial growth fetch — one symbol at a time.
+  // Previously used useQueries (parallel), which caused Yahoo to silently
+  // throttle 3 out of 5 requests, returning partial data → null 5Y slot.
+  const growthQuery = useQuery({
+    queryKey: ['compare-growth-all', symbols, market],
+    queryFn: async () => {
+      const results = [];
+      for (const sym of symbols) {
+        try {
+          results.push(await getLongTermGrowth(sym, market, 1000));
+        } catch (err) {
+          console.warn(`Long-term growth failed for ${sym}:`, err.message);
+          results.push(null);
+        }
+      }
+      return results;
+    },
+    enabled: symbols.length > 0,
+    staleTime: 5 * 60 * 1000,
   });
 
   const stocksWithData = useMemo(() => {
     return symbols.map((sym, index) => {
       const stockRes = stockQueries[index]?.data?.[0];
-      const growthRes = growthQueries[index]?.data;
+      const growthRes = growthQuery.data?.[index];
 
-      // ✅ Use backend-computed fields (corrected formulas for complete years only)
+      // ✅ Backend-computed fields
       const frequency = stockRes?.data?.dividendFrequency ?? 0;
       const streak = stockRes?.data?.dividendStreak ?? 0;
 
@@ -69,7 +82,15 @@ const StockComparison = () => {
         isLoading: stockQueries[index]?.isLoading,
       };
     });
-  }, [symbols, stockQueries, growthQueries]);
+  }, [symbols, stockQueries, growthQuery.data]);
+
+  // ✅ Payout ratio cell styling: warn when >100%
+  const payoutClass = (ratio) => {
+    if (ratio == null) return 'text-text-secondary';
+    if (ratio > 150) return 'text-accent-red font-bold';
+    if (ratio > 100) return 'text-accent-yellow font-bold';
+    return 'text-text-secondary';
+  };
 
   return (
     <>
@@ -172,8 +193,20 @@ const StockComparison = () => {
                   <tr>
                     <td className="px-4 py-3 text-text-muted font-semibold">Dividend Payout Ratio</td>
                     {stocksWithData.map(stock => (
-                      <td key={stock.symbol} className="px-4 py-3 text-center font-mono text-text-secondary">
-                        {stock.payoutRatio ? formatPercent(stock.payoutRatio) : '—'}
+                      <td key={stock.symbol} className={`px-4 py-3 text-center font-mono ${payoutClass(stock.payoutRatio)}`}>
+                        {stock.payoutRatio ? (
+                          <>
+                            {formatPercent(stock.payoutRatio)}
+                            {stock.payoutRatio > 100 && (
+                              <span
+                                title="Payout ratio exceeds 100% — dividend may not be covered by earnings"
+                                className="ml-1 cursor-help"
+                              >
+                                ⚠
+                              </span>
+                            )}
+                          </>
+                        ) : '—'}
                       </td>
                     ))}
                   </tr>
