@@ -11,6 +11,12 @@ const KPIList = ({ data }) => {
 
   const hasNoDividends = !data.totalDividend || data.payoutCount === 0;
 
+  const cagrClass = data.dividendCAGR == null
+    ? 'text-text-muted'
+    : data.dividendCAGR >= 0
+      ? 'text-accent-teal'
+      : 'text-accent-red';
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
@@ -18,7 +24,9 @@ const KPIList = ({ data }) => {
         <div className="text-lg font-black text-text-primary mt-1">
           {hasNoDividends ? 'No History' : `${cur}${data.totalDividend.toFixed(2)}`}
         </div>
-        <div className="text-[10px] font-semibold text-text-muted mt-0.5">{hasNoDividends ? '—' : `${data.payoutCount} Tracked Logs`}</div>
+        <div className="text-[10px] font-semibold text-text-muted mt-0.5">
+          {hasNoDividends ? '—' : `${data.payoutCount} Tracked Logs`}
+        </div>
       </div>
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
@@ -39,7 +47,7 @@ const KPIList = ({ data }) => {
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
         <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">5-Yr CAGR Alpha</span>
-        <div className={`text-lg font-black mt-1 ${data.dividendCAGR && data.dividendCAGR >= 0 ? 'text-accent-teal' : 'text-accent-red'}`}>
+        <div className={`text-lg font-black mt-1 ${cagrClass}`}>
           {data.dividendCAGR != null ? (data.dividendCAGR >= 0 ? '+' : '') + data.dividendCAGR.toFixed(2) + '%' : '—'}
         </div>
         <div className="text-[10px] font-semibold text-text-muted mt-0.5">Compounded Delta</div>

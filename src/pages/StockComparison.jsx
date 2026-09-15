@@ -43,15 +43,14 @@ const StockComparison = () => {
       const stockRes = stockQueries[index]?.data?.[0];
       const growthRes = growthQueries[index]?.data;
 
-      const byYear = stockRes?.data?.byYear || [];
-      const lastYear = byYear[0];
-      const frequency = lastYear ? lastYear.count : 0;
-      const streak = byYear.length;
+      // ✅ Use backend-computed fields (corrected formulas for complete years only)
+      const frequency = stockRes?.data?.dividendFrequency ?? 0;
+      const streak = stockRes?.data?.dividendStreak ?? 0;
 
       let priceCAGR = null;
       if (growthRes && Array.isArray(growthRes.noDrip) && growthRes.noDrip[1] && growthRes.noDrip[1] > 0) {
         const multiplier = growthRes.noDrip[1] / 1000;
-        priceCAGR = (Math.pow(multiplier, 1/5) - 1) * 100;
+        priceCAGR = (Math.pow(multiplier, 1 / 5) - 1) * 100;
       }
 
       return {
@@ -77,7 +76,6 @@ const StockComparison = () => {
       <Helmet>
         <title>Stock Comparison Tool – Compare Dividend Stocks Side by Side</title>
         <meta name="description" content="Compare up to 5 dividend stocks side by side. Yield, payout ratio, dividend CAGR, safety score, and dividend streak in one clean table." />
-        {/* ✅ Fixed: Static canonical URL */}
         <link rel="canonical" href="https://dividendbro.com/compare" />
         <meta property="og:title" content="Stock Comparison Tool – DividendBro" />
         <meta property="og:description" content="Compare up to 5 dividend stocks side by side." />
@@ -103,7 +101,7 @@ const StockComparison = () => {
             placeholder="Enter ticker symbol (e.g. AAPL)"
             className="flex-1 bg-bg-primary/50 border border-border/60 rounded-xl px-4 py-2.5 text-sm font-medium text-text-primary placeholder-text-muted/60 focus:outline-none focus:border-accent-blue focus:ring-4 focus:ring-accent-blue/5"
           />
-          <button 
+          <button
             type="submit"
             className="px-6 py-2.5 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold tracking-wide uppercase rounded-xl shadow-sm hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
             disabled={compareList.length >= 5}
@@ -143,7 +141,7 @@ const StockComparison = () => {
                             {stock.name}
                           </Link>
                           <span className="text-text-muted font-mono text-xs">{stock.symbol}</span>
-                          <button 
+                          <button
                             onClick={() => removeFromCompare(stock.symbol)}
                             className="text-accent-red text-[10px] font-bold hover:underline mt-1"
                           >
@@ -183,7 +181,7 @@ const StockComparison = () => {
                     <td className="px-4 py-3 text-text-muted font-semibold">Dividend CAGR (5Y)</td>
                     {stocksWithData.map(stock => (
                       <td key={stock.symbol} className={`px-4 py-3 text-center font-mono font-bold ${stock.dividendCAGR >= 0 ? 'text-accent-teal' : 'text-accent-red'}`}>
-                        {stock.dividendCAGR ? (stock.dividendCAGR >= 0 ? '+' : '') + stock.dividendCAGR.toFixed(2) + '%' : '—'}
+                        {stock.dividendCAGR != null ? (stock.dividendCAGR >= 0 ? '+' : '') + stock.dividendCAGR.toFixed(2) + '%' : '—'}
                       </td>
                     ))}
                   </tr>
