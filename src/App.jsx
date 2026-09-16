@@ -25,7 +25,7 @@ import StockComparison from './pages/StockComparison';
 import ChatWidget from './components/ChatWidget';
 import Admin from './pages/Admin';
 import MillionaireSimulator from './pages/MillionaireSimulator';
-import TargetIncome from './pages/TargetIncome';   // ✅ NEW
+import TargetIncome from './pages/TargetIncome';
 
 import { getMe } from './services/api';
 
@@ -41,7 +41,7 @@ const queryClient = new QueryClient({
 const SITE_URL = "https://dividendbro.com";
 const DEFAULT_IMAGE = `${SITE_URL}/images/cover.png`;
 
-// ✅ Fires a page_view event on every route change
+// Fires a page_view event on every route change
 function RouteTracker() {
   const location = useLocation();
   useEffect(() => {
@@ -86,15 +86,21 @@ function App() {
             <meta property="og:url" content={SITE_URL} />
             <meta property="og:image" content={DEFAULT_IMAGE} />
             <meta name="twitter:card" content="summary_large_image" />
-            <meta property="og:title" content="DividendBro – Premium Dividend Analysis & Management Hub" />
-            <meta property="og:description" content="Track yields, compound simulations, and manage income assets cleanly for US & SGX stock markets." />
+            <meta property="og:title" content="DividendBro – Monthly Dividend Income Planner" />
+            <meta property="og:description" content="See what a sample dividend portfolio could look like for your monthly income goal. Free for US & SGX stocks." />
           </Helmet>
 
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col font-sans antialiased selection:bg-accent-blue/20">
             <Header />
             <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8 animate-in fade-in duration-300">
               <Routes>
-                <Route path="/" element={<Home />} />
+                {/* Home is now the Monthly Dividend Income Planner */}
+                <Route path="/" element={<TargetIncome />} />
+                {/* Search + stock results live at /search */}
+                <Route path="/search" element={<SearchStocks />} />
+                {/* Legacy redirect for old bookmarks */}
+                <Route path="/income-planner" element={<Navigate to="/" replace />} />
+
                 <Route path="/portfolio" element={<PortfolioView />} />
                 <Route path="/watchlist" element={<Watchlist />} />
                 <Route path="/compare" element={<StockComparison />} />
@@ -106,7 +112,6 @@ function App() {
                 <Route path="/simulate/one-time" element={<SimulatorSingle />} />
                 <Route path="/simulate/dca" element={<SimulatorDCA />} />
                 <Route path="/millionaire" element={<MillionaireSimulator />} />
-                <Route path="/income-planner" element={<TargetIncome />} />   {/* ✅ NEW */}
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
@@ -122,21 +127,21 @@ function App() {
   );
 }
 
-function Home() {
+function SearchStocks() {
   const [searchParams] = useSearchParams();
   const symbol = searchParams.get('symbol') || '';
 
   const pageTitle = symbol
-    ? `${symbol} Dividend History – Yield, Ex‑Dates & Risk Assessment`
-    : 'DividendBro – Best Dividend Analysis & Management Tool for US & SGX Stocks';
+    ? `${symbol} Dividend History – Yield, Ex-Dates & Risk Assessment`
+    : 'Search Dividend Stocks – US & SGX | DividendBro';
 
   const pageDescription = symbol
-    ? `View complete payout histories, current yields metrics, capital safety scores, and ex‑dividend dates for ${symbol}.`
-    : 'Analyze distributions records, verify trailing yield positions, and manage portfolio assets cleanly.';
+    ? `View complete payout histories, current yields metrics, capital safety scores, and ex-dividend dates for ${symbol}.`
+    : 'Search and analyze dividend stocks for US and SGX markets.';
 
   const canonicalUrl = symbol
-    ? `${SITE_URL}/`
-    : `${SITE_URL}/`;
+    ? `${SITE_URL}/search`
+    : `${SITE_URL}/search`;
 
   return (
     <>
@@ -155,9 +160,9 @@ function Home() {
           Analyse cash flows, calculate asset growth caps, and track passive dividend revenue across US and SGX channels seamlessly.
         </p>
         <div className="flex flex-wrap justify-center gap-1.5 mt-4 text-[10px] font-bold uppercase tracking-wider">
-          <span className="bg-accent-blue/5 text-accent-blue px-3 py-1 rounded-md border border-accent-blue/10">🇺🇸 US Equities</span>
-          <span className="bg-accent-teal/5 text-accent-teal px-3 py-1 rounded-md border border-accent-teal/10">🇸🇬 SGX Vectors</span>
-          <span className="bg-accent-purple/5 text-accent-purple px-3 py-1 rounded-md border border-accent-purple/10">📊 REIT Frameworks</span>
+          <span className="bg-accent-blue/5 text-accent-blue px-3 py-1 rounded-md border border-accent-blue/10">US Equities</span>
+          <span className="bg-accent-teal/5 text-accent-teal px-3 py-1 rounded-md border border-accent-teal/10">SGX Stocks</span>
+          <span className="bg-accent-purple/5 text-accent-purple px-3 py-1 rounded-md border border-accent-purple/10">REITs</span>
         </div>
       </div>
 

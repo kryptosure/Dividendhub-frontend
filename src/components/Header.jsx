@@ -28,16 +28,15 @@ const Header = () => {
   return (
     <header className="bg-bg-secondary/80 backdrop-blur-md sticky top-0 z-50 border-b border-border/50 transition-all duration-200">
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
-        
-        {/* Brand Identity Vector Asset */}
+
+        {/* Brand → goes to planner home */}
         <Link to="/" className="flex items-center flex-shrink-0 active:scale-[0.98] transition-transform">
           <img src="/images/logo.svg" alt="DividendBro" className="h-12 sm:h-16 w-auto object-contain" />
         </Link>
 
-        {/* Pro Desktop Interface Links */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6">
           <div className="flex gap-4 border border-border/40 bg-bg-primary/40 rounded-xl p-1">
-            {/* Market Trigger Options */}
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
               <button
                 onClick={() => handleMarketChange('us')}
@@ -53,7 +52,6 @@ const Header = () => {
               </button>
             </div>
 
-            {/* Currency Multi-tier Configuration Options */}
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
               <button
                 onClick={() => setCurrency('usd')}
@@ -71,18 +69,17 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-5 text-sm font-semibold tracking-tight">
+            <Link to="/search" className="text-text-secondary hover:text-accent-blue transition-colors">Search Stocks</Link>
             <Link to="/top" className="text-text-secondary hover:text-accent-blue transition-colors">Top Dividend Stocks</Link>
             <Link to="/compare" className="text-text-secondary hover:text-accent-blue transition-colors">Compare</Link>
             <Link to="/watchlist" className="text-text-secondary hover:text-accent-blue transition-colors">Watchlist</Link>
             <Link to="/portfolio" className="text-text-secondary hover:text-accent-blue transition-colors">My Portfolio</Link>
-            <Link to="/income-planner" className="text-text-secondary hover:text-accent-blue transition-colors">Monthly Dividend Income</Link>
             <SimulatorDropdown />
             <Link to="/blog" className="text-text-secondary hover:text-accent-blue transition-colors">Insights</Link>
           </div>
 
           <div className="h-4 w-[1px] bg-border/60" />
 
-          {/* Core App Mechanics Controls */}
           <div className="flex items-center gap-3">
             <button
               onClick={toggleTheme}
@@ -100,7 +97,7 @@ const Header = () => {
                     className="px-2.5 py-1 rounded-lg bg-accent-purple/10 border border-accent-purple/30 text-accent-purple hover:bg-accent-purple/20 transition-colors"
                     title="Admin Dashboard"
                   >
-                    🔒 Admin
+                    Admin
                   </Link>
                 )}
                 <span className="truncate max-w-[100px]">👤 {displayName.split('@')[0]}</span>
@@ -116,7 +113,7 @@ const Header = () => {
           </div>
         </nav>
 
-        {/* Compact Ergonomic Mobile System Hub Controls */}
+        {/* Mobile Controls */}
         <div className="flex md:hidden items-center gap-2 ml-auto">
           <button
             onClick={toggleTheme}
@@ -124,7 +121,7 @@ const Header = () => {
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          
+
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="w-9 h-9 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors"
@@ -137,7 +134,7 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Overlay Module Sheet */}
+      {/* Mobile Drawer */}
       {isMobileMenuOpen && (
         <div className="md:hidden border-t border-border/40 bg-bg-secondary px-4 py-4 space-y-4 animate-in slide-in-from-top duration-200">
           <div className="grid grid-cols-2 gap-2 bg-bg-primary/50 p-2 rounded-xl border border-border/30">
@@ -158,21 +155,18 @@ const Header = () => {
           </div>
 
           <div className="flex flex-col text-sm font-semibold divide-y divide-border/20">
-            <Link to="/top" className="py-3 flex items-center text-text-primary">🏆 High Dividend Yield Board</Link>
-            <Link to="/compare" className="py-3 flex items-center text-text-primary">📊 Compare Stocks</Link>
-            <Link to="/watchlist" className="py-3 flex items-center text-text-primary">⭐ Watchlist</Link>
-            <Link to="/portfolio" className="py-3 flex items-center text-text-primary">💼 My Portfolio</Link>
-            <Link to="/income-planner" className="py-3 flex items-center text-text-primary">Monthly Dividend Income Planner</Link>
-            <Link to="/simulate/one-time" className="py-3 flex items-center text-text-primary">📈 Single Purchase Engine</Link>
-            <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">📊 Regular Investment DCA Simulator</Link>
-            <Link to="/millionaire" className="py-3 flex items-center text-text-primary">💰 Millionaire Simulator</Link>
-            <Link to="/blog" className="py-3 flex items-center text-text-primary">📝 Financial Academy Hub</Link>
+            <Link to="/search" className="py-3 flex items-center text-text-primary">Search Stocks</Link>
+            <Link to="/top" className="py-3 flex items-center text-text-primary">Top Dividend Stocks</Link>
+            <Link to="/compare" className="py-3 flex items-center text-text-primary">Compare Stocks</Link>
+            <Link to="/watchlist" className="py-3 flex items-center text-text-primary">Watchlist</Link>
+            <Link to="/portfolio" className="py-3 flex items-center text-text-primary">My Portfolio</Link>
+            <Link to="/simulate/one-time" className="py-3 flex items-center text-text-primary">Single Purchase Engine</Link>
+            <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">Regular Investment DCA Simulator</Link>
+            <Link to="/millionaire" className="py-3 flex items-center text-text-primary">Millionaire Simulator</Link>
+            <Link to="/blog" className="py-3 flex items-center text-text-primary">Financial Academy Hub</Link>
             {isAdmin && (
-              <Link
-                to="/admin"
-                className="py-3 flex items-center text-accent-purple font-bold"
-              >
-                🔒 Admin Dashboard
+              <Link to="/admin" className="py-3 flex items-center text-accent-purple font-bold">
+                Admin Dashboard
               </Link>
             )}
           </div>
@@ -185,7 +179,7 @@ const Header = () => {
               </div>
             ) : (
               <Link to="/login" className="block text-center w-full py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-md">
-                Initialize Security Session
+                Login
               </Link>
             )}
           </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
 import { searchStocks } from '../services/api';
-import { track } from '../services/tracker'; // ✅ NEW
+import { track } from '../services/tracker';
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -51,13 +51,12 @@ const SearchBar = () => {
   }, []);
 
   const handleSelect = (symbol) => {
-    // ✅ NEW: Track search event
     track('search', { query: symbol, market });
     setQuery('');
     setSuggestions([]);
     setIsOpen(false);
     if (inputRef.current) inputRef.current.blur();
-    navigate(`/?symbol=${encodeURIComponent(symbol.toUpperCase())}`);
+    navigate(`/search?symbol=${encodeURIComponent(symbol.toUpperCase())}`);
   };
 
   const handleSubmit = (e) => {
@@ -112,7 +111,7 @@ const SearchBar = () => {
             <path d="M21 21l-4.3-4.3" strokeWidth="2.5" strokeLinecap="round" />
           </svg>
         </div>
-        
+
         <input
           ref={inputRef}
           type="text"

@@ -93,7 +93,7 @@ const TopStocks = () => {
   if (error) {
     return (
       <div className="bg-accent-red/5 border border-accent-red/20 rounded-2xl p-5 text-accent-red text-xs font-semibold">
-        🛑 Internal feed synchronization channel failed: {error.message}
+        Could not load top stocks: {error.message}
       </div>
     );
   }
@@ -101,8 +101,7 @@ const TopStocks = () => {
   if (!data || data.length === 0) {
     return (
       <div className="text-center py-12 text-text-secondary border border-dashed border-border/40 rounded-2xl bg-bg-surface/40">
-        <div className="text-4xl mb-3">📊</div>
-        <p className="text-sm font-bold">No active indices available inside target region criteria loops.</p>
+        <p className="text-sm font-bold">No stocks available for this market.</p>
       </div>
     );
   }
@@ -122,24 +121,24 @@ const TopStocks = () => {
       <div ref={topStocksRef} className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-300">
         <div className="p-5 border-b border-border/40 flex justify-between items-start flex-wrap gap-4 bg-bg-secondary/20">
           <div>
-            <h2 className="text-xl font-black text-text-primary tracking-tight">🏆 High-Dividend Yield Board</h2>
-            <p className="text-xs text-text-muted font-medium mt-0.5">Segmented and rank ordered via trailing distribution returns loops.</p>
+            <h2 className="text-xl font-black text-text-primary tracking-tight">High-Dividend Yield Board</h2>
+            <p className="text-xs text-text-muted font-medium mt-0.5">Sorted by trailing dividend yield.</p>
             <div className="flex gap-1.5 mt-3 bg-bg-primary/40 border border-border/30 p-0.5 rounded-lg text-xs font-bold w-fit">
               <button
                 className={`px-4 py-1.5 rounded-md transition-all ${type === 'stock' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm font-extrabold' : 'text-text-muted'}`}
                 onClick={() => setType('stock')}
               >
-                📈 Stocks
+                Stocks
               </button>
               <button
                 className={`px-4 py-1.5 rounded-md transition-all ${type === 'etf' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm font-extrabold' : 'text-text-muted'}`}
                 onClick={() => setType('etf')}
               >
-                📊 ETFs
+                ETFs
               </button>
             </div>
           </div>
-          <ExportButtons data={getCSVData()} filename={`top_${type}_${market}`} headers={['Name','Symbol','Price','Yield','Payouts','Safety']} reportData={reportData} shareMessage={`Reviewing top high yield dividend index sets maps on DividendBro.`} />
+          <ExportButtons data={getCSVData()} filename={`top_${type}_${market}`} headers={['Name','Symbol','Price','Yield','Payouts','Safety']} reportData={reportData} shareMessage={`Reviewing top high-yield dividend stocks on DividendBro.`} />
         </div>
 
         <div className="overflow-x-auto">
@@ -147,11 +146,11 @@ const TopStocks = () => {
             <thead className="bg-bg-secondary/40 text-[10px] uppercase font-bold text-text-muted tracking-wider">
               <tr>
                 <th className="px-4 py-3">Rank</th>
-                <th className="px-4 py-3">Asset Instrument</th>
-                <th className="px-4 py-3 text-right">Value Close</th>
-                <th className="px-4 py-3 text-right">Yield Return</th>
-                <th className="px-4 py-3 text-right">Frequency</th>
-                <th className="px-4 py-3 text-right">Risk Factor</th>
+                <th className="px-4 py-3">Stock</th>
+                <th className="px-4 py-3 text-right">Price</th>
+                <th className="px-4 py-3 text-right">Yield</th>
+                <th className="px-4 py-3 text-right">Payouts</th>
+                <th className="px-4 py-3 text-right">Risk</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/10 font-medium">
@@ -159,7 +158,7 @@ const TopStocks = () => {
                 <tr
                   key={item.symbol}
                   className="hover:bg-bg-secondary/30 cursor-pointer transition-colors"
-                  onClick={() => navigate(`/?symbol=${encodeURIComponent(item.symbol)}`)}
+                  onClick={() => navigate(`/search?symbol=${encodeURIComponent(item.symbol)}`)}
                 >
                   <td className="px-4 py-3.5 text-text-muted font-mono text-xs">{index + 1}</td>
                   <td className="px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-1">
@@ -172,7 +171,7 @@ const TopStocks = () => {
                   <td className="px-4 py-3.5 text-right font-mono text-sm font-black text-accent-green">
                     {item.currentYield ? formatPercent(item.currentYield) : '—'}
                   </td>
-                  <td className="px-4 py-3.5 text-right font-mono text-xs text-text-muted">{item.payoutCount || 0} intervals</td>
+                  <td className="px-4 py-3.5 text-right font-mono text-xs text-text-muted">{item.payoutCount || 0}</td>
                   <td className="px-4 py-3.5 text-right">
                     <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${
                       safetyColors[item.safetyScore] || 'bg-bg-primary text-text-muted border-border/40'

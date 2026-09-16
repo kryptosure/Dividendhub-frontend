@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import useStore from '../store/useStore';
 import { generateIncomeAllocation } from '../services/api';
 import { track } from '../services/tracker';
@@ -39,6 +39,8 @@ const sectorLabel = (s) => SECTOR_LABELS[s] || s;
 
 const TargetIncome = () => {
   const { currency, setPortfolio } = useStore();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [targetMonthly, setTargetMonthly] = useState(500);
   const [capital, setCapital] = useState('');
@@ -51,6 +53,14 @@ const TargetIncome = () => {
   const [saved, setSaved] = useState(false);
 
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
+
+  // Legacy redirect: /?symbol=KO → /search?symbol=KO
+  useEffect(() => {
+    const symbol = searchParams.get('symbol');
+    if (symbol) {
+      navigate(`/search?symbol=${encodeURIComponent(symbol)}`, { replace: true });
+    }
+  }, [searchParams, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -392,7 +402,7 @@ const TargetIncome = () => {
                     {result.positions.map((p) => (
                       <tr key={p.symbol} className="hover:bg-bg-primary/30">
                         <td className="px-3 py-2 font-mono font-bold text-accent-teal">
-                          <Link to={`/?symbol=${p.symbol}`} className="hover:underline">{p.symbol}</Link>
+                          <Link to={`/search?symbol=${p.symbol}`} className="hover:underline">{p.symbol}</Link>
                         </td>
                         <td className="px-3 py-2 text-text-primary truncate max-w-[160px]">{p.name}</td>
                         <td className="px-3 py-2 text-text-muted text-[10px] uppercase font-bold">{sectorLabel(p.sector)}</td>

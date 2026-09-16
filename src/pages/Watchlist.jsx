@@ -40,13 +40,13 @@ const Watchlist = () => {
         <title>My Watchlist – DividendBro</title>
       </Helmet>
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-black tracking-tight text-text-primary mb-6">⭐ My Watchlist</h1>
+        <h1 className="text-3xl font-black tracking-tight text-text-primary mb-6">My Watchlist</h1>
 
         {watchlist.length === 0 ? (
           <div className="bg-bg-surface border border-dashed border-border/50 rounded-2xl p-12 text-center">
             <p className="text-lg font-bold text-text-secondary">Your watchlist is empty</p>
-            <p className="text-sm text-text-muted mt-1">Search for stocks and click "☆ Add to Watchlist" to track them here.</p>
-            <Link to="/" className="inline-block mt-4 px-5 py-2 bg-accent-blue text-white text-xs font-bold rounded-xl">Go to Search</Link>
+            <p className="text-sm text-text-muted mt-1">Search for stocks and click "Add to Watchlist" to track them here.</p>
+            <Link to="/search" className="inline-block mt-4 px-5 py-2 bg-accent-blue text-white text-xs font-bold rounded-xl">Go to Search</Link>
           </div>
         ) : isLoading ? (
           <LoadingSpinner />
@@ -69,7 +69,7 @@ const Watchlist = () => {
                 {stocksWithData.map(stock => (
                   <tr key={stock.symbol} className="hover:bg-bg-surface-hover/50 transition-colors">
                     <td className="px-4 py-3">
-                      <Link to={`/?symbol=${stock.symbol}`} className="font-bold text-text-primary hover:text-accent-blue transition-colors">
+                      <Link to={`/search?symbol=${stock.symbol}`} className="font-bold text-text-primary hover:text-accent-blue transition-colors">
                         {stock.name}
                       </Link>
                       <div className="text-xs text-text-muted font-mono">{stock.symbol}</div>
@@ -87,7 +87,7 @@ const Watchlist = () => {
                     </td>
                     <td className="px-4 py-3 text-right font-mono text-text-muted">{stock.lastExDate || '—'}</td>
                     <td className="px-4 py-3 text-right">
-                      <button 
+                      <button
                         onClick={() => removeFromWatchlist(stock.symbol)}
                         className="text-accent-red text-xs font-bold hover:underline"
                       >
