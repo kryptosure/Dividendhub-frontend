@@ -20,7 +20,6 @@ const RISK_LABELS = [
   { key: 'high-income', label: 'High Income', desc: 'More money, more risk' },
 ];
 
-// Consumer-friendly labels for sectors
 const SECTOR_LABELS = {
   'Consumer Staples': 'Everyday Essentials',
   'Healthcare': 'Healthcare',
@@ -110,7 +109,7 @@ const TargetIncome = () => {
   return (
     <>
       <Helmet>
-        <title>Income Planner – How Much Do You Need for Monthly Dividends? | DividendBro</title>
+        <title>Monthly Dividend Income Planner – How Much Do You Need? | DividendBro</title>
         <meta name="description" content="Free tool: see how much you'd need to invest to earn a target monthly dividend income. Sample portfolios for Singapore and US stocks." />
       </Helmet>
 
@@ -119,7 +118,7 @@ const TargetIncome = () => {
         {/* Header */}
         <div>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
-            💰 Income <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Planner</span>
+            Monthly Dividend <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Income Planner</span>
           </h1>
           <p className="text-text-muted text-sm mt-2 max-w-3xl">
             Want to earn <strong className="text-text-secondary">{curSymbol}500 every month</strong> from dividends? Tell us your goal and we'll show you what a portfolio could look like.
@@ -129,7 +128,7 @@ const TargetIncome = () => {
         {/* Compliance banner */}
         <div className="bg-accent-yellow/5 border border-accent-yellow/25 rounded-2xl p-4">
           <p className="text-[11px] text-accent-yellow font-bold uppercase tracking-wider mb-1">
-            ⚠️ This is a learning tool — not financial advice
+            This is a learning tool — not financial advice
           </p>
           <p className="text-[11px] text-text-muted leading-relaxed">
             DividendBro is not a licensed financial adviser. We use public market data to show you <strong className="text-text-secondary">an example</strong> of what a portfolio could look like. It's not a recommendation. Always do your own research before investing.
@@ -278,7 +277,7 @@ const TargetIncome = () => {
         {/* Error */}
         {error && (
           <div className="bg-accent-red/5 border border-accent-red/20 rounded-2xl p-5">
-            <p className="text-sm font-bold text-accent-red">⚠️ {error}</p>
+            <p className="text-sm font-bold text-accent-red">{error}</p>
           </div>
         )}
 
@@ -323,7 +322,7 @@ const TargetIncome = () => {
             {result.warnings?.length > 0 && (
               <div className="bg-accent-yellow/5 border border-accent-yellow/25 rounded-2xl p-4 space-y-1.5">
                 {result.warnings.map((w, i) => (
-                  <p key={i} className="text-xs text-accent-yellow font-medium">💡 {w}</p>
+                  <p key={i} className="text-xs text-accent-yellow font-medium">{w}</p>
                 ))}
               </div>
             )}
@@ -465,13 +464,13 @@ const TargetIncome = () => {
                 disabled={saved}
                 className="px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
               >
-                {saved ? '✓ Saved to My Portfolio' : 'Save This to My Portfolio'}
+                {saved ? 'Saved to My Portfolio' : 'Save This to My Portfolio'}
               </button>
               <Link
                 to="/portfolio"
                 className="px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all"
               >
-                View My Portfolio →
+                View My Portfolio
               </Link>
             </div>
 
@@ -486,7 +485,6 @@ const TargetIncome = () => {
         {/* Empty state */}
         {!result && !isLoading && !error && (
           <div className="bg-bg-surface border border-dashed border-border/40 rounded-2xl p-10 text-center">
-            <div className="text-4xl mb-3">📊</div>
             <p className="text-sm font-bold text-text-primary">Tell us your goal and we'll show you a sample</p>
             <p className="text-xs text-text-muted mt-1 max-w-md mx-auto">
               Enter a monthly target above and press the button. We'll build a sample portfolio from real market data.
