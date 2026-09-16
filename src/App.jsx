@@ -26,6 +26,7 @@ import ChatWidget from './components/ChatWidget';
 import Admin from './pages/Admin';
 import MillionaireSimulator from './pages/MillionaireSimulator';
 import TargetIncome from './pages/TargetIncome';
+import DividendScreener from './pages/DividendScreener';
 
 import { getMe } from './services/api';
 
@@ -41,7 +42,6 @@ const queryClient = new QueryClient({
 const SITE_URL = "https://dividendbro.com";
 const DEFAULT_IMAGE = `${SITE_URL}/images/cover.png`;
 
-// Fires a page_view event on every route change
 function RouteTracker() {
   const location = useLocation();
   useEffect(() => {
@@ -94,11 +94,9 @@ function App() {
             <Header />
             <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8 animate-in fade-in duration-300">
               <Routes>
-                {/* Home is now the Monthly Dividend Income Planner */}
                 <Route path="/" element={<TargetIncome />} />
-                {/* Search + stock results live at /search */}
                 <Route path="/search" element={<SearchStocks />} />
-                {/* Legacy redirect for old bookmarks */}
+                <Route path="/screener" element={<DividendScreener />} />
                 <Route path="/income-planner" element={<Navigate to="/" replace />} />
 
                 <Route path="/portfolio" element={<PortfolioView />} />
@@ -139,16 +137,12 @@ function SearchStocks() {
     ? `View complete payout histories, current yields metrics, capital safety scores, and ex-dividend dates for ${symbol}.`
     : 'Search and analyze dividend stocks for US and SGX markets.';
 
-  const canonicalUrl = symbol
-    ? `${SITE_URL}/search`
-    : `${SITE_URL}/search`;
-
   return (
     <>
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={canonicalUrl} />
+        <link rel="canonical" href={`${SITE_URL}/search`} />
       </Helmet>
 
       <div className="text-center mb-10 max-w-2xl mx-auto">
