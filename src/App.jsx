@@ -25,6 +25,7 @@ import StockComparison from './pages/StockComparison';
 import ChatWidget from './components/ChatWidget';
 import Admin from './pages/Admin';
 import MillionaireSimulator from './pages/MillionaireSimulator';
+import TargetIncome from './pages/TargetIncome';   // ✅ NEW
 
 import { getMe } from './services/api';
 
@@ -40,7 +41,7 @@ const queryClient = new QueryClient({
 const SITE_URL = "https://dividendbro.com";
 const DEFAULT_IMAGE = `${SITE_URL}/images/cover.png`;
 
-// ✅ NEW: Fires a page_view event on every route change
+// ✅ Fires a page_view event on every route change
 function RouteTracker() {
   const location = useLocation();
   useEffect(() => {
@@ -105,6 +106,7 @@ function App() {
                 <Route path="/simulate/one-time" element={<SimulatorSingle />} />
                 <Route path="/simulate/dca" element={<SimulatorDCA />} />
                 <Route path="/millionaire" element={<MillionaireSimulator />} />
+                <Route path="/income-planner" element={<TargetIncome />} />   {/* ✅ NEW */}
                 <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>

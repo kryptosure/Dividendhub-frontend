@@ -145,6 +145,22 @@ export const getAdminUsers = async ({ limit = 100, offset = 0, search = '' } = {
   return res.data;
 };
 
+// ---------- Income Planner ----------
+export const getRiskProfiles = async () => {
+  const res = await api.get('/api/income-planner/profiles');
+  return res.data;
+};
+
+export const generateIncomeAllocation = async ({ targetMonthly, capital, location, riskProfile }) => {
+  const res = await api.post('/api/income-planner/generate', {
+    targetMonthly,
+    capital,
+    location,
+    riskProfile,
+  });
+  return res.data;
+};
+
 // ---------- Health ----------
 export const healthCheck = async () => {
   const res = await api.get('/api/health');

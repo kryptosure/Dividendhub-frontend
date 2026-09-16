@@ -75,6 +75,7 @@ const Header = () => {
             <Link to="/compare" className="text-text-secondary hover:text-accent-blue transition-colors">Compare</Link>
             <Link to="/watchlist" className="text-text-secondary hover:text-accent-blue transition-colors">Watchlist</Link>
             <Link to="/portfolio" className="text-text-secondary hover:text-accent-blue transition-colors">My Portfolio</Link>
+            <Link to="/income-planner" className="text-text-secondary hover:text-accent-blue transition-colors">Income Planner</Link>   {/* ✅ NEW */}
             <SimulatorDropdown />
             <Link to="/blog" className="text-text-secondary hover:text-accent-blue transition-colors">Insights</Link>
           </div>
@@ -93,7 +94,6 @@ const Header = () => {
 
             {token ? (
               <div className="flex items-center gap-3 bg-bg-surface/60 border border-border/40 pl-3 pr-2 py-1 rounded-xl text-xs font-bold text-text-secondary">
-                {/* ✅ NEW: Admin link only visible when isAdmin is true */}
                 {isAdmin && (
                   <Link
                     to="/admin"
@@ -162,11 +162,11 @@ const Header = () => {
             <Link to="/compare" className="py-3 flex items-center text-text-primary">📊 Compare Stocks</Link>
             <Link to="/watchlist" className="py-3 flex items-center text-text-primary">⭐ Watchlist</Link>
             <Link to="/portfolio" className="py-3 flex items-center text-text-primary">💼 My Portfolio</Link>
+            <Link to="/income-planner" className="py-3 flex items-center text-text-primary">💰 Target Income Planner</Link>   {/* ✅ NEW */}
             <Link to="/simulate/one-time" className="py-3 flex items-center text-text-primary">📈 Single Purchase Engine</Link>
             <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">📊 Regular Investment DCA Simulator</Link>
             <Link to="/millionaire" className="py-3 flex items-center text-text-primary">💰 Millionaire Simulator</Link>
             <Link to="/blog" className="py-3 flex items-center text-text-primary">📝 Financial Academy Hub</Link>
-            {/* ✅ NEW: Admin link in mobile drawer */}
             {isAdmin && (
               <Link
                 to="/admin"
