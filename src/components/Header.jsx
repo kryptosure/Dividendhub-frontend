@@ -13,11 +13,7 @@ const Header = () => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
+  const handleLogout = () => { logout(); navigate('/'); };
   const handleMarketChange = (newMarket) => {
     setMarket(newMarket);
     setCurrency(newMarket === 'us' ? 'usd' : 'sgd');
@@ -36,33 +32,13 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-6">
           <div className="flex gap-4 border border-border/40 bg-bg-primary/40 rounded-xl p-1">
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
-              <button
-                onClick={() => handleMarketChange('us')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${market === 'us' ? 'bg-accent-blue text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
-              >
-                US
-              </button>
-              <button
-                onClick={() => handleMarketChange('sg')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${market === 'sg' ? 'bg-accent-blue text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
-              >
-                SGX
-              </button>
+              <button onClick={() => handleMarketChange('us')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${market === 'us' ? 'bg-accent-blue text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>US</button>
+              <button onClick={() => handleMarketChange('sg')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${market === 'sg' ? 'bg-accent-blue text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>SGX</button>
             </div>
 
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
-              <button
-                onClick={() => setCurrency('usd')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${currency === 'usd' ? 'bg-accent-teal text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
-              >
-                USD
-              </button>
-              <button
-                onClick={() => setCurrency('sgd')}
-                className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${currency === 'sgd' ? 'bg-accent-teal text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}
-              >
-                SGD
-              </button>
+              <button onClick={() => setCurrency('usd')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${currency === 'usd' ? 'bg-accent-teal text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>USD</button>
+              <button onClick={() => setCurrency('sgd')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${currency === 'sgd' ? 'bg-accent-teal text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>SGD</button>
             </div>
           </div>
 
@@ -80,51 +56,29 @@ const Header = () => {
           <div className="h-4 w-[1px] bg-border/60" />
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 hover:bg-bg-surface-hover active:scale-95 transition-all text-sm"
-              aria-label="Theme Controller"
-            >
+            <button onClick={toggleTheme} className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 hover:bg-bg-surface-hover active:scale-95 transition-all text-sm" aria-label="Theme Controller">
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
 
             {token ? (
               <div className="flex items-center gap-3 bg-bg-surface/60 border border-border/40 pl-3 pr-2 py-1 rounded-xl text-xs font-bold text-text-secondary">
                 {isAdmin && (
-                  <Link
-                    to="/admin"
-                    className="px-2.5 py-1 rounded-lg bg-accent-purple/10 border border-accent-purple/30 text-accent-purple hover:bg-accent-purple/20 transition-colors"
-                    title="Admin Dashboard"
-                  >
-                    Admin
-                  </Link>
+                  <Link to="/admin" className="px-2.5 py-1 rounded-lg bg-accent-purple/10 border border-accent-purple/30 text-accent-purple hover:bg-accent-purple/20 transition-colors" title="Admin Dashboard">Admin</Link>
                 )}
                 <span className="truncate max-w-[100px]">👤 {displayName.split('@')[0]}</span>
-                <button onClick={handleLogout} className="px-2.5 py-1 bg-accent-red/10 border border-accent-red/20 text-accent-red rounded-lg hover:bg-accent-red/20 transition-colors">
-                  Signout
-                </button>
+                <button onClick={handleLogout} className="px-2.5 py-1 bg-accent-red/10 border border-accent-red/20 text-accent-red rounded-lg hover:bg-accent-red/20 transition-colors">Signout</button>
               </div>
             ) : (
-              <Link to="/login" className="px-4 py-2 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-sm hover:opacity-95 active:scale-95 transition-all">
-                Login
-              </Link>
+              <Link to="/login" className="px-4 py-2 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-sm hover:opacity-95 active:scale-95 transition-all">Login</Link>
             )}
           </div>
         </nav>
 
         <div className="flex md:hidden items-center gap-2 ml-auto">
-          <button
-            onClick={toggleTheme}
-            className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 text-sm"
-          >
+          <button onClick={toggleTheme} className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 text-sm">
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="w-9 h-9 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors"
-            aria-label="Navigation Drawer"
-          >
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="w-9 h-9 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors" aria-label="Navigation Drawer">
             <div className={`w-4 h-0.5 bg-text-primary mb-1 transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
             <div className={`w-4 h-0.5 bg-text-primary mb-1 transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
             <div className={`w-4 h-0.5 bg-text-primary transition-all ${isMobileMenuOpen ? '-rotate-45 -translate-y-1' : ''}`} />
@@ -163,9 +117,7 @@ const Header = () => {
             <Link to="/millionaire" className="py-3 flex items-center text-text-primary">Millionaire Simulator</Link>
             <Link to="/blog" className="py-3 flex items-center text-text-primary">Financial Academy Hub</Link>
             {isAdmin && (
-              <Link to="/admin" className="py-3 flex items-center text-accent-purple font-bold">
-                Admin Dashboard
-              </Link>
+              <Link to="/admin" className="py-3 flex items-center text-accent-purple font-bold">Admin Dashboard</Link>
             )}
           </div>
 
@@ -176,9 +128,7 @@ const Header = () => {
                 <button onClick={handleLogout} className="text-xs font-bold text-accent-red bg-accent-red/5 px-3 py-1.5 rounded-lg border border-accent-red/20">Logout</button>
               </div>
             ) : (
-              <Link to="/login" className="block text-center w-full py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-md">
-                Login
-              </Link>
+              <Link to="/login" className="block text-center w-full py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-md">Login</Link>
             )}
           </div>
         </div>
