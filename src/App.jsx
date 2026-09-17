@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, useEffect } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route, Navigate, useSearchParams, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import useStore from './store/useStore';
 import { trackPageView } from './services/tracker';
@@ -12,7 +12,9 @@ import Footer from './components/Footer';
 import AppErrorBoundary from './components/AppErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 
-// ---------- Lazy: loaded only when the route is visited ----------
+// ---------- Lazy: only loaded when the route is visited ----------
+
+// Pages (in ./pages)
 const TargetIncome = lazy(() => import('./pages/TargetIncome'));
 const SearchStocks = lazy(() => import('./pages/SearchStocks'));
 const DividendScreener = lazy(() => import('./pages/DividendScreener'));
@@ -20,10 +22,8 @@ const WeeklyDividendETFs = lazy(() => import('./pages/WeeklyDividendETFs'));
 const MonthlyDividendStocks = lazy(() => import('./pages/MonthlyDividendStocks'));
 const DailyDividendStocks = lazy(() => import('./pages/DailyDividendStocks'));
 const ReitsThatPayMonthly = lazy(() => import('./pages/ReitsThatPayMonthly'));
-const PortfolioView = lazy(() => import('./pages/PortfolioView'));
 const Watchlist = lazy(() => import('./pages/Watchlist'));
 const StockComparison = lazy(() => import('./pages/StockComparison'));
-const TopStocks = lazy(() => import('./pages/TopStocks'));
 const Blog = lazy(() => import('./pages/Blog'));
 const Article = lazy(() => import('./pages/Article'));
 const Login = lazy(() => import('./pages/Login'));
@@ -33,7 +33,11 @@ const SimulatorDCA = lazy(() => import('./pages/SimulatorDCA'));
 const MillionaireSimulator = lazy(() => import('./pages/MillionaireSimulator'));
 const Admin = lazy(() => import('./pages/Admin'));
 
-// ---------- Lazy: deferred components ----------
+// Components that are treated as full-page routes (in ./components)
+const PortfolioView = lazy(() => import('./components/PortfolioView'));
+const TopStocks = lazy(() => import('./components/TopStocks'));
+
+// Deferred (loaded 3s after mount)
 const ChatWidget = lazy(() => import('./components/ChatWidget'));
 const BackToTop = lazy(() => import('./components/BackToTop'));
 
@@ -59,9 +63,22 @@ function RouteTracker() {
   return null;
 }
 
-// ---------- Home wrapper (kept here to avoid a separate file) ----------
-function HomeRoute() {
-  return <TargetIncome />;
+// Fallback shown while a route's chunk is loading
+const PageLoader = () => (
+  <div className="py-20">
+    <LoadingSpinner />
+  </div>
+);
+
+// Defer the chat widget so it doesn't compete with LCP
+function DeferredChatWidget() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setShow(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
+  if (!show) return null;
+  return <ChatWidget />;
 }
 
 function App() {
@@ -107,9 +124,9 @@ function App() {
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col font-sans antialiased selection:bg-accent-blue/20">
             <Header />
             <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8 animate-in fade-in duration-300">
-              <Suspense fallback={<div className="py-20"><LoadingSpinner /></div>}>
+              <Suspense fallback={<PageLoader />}>
                 <Routes>
-                  <Route path="/" element={<HomeRoute />} />
+                  <Route path="/" element={<TargetIncome />} />
                   <Route path="/search" element={<SearchStocks />} />
                   <Route path="/screener" element={<DividendScreener />} />
                   <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />
@@ -130,7 +147,7 @@ function App() {
                   <Route path="/simulate/dca" element={<SimulatorDCA />} />
                   <Route path="/millionaire" element={<MillionaireSimulator />} />
                   <Route path="/admin" element={<Admin />} />
-                  <Route path="*" element={<Navigate to="/" />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Suspense>
             </main>
@@ -145,17 +162,6 @@ function App() {
       </QueryClientProvider>
     </AppErrorBoundary>
   );
-}
-
-// Delay ChatWidget load by 3 seconds so it doesn't compete with LCP
-function DeferredChatWidget() {
-  const [show, setShow] = React.useState(false);
-  React.useEffect(() => {
-    const t = setTimeout(() => setShow(true), 3000);
-    return () => clearTimeout(t);
-  }, []);
-  if (!show) return null;
-  return <ChatWidget />;
 }
 
 export default App;
