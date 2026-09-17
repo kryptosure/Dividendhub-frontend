@@ -14,6 +14,9 @@ const Footer = () => {
           <Link to="/weekly-dividend-etfs" className="text-text-secondary hover:text-accent-blue transition-colors">
             Weekly Dividend ETFs
           </Link>
+          <Link to="/monthly-dividend-stocks" className="text-text-secondary hover:text-accent-blue transition-colors">
+            Monthly Dividend Stocks
+          </Link>
           <Link to="/top" className="text-text-secondary hover:text-accent-blue transition-colors">
             Top Dividend Stocks
           </Link>

@@ -27,7 +27,8 @@ import Admin from './pages/Admin';
 import MillionaireSimulator from './pages/MillionaireSimulator';
 import TargetIncome from './pages/TargetIncome';
 import DividendScreener from './pages/DividendScreener';
-import WeeklyDividendETFs from './pages/WeeklyDividendETFs';   // ✅ NEW
+import WeeklyDividendETFs from './pages/WeeklyDividendETFs';
+import MonthlyDividendStocks from './pages/MonthlyDividendStocks';   // ✅ NEW
 
 import { getMe } from './services/api';
 
@@ -98,7 +99,8 @@ function App() {
                 <Route path="/" element={<TargetIncome />} />
                 <Route path="/search" element={<SearchStocks />} />
                 <Route path="/screener" element={<DividendScreener />} />
-                <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />   {/* ✅ NEW */}
+                <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />
+                <Route path="/monthly-dividend-stocks" element={<MonthlyDividendStocks />} />   {/* ✅ NEW */}
                 <Route path="/income-planner" element={<Navigate to="/" replace />} />
 
                 <Route path="/portfolio" element={<PortfolioView />} />

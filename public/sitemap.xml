@@ -9,7 +9,7 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- Dividend Screener — 643 tickers, high SEO value -->
+  <!-- Dividend Screener — 643 tickers -->
   <url>
     <loc>https://dividendbro.com/screener</loc>
     <lastmod>2026-09-17</lastmod>
@@ -17,9 +17,17 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Weekly Dividend ETFs landing page — new SEO target -->
+  <!-- Weekly Dividend ETFs landing page -->
   <url>
     <loc>https://dividendbro.com/weekly-dividend-etfs</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ✅ NEW: Monthly Dividend Stocks landing page -->
+  <url>
+    <loc>https://dividendbro.com/monthly-dividend-stocks</loc>
     <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
