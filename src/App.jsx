@@ -26,7 +26,8 @@ import ChatWidget from './components/ChatWidget';
 import Admin from './pages/Admin';
 import MillionaireSimulator from './pages/MillionaireSimulator';
 import TargetIncome from './pages/TargetIncome';
-import DividendScreener from './pages/DividendScreener';   // ✅ NEW
+import DividendScreener from './pages/DividendScreener';
+import WeeklyDividendETFs from './pages/WeeklyDividendETFs';   // ✅ NEW
 
 import { getMe } from './services/api';
 
@@ -96,7 +97,8 @@ function App() {
               <Routes>
                 <Route path="/" element={<TargetIncome />} />
                 <Route path="/search" element={<SearchStocks />} />
-                <Route path="/screener" element={<DividendScreener />} />   {/* ✅ NEW */}
+                <Route path="/screener" element={<DividendScreener />} />
+                <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />   {/* ✅ NEW */}
                 <Route path="/income-planner" element={<Navigate to="/" replace />} />
 
                 <Route path="/portfolio" element={<PortfolioView />} />
