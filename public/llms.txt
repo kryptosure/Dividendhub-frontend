@@ -1,0 +1,36 @@
+# DividendBro
+
+> DividendBro is a free dividend analysis and management tool for US and SGX (Singapore Exchange) stocks. It provides real-time dividend yield data, payout ratios, dividend growth rates, portfolio tracking, stock comparison, and a Monthly Dividend Income Planner.
+
+DividendBro covers 643 dividend-paying securities across US and Singapore markets, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. All data is sourced from Yahoo Finance and Financial Modeling Prep. Educational tool only — not financial advice.
+
+## Main Tools
+
+- [Monthly Dividend Income Planner](https://dividendbro.com/): Enter a target monthly dividend income and see a sample allocation for US or SGX markets, filtered by risk appetite.
+- [Dividend Screener](https://dividendbro.com/screener): Browse 643 dividend-paying stocks by payout frequency (daily, weekly, monthly, quarterly), asset type (stocks, REITs, ETFs, bond ETFs, preferred stocks), and risk level.
+- [Stock Search](https://dividendbro.com/search): Look up any US or SGX ticker for dividend history, yield, payout ratio, dividend CAGR, and safety score.
+- [Stock Comparison](https://dividendbro.com/compare): Compare up to 5 dividend stocks side-by-side on yield, payout ratio, dividend CAGR, streak, and total return.
+- [Millionaire Simulator](https://dividendbro.com/millionaire): Project how long a fixed monthly investment takes to reach $1,000,000 in a given dividend stock with or without DRIP.
+- [DCA Simulator](https://dividendbro.com/simulate/dca): Simulate dollar-cost averaging into a dividend stock with monthly contributions and dividend reinvestment.
+- [One-Time Investment Simulator](https://dividendbro.com/simulate/one-time): Calculate total historical return on a lump-sum dividend stock investment including dividends.
+
+## Reference Guides
+
+- [Daily Dividend Stocks](https://dividendbro.com/daily-dividend-stocks): The complete list of securities paying dividends every business day in 2026. Currently only SATA and CHAD exist.
+- [Weekly Dividend ETFs](https://dividendbro.com/weekly-dividend-etfs): Complete list of 73 weekly dividend ETFs, their issuers (YieldMax, Roundhill, Defiance, GraniteShares), and the return-of-capital risks behind the headline yields.
+- [Monthly Dividend Stocks](https://dividendbro.com/monthly-dividend-stocks): Full list of 133 monthly dividend payers — REITs, BDCs, closed-end funds, and covered-call ETFs.
+- [REITs That Pay Monthly](https://dividendbro.com/reits-that-pay-monthly): The verified 2026 list of US REITs paying monthly dividends, with cadence changes and tax treatment for Singapore investors.
+- [Top Dividend Stocks](https://dividendbro.com/top): Highest-yielding dividend stocks and ETFs in the US and SGX markets, ranked by trailing yield.
+
+## Blog and Research
+
+- [Insights Hub](https://dividendbro.com/blog): Articles on dividend investing strategy, Singapore dividend stocks, REITs, brokerage fees, and dividend growth analysis.
+
+## Optional
+
+- [Login](https://dividendbro.com/login): Account access for portfolio and watchlist tracking (requires sign-up).
+- [Sign Up](https://dividendbro.com/signup): Free account creation for syncing portfolio and watchlist across devices.
+
+## Licensing
+
+All site content is provided for personal, non-commercial use. DividendBro is an educational tool, not a licensed financial adviser. Content may be cited with attribution to dividendbro.com. Data is aggregated from Yahoo Finance and Financial Modeling Essentials and is subject to their respective terms.

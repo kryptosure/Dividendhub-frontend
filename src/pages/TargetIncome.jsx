@@ -54,7 +54,6 @@ const TargetIncome = () => {
 
   const curSymbol = currency === 'sgd' ? 'S$' : '$';
 
-  // Legacy redirect: /?symbol=KO → /search?symbol=KO
   useEffect(() => {
     const symbol = searchParams.get('symbol');
     if (symbol) {
@@ -150,13 +149,16 @@ const TargetIncome = () => {
 
           {/* Target income */}
           <div>
-            <label className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
-              How much do you want per month?
+            <div className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
+              <label htmlFor="target-monthly-input">
+                How much do you want per month?
+              </label>
               <InfoTip text="This is your monthly income goal from dividends. Pick something realistic — most dividend investors aim for 3–6% per year on their investment." />
-            </label>
+            </div>
             <div className="flex items-center gap-3">
-              <span className="text-2xl font-black text-accent-blue font-mono">{curSymbol}</span>
+              <span className="text-2xl font-black text-accent-blue font-mono" aria-hidden="true">{curSymbol}</span>
               <input
+                id="target-monthly-input"
                 type="number"
                 value={targetMonthly}
                 onChange={(e) => setTargetMonthly(Number(e.target.value) || 0)}
@@ -164,6 +166,7 @@ const TargetIncome = () => {
                 max="1000000"
                 step="50"
                 required
+                aria-label="Target monthly dividend income in dollars"
                 className="flex-1 bg-bg-primary border border-border/60 rounded-xl px-4 py-3 text-2xl font-black text-text-primary focus:outline-none focus:border-accent-blue"
               />
               <span className="text-sm font-bold text-text-muted">/ month</span>
@@ -188,37 +191,42 @@ const TargetIncome = () => {
 
           {/* Capital (optional) */}
           <div>
-            <label className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
-              How much do you have to invest?
+            <div className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
+              <label htmlFor="capital-input">
+                How much do you have to invest?
+              </label>
               <span className="text-text-muted/70 normal-case tracking-normal font-medium ml-1">(optional)</span>
               <InfoTip text="Enter the amount you can invest today. We'll show what monthly income that could produce. Leave blank to see how much you'd need for your goal." />
-            </label>
+            </div>
             <div className="flex items-center gap-3">
-              <span className="text-xl font-black text-accent-teal font-mono">{curSymbol}</span>
+              <span className="text-xl font-black text-accent-teal font-mono" aria-hidden="true">{curSymbol}</span>
               <input
+                id="capital-input"
                 type="number"
                 value={capital}
                 onChange={(e) => setCapital(e.target.value)}
                 placeholder="Leave blank to see how much you'd need"
                 min="0"
                 step="100"
+                aria-label="Amount you have to invest today in dollars"
                 className="flex-1 bg-bg-primary border border-border/60 rounded-xl px-4 py-3 text-lg font-bold text-text-primary placeholder-text-muted/50 focus:outline-none focus:border-accent-teal"
               />
             </div>
           </div>
 
           {/* Location */}
-          <div>
-            <label className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
+          <fieldset>
+            <legend className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
               Where are you investing from?
               <InfoTip text="This affects which stocks we show. Singapore investors typically have different tax situations than US ones." />
-            </label>
+            </legend>
             <div className="grid grid-cols-3 gap-2">
               {LOCATIONS.map((loc) => (
                 <button
                   key={loc.key}
                   type="button"
                   onClick={() => setLocation(loc.key)}
+                  aria-pressed={location === loc.key}
                   className={`rounded-xl p-3 border text-left transition-all ${
                     location === loc.key
                       ? 'border-accent-blue bg-accent-blue/5'
@@ -230,22 +238,30 @@ const TargetIncome = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </fieldset>
 
           {/* Risk profile */}
           <div>
-            <label className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-3">
-              How much risk are you okay with?
+            <div className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-3">
+              <label htmlFor="risk-profile-slider">
+                How much risk are you okay with?
+              </label>
               <InfoTip text="Higher risk usually means higher income, but the dividend could get cut. If you're new to investing, 'Balanced' is a good starting point." />
-            </label>
+            </div>
 
             <input
+              id="risk-profile-slider"
               type="range"
               min="0"
               max="3"
               step="1"
               value={RISK_LABELS.findIndex(r => r.key === riskProfile)}
               onChange={(e) => setRiskProfile(RISK_LABELS[Number(e.target.value)].key)}
+              aria-label="Risk profile selector"
+              aria-valuemin="0"
+              aria-valuemax="3"
+              aria-valuenow={RISK_LABELS.findIndex(r => r.key === riskProfile)}
+              aria-valuetext={RISK_LABELS.find(r => r.key === riskProfile)?.label || 'Balanced'}
               className="w-full accent-accent-blue cursor-pointer"
             />
 
@@ -257,6 +273,7 @@ const TargetIncome = () => {
                     key={r.key}
                     type="button"
                     onClick={() => setRiskProfile(r.key)}
+                    aria-pressed={active}
                     className={`text-center rounded-lg py-2 px-1 transition-all ${
                       active ? 'bg-accent-blue/10 border border-accent-blue/40' : 'border border-transparent hover:bg-bg-primary'
                     }`}
