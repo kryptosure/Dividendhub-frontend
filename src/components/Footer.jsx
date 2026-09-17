@@ -17,6 +17,12 @@ const Footer = () => {
           <Link to="/monthly-dividend-stocks" className="text-text-secondary hover:text-accent-blue transition-colors">
             Monthly Dividend Stocks
           </Link>
+          <Link to="/reits-that-pay-monthly" className="text-text-secondary hover:text-accent-blue transition-colors">
+            Monthly REITs
+          </Link>
+          <Link to="/daily-dividend-stocks" className="text-text-secondary hover:text-accent-blue transition-colors">
+            Daily Dividend Stocks
+          </Link>
           <Link to="/top" className="text-text-secondary hover:text-accent-blue transition-colors">
             Top Dividend Stocks
           </Link>
@@ -30,7 +36,6 @@ const Footer = () => {
 
         <p>Market parsing telemetry supplied raw via Yahoo Finance. Analytical loops do not contain explicit fiduciary portfolio suggestions. Do your own research or consult your financial advisor before making any financial investments</p>
 
-        {/* Modern Trust Chips */}
         <div className="flex flex-wrap justify-center gap-2 text-[9px] uppercase font-bold tracking-wider">
           <span className="bg-bg-surface border border-border/40 px-2.5 py-1 rounded-md text-accent-teal">⭐ US & SGX DIVIDEND ANALYTICS</span>
           <span className="bg-bg-surface border border-border/40 px-2.5 py-1 rounded-md text-accent-blue">🔒 SECURE CLIENT PLATFORM</span>
