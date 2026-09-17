@@ -1,36 +1,41 @@
-import React, { useEffect } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route, Navigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import useStore from './store/useStore';
 import { trackPageView } from './services/tracker';
 
+// ---------- Eager: loaded on every page ----------
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
-import SearchBar from './components/SearchBar';
-import Results from './components/Results';
-import PortfolioView from './components/PortfolioView';
-import TopStocks from './components/TopStocks';
 import Footer from './components/Footer';
 import AppErrorBoundary from './components/AppErrorBoundary';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import BackToTop from './components/BackToTop';
-import Blog from './pages/Blog';
-import Article from './pages/Article';
-import SimulatorSingle from './pages/SimulatorSingle';
-import SimulatorDCA from './pages/SimulatorDCA';
-import Watchlist from './pages/Watchlist';
-import StockComparison from './pages/StockComparison';
-import ChatWidget from './components/ChatWidget';
-import Admin from './pages/Admin';
-import MillionaireSimulator from './pages/MillionaireSimulator';
-import TargetIncome from './pages/TargetIncome';
-import DividendScreener from './pages/DividendScreener';
-import WeeklyDividendETFs from './pages/WeeklyDividendETFs';
-import MonthlyDividendStocks from './pages/MonthlyDividendStocks';
-import DailyDividendStocks from './pages/DailyDividendStocks';
-import ReitsThatPayMonthly from './pages/ReitsThatPayMonthly';
+import LoadingSpinner from './components/LoadingSpinner';
+
+// ---------- Lazy: loaded only when the route is visited ----------
+const TargetIncome = lazy(() => import('./pages/TargetIncome'));
+const SearchStocks = lazy(() => import('./pages/SearchStocks'));
+const DividendScreener = lazy(() => import('./pages/DividendScreener'));
+const WeeklyDividendETFs = lazy(() => import('./pages/WeeklyDividendETFs'));
+const MonthlyDividendStocks = lazy(() => import('./pages/MonthlyDividendStocks'));
+const DailyDividendStocks = lazy(() => import('./pages/DailyDividendStocks'));
+const ReitsThatPayMonthly = lazy(() => import('./pages/ReitsThatPayMonthly'));
+const PortfolioView = lazy(() => import('./pages/PortfolioView'));
+const Watchlist = lazy(() => import('./pages/Watchlist'));
+const StockComparison = lazy(() => import('./pages/StockComparison'));
+const TopStocks = lazy(() => import('./pages/TopStocks'));
+const Blog = lazy(() => import('./pages/Blog'));
+const Article = lazy(() => import('./pages/Article'));
+const Login = lazy(() => import('./pages/Login'));
+const Signup = lazy(() => import('./pages/Signup'));
+const SimulatorSingle = lazy(() => import('./pages/SimulatorSingle'));
+const SimulatorDCA = lazy(() => import('./pages/SimulatorDCA'));
+const MillionaireSimulator = lazy(() => import('./pages/MillionaireSimulator'));
+const Admin = lazy(() => import('./pages/Admin'));
+
+// ---------- Lazy: deferred components ----------
+const ChatWidget = lazy(() => import('./components/ChatWidget'));
+const BackToTop = lazy(() => import('./components/BackToTop'));
 
 import { getMe } from './services/api';
 
@@ -52,6 +57,11 @@ function RouteTracker() {
     trackPageView(location.pathname + location.search);
   }, [location.pathname, location.search]);
   return null;
+}
+
+// ---------- Home wrapper (kept here to avoid a separate file) ----------
+function HomeRoute() {
+  return <TargetIncome />;
 }
 
 function App() {
@@ -97,35 +107,39 @@ function App() {
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col font-sans antialiased selection:bg-accent-blue/20">
             <Header />
             <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8 animate-in fade-in duration-300">
-              <Routes>
-                <Route path="/" element={<TargetIncome />} />
-                <Route path="/search" element={<SearchStocks />} />
-                <Route path="/screener" element={<DividendScreener />} />
-                <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />
-                <Route path="/monthly-dividend-stocks" element={<MonthlyDividendStocks />} />
-                <Route path="/daily-dividend-stocks" element={<DailyDividendStocks />} />
-                <Route path="/reits-that-pay-monthly" element={<ReitsThatPayMonthly />} />
-                <Route path="/income-planner" element={<Navigate to="/" replace />} />
+              <Suspense fallback={<div className="py-20"><LoadingSpinner /></div>}>
+                <Routes>
+                  <Route path="/" element={<HomeRoute />} />
+                  <Route path="/search" element={<SearchStocks />} />
+                  <Route path="/screener" element={<DividendScreener />} />
+                  <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />
+                  <Route path="/monthly-dividend-stocks" element={<MonthlyDividendStocks />} />
+                  <Route path="/daily-dividend-stocks" element={<DailyDividendStocks />} />
+                  <Route path="/reits-that-pay-monthly" element={<ReitsThatPayMonthly />} />
+                  <Route path="/income-planner" element={<Navigate to="/" replace />} />
 
-                <Route path="/portfolio" element={<PortfolioView />} />
-                <Route path="/watchlist" element={<Watchlist />} />
-                <Route path="/compare" element={<StockComparison />} />
-                <Route path="/top" element={<TopStocks />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<Article />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/simulate/one-time" element={<SimulatorSingle />} />
-                <Route path="/simulate/dca" element={<SimulatorDCA />} />
-                <Route path="/millionaire" element={<MillionaireSimulator />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="*" element={<Navigate to="/" />} />
-              </Routes>
+                  <Route path="/portfolio" element={<PortfolioView />} />
+                  <Route path="/watchlist" element={<Watchlist />} />
+                  <Route path="/compare" element={<StockComparison />} />
+                  <Route path="/top" element={<TopStocks />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<Article />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/simulate/one-time" element={<SimulatorSingle />} />
+                  <Route path="/simulate/dca" element={<SimulatorDCA />} />
+                  <Route path="/millionaire" element={<MillionaireSimulator />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+              </Suspense>
             </main>
             <Footer />
             <BottomNav />
-            <BackToTop />
-            <ChatWidget />
+            <Suspense fallback={null}>
+              <BackToTop />
+              <DeferredChatWidget />
+            </Suspense>
           </div>
         </BrowserRouter>
       </QueryClientProvider>
@@ -133,45 +147,15 @@ function App() {
   );
 }
 
-function SearchStocks() {
-  const [searchParams] = useSearchParams();
-  const symbol = searchParams.get('symbol') || '';
-
-  const pageTitle = symbol
-    ? `${symbol} Dividend History – Yield, Ex-Dates & Risk Assessment`
-    : 'Search Dividend Stocks – US & SGX | DividendBro';
-
-  const pageDescription = symbol
-    ? `View complete payout histories, current yields metrics, capital safety scores, and ex-dividend dates for ${symbol}.`
-    : 'Search and analyze dividend stocks for US and SGX markets.';
-
-  return (
-    <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <link rel="canonical" href={`${SITE_URL}/search`} />
-      </Helmet>
-
-      <div className="text-center mb-10 max-w-2xl mx-auto">
-        <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary leading-tight">
-          Smart Dividend Tracking <br />
-          For <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Modern Investors</span>
-        </h1>
-        <p className="text-text-secondary text-sm mt-3 font-medium">
-          Analyse cash flows, calculate asset growth caps, and track passive dividend revenue across US and SGX channels seamlessly.
-        </p>
-        <div className="flex flex-wrap justify-center gap-1.5 mt-4 text-[10px] font-bold uppercase tracking-wider">
-          <span className="bg-accent-blue/5 text-accent-blue px-3 py-1 rounded-md border border-accent-blue/10">US Equities</span>
-          <span className="bg-accent-teal/5 text-accent-teal px-3 py-1 rounded-md border border-accent-teal/10">SGX Stocks</span>
-          <span className="bg-accent-purple/5 text-accent-purple px-3 py-1 rounded-md border border-accent-purple/10">REITs</span>
-        </div>
-      </div>
-
-      <SearchBar />
-      <Results symbol={symbol} />
-    </>
-  );
+// Delay ChatWidget load by 3 seconds so it doesn't compete with LCP
+function DeferredChatWidget() {
+  const [show, setShow] = React.useState(false);
+  React.useEffect(() => {
+    const t = setTimeout(() => setShow(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
+  if (!show) return null;
+  return <ChatWidget />;
 }
 
 export default App;

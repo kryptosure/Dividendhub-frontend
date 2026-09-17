@@ -26,7 +26,13 @@ const Header = () => {
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
 
         <Link to="/" className="flex items-center flex-shrink-0 active:scale-[0.98] transition-transform">
-          <img src="/images/logo.svg" alt="DividendBro" className="h-12 sm:h-16 w-auto object-contain" />
+          <img
+            src="/images/logo.svg"
+            alt="DividendBro"
+            width="120"
+            height="64"
+            className="h-12 sm:h-16 w-auto object-contain"
+          />
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
@@ -56,7 +62,7 @@ const Header = () => {
           <div className="h-4 w-[1px] bg-border/60" />
 
           <div className="flex items-center gap-3">
-            <button onClick={toggleTheme} className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 hover:bg-bg-surface-hover active:scale-95 transition-all text-sm" aria-label="Theme Controller">
+            <button onClick={toggleTheme} className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 hover:bg-bg-surface-hover active:scale-95 transition-all text-sm" aria-label="Toggle theme">
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
 
@@ -75,10 +81,10 @@ const Header = () => {
         </nav>
 
         <div className="flex md:hidden items-center gap-2 ml-auto">
-          <button onClick={toggleTheme} className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 text-sm">
+          <button onClick={toggleTheme} className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 text-sm" aria-label="Toggle theme">
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="w-9 h-9 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors" aria-label="Navigation Drawer">
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="w-9 h-9 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors" aria-label="Open navigation menu">
             <div className={`w-4 h-0.5 bg-text-primary mb-1 transition-all ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
             <div className={`w-4 h-0.5 bg-text-primary mb-1 transition-all ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
             <div className={`w-4 h-0.5 bg-text-primary transition-all ${isMobileMenuOpen ? '-rotate-45 -translate-y-1' : ''}`} />

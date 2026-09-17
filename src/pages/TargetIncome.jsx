@@ -134,13 +134,13 @@ const TargetIncome = () => {
           </p>
         </div>
 
-        {/* Compliance banner */}
-        <div className="bg-accent-yellow/5 border border-accent-yellow/25 rounded-2xl p-4">
-          <p className="text-[11px] text-accent-yellow font-bold uppercase tracking-wider mb-1">
+        {/* Compliance banner — brighter amber text for AA contrast */}
+        <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4">
+          <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
             This is a learning tool — not financial advice
           </p>
-          <p className="text-[11px] text-text-muted leading-relaxed">
-            DividendBro is not a licensed financial adviser. We use public market data to show you <strong className="text-text-secondary">an example</strong> of what a portfolio could look like. It's not a recommendation. Always do your own research before investing.
+          <p className="text-[11px] text-text-secondary leading-relaxed">
+            DividendBro is not a licensed financial adviser. We use public market data to show you <strong className="text-text-primary">an example</strong> of what a portfolio could look like. It's not a recommendation. Always do your own research before investing.
           </p>
         </div>
 
@@ -171,13 +171,14 @@ const TargetIncome = () => {
               />
               <span className="text-sm font-bold text-text-muted">/ month</span>
             </div>
-            <div className="flex flex-wrap gap-1.5 mt-2">
+            {/* Preset buttons — larger touch targets */}
+            <div className="flex flex-wrap gap-2 mt-3">
               {[200, 500, 1000, 2000].map((v) => (
                 <button
                   key={v}
                   type="button"
                   onClick={() => setTargetMonthly(v)}
-                  className={`text-[11px] font-bold px-3 py-1 rounded-lg border transition-all ${
+                  className={`min-h-[40px] text-[12px] font-bold px-4 py-2 rounded-lg border transition-all ${
                     targetMonthly === v
                       ? 'bg-accent-blue text-white border-accent-blue'
                       : 'bg-bg-primary border-border/60 text-text-secondary hover:border-accent-blue/60'
@@ -227,7 +228,7 @@ const TargetIncome = () => {
                   type="button"
                   onClick={() => setLocation(loc.key)}
                   aria-pressed={location === loc.key}
-                  className={`rounded-xl p-3 border text-left transition-all ${
+                  className={`min-h-[64px] rounded-xl p-3 border text-left transition-all ${
                     location === loc.key
                       ? 'border-accent-blue bg-accent-blue/5'
                       : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
@@ -274,7 +275,7 @@ const TargetIncome = () => {
                     type="button"
                     onClick={() => setRiskProfile(r.key)}
                     aria-pressed={active}
-                    className={`text-center rounded-lg py-2 px-1 transition-all ${
+                    className={`min-h-[56px] text-center rounded-lg py-2.5 px-1 transition-all ${
                       active ? 'bg-accent-blue/10 border border-accent-blue/40' : 'border border-transparent hover:bg-bg-primary'
                     }`}
                   >
@@ -292,7 +293,7 @@ const TargetIncome = () => {
           <button
             type="submit"
             disabled={isLoading || !targetMonthly}
-            className="w-full py-4 bg-gradient-to-r from-accent-blue to-accent-teal text-white font-bold text-sm tracking-wider uppercase rounded-xl shadow-md hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-40"
+            className="w-full min-h-[56px] py-4 bg-gradient-to-r from-accent-blue to-accent-teal text-white font-bold text-sm tracking-wider uppercase rounded-xl shadow-md hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-40"
           >
             {isLoading ? 'Building your sample portfolio…' : 'Show Me A Sample Portfolio'}
           </button>
@@ -339,17 +340,17 @@ const TargetIncome = () => {
                   <p className="text-xs text-text-muted">
                     You have <span className="font-bold text-text-primary">{curSymbol}{fmt(result.summary.providedCapital)}</span>.
                     Your goal needs <span className="font-bold text-text-primary">{curSymbol}{fmt(result.summary.requiredCapital)}</span>.
-                    Shortfall: <span className="font-bold text-accent-yellow">{curSymbol}{fmt(result.summary.gap)}</span>.
+                    Shortfall: <span className="font-bold text-amber-300">{curSymbol}{fmt(result.summary.gap)}</span>.
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Warnings */}
+            {/* Warnings — brighter amber text for AA contrast */}
             {result.warnings?.length > 0 && (
-              <div className="bg-accent-yellow/5 border border-accent-yellow/25 rounded-2xl p-4 space-y-1.5">
+              <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4 space-y-1.5">
                 {result.warnings.map((w, i) => (
-                  <p key={i} className="text-xs text-accent-yellow font-medium">{w}</p>
+                  <p key={i} className="text-xs text-amber-300 font-medium">{w}</p>
                 ))}
               </div>
             )}
@@ -489,13 +490,13 @@ const TargetIncome = () => {
               <button
                 onClick={handleSaveToPortfolio}
                 disabled={saved}
-                className="px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
+                className="min-h-[48px] px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
               >
                 {saved ? 'Saved to My Portfolio' : 'Save This to My Portfolio'}
               </button>
               <Link
                 to="/portfolio"
-                className="px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all"
+                className="min-h-[48px] px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all flex items-center"
               >
                 View My Portfolio
               </Link>
