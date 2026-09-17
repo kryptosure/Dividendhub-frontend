@@ -463,6 +463,109 @@ const Admin = () => {
           </div>
         </div>
 
+        {/* ✅ NEW: Screener Filters + Income Planner */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Screener filters */}
+          <div>
+            <SectionTitle>Screener Filters (Last 30 Days)</SectionTitle>
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm space-y-4">
+              {(!data.screener || data.screener.totalFilterActions === 0) ? (
+                <p className="text-text-muted text-sm">No screener activity yet.</p>
+              ) : (
+                <>
+                  <div className="text-center bg-bg-primary border border-border/40 rounded-xl p-3">
+                    <div className="text-[10px] uppercase font-bold text-text-muted tracking-wider">Total Filter Actions</div>
+                    <div className="text-xl font-black text-accent-blue mt-1">{data.screener.totalFilterActions}</div>
+                  </div>
+
+                  {data.screener.topFrequencyFilters?.length > 0 && (
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Most-Used Frequency Tabs</p>
+                      <div className="space-y-1.5">
+                        {data.screener.topFrequencyFilters.map((f) => (
+                          <div key={f.value} className="flex items-center justify-between text-xs">
+                            <span className="text-text-secondary capitalize">{f.value}</span>
+                            <span className="font-bold text-text-primary">{f.count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {data.screener.topAssetFilters?.length > 0 && (
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Most-Used Asset Tabs</p>
+                      <div className="space-y-1.5">
+                        {data.screener.topAssetFilters.map((a) => (
+                          <div key={a.value} className="flex items-center justify-between text-xs">
+                            <span className="text-text-secondary capitalize">{a.value}</span>
+                            <span className="font-bold text-text-primary">{a.count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Income Planner */}
+          <div>
+            <SectionTitle>Income Planner Usage (Last 30 Days)</SectionTitle>
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm space-y-4">
+              {(!data.planner || data.planner.generateCount === 0) ? (
+                <p className="text-text-muted text-sm">No planner usage yet.</p>
+              ) : (
+                <>
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div className="bg-bg-primary border border-border/40 rounded-xl p-3">
+                      <div className="text-[10px] uppercase font-bold text-text-muted tracking-wider">Generated</div>
+                      <div className="text-xl font-black text-accent-blue mt-1">{data.planner.generateCount}</div>
+                    </div>
+                    <div className="bg-bg-primary border border-border/40 rounded-xl p-3">
+                      <div className="text-[10px] uppercase font-bold text-text-muted tracking-wider">Saved</div>
+                      <div className="text-xl font-black text-accent-teal mt-1">{data.planner.saveCount}</div>
+                    </div>
+                    <div className="bg-bg-primary border border-border/40 rounded-xl p-3">
+                      <div className="text-[10px] uppercase font-bold text-text-muted tracking-wider">Save Rate</div>
+                      <div className="text-xl font-black text-accent-green mt-1">{data.planner.saveRate}%</div>
+                    </div>
+                  </div>
+
+                  {data.planner.riskProfiles?.length > 0 && (
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Top Risk Profiles</p>
+                      <div className="space-y-1.5">
+                        {data.planner.riskProfiles.slice(0, 4).map((r) => (
+                          <div key={r.key} className="flex items-center justify-between text-xs">
+                            <span className="text-text-secondary capitalize">{r.key}</span>
+                            <span className="font-bold text-text-primary">{r.count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {data.planner.targets?.length > 0 && (
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Target Monthly Income</p>
+                      <div className="space-y-1.5">
+                        {data.planner.targets.map((t) => (
+                          <div key={t.key} className="flex items-center justify-between text-xs">
+                            <span className="text-text-secondary">{t.key}</span>
+                            <span className="font-bold text-text-primary">{t.count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Top Pages + Traffic Sources */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
