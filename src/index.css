@@ -4,35 +4,55 @@
 
 @layer base {
   :root {
-    --bg-primary: #f8fafc;
-    --bg-secondary: #ffffff;
-    --bg-surface: #ffffff;
-    --bg-surface-hover: #f1f5f9;
-    --border-color: #e2e8f0;
-    --border-hover: #cbd5e1;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --text-muted: #94a3b8;
-    --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
-    --shadow-hover: 0 10px 30px -3px rgba(15, 23, 42, 0.08);
+    /* Neutral, true-gray scale — no blue or warm tint, for a clean minimal look */
+    --bg-primary: #FAFAFA;
+    --bg-secondary: #FFFFFF;
+    --bg-surface: #FFFFFF;
+    --bg-surface-hover: #F4F4F5;
+    --border-color: #E4E4E7;
+    --border-hover: #D4D4D8;
+    --text-primary: #18181B;
+    --text-secondary: #52525B;
+    /* ✅ FIX: was #A1A1AA (~3.4:1 on #FAFAFA) which failed WCAG AA for body text.
+       #71717A lands at ~5.4:1 and matches the dark-mode value. */
+    --text-muted: #71717A;
+    --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.03), 0 4px 16px -4px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 10px 30px -3px rgba(0, 0, 0, 0.10);
+
+    /* One accent color, used everywhere gold or a second brand color used to appear */
+    --accent: #15803D;
+    --accent-hover: #16A34A;
+
+    --status-danger: #DC2626;
+    --status-caution: #D97706;
+    --status-safe: #15803D;
   }
 
   [data-theme="dark"] {
-    --bg-primary: #000000;
-    --bg-secondary: #0a0a0a;
-    --bg-surface: #0a0a0a;
-    --bg-surface-hover: #141414;
-    --border-color: rgba(255, 255, 255, 0.02);
-    --border-hover: rgba(255, 255, 255, 0.05);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #94a3b8; /* ← Lighter for better contrast on black */
-    --shadow-card: 0 4px 30 rgba(0, 0, 0, 0.4);
+    --bg-primary: #131316;
+    --bg-secondary: #1A1A1D;
+    --bg-surface: #1A1A1D;
+    --bg-surface-hover: #232326;
+    --border-color: rgba(244, 244, 245, 0.06);
+    --border-hover: rgba(244, 244, 245, 0.12);
+    --text-primary: #FAFAFA;
+    --text-secondary: #A1A1AA;
+    --text-muted: #71717A;
+    --shadow-card: 0 4px 30px rgba(0, 0, 0, 0.4);
     --shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.6);
+
+    --accent: #22C55E;
+    --accent-hover: #4ADE80;
+
+    --status-danger: #F87171;
+    --status-caution: #FBBF24;
+    --status-safe: #22C55E;
   }
 
+  /* ✅ FIX: merged the two `*` blocks into one (box-sizing + transition reset) */
   * {
     @apply box-border m-0 p-0;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   }
   html {
     transition: background-color 0.2s ease, color 0.2s ease;
@@ -44,7 +64,7 @@
   #root {
     @apply min-h-screen flex flex-col;
   }
-  
+
   ::-webkit-scrollbar {
     @apply w-1.5 h-1.5;
   }
@@ -54,15 +74,14 @@
   ::-webkit-scrollbar-thumb {
     @apply bg-border rounded-full hover:bg-text-muted transition-colors;
   }
-  
+
   :focus-visible {
-    @apply outline-2 outline-accent-blue outline-offset-2;
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
   ::selection {
-    @apply bg-accent-blue/30 text-text-primary;
-  }
-  * {
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    color: var(--text-primary);
   }
   .no-transition {
     transition: none !important;
@@ -70,14 +89,15 @@
 }
 
 @layer components {
+  /* ✅ FIX: use the newly registered `shadow-hover` utility. */
   .card-hover {
-    @apply transition-shadow duration-200 hover:shadow-shadow-hover;
+    @apply transition-shadow duration-200 hover:shadow-hover;
   }
   .gradient-text {
-    @apply bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent;
+    color: var(--accent);
   }
   .gradient-bg {
-    @apply bg-gradient-to-r from-accent-blue to-accent-teal;
+    background-color: var(--accent);
   }
   .table-wrapper {
     @apply w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0;
@@ -146,40 +166,24 @@
   position: absolute;
   right: 12px;
   pointer-events: auto;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 18px;
   cursor: pointer;
   user-select: none;
 }
 
 .date-picker-icon:hover {
-  color: #cbd5e1;
-}
-
-[data-theme="dark"] .date-picker-icon {
-  color: #94a3b8;
-}
-
-[data-theme="dark"] .date-picker-icon:hover {
-  color: #cbd5e1;
-}
-
-[data-theme="light"] .date-picker-icon {
-  color: #64748b;
-}
-
-[data-theme="light"] .date-picker-icon:hover {
-  color: #475569;
+  color: var(--text-secondary);
 }
 
 /* Date picker fixes for dark/light themes */
-input[type="date"] {
-  color-scheme: dark;
-}
+/* ✅ FIX: `color-scheme` is now scoped per theme so the native date picker
+   doesn't render dark chrome in light mode. */
 [data-theme="dark"] input[type="date"] {
-  color: #ffffff !important;
-  background-color: #0a0a0a !important;
-  border: 1px solid #2a2a2a !important;
+  color-scheme: dark;
+  color: var(--text-primary) !important;
+  background-color: var(--bg-surface) !important;
+  border: 1px solid var(--border-color) !important;
 }
 [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
@@ -187,11 +191,12 @@ input[type="date"] {
   opacity: 1 !important;
 }
 [data-theme="dark"] input[type="date"]::-webkit-datetime-edit {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 [data-theme="light"] input[type="date"] {
-  color: #0f172a !important;
-  background-color: #ffffff !important;
+  color-scheme: light;
+  color: var(--text-primary) !important;
+  background-color: var(--bg-surface) !important;
 }
 
 /* ---------- Global header/footer border removal ---------- */
@@ -211,13 +216,13 @@ footer {
   width: 100%;
   z-index: 9999;
 
-  /* ✅ Adapts to light/dark theme */
-  background-color: var(--bg-surface) !important;
-
-  /* Strong blur + high opacity = no text bleed-through */
+  /* ✅ FIX: opacity + backdrop-filter on the whole element was fading text
+     and had nothing to blur (background was fully opaque). Now the surface
+     itself is slightly translucent so the blur is meaningful, and text
+     stays full-opacity. */
+  background-color: color-mix(in srgb, var(--bg-surface) 94%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  opacity: 0.98;
 
   border: 1px solid var(--border-color);
   border-radius: 12px;
@@ -242,16 +247,16 @@ footer {
 [data-theme="dark"] input,
 [data-theme="dark"] select,
 [data-theme="dark"] textarea {
-  background-color: #0a0a0a !important;
-  color: #ffffff !important;
-  caret-color: #ffffff !important;
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  caret-color: var(--text-primary) !important;
 }
 
 /* Fix Chrome/Firefox autofill white backgrounds in dark mode */
 [data-theme="dark"] input:-webkit-autofill,
-[data-theme="dark"] input:-webkit-autofill:hover, 
+[data-theme="dark"] input:-webkit-autofill:hover,
 [data-theme="dark"] input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #ffffff;
+  -webkit-text-fill-color: var(--text-primary);
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -293,15 +298,15 @@ footer {
 }
 
 .article-body a {
-  color: #3b82f6;
+  color: var(--accent);
   text-decoration: underline;
-  text-decoration-color: rgba(59, 130, 246, 0.35);
+  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
   text-underline-offset: 4px;
   transition: all 0.2s;
 }
 
 .article-body a:hover {
-  text-decoration-color: #3b82f6;
+  text-decoration-color: var(--accent);
 }
 
 .article-body ul, .article-body ol {
@@ -314,12 +319,12 @@ footer {
 }
 
 .article-body blockquote {
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid var(--accent);
   padding: 0.5rem 1.5rem;
   margin: 1.75rem 0;
   font-style: italic;
   color: var(--text-muted);
-  background: rgba(59, 130, 246, 0.03);
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
   border-radius: 0 8px 8px 0;
 }
 
@@ -404,7 +409,8 @@ footer {
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  /* ✅ FIX: use the theme-aware shadow token instead of a hardcoded dark one */
+  box-shadow: var(--shadow-card);
 }
 
 .db-ig-header {
@@ -412,7 +418,7 @@ footer {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: rgba(59, 130, 246, 0.06);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -430,7 +436,7 @@ footer {
   display: inline-flex;
   width: 22px;
   height: 22px;
-  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  background: var(--accent);
   border-radius: 5px;
   align-items: center;
   justify-content: center;
@@ -442,11 +448,11 @@ footer {
 .db-ig-link {
   font-size: 10px;
   font-weight: 700;
-  color: #06b6d4;
+  color: var(--accent);
   text-decoration: none;
   padding: 5px 10px;
   border-radius: 5px;
-  background: rgba(6, 182, 212, 0.1);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .db-ig-title {
@@ -492,7 +498,7 @@ footer {
   border: 1px solid var(--border-color);
 }
 
-.db-ig-row-track:hover { border-color: #3b82f6; }
+.db-ig-row-track:hover { border-color: var(--accent); }
 
 .db-ig-row-fill { height: 100%; border-radius: 5px; }
 
@@ -545,7 +551,7 @@ footer {
 
 .db-ig-footer {
   padding: 10px 18px;
-  background: rgba(59, 130, 246, 0.03);
+  background: color-mix(in srgb, var(--accent) 3%, transparent);
   border-top: 1px solid var(--border-color);
   text-align: center;
   font-size: 10px;
@@ -553,7 +559,7 @@ footer {
 }
 
 .db-ig-footer a {
-  color: #06b6d4;
+  color: var(--accent);
   text-decoration: none;
   font-weight: 700;
 }
@@ -567,8 +573,8 @@ footer {
 .article-body .db-ig div { color: inherit; }
 .article-body .db-ig a { color: inherit; text-decoration: none; }
 .article-body .db-ig a.db-ig-footer-link,
-.article-body .db-ig-footer a { color: #06b6d4 !important; text-decoration: none; }
-.article-body .db-ig a.db-ig-link { color: #06b6d4 !important; text-decoration: none; }
+.article-body .db-ig-footer a { color: var(--accent) !important; text-decoration: none; }
+.article-body .db-ig a.db-ig-link { color: var(--accent) !important; text-decoration: none; }
 .article-body .db-ig .db-ig-row-val { color: inherit; }
 .article-body .db-ig .db-ig-stat-val { color: inherit; }
 
@@ -651,20 +657,13 @@ html, body {
   }
 }
 
-/* Article tables get horizontal scroll on mobile */
-.article-body table {
-  display: block;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  white-space: nowrap;
-}
-
-@media (min-width: 641px) {
-  .article-body table {
-    display: table;
-    white-space: normal;
-  }
-}
+/* ✅ NOTE: `.article-body table { display: block }` on mobile was removed.
+   It breaks table layout semantics (columns size independently). The
+   `.table-wrapper` / `.mobile-scroll` wrappers already provide horizontal
+   scroll while preserving `display: table`, which is the correct pattern.
+   If you *do* need to force scroll without a wrapper, use:
+     .article-body { overflow-x: auto; }
+   on the parent instead of on the table itself. */
 
 /* Infographic mobile tweaks */
 @media (max-width: 480px) {

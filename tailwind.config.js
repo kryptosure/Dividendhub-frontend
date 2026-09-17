@@ -25,14 +25,26 @@ export default {
           muted: 'var(--text-muted)',
         },
         accent: {
-          blue: '#2563eb', /* Darker blue - passes WCAG AA */
-          teal: '#0891b2', /* Darker teal - passes WCAG AA */
-          green: '#34d399',
-          red: '#f87171',
-          yellow: '#fbbf24',
-          purple: '#8b5cf6',
-          pink: '#f472b6',
+          /* Single accent color for the whole app, per the new minimal
+             direction — blue/teal/green/purple/pink all resolve to the
+             same var(--accent) (or a functional status color), so any
+             existing "from-accent-blue to-accent-teal" gradient utility
+             in the JSX now renders as a flat accent color automatically. */
+          blue: 'var(--accent)',
+          teal: 'var(--accent)',
+          green: 'var(--status-safe)',
+          red: 'var(--status-danger)',
+          yellow: 'var(--status-caution)',
+          purple: 'var(--text-secondary)', /* decorative-only tags go neutral gray in a minimal palette */
+          pink: 'var(--text-secondary)',
         },
+      },
+      // ✅ FIX: register shadow tokens so `shadow-card` / `hover:shadow-hover`
+      // actually generate CSS. Previously `.card-hover` silently did nothing
+      // because `shadow-shadow-hover` was not a real utility.
+      boxShadow: {
+        card: 'var(--shadow-card)',
+        hover: 'var(--shadow-hover)',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
