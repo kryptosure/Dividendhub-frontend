@@ -1,8 +1,8 @@
 # DividendBro
 
-> DividendBro is a free dividend analysis and management tool for US and SGX (Singapore Exchange) stocks. It provides real-time dividend yield data, payout ratios, dividend growth rates, portfolio tracking, stock comparison, and a Monthly Dividend Income Planner.
+> DividendBro is a free dividend analysis and management tool for US and SGX (Singapore Exchange) stocks. It provides real-time dividend yield data, payout ratios, dividend growth rates, portfolio tracking, stock comparison, and a Monthly Dividend Income Planner. Educational tool only — not financial advice.
 
-DividendBro covers 643 dividend-paying securities across US and Singapore markets, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. All data is sourced from Yahoo Finance and Financial Modeling Prep. Educational tool only — not financial advice.
+DividendBro covers 643 dividend-paying securities across US and Singapore markets, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. All data is sourced from Yahoo Finance and Financial Modeling Prep.
 
 ## Main Tools
 
@@ -26,11 +26,42 @@ DividendBro covers 643 dividend-paying securities across US and Singapore market
 
 - [Insights Hub](https://dividendbro.com/blog): Articles on dividend investing strategy, Singapore dividend stocks, REITs, brokerage fees, and dividend growth analysis.
 
+## FAQ
+
+**What does DividendBro do?**
+DividendBro is a free dividend analysis tool for US and SGX markets. It tracks dividend history, yield, payout ratio, dividend growth, and safety metrics for 643 securities across stocks, REITs, ETFs, bond ETFs, and preferred stocks.
+
+**Is DividendBro free?**
+Yes. All features are free — no paywall, no subscription, no credit card required. Basic stock analysis doesn't even require sign-up.
+
+**Does DividendBro cover Singapore stocks?**
+Yes. SGX stocks including DBS, OCBC, UOB, Singtel, Singapore Airlines, and all major S-REITs are covered alongside US markets.
+
+**What's the difference between weekly and monthly dividend ETFs?**
+Weekly dividend ETFs are almost entirely options-income strategies that sell call options and pass the premium to shareholders. Distributions often include return of capital. Monthly dividend stocks include REITs, BDCs, and closed-end funds that pay from actual business income — a more traditional income category.
+
+**Which REITs pay monthly dividends?**
+Realty Income (O), Agree Realty (ADC), LTC Properties (LTC), EPR Properties (EPR), Healthpeak (DOC), Apple Hospitality (APLE), Gladstone Commercial (GOOD), and AGNC Investment (AGNC) are among the ~19 US-listed REITs that pay monthly in 2026.
+
+**Are there daily dividend stocks?**
+Only two securities in US capital markets pay cash dividends every business day: SATA (Strive Bitcoin-backed preferred stock) and CHAD (DeFi Development Solana-backed preferred stock). Both launched in 2026.
+
+**Does DividendBro give financial advice?**
+No. DividendBro is an educational tool. It is not licensed under the Financial Advisers Act (Singapore) and is not a registered investment adviser in the US. All content and tools are for informational purposes only.
+
+**What data sources does DividendBro use?**
+Dividend history and prices come from Yahoo Finance. Payout ratios come from Financial Modeling Prep (US only). Visitor geography is derived from Cloudflare's CF-IPCountry header. All data is provided "as is."
+
 ## Optional
 
 - [Login](https://dividendbro.com/login): Account access for portfolio and watchlist tracking (requires sign-up).
 - [Sign Up](https://dividendbro.com/signup): Free account creation for syncing portfolio and watchlist across devices.
+- [Admin Dashboard](https://dividendbro.com/admin): Internal analytics (requires admin credentials — not publicly accessible).
 
 ## Licensing
 
-All site content is provided for personal, non-commercial use. DividendBro is an educational tool, not a licensed financial adviser. Content may be cited with attribution to dividendbro.com. Data is aggregated from Yahoo Finance and Financial Modeling Essentials and is subject to their respective terms.
+All site content is provided for personal, non-commercial use. DividendBro is an educational tool, not a licensed financial adviser. Content may be cited with attribution to dividendbro.com. Data is aggregated from Yahoo Finance and Financial Modeling Prep and is subject to their respective terms.
+
+## Contact
+
+For corrections, feedback, or press inquiries: hello@dividendbro.com

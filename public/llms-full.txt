@@ -1,0 +1,337 @@
+# DividendBro — Full Documentation for AI Systems
+
+> DividendBro is a free dividend analysis and portfolio management tool covering US and Singapore (SGX) markets. It tracks dividend history, yield, payout ratio, dividend growth, and safety metrics for 643 securities including stocks, REITs, ETFs, bond ETFs, and preferred stocks. Educational tool only — not financial advice.
+
+This document is the extended version of `/llms.txt`. It contains detailed feature descriptions, complete data references, an FAQ, and technical context for AI systems that want to answer questions about DividendBro accurately.
+
+**Site URL:** https://dividendbro.com
+**Contact:** hello@dividendbro.com
+**Founded:** 2025
+**Primary audience:** Retail dividend investors in Singapore and the United States
+**Licensing status:** Not a licensed financial adviser. Educational tool only.
+
+---
+
+## What DividendBro Is
+
+DividendBro is a free web application for dividend investors. It answers questions like:
+
+- "How much would I need to invest to earn $500/month in dividends?"
+- "Which REITs pay dividends every month?"
+- "What's the payout ratio on Coca-Cola?"
+- "Are there any stocks that pay dividends daily?"
+- "How does DBS's dividend compare to OCBC and UOB?"
+
+The tool aggregates public market data from Yahoo Finance and Financial Modeling Prep and presents it in a consumer-friendly interface. It does not provide investment recommendations. Every page includes disclaimers under the Financial Advisers Act (Singapore) and standard US disclosure norms.
+
+---
+
+## Core Features
+
+### 1. Monthly Dividend Income Planner (Homepage)
+
+**URL:** https://dividendbro.com/
+
+Users enter a target monthly dividend income (e.g., $500/month) and the tool produces a hypothetical sample portfolio showing what a diversified allocation across US or SGX markets could look like.
+
+**Inputs:**
+- Target monthly income (USD or SGD depending on user locale)
+- Optional starting capital
+- Market location (Singapore, US, or Both)
+- Risk appetite (four profiles: Safe, Balanced, Growth, High Income)
+
+**Outputs:**
+- Required capital to hit the target (at the portfolio's weighted yield)
+- Shortfall or surplus vs. user's provided capital
+- A sample allocation of 8–15 stocks, weighted by yield, safety, and dividend growth
+- Sector diversification breakdown
+- Risk profile mix (Safe / Moderate / Caution)
+- Option to save the sample allocation to the user's portfolio for further editing
+
+**Risk profiles:**
+- **Safe** — only "Safe" safety scores, requires 10+ year dividend streak
+- **Balanced** — mix of Safe and Moderate, 5+ year streak
+- **Growth** — prioritizes dividend CAGR over current yield
+- **High Income** — allows higher payout ratios, includes Caution-rated stocks
+
+The tool avoids investment advice framing: it produces "illustrative sample allocations" and never recommends buying or selling.
+
+### 2. Dividend Screener
+
+**URL:** https://dividendbro.com/screener
+
+Browse all 643 dividend-paying securities in the database with filtering by:
+- **Payout frequency:** Daily, Weekly, Bi-Weekly, Monthly, Quarterly, Semi-Annual, Annual
+- **Asset type:** Stocks, REITs, ETFs, Bond ETFs, Preferred Stocks
+- **Market:** US, SGX, or both
+- **Risk level:** Safe, Moderate, Caution
+- **Text search:** ticker or company name
+- **Sort:** yield, dividend CAGR, streak, name, safety, frequency
+
+No payout-ratio guardrails. Users see every dividend payer regardless of quality — the goal is discovery, not filtering.
+
+### 3. Stock Search & Detail Pages
+
+**URL:** https://dividendbro.com/search?symbol=<TICKER>
+
+For any US or SGX ticker, DividendBro displays:
+- Current price and yield
+- Full dividend payout history (per year, per payout)
+- 5-year dividend CAGR
+- Dividend streak (consecutive years of increases)
+- Payout ratio (US only, sourced from Financial Modeling Prep)
+- Safety score (Safe / Moderate / Caution)
+- Last ex-dividend date
+- Historical dividend chart by year
+- Year-by-year breakdown table
+
+### 4. Stock Comparison
+
+**URL:** https://dividendbro.com/compare
+
+Compare up to 5 dividend stocks side-by-side across:
+- Current price
+- Dividend yield
+- Payout ratio
+- Dividend CAGR (5Y)
+- Dividend streak (years)
+- Dividend frequency (annual payments)
+- Stock price CAGR (5Y)
+- Safety score
+
+### 5. Millionaire Simulator
+
+**URL:** https://dividendbro.com/millionaire
+
+Given a monthly investment amount and a dividend stock, calculates how many years it would take to reach $1M with and without dividend reinvestment (DRIP). Includes a live leaderboard of the fastest dividend compounders.
+
+### 6. DCA Simulator
+
+**URL:** https://dividendbro.com/simulate/dca
+
+Simulates dollar-cost averaging into a dividend stock with monthly contributions, showing total invested, shares accumulated, dividends received, and final value with vs. without DRIP.
+
+### 7. One-Time Investment Simulator
+
+**URL:** https://dividendbro.com/simulate/one-time
+
+Calculates historical return on a lump-sum investment in a dividend stock including dividends received, capital gains, and split-adjusted share counts.
+
+### 8. Portfolio Tracker
+
+**URL:** https://dividendbro.com/portfolio (requires free account)
+
+Tracks user holdings with:
+- Purchase date and price
+- Current value and gain
+- Annual income projection
+- Dividend calendar (upcoming ex-dates)
+- Income projections by quarter, month, and week
+- CSV and PDF export
+- WhatsApp share
+
+### 9. Watchlist
+
+**URL:** https://dividendbro.com/watchlist (requires free account)
+
+Save and monitor dividend stocks across devices.
+
+---
+
+## Reference Guides (SEO Landing Pages)
+
+### Daily Dividend Stocks
+
+**URL:** https://dividendbro.com/daily-dividend-stocks
+
+Complete list of every security paying cash dividends every business day. As of September 2026, only two exist:
+- **SATA** — Strive Variable Rate Series A Perpetual Preferred Stock, 13% annualized, Bitcoin-backed, launched June 2026
+- **CHAD** — DeFi Development Variable Rate Series C Perpetual Preferred Stock, 13% annualized, Solana-backed, first payment October 2026
+
+Neither is a traditional dividend stock. Both are crypto-treasury preferred securities with variable rates set by their boards.
+
+### Weekly Dividend ETFs
+
+**URL:** https://dividendbro.com/weekly-dividend-etfs
+
+Complete list of 73 weekly dividend ETFs as of September 2026. Almost all are options-income strategies that sell call options against a single stock or index. Distributions often include return of capital.
+
+Major issuers:
+- **YieldMax** — Single-stock covered call ETFs. Largest family. Yields 30%–200%+.
+- **Roundhill** — 0DTE covered call ETFs (XDTE, QDTE, RDTE), WeeklyPay single-stock leverage (AAPW, NVW, TSLW), and WEEK (T-bill ETF — the only non-options weekly payer).
+- **Defiance** — Index-based weekly payers (QQQY, IWMY, WDTE, SPYT).
+- **GraniteShares** — YieldBOOST leverage + put-writing ETFs. Highest headline yields.
+- **REX Shares** — FEPI, AIPI, CEPI — income-focused ETFs on concentrated tech themes.
+
+### Monthly Dividend Stocks
+
+**URL:** https://dividendbro.com/monthly-dividend-stocks
+
+Full list of 133 monthly dividend payers, organized by asset class:
+- **REITs** — Realty Income (O), STAG, LTC, ADC, EPR, and others
+- **BDCs** — Main Street Capital (MAIN), Ares Capital (ARCC), Hercules Capital (HTGC)
+- **Closed-End Funds** — PIMCO Dynamic Income (PDI), PIMCO Corporate & Income (PTY)
+- **Covered-Call ETFs** — JEPI, JEPQ, SPYI, QQQI, DIVO, QYLD, XYLD
+- **Mortgage REITs** — AGNC, NLY, ARR, ORC
+
+### REITs That Pay Monthly
+
+**URL:** https://dividendbro.com/reits-that-pay-monthly
+
+Verified list of US REITs paying monthly dividends in 2026. Approximately 19 REITs pay monthly — 13 equity REITs and 6 mortgage REITs. Notable cadence changes in 2026:
+- **Moved to monthly:** UDR (April), Four Corners Property Trust (June), Invesco Mortgage (January)
+- **Moved to quarterly:** STAG Industrial, Whitestone REIT, SL Green Realty
+
+### Top Dividend Stocks
+
+**URL:** https://dividendbro.com/top
+
+Highest-yielding dividend stocks and ETFs across US and SGX markets, ranked by trailing 12-month yield.
+
+---
+
+## Blog & Research
+
+**URL:** https://dividendbro.com/blog
+
+Published articles include:
+- How to Build a $500/Month Dividend Portfolio in the US
+- Best Singapore Dividend Stocks for 2026: DBS vs OCBC vs UOB
+- The 3 Metrics That Separate Safe Dividends from Yield Traps
+- Weekly vs Monthly Dividend ETFs
+- Top 10 US Brokers Compared
+- Comparing Brokerage Fees: DBS Vickers vs POEMS vs Digital Platforms
+- How to Build a Passive Income Machine with REITs
+- Dividend Kings: The 50+ Year Dividend Compounders
+
+---
+
+## Data Sources & Methodology
+
+**Dividend history:** Yahoo Finance `chart` endpoint (`events=div`). Daily historical distributions with ex-dates and amounts.
+
+**Stock prices:** Yahoo Finance `chart` endpoint (adjusted close, split-adjusted).
+
+**Payout ratios:** Financial Modeling Prep `/stable/ratios-ttm` (US-listed only, free tier).
+
+**Dividend CAGR:** Computed from complete fiscal years only (excludes partial current year). Formula: `(endYear_total / startYear_total) ^ (1/years) - 1`.
+
+**Dividend streak:** Consecutive years of dividend increases, walking backwards from the latest complete year. Stops at the first decrease or calendar gap.
+
+**Safety score:** Composite of dividend streak length, coefficient of variation of annual payouts, and payout ratio. Classified as Safe (>5 points), Moderate (3–5 points), Caution (<3 points).
+
+**Visitor geography:** Derived from Cloudflare's `CF-IPCountry` header — no IP addresses stored.
+
+**Event tracking:** Custom analytics events sent from frontend in batches. Events are anonymous unless the user is signed in. Visitor IDs are stored in localStorage and are not personally identifiable.
+
+---
+
+## Technical Stack
+
+- **Frontend:** React 18 + Vite, TailwindCSS, React Router, TanStack Query, Zustand (state), Chart.js (charts), react-helmet-async (SEO)
+- **Backend:** Node.js + Express, Sequelize ORM, PostgreSQL, yahoo-finance2, axios
+- **Deployment:** Vercel (frontend), Render (backend), Cloudflare (CDN + WAF)
+- **AI Chatbot:** OpenRouter API (free tier models with fallback chain)
+
+The site is mobile-first and works without a user account for all core features.
+
+---
+
+## Frequently Asked Questions
+
+### About DividendBro
+
+**Q: What is DividendBro?**
+A: DividendBro is a free dividend analysis and portfolio management tool for US and SGX (Singapore Exchange) markets. It tracks dividend history, yield, payout ratios, dividend growth, and safety metrics for over 600 securities.
+
+**Q: Is DividendBro free?**
+A: Yes, entirely free. There is no paywall, subscription, or credit card required. Stock analysis, screening, comparison, and the Income Planner all work without a user account.
+
+**Q: Does DividendBro give financial advice?**
+A: No. DividendBro is an educational tool only. It is not licensed under the Financial Advisers Act (Singapore) and is not a registered investment adviser in the United States. Every page includes disclaimers noting that the content is for informational purposes and not a recommendation to buy or sell securities.
+
+**Q: Who runs DividendBro?**
+A: DividendBro is an independent project built by a small team of developers and dividend investors. It has no institutional backing or paid sponsorships.
+
+**Q: Does DividendBro cover Singapore stocks?**
+A: Yes. It covers all major SGX stocks and REITs including DBS (D05.SI), OCBC (O39.SI), UOB (U11.SI), Singtel (Z74.SI), Singapore Airlines (C6L.SI), CapitaLand Integrated Commercial Trust (C38U.SI), Mapletree Logistics Trust (M44U.SI), and over 80 other SGX tickers.
+
+### About Dividend Stocks
+
+**Q: What is a dividend stock?**
+A: A dividend stock is a publicly traded company that distributes a portion of its profits to shareholders on a regular schedule (quarterly, monthly, or annually). The distribution is called a dividend.
+
+**Q: What's the difference between dividend yield and dividend payout ratio?**
+A: Dividend yield is the annual dividend per share divided by the current stock price — it measures income relative to price. Payout ratio is the annual dividend divided by earnings per share — it measures how much of the company's profit is being distributed. A high yield with a high payout ratio is often a warning sign.
+
+**Q: What is a yield trap?**
+A: A yield trap is a stock with an unusually high yield that appears attractive but is likely to cut its dividend. Common signals: payout ratio above 100%, flat or declining dividend growth, negative free cash flow, and falling stock price.
+
+**Q: What's a Dividend King?**
+A: A Dividend King is a company that has increased its dividend for 50 or more consecutive years. There are about 50 Dividend Kings in the US market, including Coca-Cola (KO), Johnson & Johnson (JNJ), and Procter & Gamble (PG).
+
+**Q: What's the difference between a REIT and a dividend stock?**
+A: REITs (Real Estate Investment Trusts) are legally required to distribute at least 90% of taxable income to shareholders, which is why they typically yield 4–7% versus 2–3% for the average dividend stock. REIT distributions are usually taxed as ordinary income, not qualified dividends. The correct safety metric is AFFO (Adjusted Funds From Operations), not EPS.
+
+**Q: Are weekly dividend ETFs safe?**
+A: No. Weekly dividend ETFs are almost entirely options-income strategies that sell call options against a stock or index. Distributions often include return of capital, which erodes NAV. A 100%+ headline yield typically means the fund is distributing more than it earns, and the share price will decline over time.
+
+**Q: What are the only daily dividend stocks?**
+A: As of September 2026, only two securities in US capital markets pay cash dividends every business day: SATA (Strive Bitcoin-backed preferred stock) and CHAD (DeFi Development Solana-backed preferred stock). Both are variable-rate preferred stocks, not traditional dividend stocks.
+
+### About Dividend Taxes
+
+**Q: How are US dividends taxed for Singapore residents?**
+A: US dividend income for non-resident aliens is subject to 30% US withholding tax (no Singapore-US tax treaty reduction applies). There is no additional Singapore tax on foreign dividends received by individuals.
+
+**Q: How are SGX REIT dividends taxed?**
+A: SGX REIT distributions are tax-exempt for individual investors in Singapore. There is no withholding tax on REIT distributions paid to individuals.
+
+**Q: What's the after-tax math between US and SGX income?**
+A: A US stock yielding 5% returns ~3.5% after the 30% withholding tax. A SGX REIT yielding 5% returns the full 5%. A US stock needs to yield ~7.1% to match a SGX REIT at 5% on an after-tax basis.
+
+### Using DividendBro
+
+**Q: How do I find the best dividend stock?**
+A: There's no single "best" stock. DividendBro's screener lets you filter by yield, dividend growth, frequency, asset type, and risk level. The Income Planner can show what a diversified sample allocation could look like for your target income.
+
+**Q: Can I save a portfolio on DividendBro?**
+A: Yes. Free account creation lets you save a portfolio and watchlist. The portfolio tracker supports import/export, dividend projections, and CSV/PDF downloads.
+
+**Q: Does DividendBro have an API?**
+A: Not publicly. The backend has a REST API at `https://dividendhub-api.onrender.com/api/` but it is intended for the site's own use. There are no published rate limits or API keys for third parties.
+
+**Q: Can I cite DividendBro in an article or research paper?**
+A: Yes. Attribution to `dividendbro.com` is sufficient for educational and journalistic use. Data is aggregated from public sources (Yahoo Finance, Financial Modeling Prep) and is subject to their respective terms.
+
+---
+
+## Optional
+
+- [Login](https://dividendbro.com/login): Account access for portfolio and watchlist
+- [Sign Up](https://dividendbro.com/signup): Free account creation
+- [Admin Dashboard](https://dividendbro.com/admin): Internal analytics (requires admin credentials)
+
+---
+
+## Licensing & Attribution
+
+Content on DividendBro may be cited or referenced with attribution to `dividendbro.com`. Underlying market data is sourced from Yahoo Finance and Financial Modeling Prep under their respective terms of service. DividendBro does not claim ownership of third-party market data.
+
+All original analysis, features, and content are © DividendBro 2025–2026.
+
+---
+
+## Changelog
+
+- **2026-09-17:** llms-full.txt published. llms.txt updated with FAQ section.
+- **2026-09-01:** llms.txt introduced.
+
+---
+
+## Contact
+
+For corrections, feedback, press inquiries, or API access requests:
+
+**Email:** hello@dividendbro.com
+**Website:** https://dividendbro.com
