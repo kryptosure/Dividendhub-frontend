@@ -101,6 +101,20 @@ const SearchBar = () => {
         { symbol: 'VTI', name: 'Total Stock' },
       ],
     },
+    // ✅ CA: Canadian dividend favourites
+    ca: {
+      stocks: [
+        { symbol: 'RY.TO', name: 'Royal Bank' },
+        { symbol: 'TD.TO', name: 'TD Bank' },
+        { symbol: 'ENB.TO', name: 'Enbridge' },
+        { symbol: 'BNS.TO', name: 'Scotiabank' },
+        { symbol: 'FTS.TO', name: 'Fortis' },
+      ],
+      etfs: [
+        { symbol: 'PDC.TO', name: 'CI Dividend' },
+        { symbol: 'DXC.TO', name: 'Dynamic Dividend' },
+      ],
+    },
     sg: {
       stocks: [
         { symbol: 'D05.SI', name: 'DBS' },
@@ -117,10 +131,12 @@ const SearchBar = () => {
 
   const links = quickLinks[market] || quickLinks.us;
 
+  // ✅ CA: exchange label fallback
+  const defaultExchange = market === 'sg' ? 'SGX' : market === 'ca' ? 'TSX' : 'NASDAQ';
+
   return (
     <div ref={wrapperRef} className="relative w-full max-w-xl mx-auto mb-8 px-4 sm:px-0">
       <form onSubmit={handleSubmit} role="search" className="relative group">
-        {/* Visually hidden label for screen readers and AI crawlers */}
         <label htmlFor="stock-search-input" className="sr-only">
           Search for a dividend stock, ETF, or REIT by ticker or company name
         </label>
@@ -212,7 +228,8 @@ const SearchBar = () => {
                     {item.longname || item.shortname || item.symbol}
                   </span>
                   <span className="text-xs text-text-muted font-medium mt-0.5 tracking-wide uppercase">
-                    {item.exchange || (market === 'sg' ? 'SGX' : 'NASDAQ')}
+                    {/* ✅ CA: TSX for Canadian results */}
+                    {item.exchange || defaultExchange}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">

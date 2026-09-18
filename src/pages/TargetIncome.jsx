@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import useStore from '../store/useStore';
@@ -7,10 +7,12 @@ import { track } from '../services/tracker';
 import LoadingSpinner from '../components/LoadingSpinner';
 import InfoTip from '../components/InfoTip';
 
+// ✅ CA added. 'All' replaces 'Both' as the mixed-markets option.
 const LOCATIONS = [
   { key: 'SG', label: 'Singapore', sub: 'SGX stocks only' },
   { key: 'US', label: 'United States', sub: 'US stocks only' },
-  { key: 'Both', label: 'Both Markets', sub: 'US + SGX mixed' },
+  { key: 'CA', label: 'Canada', sub: 'TSX stocks only' },
+  { key: 'All', label: 'All Markets', sub: 'US + CA + SGX' },
 ];
 
 const RISK_LABELS = [
@@ -37,14 +39,23 @@ const SECTOR_LABELS = {
 
 const sectorLabel = (s) => SECTOR_LABELS[s] || s;
 
+// ✅ Map store market → planner location, so the header toggle drives the default.
+function marketToLocation(market) {
+  if (market === 'sg') return 'SG';
+  if (market === 'ca') return 'CA';
+  if (market === 'us') return 'US';
+  return 'SG';
+}
+
 const TargetIncome = () => {
-  const { currency, setPortfolio } = useStore();
+  const { currency, market: storeMarket, setPortfolio } = useStore();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const [targetMonthly, setTargetMonthly] = useState(500);
   const [capital, setCapital] = useState('');
-  const [location, setLocation] = useState('SG');
+  // ✅ Initialize from store market on first render
+  const [location, setLocation] = useState(() => marketToLocation(storeMarket));
   const [riskProfile, setRiskProfile] = useState('balanced');
 
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +63,14 @@ const TargetIncome = () => {
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
 
-  const curSymbol = currency === 'sgd' ? 'S$' : '$';
+  const curSymbol = currency === 'sgd' ? 'S$' : currency === 'cad' ? 'C$' : '$';
+
+  // ✅ Keep the planner location in sync when the user changes market in the header.
+  // Selecting manually inside the planner still works — this only re-fires
+  // when the store value actually changes.
+  useEffect(() => {
+    setLocation(marketToLocation(storeMarket));
+  }, [storeMarket]);
 
   useEffect(() => {
     const symbol = searchParams.get('symbol');
@@ -96,7 +114,8 @@ const TargetIncome = () => {
     const newHoldings = result.positions.map((p) => ({
       symbol: p.symbol,
       name: p.name,
-      market: p.symbol.endsWith('.SI') ? 'sg' : 'us',
+      // ✅ CA: detect market from ticker suffix
+      market: p.symbol.endsWith('.SI') ? 'sg' : p.symbol.endsWith('.TO') ? 'ca' : 'us',
       shares: p.shares,
       purchasePrice: p.currentPrice,
       purchaseDate: new Date().toISOString().slice(0, 10),
@@ -119,7 +138,7 @@ const TargetIncome = () => {
     <>
       <Helmet>
         <title>Monthly Dividend Income Planner – How Much Do You Need? | DividendBro</title>
-        <meta name="description" content="Free tool: see how much you'd need to invest to earn a target monthly dividend income. Sample portfolios for Singapore and US stocks." />
+        <meta name="description" content="Free tool: see how much you'd need to invest to earn a target monthly dividend income. Sample portfolios for Singapore, US, and Canadian stocks." />
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
@@ -134,7 +153,7 @@ const TargetIncome = () => {
           </p>
         </div>
 
-        {/* Compliance banner — brighter amber text for AA contrast */}
+        {/* Compliance banner */}
         <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4">
           <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
             This is a learning tool — not financial advice
@@ -171,7 +190,6 @@ const TargetIncome = () => {
               />
               <span className="text-sm font-bold text-text-muted">/ month</span>
             </div>
-            {/* Preset buttons — larger touch targets */}
             <div className="flex flex-wrap gap-2 mt-3">
               {[200, 500, 1000, 2000].map((v) => (
                 <button
@@ -219,9 +237,9 @@ const TargetIncome = () => {
           <fieldset>
             <legend className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
               Where are you investing from?
-              <InfoTip text="This affects which stocks we show. Singapore investors typically have different tax situations than US ones." />
+              <InfoTip text="This affects which stocks we show. Singapore, US, and Canadian investors all have different tax situations." />
             </legend>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {LOCATIONS.map((loc) => (
                 <button
                   key={loc.key}
@@ -312,7 +330,6 @@ const TargetIncome = () => {
         {/* Results */}
         {result && result.ok && (
           <>
-            {/* Summary hero */}
             <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center md:text-left">
@@ -346,7 +363,6 @@ const TargetIncome = () => {
               )}
             </div>
 
-            {/* Warnings — brighter amber text for AA contrast */}
             {result.warnings?.length > 0 && (
               <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4 space-y-1.5">
                 {result.warnings.map((w, i) => (
@@ -355,7 +371,6 @@ const TargetIncome = () => {
               </div>
             )}
 
-            {/* Profile */}
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
               <div className="flex items-start justify-between flex-wrap gap-3">
                 <div>
@@ -375,7 +390,6 @@ const TargetIncome = () => {
               </div>
             </div>
 
-            {/* Allocation table */}
             <div className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm">
               <div className="px-5 py-3 border-b border-border/40 bg-bg-primary/30">
                 <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">
@@ -396,13 +410,13 @@ const TargetIncome = () => {
                       <th className="px-3 py-3 text-right">
                         <span className="inline-flex items-center">
                           Yield
-                          <InfoTip text="The percentage of your investment paid back to you each year as dividends. Higher = more income, but check the risk level." />
+                          <InfoTip text="The percentage of your investment paid back to you each year as dividends." />
                         </span>
                       </th>
                       <th className="px-3 py-3 text-right">
                         <span className="inline-flex items-center">
                           Share
-                          <InfoTip text="How much of your total money goes into this stock. Diversifying across stocks lowers risk." />
+                          <InfoTip text="How much of your total money goes into this stock." />
                         </span>
                       </th>
                       <th className="px-3 py-3 text-right">Shares</th>
@@ -453,7 +467,6 @@ const TargetIncome = () => {
               </div>
             </div>
 
-            {/* Breakdown cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-bg-surface border border-border/50 rounded-2xl p-4">
                 <p className="flex items-center text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
@@ -485,7 +498,6 @@ const TargetIncome = () => {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={handleSaveToPortfolio}
@@ -502,7 +514,6 @@ const TargetIncome = () => {
               </Link>
             </div>
 
-            {/* Full disclaimer */}
             <div className="bg-bg-surface border border-border/40 rounded-2xl p-5 mt-4">
               <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Important</p>
               <p className="text-[11px] text-text-muted leading-relaxed">{result.disclaimer}</p>
@@ -510,7 +521,6 @@ const TargetIncome = () => {
           </>
         )}
 
-        {/* Empty state */}
         {!result && !isLoading && !error && (
           <div className="bg-bg-surface border border-dashed border-border/40 rounded-2xl p-10 text-center">
             <p className="text-sm font-bold text-text-primary">Tell us your goal and we'll show you a sample</p>

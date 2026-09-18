@@ -61,6 +61,14 @@ const FREQ_BADGE = {
   'Annual': 'bg-bg-primary border-border/40 text-text-muted',
 };
 
+// ✅ CA: single source of truth for market options
+const MARKET_TABS = [
+  { key: 'both', label: 'Both' },
+  { key: 'us', label: 'US' },
+  { key: 'ca', label: 'CA' },
+  { key: 'sg', label: 'SGX' },
+];
+
 const DividendScreener = () => {
   const [market, setMarket] = useState('both');
   const [frequency, setFrequency] = useState('all');
@@ -95,7 +103,7 @@ const DividendScreener = () => {
     <>
       <Helmet>
         <title>Dividend Stock Screener — Weekly, Monthly & Daily Dividend Payers | DividendBro</title>
-        <meta name="description" content="Browse 500+ dividend-paying stocks, REITs, ETFs, and preferred stocks by payout frequency. Weekly, monthly, daily. US and SGX markets." />
+        <meta name="description" content="Browse 500+ dividend-paying stocks, REITs, ETFs, and preferred stocks by payout frequency. Weekly, monthly, daily. US, Canada, and SGX markets." />
         <link rel="canonical" href="https://dividendbro.com/screener" />
       </Helmet>
 
@@ -106,7 +114,7 @@ const DividendScreener = () => {
             Dividend <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Screener</span>
           </h1>
           <p className="text-text-muted text-sm mt-2 max-w-3xl">
-            Every dividend-paying stock, REIT, ETF, and preferred stock — filtered by how often they pay you. Includes 500+ tickers across US and SGX markets.
+            Every dividend-paying stock, REIT, ETF, and preferred stock — filtered by how often they pay you. Includes 500+ tickers across US, Canada, and SGX markets.
           </p>
         </div>
 
@@ -116,7 +124,7 @@ const DividendScreener = () => {
             <div className="md:col-span-4">
               <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-1.5">Market</label>
               <div className="flex bg-bg-primary border border-border/50 rounded-xl p-1">
-                {[{ key: 'both', label: 'Both' }, { key: 'us', label: 'US' }, { key: 'sg', label: 'SGX' }].map((m) => (
+                {MARKET_TABS.map((m) => (
                   <button
                     key={m.key}
                     onClick={() => { track('screener_filter', { field: 'market', value: m.key }); setMarket(m.key); setPage(0); }}
@@ -297,7 +305,8 @@ const DividendScreener = () => {
                       <td className="px-4 py-2.5 text-text-primary truncate max-w-[240px]">{s.name}</td>
                       <td className="px-4 py-2.5 text-center">
                         <span className="text-[10px] font-bold uppercase text-text-muted tracking-wider">
-                          {s.market === 'sg' ? 'SGX' : 'US'}
+                          {/* ✅ CA: added TSX label */}
+                          {s.market === 'sg' ? 'SGX' : s.market === 'ca' ? 'TSX' : 'US'}
                         </span>
                       </td>
                       <td className="px-4 py-2.5 text-center">

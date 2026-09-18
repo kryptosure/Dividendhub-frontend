@@ -14,18 +14,18 @@ const useStore = create(
       theme: 'dark',
       market: 'us',
       currency: 'usd',
-      isAdmin: false,                    // ✅ NEW
+      isAdmin: false,
       isLoading: false,
       error: null,
       _isSyncingPortfolio: false,
       _isSyncingWatchlist: false,
 
-      // ✅ NEW: AI Chat state
+      // AI Chat state
       chatContext: null,
       isChatOpen: false,
 
       // ---------- Auth ----------
-      setUser: (user) => set({ user, isAdmin: !!user?.isAdmin }),   // ✅ Sets isAdmin
+      setUser: (user) => set({ user, isAdmin: !!user?.isAdmin }),
       setToken: (token) => {
         if (token) localStorage.setItem('token', token);
         else localStorage.removeItem('token');
@@ -33,7 +33,7 @@ const useStore = create(
       },
       logout: () => {
         localStorage.removeItem('token');
-        set({ user: null, token: null, portfolio: [], watchlist: [], compareList: [], chatContext: null, isAdmin: false });   // ✅ Resets isAdmin
+        set({ user: null, token: null, portfolio: [], watchlist: [], compareList: [], chatContext: null, isAdmin: false });
       },
 
       // ---------- Portfolio ----------
@@ -145,7 +145,14 @@ const useStore = create(
       isInPortfolio: (symbol) => get().portfolio.some(item => item.symbol.toUpperCase() === symbol.toUpperCase().trim()),
       getWatchlistSymbols: () => get().watchlist.map(item => item.symbol),
       getWatchlistCount: () => get().watchlist.length,
-      getCurrencySymbol: () => get().currency === 'sgd' ? 'S$' : '$',
+
+      // ✅ CA: C$ disambiguates CAD from USD, S$ for SGD, $ for USD
+      getCurrencySymbol: () => {
+        const c = get().currency;
+        if (c === 'sgd') return 'S$';
+        if (c === 'cad') return 'C$';
+        return '$';
+      },
     }),
     {
       name: 'DividendBro-State-Layer',
@@ -158,7 +165,7 @@ const useStore = create(
         theme: state.theme,
         market: state.market,
         currency: state.currency,
-        isAdmin: state.isAdmin,          // ✅ Persist isAdmin
+        isAdmin: state.isAdmin,
       }),
       onRehydrateStorage: () => {
         return (state, error) => {

@@ -17,7 +17,6 @@ const PRESETS = [100, 250, 500, 1000, 2500];
 
 const MillionaireSimulator = () => {
   const { market, currency } = useStore();
-  // ✅ Start with empty state - no default stock
   const [symbol, setSymbol] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [monthlyAmount, setMonthlyAmount] = useState(500);
@@ -25,7 +24,7 @@ const MillionaireSimulator = () => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [historyRefresh, setHistoryRefresh] = useState(0);
 
-  const curSymbol = currency === 'sgd' ? 'S$' : '$';
+  const curSymbol = currency === 'sgd' ? 'S$' : currency === 'cad' ? 'C$' : '$';
 
   const { data: metrics, isLoading, error, refetch } = useQuery({
     queryKey: ['millionaire', symbol, market],
@@ -35,7 +34,7 @@ const MillionaireSimulator = () => {
       });
       return res.data;
     },
-    enabled: !!symbol, // ✅ Only fetch when user has picked a stock
+    enabled: !!symbol,
     staleTime: 10 * 60 * 1000,
   });
 
@@ -76,13 +75,15 @@ const MillionaireSimulator = () => {
     });
   }, [metrics, monthlyAmount]);
 
-  // Track page open (with or without symbol)
+  // ✅ Raw yield shown in the UI (uncapped) + risk flag
+  const rawYieldPct = ((metrics?.rawYield ?? metrics?.currentYield) ?? 0) * 100;
+  const showHighYieldWarning = !!metrics && (rawYieldPct > 10 || metrics.safetyScore === 'Caution');
+
   useEffect(() => {
     track('open_millionaire_simulator', { symbol: symbol || null, monthlyAmount, drip });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [symbol]);
 
-  // Save simulation only when we have valid results
   useEffect(() => {
     if (!metrics || !withDripResult || !noDripResult) return;
     const activeResult = drip ? withDripResult : noDripResult;
@@ -130,16 +131,16 @@ const MillionaireSimulator = () => {
   };
 
   const activeResult = drip ? withDripResult : noDripResult;
-  const hasSelection = !!symbol; // ✅ Track whether a stock has been picked
+  const hasSelection = !!symbol;
 
   return (
     <>
       <Helmet>
         <title>Millionaire Simulator – How Fast to $1M with Dividend Stocks</title>
-        <meta name="description" content="Interactive dividend simulator: see how fast $500/month reaches $1M in US and SGX stocks with DRIP. Live leaderboard of the fastest dividend compounders." />
+        <meta name="description" content="Interactive dividend simulator: see how fast $500/month reaches $1M in US, Canada, and SGX stocks with DRIP. Live leaderboard of the fastest dividend compounders." />
         <link rel="canonical" href="https://dividendbro.com/millionaire" />
         <meta property="og:title" content="Millionaire Simulator – How Fast to $1M with Dividend Stocks" />
-        <meta property="og:description" content="See how fast your monthly dividend investment reaches $1M. Interactive DRIP simulator for US and SGX stocks." />
+        <meta property="og:description" content="See how fast your monthly dividend investment reaches $1M. Interactive DRIP simulator for US, Canada, and SGX stocks." />
         <meta property="og:url" content="https://dividendbro.com/millionaire" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://dividendbro.com/images/cover.png" />
@@ -150,7 +151,6 @@ const MillionaireSimulator = () => {
       </Helmet>
 
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
-        {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
             💰 Millionaire <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Simulator</span>
@@ -160,7 +160,6 @@ const MillionaireSimulator = () => {
           </p>
         </div>
 
-        {/* Input Card */}
         <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm space-y-5">
           <div>
             <label className="block text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
@@ -171,7 +170,7 @@ const MillionaireSimulator = () => {
               onChange={setInputValue}
               onSelect={handleStockSelect}
               market={market}
-              placeholder="e.g. Coca-Cola, DBS, Apple, Verizon..."
+              placeholder="e.g. Coca-Cola, DBS, Apple, Royal Bank..."
             />
           </div>
 
@@ -236,13 +235,12 @@ const MillionaireSimulator = () => {
           </div>
         </div>
 
-        {/* ✅ NEW: Empty state prompt - only shows when no stock is selected */}
         {!hasSelection && (
           <div className="bg-bg-surface border border-dashed border-border/50 rounded-2xl p-8 sm:p-12 text-center">
             <div className="text-5xl mb-4">🔍</div>
             <h3 className="text-lg font-black text-text-primary">Pick a stock to begin</h3>
             <p className="text-text-muted text-xs mt-2 max-w-md mx-auto">
-              Search for any US or SGX dividend stock above to see how fast your monthly investment reaches $1M.
+              Search for any US, Canada, or SGX dividend stock above to see how fast your monthly investment reaches $1M.
             </p>
             <p className="text-text-muted text-[10px] mt-4 italic">
               Or scroll down to explore the leaderboard of the fastest dividend compounders
@@ -250,12 +248,10 @@ const MillionaireSimulator = () => {
           </div>
         )}
 
-        {/* Loading state (only when a stock IS selected and loading) */}
         {hasSelection && isLoading && (
           <div className="py-12"><LoadingSpinner /></div>
         )}
 
-        {/* Error state */}
         {hasSelection && error && (
           <div className="bg-accent-red/5 border border-accent-red/20 rounded-2xl p-5 text-center">
             <p className="text-accent-red text-sm font-bold">⚠️ {error.response?.data?.error || error.message}</p>
@@ -263,10 +259,26 @@ const MillionaireSimulator = () => {
           </div>
         )}
 
-        {/* Results - only renders when stock is selected and data is loaded */}
         {metrics && activeResult && (
           <>
-            {/* Hero Card */}
+            {/* ✅ High-yield / high-risk warning banner */}
+            {showHighYieldWarning && (
+              <div className="bg-accent-red/5 border border-accent-red/25 rounded-2xl p-4">
+                <p className="text-[10px] text-accent-red font-black uppercase tracking-widest mb-1.5">
+                  ⚠️ High-Risk Yield Warning
+                </p>
+                <p className="text-xs text-text-secondary leading-relaxed">
+                  High-yield products often return capital rather than earnings — this projection may be unrealistically optimistic.
+                  {rawYieldPct > 10 && (
+                    <> The displayed yield of <strong className="text-accent-red">{rawYieldPct.toFixed(2)}%</strong> is unusually high and typically signals elevated risk of distribution cuts.</>
+                  )}
+                  {metrics.safetyScore === 'Caution' && rawYieldPct <= 10 && (
+                    <> This security carries a <strong className="text-accent-red">Caution</strong> safety rating based on its dividend history.</>
+                  )}
+                </p>
+              </div>
+            )}
+
             <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6 text-center relative">
               <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1">
                 {metrics.name} ({metrics.symbol})
@@ -283,7 +295,10 @@ const MillionaireSimulator = () => {
               <div className="grid grid-cols-3 gap-3 mt-6">
                 <div className="bg-bg-surface/60 border border-border/40 rounded-xl p-3">
                   <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Yield</p>
-                  <p className="text-lg font-black text-accent-teal mt-1">{(metrics.currentYield * 100).toFixed(2)}%</p>
+                  {/* ✅ Show raw yield, not the capped projection value */}
+                  <p className={`text-lg font-black mt-1 ${rawYieldPct > 10 ? 'text-accent-red' : 'text-accent-teal'}`}>
+                    {rawYieldPct.toFixed(2)}%
+                  </p>
                 </div>
                 <div className="bg-bg-surface/60 border border-border/40 rounded-xl p-3">
                   <p className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Price CAGR (5Y)</p>
@@ -307,14 +322,12 @@ const MillionaireSimulator = () => {
               </button>
             </div>
 
-            {/* Recent Simulations */}
             <RecentSimulations
               refreshKey={historyRefresh}
               onSelect={handleSelectFromHistory}
               currencySymbol={curSymbol}
             />
 
-            {/* DRIP vs No-DRIP Comparison */}
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => setDrip(true)}
@@ -377,12 +390,12 @@ const MillionaireSimulator = () => {
         <div className={`pt-4 ${metrics ? 'border-t border-border/40' : ''}`}>
           <div className="mb-4">
             <h2 className="text-2xl font-black tracking-tight text-text-primary">
-              🏆 Leaderboard: Fastest to {curSymbol}1M
+              🏆 Quality Dividend Compounders — Fastest to {curSymbol}1M
             </h2>
-            <p className="text-text-muted text-xs mt-1">
-              Top dividend stocks ranked by how fast they'd reach $1M at your current settings.
-              {hasSelection && ' Adjust the slider above to see rankings shift live.'}
-              {!hasSelection && ' Adjust the slider above to see how rankings change.'}
+            <p className="text-text-muted text-xs mt-1 max-w-2xl">
+              Established dividend payers with yields between 2% and 8% and Safe or Moderate safety scores.
+              Options-income ETFs, mortgage REITs, and other return-of-capital products are excluded.
+              Adjust the slider above to see how rankings change.
             </p>
           </div>
 
@@ -398,7 +411,6 @@ const MillionaireSimulator = () => {
         </div>
       </div>
 
-      {/* Share Card Modal */}
       <ShareCardModal
         isOpen={isShareOpen}
         onClose={() => setIsShareOpen(false)}

@@ -14,9 +14,11 @@ const Header = () => {
   }, [location.pathname]);
 
   const handleLogout = () => { logout(); navigate('/'); };
+
+  // ✅ CA: auto-select matching currency for the newly chosen market.
   const handleMarketChange = (newMarket) => {
     setMarket(newMarket);
-    setCurrency(newMarket === 'us' ? 'usd' : 'sgd');
+    setCurrency(newMarket === 'us' ? 'usd' : newMarket === 'ca' ? 'cad' : 'sgd');
   };
 
   const displayName = user?.email || 'User';
@@ -39,11 +41,15 @@ const Header = () => {
           <div className="flex gap-4 border border-border/40 bg-bg-primary/40 rounded-xl p-1">
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
               <button onClick={() => handleMarketChange('us')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${market === 'us' ? 'bg-accent-blue text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>US</button>
+              {/* ✅ CA: new market button */}
+              <button onClick={() => handleMarketChange('ca')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${market === 'ca' ? 'bg-accent-blue text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>CA</button>
               <button onClick={() => handleMarketChange('sg')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${market === 'sg' ? 'bg-accent-blue text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>SGX</button>
             </div>
 
             <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
               <button onClick={() => setCurrency('usd')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${currency === 'usd' ? 'bg-accent-teal text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>USD</button>
+              {/* ✅ CA: new currency button */}
+              <button onClick={() => setCurrency('cad')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${currency === 'cad' ? 'bg-accent-teal text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>CAD</button>
               <button onClick={() => setCurrency('sgd')} className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${currency === 'sgd' ? 'bg-accent-teal text-white shadow-sm' : 'text-text-muted hover:text-text-primary'}`}>SGD</button>
             </div>
           </div>
@@ -99,6 +105,8 @@ const Header = () => {
               <span className="text-[9px] font-bold uppercase tracking-wider text-text-muted px-1">Region</span>
               <div className="flex bg-bg-secondary rounded-lg p-0.5 border border-border/20">
                 <button onClick={() => handleMarketChange('us')} className={`flex-1 py-1.5 text-center text-xs font-bold rounded-md ${market === 'us' ? 'bg-accent-blue text-white' : 'text-text-muted'}`}>US</button>
+                {/* ✅ CA: mobile market button */}
+                <button onClick={() => handleMarketChange('ca')} className={`flex-1 py-1.5 text-center text-xs font-bold rounded-md ${market === 'ca' ? 'bg-accent-blue text-white' : 'text-text-muted'}`}>CA</button>
                 <button onClick={() => handleMarketChange('sg')} className={`flex-1 py-1.5 text-center text-xs font-bold rounded-md ${market === 'sg' ? 'bg-accent-blue text-white' : 'text-text-muted'}`}>SGX</button>
               </div>
             </div>
@@ -106,6 +114,8 @@ const Header = () => {
               <span className="text-[9px] font-bold uppercase tracking-wider text-text-muted px-1">Currency</span>
               <div className="flex bg-bg-secondary rounded-lg p-0.5 border border-border/20">
                 <button onClick={() => setCurrency('usd')} className={`flex-1 py-1.5 text-center text-xs font-bold rounded-md ${currency === 'usd' ? 'bg-accent-teal text-white' : 'text-text-muted'}`}>USD</button>
+                {/* ✅ CA: mobile currency button */}
+                <button onClick={() => setCurrency('cad')} className={`flex-1 py-1.5 text-center text-xs font-bold rounded-md ${currency === 'cad' ? 'bg-accent-teal text-white' : 'text-text-muted'}`}>CAD</button>
                 <button onClick={() => setCurrency('sgd')} className={`flex-1 py-1.5 text-center text-xs font-bold rounded-md ${currency === 'sgd' ? 'bg-accent-teal text-white' : 'text-text-muted'}`}>SGD</button>
               </div>
             </div>
@@ -119,7 +129,7 @@ const Header = () => {
             <Link to="/watchlist" className="py-3 flex items-center text-text-primary">Watchlist</Link>
             <Link to="/portfolio" className="py-3 flex items-center text-text-primary">My Portfolio</Link>
             <Link to="/simulate/one-time" className="py-3 flex items-center text-text-primary">Single Purchase Engine</Link>
-            <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">Regular Investment DCA Simulator</Link>
+            <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">Regular Investment DCA Calculator</Link>
             <Link to="/millionaire" className="py-3 flex items-center text-text-primary">Millionaire Simulator</Link>
             <Link to="/blog" className="py-3 flex items-center text-text-primary">Financial Academy Hub</Link>
             {isAdmin && (
