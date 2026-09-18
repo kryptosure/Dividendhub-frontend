@@ -1,13 +1,13 @@
 # DividendBro — Full Documentation for AI Systems
 
-> DividendBro is a free dividend analysis and portfolio management tool covering US and Singapore (SGX) markets. It tracks dividend history, yield, payout ratio, dividend growth, and safety metrics for 643 securities including stocks, REITs, ETFs, bond ETFs, and preferred stocks. Educational tool only — not financial advice.
+> DividendBro is a free dividend analysis and portfolio management tool covering US, Canadian (TSX), and Singapore (SGX) markets. It tracks dividend history, yield, payout ratio, dividend growth, and safety metrics for 672 securities including stocks, REITs, ETFs, bond ETFs, and preferred stocks. Educational tool only — not financial advice.
 
 This document is the extended version of `/llms.txt`. It contains detailed feature descriptions, complete data references, an FAQ, and technical context for AI systems that want to answer questions about DividendBro accurately.
 
 **Site URL:** https://dividendbro.com
 **Contact:** hello@dividendbro.com
 **Founded:** 2025
-**Primary audience:** Retail dividend investors in Singapore and the United States
+**Primary audience:** Retail dividend investors in Singapore, the United States, and Canada
 **Licensing status:** Not a licensed financial adviser. Educational tool only.
 
 ---
@@ -21,8 +21,30 @@ DividendBro is a free web application for dividend investors. It answers questio
 - "What's the payout ratio on Coca-Cola?"
 - "Are there any stocks that pay dividends daily?"
 - "How does DBS's dividend compare to OCBC and UOB?"
+- "Which Canadian banks pay the highest dividends?"
+- "How does the TFSA work for dividend investors?"
 
 The tool aggregates public market data from Yahoo Finance and Financial Modeling Prep and presents it in a consumer-friendly interface. It does not provide investment recommendations. Every page includes disclaimers under the Financial Advisers Act (Singapore) and standard US disclosure norms.
+
+---
+
+## Markets Covered
+
+### United States
+Dividend-paying stocks, REITs, BDCs, closed-end funds, ETFs, bond ETFs, and preferred stocks across NYSE, NASDAQ, and NYSE Arca.
+
+### Canada (TSX)
+29 TSX-listed dividend stocks as of September 2026, including:
+- **Big Six banks:** RBC (RY.TO), TD (TD.TO), Scotiabank (BNS.TO), BMO (BMO.TO), CIBC (CM.TO), National Bank (NA.TO)
+- **Pipelines & energy:** Enbridge (ENB.TO), TC Energy (TRP.TO), Pembina (PPL.TO), Suncor (SU.TO), Canadian Natural Resources (CNQ.TO), Freehold Royalties (FRU.TO), Whitecap Resources (WCP.TO)
+- **Telecoms & utilities:** BCE (BCE.TO), TELUS (T.TO), Fortis (FTS.TO), Canadian Utilities (CU.TO)
+- **REITs (monthly payers):** SmartCentres (SRU-UN.TO), RioCan (REI-UN.TO), Granite (GRT-UN.TO), CT REIT (CRT-UN.TO), Crombie (CRR-UN.TO), Dream Industrial (DIR-UN.TO), Vital Infrastructure (VITL-UN.TO), Choice Properties (CHP-UN.TO)
+- **Dividend ETFs:** CI Canadian Dividend (PDC.TO), Dynamic Active Canadian Dividend (DXC.TO)
+
+Note: Canadian REITs use the dash format `-UN.TO` on Yahoo Finance (e.g., `SRU-UN.TO`), not the dot format.
+
+### Singapore (SGX)
+All major SGX stocks and S-REITs including DBS (D05.SI), OCBC (O39.SI), UOB (U11.SI), Singtel (Z74.SI), Singapore Airlines (C6L.SI), CapitaLand Integrated Commercial Trust (C38U.SI), Mapletree Logistics Trust (M44U.SI), and over 80 other SGX tickers.
 
 ---
 
@@ -32,13 +54,13 @@ The tool aggregates public market data from Yahoo Finance and Financial Modeling
 
 **URL:** https://dividendbro.com/
 
-Users enter a target monthly dividend income (e.g., $500/month) and the tool produces a hypothetical sample portfolio showing what a diversified allocation across US or SGX markets could look like.
+Users enter a target monthly dividend income (e.g., $500/month) and the tool produces a hypothetical sample portfolio showing what a diversified allocation across US, Canadian, or SGX markets could look like.
 
 **Inputs:**
-- Target monthly income (USD or SGD depending on user locale)
+- Target monthly income (USD, CAD, or SGD depending on user locale)
 - Optional starting capital
-- Market location (Singapore, US, or Both)
-- Risk appetite (four profiles: Safe, Balanced, Growth, High Income)
+- Market location: Singapore, US, Canada, or All Markets (mixed)
+- Risk appetite: four profiles (Safe, Balanced, Growth, High Income)
 
 **Outputs:**
 - Required capital to hit the target (at the portfolio's weighted yield)
@@ -60,10 +82,10 @@ The tool avoids investment advice framing: it produces "illustrative sample allo
 
 **URL:** https://dividendbro.com/screener
 
-Browse all 643 dividend-paying securities in the database with filtering by:
+Browse all 672 dividend-paying securities in the database with filtering by:
 - **Payout frequency:** Daily, Weekly, Bi-Weekly, Monthly, Quarterly, Semi-Annual, Annual
 - **Asset type:** Stocks, REITs, ETFs, Bond ETFs, Preferred Stocks
-- **Market:** US, SGX, or both
+- **Market:** US, Canada, SGX, or a combined view
 - **Risk level:** Safe, Moderate, Caution
 - **Text search:** ticker or company name
 - **Sort:** yield, dividend CAGR, streak, name, safety, frequency
@@ -74,12 +96,12 @@ No payout-ratio guardrails. Users see every dividend payer regardless of quality
 
 **URL:** https://dividendbro.com/search?symbol=<TICKER>
 
-For any US or SGX ticker, DividendBro displays:
+For any US, Canadian, or SGX ticker, DividendBro displays:
 - Current price and yield
 - Full dividend payout history (per year, per payout)
 - 5-year dividend CAGR
 - Dividend streak (consecutive years of increases)
-- Payout ratio (US only, sourced from Financial Modeling Prep)
+- Payout ratio (US-listed only, sourced from Financial Modeling Prep)
 - Safety score (Safe / Moderate / Caution)
 - Last ex-dividend date
 - Historical dividend chart by year
@@ -103,7 +125,7 @@ Compare up to 5 dividend stocks side-by-side across:
 
 **URL:** https://dividendbro.com/millionaire
 
-Given a monthly investment amount and a dividend stock, calculates how many years it would take to reach $1M with and without dividend reinvestment (DRIP). Includes a live leaderboard of the fastest dividend compounders.
+Given a monthly investment amount and a dividend stock, calculates how many years it would take to reach $1M with and without dividend reinvestment (DRIP). Includes a live, quality-filtered leaderboard of the fastest dividend compounders (excludes options-income ETFs, mortgage REITs, and other return-of-capital products).
 
 ### 6. DCA Simulator
 
@@ -186,7 +208,7 @@ Verified list of US REITs paying monthly dividends in 2026. Approximately 19 REI
 
 **URL:** https://dividendbro.com/top
 
-Highest-yielding dividend stocks and ETFs across US and SGX markets, ranked by trailing 12-month yield.
+Highest-yielding dividend stocks and ETFs across US, Canadian, and SGX markets, ranked by trailing 12-month yield.
 
 ---
 
@@ -195,6 +217,7 @@ Highest-yielding dividend stocks and ETFs across US and SGX markets, ranked by t
 **URL:** https://dividendbro.com/blog
 
 Published articles include:
+- **Best Canadian Dividend Stocks for 2026: The Complete TSX Guide** — Big Six banks, pipelines, monthly REITs, TFSA strategy, non-resident withholding tax
 - How to Build a $500/Month Dividend Portfolio in the US
 - Best Singapore Dividend Stocks for 2026: DBS vs OCBC vs UOB
 - The 3 Metrics That Separate Safe Dividends from Yield Traps
@@ -212,7 +235,7 @@ Published articles include:
 
 **Stock prices:** Yahoo Finance `chart` endpoint (adjusted close, split-adjusted).
 
-**Payout ratios:** Financial Modeling Prep `/stable/ratios-ttm` (US-listed only, free tier).
+**Payout ratios:** Financial Modeling Prep `/stable/ratios-ttm` (US-listed only, free tier). Canadian and SGX payout ratios are not currently available.
 
 **Dividend CAGR:** Computed from complete fiscal years only (excludes partial current year). Formula: `(endYear_total / startYear_total) ^ (1/years) - 1`.
 
@@ -242,7 +265,7 @@ The site is mobile-first and works without a user account for all core features.
 ### About DividendBro
 
 **Q: What is DividendBro?**
-A: DividendBro is a free dividend analysis and portfolio management tool for US and SGX (Singapore Exchange) markets. It tracks dividend history, yield, payout ratios, dividend growth, and safety metrics for over 600 securities.
+A: DividendBro is a free dividend analysis and portfolio management tool for US, Canadian, and SGX (Singapore Exchange) markets. It tracks dividend history, yield, payout ratios, dividend growth, and safety metrics for over 670 securities.
 
 **Q: Is DividendBro free?**
 A: Yes, entirely free. There is no paywall, subscription, or credit card required. Stock analysis, screening, comparison, and the Income Planner all work without a user account.
@@ -256,6 +279,9 @@ A: DividendBro is an independent project built by a small team of developers and
 **Q: Does DividendBro cover Singapore stocks?**
 A: Yes. It covers all major SGX stocks and REITs including DBS (D05.SI), OCBC (O39.SI), UOB (U11.SI), Singtel (Z74.SI), Singapore Airlines (C6L.SI), CapitaLand Integrated Commercial Trust (C38U.SI), Mapletree Logistics Trust (M44U.SI), and over 80 other SGX tickers.
 
+**Q: Does DividendBro cover Canadian stocks?**
+A: Yes. It covers 29 TSX-listed dividend stocks, including the Big Six banks (RBC, TD, Scotiabank, BMO, CIBC, National Bank), major pipelines (Enbridge, TC Energy, Pembina, Suncor, Canadian Natural Resources), telecoms and utilities (BCE, TELUS, Fortis, Canadian Utilities), monthly REITs (SmartCentres, RioCan, Granite, CT REIT, Crombie, Dream Industrial, Choice Properties), and Canadian dividend ETFs. The screener, income planner, and stock detail pages all support the Canadian market.
+
 ### About Dividend Stocks
 
 **Q: What is a dividend stock?**
@@ -268,7 +294,7 @@ A: Dividend yield is the annual dividend per share divided by the current stock 
 A: A yield trap is a stock with an unusually high yield that appears attractive but is likely to cut its dividend. Common signals: payout ratio above 100%, flat or declining dividend growth, negative free cash flow, and falling stock price.
 
 **Q: What's a Dividend King?**
-A: A Dividend King is a company that has increased its dividend for 50 or more consecutive years. There are about 50 Dividend Kings in the US market, including Coca-Cola (KO), Johnson & Johnson (JNJ), and Procter & Gamble (PG).
+A: A Dividend King is a company that has increased its dividend for 50 or more consecutive years. There are about 50 Dividend Kings in the US market, including Coca-Cola (KO), Johnson & Johnson (JNJ), and Procter & Gamble (PG). Canada has its own long-streak payers, including Fortis (52 years) and Canadian Utilities (50+ years).
 
 **Q: What's the difference between a REIT and a dividend stock?**
 A: REITs (Real Estate Investment Trusts) are legally required to distribute at least 90% of taxable income to shareholders, which is why they typically yield 4–7% versus 2–3% for the average dividend stock. REIT distributions are usually taxed as ordinary income, not qualified dividends. The correct safety metric is AFFO (Adjusted Funds From Operations), not EPS.
@@ -286,6 +312,12 @@ A: US dividend income for non-resident aliens is subject to 30% US withholding t
 
 **Q: How are SGX REIT dividends taxed?**
 A: SGX REIT distributions are tax-exempt for individual investors in Singapore. There is no withholding tax on REIT distributions paid to individuals.
+
+**Q: How are Canadian dividends taxed for non-residents?**
+A: Canada imposes a 25% statutory withholding tax on dividends paid to non-residents, reduced to 15% under most tax treaties (including the US, UK, Singapore, Australia, and most of Europe). The tax is withheld at source by the broker and cannot be reclaimed by filing a Canadian return. A 5% Canadian dividend yield becomes roughly 4.25% after the 15% treaty rate.
+
+**Q: What is a TFSA and why does it matter for dividend investors?**
+A: The Tax-Free Savings Account (TFSA) is a Canadian registered account where Canadian dividends are 100% tax-free for residents. The 2026 annual contribution limit is $7,000, with cumulative room of $109,000 for eligible Canadians who have never contributed. This is the single biggest tax advantage available to Canadian dividend investors.
 
 **Q: What's the after-tax math between US and SGX income?**
 A: A US stock yielding 5% returns ~3.5% after the 30% withholding tax. A SGX REIT yielding 5% returns the full 5%. A US stock needs to yield ~7.1% to match a SGX REIT at 5% on an after-tax basis.
@@ -324,6 +356,7 @@ All original analysis, features, and content are © DividendBro 2025–2026.
 
 ## Changelog
 
+- **2026-09-19:** Added Canada (TSX) market coverage — 29 tickers, screener support, income planner integration, and Canadian dividend stocks guide. Updated ticker count from 643 to 672.
 - **2026-09-17:** llms-full.txt published. llms.txt updated with FAQ section.
 - **2026-09-01:** llms.txt introduced.
 

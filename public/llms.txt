@@ -1,16 +1,16 @@
 # DividendBro
 
-> DividendBro is a free dividend analysis and management tool for US and SGX (Singapore Exchange) stocks. It provides real-time dividend yield data, payout ratios, dividend growth rates, portfolio tracking, stock comparison, and a Monthly Dividend Income Planner. Educational tool only — not financial advice.
+> DividendBro is a free dividend analysis and management tool for US, Canadian (TSX), and Singapore (SGX) stocks. It provides real-time dividend yield data, payout ratios, dividend growth rates, portfolio tracking, stock comparison, and a Monthly Dividend Income Planner. Educational tool only — not financial advice.
 
-DividendBro covers 643 dividend-paying securities across US and Singapore markets, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. All data is sourced from Yahoo Finance and Financial Modeling Prep.
+DividendBro covers 672 dividend-paying securities across US, Canadian, and Singapore markets, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. All data is sourced from Yahoo Finance and Financial Modeling Prep.
 
 ## Main Tools
 
-- [Monthly Dividend Income Planner](https://dividendbro.com/): Enter a target monthly dividend income and see a sample allocation for US or SGX markets, filtered by risk appetite.
-- [Dividend Screener](https://dividendbro.com/screener): Browse 643 dividend-paying stocks by payout frequency (daily, weekly, monthly, quarterly), asset type (stocks, REITs, ETFs, bond ETFs, preferred stocks), and risk level.
-- [Stock Search](https://dividendbro.com/search): Look up any US or SGX ticker for dividend history, yield, payout ratio, dividend CAGR, and safety score.
+- [Monthly Dividend Income Planner](https://dividendbro.com/): Enter a target monthly dividend income and see a sample allocation for US, Canadian, or SGX markets (or a blend of all three), filtered by risk appetite.
+- [Dividend Screener](https://dividendbro.com/screener): Browse 672 dividend-paying stocks by payout frequency (daily, weekly, monthly, quarterly), asset type (stocks, REITs, ETFs, bond ETFs, preferred stocks), and risk level. Supports US, Canadian, and SGX markets.
+- [Stock Search](https://dividendbro.com/search): Look up any US, Canadian (TSX), or SGX ticker for dividend history, yield, payout ratio, dividend CAGR, and safety score.
 - [Stock Comparison](https://dividendbro.com/compare): Compare up to 5 dividend stocks side-by-side on yield, payout ratio, dividend CAGR, streak, and total return.
-- [Millionaire Simulator](https://dividendbro.com/millionaire): Project how long a fixed monthly investment takes to reach $1,000,000 in a given dividend stock with or without DRIP.
+- [Millionaire Simulator](https://dividendbro.com/millionaire): Project how long a fixed monthly investment takes to reach $1,000,000 in a given dividend stock with or without DRIP. Includes a quality-filtered leaderboard of dividend compounders.
 - [DCA Simulator](https://dividendbro.com/simulate/dca): Simulate dollar-cost averaging into a dividend stock with monthly contributions and dividend reinvestment.
 - [One-Time Investment Simulator](https://dividendbro.com/simulate/one-time): Calculate total historical return on a lump-sum dividend stock investment including dividends.
 
@@ -20,22 +20,26 @@ DividendBro covers 643 dividend-paying securities across US and Singapore market
 - [Weekly Dividend ETFs](https://dividendbro.com/weekly-dividend-etfs): Complete list of 73 weekly dividend ETFs, their issuers (YieldMax, Roundhill, Defiance, GraniteShares), and the return-of-capital risks behind the headline yields.
 - [Monthly Dividend Stocks](https://dividendbro.com/monthly-dividend-stocks): Full list of 133 monthly dividend payers — REITs, BDCs, closed-end funds, and covered-call ETFs.
 - [REITs That Pay Monthly](https://dividendbro.com/reits-that-pay-monthly): The verified 2026 list of US REITs paying monthly dividends, with cadence changes and tax treatment for Singapore investors.
-- [Top Dividend Stocks](https://dividendbro.com/top): Highest-yielding dividend stocks and ETFs in the US and SGX markets, ranked by trailing yield.
+- [Top Dividend Stocks](https://dividendbro.com/top): Highest-yielding dividend stocks and ETFs in the US, Canadian, and SGX markets, ranked by trailing yield.
 
 ## Blog and Research
 
-- [Insights Hub](https://dividendbro.com/blog): Articles on dividend investing strategy, Singapore dividend stocks, REITs, brokerage fees, and dividend growth analysis.
+- [Insights Hub](https://dividendbro.com/blog): Articles on dividend investing strategy, Singapore dividend stocks, Canadian dividend stocks, REITs, brokerage fees, and dividend growth analysis.
+- [Best Canadian Dividend Stocks for 2026](https://dividendbro.com/blog/best-canadian-dividend-stocks-2026): Complete TSX guide covering the Big Six banks, energy pipelines, monthly REITs, TFSA strategy, and the non-resident withholding tax trap.
 
 ## FAQ
 
 **What does DividendBro do?**
-DividendBro is a free dividend analysis tool for US and SGX markets. It tracks dividend history, yield, payout ratio, dividend growth, and safety metrics for 643 securities across stocks, REITs, ETFs, bond ETFs, and preferred stocks.
+DividendBro is a free dividend analysis tool for US, Canadian, and SGX markets. It tracks dividend history, yield, payout ratio, dividend growth, and safety metrics for 672 securities across stocks, REITs, ETFs, bond ETFs, and preferred stocks.
 
 **Is DividendBro free?**
 Yes. All features are free — no paywall, no subscription, no credit card required. Basic stock analysis doesn't even require sign-up.
 
 **Does DividendBro cover Singapore stocks?**
-Yes. SGX stocks including DBS, OCBC, UOB, Singtel, Singapore Airlines, and all major S-REITs are covered alongside US markets.
+Yes. SGX stocks including DBS, OCBC, UOB, Singtel, Singapore Airlines, and all major S-REITs are covered alongside US and Canadian markets.
+
+**Does DividendBro cover Canadian stocks?**
+Yes. 29 TSX-listed dividend stocks are covered, including the Big Six banks (RBC, TD, Scotiabank, BMO, CIBC, National Bank), major pipelines (Enbridge, TC Energy, Pembina, Suncor), telecoms (BCE, Telus), utilities (Fortis, Canadian Utilities), and Canadian REITs (SmartCentres, RioCan, Granite, Choice Properties). The screener, income planner, and stock detail pages all support the Canadian market.
 
 **What's the difference between weekly and monthly dividend ETFs?**
 Weekly dividend ETFs are almost entirely options-income strategies that sell call options and pass the premium to shareholders. Distributions often include return of capital. Monthly dividend stocks include REITs, BDCs, and closed-end funds that pay from actual business income — a more traditional income category.
@@ -46,11 +50,17 @@ Realty Income (O), Agree Realty (ADC), LTC Properties (LTC), EPR Properties (EPR
 **Are there daily dividend stocks?**
 Only two securities in US capital markets pay cash dividends every business day: SATA (Strive Bitcoin-backed preferred stock) and CHAD (DeFi Development Solana-backed preferred stock). Both launched in 2026.
 
+**How are Canadian dividends taxed for non-residents?**
+Canada imposes a 25% statutory withholding tax on dividends paid to non-residents, reduced to 15% under most tax treaties (including US, UK, Singapore, Australia). The tax is withheld at source and cannot be reclaimed by filing a Canadian return.
+
+**What is a TFSA and why does it matter for dividend investors?**
+The Tax-Free Savings Account (TFSA) is a Canadian registered account where Canadian dividends are 100% tax-free. The 2026 annual contribution limit is $7,000, with cumulative room of $109,000 for eligible Canadians who have never contributed. This is the single biggest tax advantage available to Canadian dividend investors.
+
 **Does DividendBro give financial advice?**
 No. DividendBro is an educational tool. It is not licensed under the Financial Advisers Act (Singapore) and is not a registered investment adviser in the US. All content and tools are for informational purposes only.
 
 **What data sources does DividendBro use?**
-Dividend history and prices come from Yahoo Finance. Payout ratios come from Financial Modeling Prep (US only). Visitor geography is derived from Cloudflare's CF-IPCountry header. All data is provided "as is."
+Dividend history and prices come from Yahoo Finance. Payout ratios come from Financial Modeling Prep (US-listed only). Visitor geography is derived from Cloudflare's CF-IPCountry header. All data is provided "as is."
 
 ## Optional
 
