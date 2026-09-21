@@ -135,6 +135,12 @@ export const getScreenerStocks = async (params = {}) => {
   return res.data;
 };
 
+// ✅ NEW: Upcoming ex-dividend calendar
+export const getUpcomingDividends = async (market = 'us', days = 60) => {
+  const res = await api.get('/api/stocks/upcoming-dividends', { params: { market, days } });
+  return res.data;
+};
+
 // ---------- Portfolio ----------
 export const calculatePortfolio = async (symbol, purchaseDate, quantity, market = 'us') => {
   const key = `${market}:${symbol}:${purchaseDate}:${quantity}`;

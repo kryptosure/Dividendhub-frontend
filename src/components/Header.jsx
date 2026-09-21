@@ -58,6 +58,8 @@ const Header = () => {
             <Link to="/search" className="text-text-secondary hover:text-accent-blue transition-colors">Search</Link>
             <Link to="/top" className="text-text-secondary hover:text-accent-blue transition-colors">Top Stocks</Link>
             <Link to="/screener" className="text-text-secondary hover:text-accent-blue transition-colors">Screener</Link>
+            {/* ✅ NEW: Calendar nav link */}
+            <Link to="/calendar" className="text-text-secondary hover:text-accent-blue transition-colors">Calendar</Link>
             <Link to="/compare" className="text-text-secondary hover:text-accent-blue transition-colors">Compare</Link>
             <Link to="/watchlist" className="text-text-secondary hover:text-accent-blue transition-colors">Watchlist</Link>
             <Link to="/portfolio" className="text-text-secondary hover:text-accent-blue transition-colors">Portfolio</Link>
@@ -125,6 +127,8 @@ const Header = () => {
             <Link to="/search" className="py-3 flex items-center text-text-primary">Search Stocks</Link>
             <Link to="/top" className="py-3 flex items-center text-text-primary">Top Dividend Stocks</Link>
             <Link to="/screener" className="py-3 flex items-center text-text-primary">Dividend Screener</Link>
+            {/* ✅ NEW: mobile Calendar link */}
+            <Link to="/calendar" className="py-3 flex items-center text-text-primary">Dividend Calendar</Link>
             <Link to="/compare" className="py-3 flex items-center text-text-primary">Compare Stocks</Link>
             <Link to="/watchlist" className="py-3 flex items-center text-text-primary">Watchlist</Link>
             <Link to="/portfolio" className="py-3 flex items-center text-text-primary">My Portfolio</Link>

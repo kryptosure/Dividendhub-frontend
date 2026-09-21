@@ -32,6 +32,8 @@ const SimulatorSingle = lazy(() => import('./pages/SimulatorSingle'));
 const SimulatorDCA = lazy(() => import('./pages/SimulatorDCA'));
 const MillionaireSimulator = lazy(() => import('./pages/MillionaireSimulator'));
 const Admin = lazy(() => import('./pages/Admin'));
+// ✅ NEW: Dividend Calendar
+const DividendCalendar = lazy(() => import('./pages/DividendCalendar'));
 
 // Components that are treated as full-page routes (in ./components)
 const PortfolioView = lazy(() => import('./components/PortfolioView'));
@@ -129,6 +131,7 @@ function App() {
                   <Route path="/" element={<TargetIncome />} />
                   <Route path="/search" element={<SearchStocks />} />
                   <Route path="/screener" element={<DividendScreener />} />
+                  <Route path="/calendar" element={<DividendCalendar />} />
                   <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />
                   <Route path="/monthly-dividend-stocks" element={<MonthlyDividendStocks />} />
                   <Route path="/daily-dividend-stocks" element={<DailyDividendStocks />} />
