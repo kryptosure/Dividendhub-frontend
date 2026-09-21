@@ -81,7 +81,7 @@ const Header = () => {
                 <button onClick={handleLogout} className="px-2.5 py-1 bg-accent-red/10 border border-accent-red/20 text-accent-red rounded-lg hover:bg-accent-red/20 transition-colors">Signout</button>
               </div>
             ) : (
-              <Link to="/login" className="px-4 py-2 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-sm hover:opacity-95 active:scale-95 transition-all">Login</Link>
+              <Link to="/login" className="px-4 py-2 bg-accent text-white text-xs font-bold rounded-xl glow-accent glow-accent-hover hover:bg-accent-hover active:scale-95 transition-all">Login</Link>
             )}
           </div>
         </nav>
@@ -144,7 +144,7 @@ const Header = () => {
                 <button onClick={handleLogout} className="text-xs font-bold text-accent-red bg-accent-red/5 px-3 py-1.5 rounded-lg border border-accent-red/20">Logout</button>
               </div>
             ) : (
-              <Link to="/login" className="block text-center w-full py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold rounded-xl shadow-md">Login</Link>
+              <Link to="/login" className="block text-center w-full py-3 bg-accent text-white text-xs font-bold rounded-xl glow-accent">Login</Link>
             )}
           </div>
         </div>
