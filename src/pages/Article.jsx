@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { articles } from '../content/articles/index.js';
-import { track } from '../services/tracker'; // ✅ NEW
+import { track } from '../services/tracker';
+import ArticleFeedback from '../components/ArticleFeedback'; // ✅ NEW
 
 const toWebp = (imagePath) => imagePath.replace(/\.(jpg|jpeg|png)$/i, '.webp');
 
@@ -22,7 +23,7 @@ const Article = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ✅ NEW: Track article view
+  // ✅ Track article view
   useEffect(() => {
     if (article?.slug) {
       track('view_article', { slug: article.slug });
@@ -166,6 +167,9 @@ const Article = () => {
             </div>
           </div>
         )}
+
+        {/* ✅ NEW: Thumbs up/down feedback */}
+        <ArticleFeedback slug={article.slug} title={article.title} />
 
         <div className="mt-16 pt-10 border-t border-border/40 text-center">
           <p className="text-text-secondary mb-4 font-medium">Ready to put this into practice?</p>
