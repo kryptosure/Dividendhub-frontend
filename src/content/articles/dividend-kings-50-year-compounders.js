@@ -1,10 +1,10 @@
 export const article =   {
     slug: "dividend-kings-50-year-compounders",
-    title: "Dividend Kings: The 50+ Year Dividend Compounders That Beat the Market",
+    title: "Dividend Kings: The 50+ Year Dividend Compounders (2026 Full List)",
     date: "2026-09-11",
     category: "Strategy",
     image: "/images/blog/dividend-kings-cover.jpg",
-    excerpt: "Only a handful of companies have raised dividends for 50+ consecutive years. Here's why they outperform and which Kings belong in your portfolio.",
+    excerpt: "Only ~50 companies have raised dividends for 50+ consecutive years. Here's the full list — with yields, streaks, and why they outperform the S&P 500.",
     author: "DividendBro Research Team",
     content: `
       <p>Imagine buying a stock today and receiving a bigger dividend every year for the next 50 years—through recessions, pandemics, and rate hikes. That is exactly what Dividend Kings have done.</p>
