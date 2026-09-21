@@ -65,6 +65,8 @@ const Header = () => {
             <Link to="/portfolio" className="text-text-secondary hover:text-accent-blue transition-colors">Portfolio</Link>
             <SimulatorDropdown />
             <Link to="/blog" className="text-text-secondary hover:text-accent-blue transition-colors">Insights</Link>
+            {/* ✅ NEW: Ask AI link to ai.dividendbro.com */}
+            <a href="https://ai.dividendbro.com" className="text-text-secondary hover:text-accent-blue transition-colors">Ask AI ✨</a>
           </div>
 
           <div className="h-4 w-[1px] bg-border/60" />
@@ -136,6 +138,8 @@ const Header = () => {
             <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">Regular Investment DCA Calculator</Link>
             <Link to="/millionaire" className="py-3 flex items-center text-text-primary">Millionaire Simulator</Link>
             <Link to="/blog" className="py-3 flex items-center text-text-primary">Financial Academy Hub</Link>
+            {/* ✅ NEW: mobile Ask AI link */}
+            <a href="https://ai.dividendbro.com" className="py-3 flex items-center text-text-primary">Ask AI ✨</a>
             {isAdmin && (
               <Link to="/admin" className="py-3 flex items-center text-accent-purple font-bold">Admin Dashboard</Link>
             )}
