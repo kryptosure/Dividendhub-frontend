@@ -1,12 +1,12 @@
-export const article =   {
-    slug: "dividend-kings-50-year-compounders",
-    title: "Dividend Kings: The 50+ Year Dividend Compounders (2026 Full List)",
-    date: "2026-09-11",
-    category: "Strategy",
-    image: "/images/blog/dividend-kings-cover.jpg",
-    excerpt: "Only ~50 companies have raised dividends for 50+ consecutive years. Here's the full list — with yields, streaks, and why they outperform the S&P 500.",
-    author: "DividendBro Research Team",
-    content: `
+export const article = {
+  slug: "dividend-kings-50-year-compounders",
+  title: "Dividend Kings: The 50+ Year Dividend Compounders (2026 Full List)",
+  date: "2026-09-11",
+  category: "Strategy",
+  image: "/images/blog/dividend-kings-cover.jpg",
+  excerpt: "Only ~50 companies have raised dividends for 50+ consecutive years. Here's the full list — with yields, streaks, and why they outperform the S&P 500.",
+  author: "DividendBro Research Team",
+  content: `
       <p>Imagine buying a stock today and receiving a bigger dividend every year for the next 50 years—through recessions, pandemics, and rate hikes. That is exactly what Dividend Kings have done.</p>
 
       <p>Dividend Kings are companies that have raised their dividends for <strong>50 consecutive years or more</strong>. They are the elite of the elite—rarer than Dividend Aristocrats (25+ years), and with a track record that is nearly impossible to fake.</p>
@@ -75,7 +75,7 @@ export const article =   {
           </tr>
         </thead>
         <tbody>
-          <tr><td><strong>American States Water</strong></td><td>AWK</td><td>70+ years</td><td style="color:#fbbf24;">~2.0%</td><td>+8.5%</td><td>Utilities</td></tr>
+          <tr><td><strong>American States Water</strong></td><td>AWR</td><td>70+ years</td><td style="color:#fbbf24;">~2.0%</td><td>+8.5%</td><td>Utilities</td></tr>
           <tr><td><strong>Dover Corp</strong></td><td>DOV</td><td>68+ years</td><td style="color:#fbbf24;">~1.5%</td><td>+7.2%</td><td>Industrial</td></tr>
           <tr><td><strong>Procter &amp; Gamble</strong></td><td>PG</td><td>68+ years</td><td style="color:#fbbf24;">~2.5%</td><td>+5.5%</td><td>Consumer Staples</td></tr>
           <tr><td><strong>Coca-Cola</strong></td><td>KO</td><td>63+ years</td><td style="color:#34d399;">~3.0%</td><td>+4.8%</td><td>Consumer Staples</td></tr>
@@ -209,5 +209,5 @@ export const article =   {
       <hr/>
 
       <p style="text-align:center;color:#94a3b8;">Ready to own the market's most reliable income stocks? <a href="/"><strong>Start tracking on DividendBro.com</strong></a> today.</p>
-    `
-  };
+    `,
+};
