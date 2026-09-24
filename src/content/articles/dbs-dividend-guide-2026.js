@@ -3,7 +3,7 @@ export const article = {
   title: "DBS Dividend 2026: Yield, Payment Dates & History Explained",
   date: "2026-09-24",
   category: "Learning",
-  image: "/images/blog/dbs-dividend-guide-2026-cover.jpg",
+  image: "/images/blog/dbs-dividend-guide-2026-cover.webp",
   excerpt: "A plain-language guide to DBS dividends in 2026 — current yield, quarterly payment schedule, five-year payout history, and how DBS compares to OCBC and UOB.",
   author: "DividendBro Research Team",
   content: `
@@ -59,11 +59,11 @@ export const article = {
         </div>
       </div>
 
-      <p>A note on the yield figure. Different sites will show you different numbers for DBS, ranging from roughly 3.8% to 4.2%. The variation comes from methodology. Some sites use the last 12 months of actual dividends paid. Others use the annualised rate based on the most recent quarterly payout. The trailing twelve-month figure you see here (4.10%) reflects what DBS has actually paid shareholders over the past year. For a forward-looking estimate, you would annualise the current quarterly payout.</p>
+      <p>A note on the yield figure. Different sites will show you different numbers for DBS, ranging from roughly 3.8% to 4.2%. The variation comes from methodology. Some sites use the last 12 months of actual dividends paid. Others use the annualised rate based on the most recent quarterly payout. The trailing twelve-month figure you see here (4.10%) reflects what DBS has actually paid shareholders over the past year.</p>
 
       <h2>Understanding the Quarterly Dividend</h2>
 
-      <p>DBS pays shareholders four times a year. The most recent quarterly payout, declared for the period ending 30 June 2026, was <strong>S$0.81 per share</strong>. The same amount was paid in April 2026 and May 2026. Consistency is one of the things DBS is known for.</p>
+      <p>DBS pays shareholders four times a year. The most recent quarterly payout was <strong>S$0.81 per share</strong>. The same amount was paid in April 2026, May 2026, and August 2026. Consistency is one of the things DBS is known for.</p>
 
       <p>Across the trailing twelve months, DBS has paid a total of <strong>S$3.18 per share</strong> in dividends. At the current share price of S$77.60, that produces the 4.10% trailing yield.</p>
 
@@ -157,9 +157,9 @@ export const article = {
           </tr>
         </thead>
         <tbody>
-          <tr><td><strong>Share Price</strong></td><td>S$77.60</td><td>S$31.67</td><td>S$42.10</td></tr>
-          <tr><td><strong>Dividend Yield</strong></td><td style="color:#34d399;font-weight:700;">4.10%</td><td style="color:#34d399;font-weight:700;">3.32%</td><td style="color:#34d399;font-weight:700;">3.78%</td></tr>
-          <tr><td><strong>Payment Frequency</strong></td><td>Quarterly</td><td>Quarterly</td><td>Quarterly</td></tr>
+          <tr><td><strong>Share Price</strong></td><td>S$77.60</td><td>S$31.77</td><td>S$42.61</td></tr>
+          <tr><td><strong>Dividend Yield</strong></td><td style="color:#34d399;font-weight:700;">4.10%</td><td style="color:#34d399;font-weight:700;">3.31%</td><td style="color:#34d399;font-weight:700;">3.73%</td></tr>
+          <tr><td><strong>Payment Frequency</strong></td><td>Quarterly</td><td>Semi-Annual</td><td>Semi-Annual</td></tr>
           <tr><td><strong>5-Year Dividend CAGR</strong></td><td style="color:#34d399;font-weight:700;">+25.18%</td><td>+17.42%</td><td>+14.77%</td></tr>
           <tr><td><strong>Growth Streak</strong></td><td>6 years</td><td>5 years</td><td>5 years</td></tr>
           <tr><td><strong>Safety Rating</strong></td><td>Moderate</td><td>Moderate</td><td>Moderate</td></tr>
@@ -178,8 +178,8 @@ export const article = {
         </thead>
         <tbody>
           <tr><td>DBS</td><td>4.10%</td><td style="font-weight:700;">S$410.00</td></tr>
-          <tr><td>OCBC</td><td>3.32%</td><td style="font-weight:700;">S$332.00</td></tr>
-          <tr><td>UOB</td><td>3.78%</td><td style="font-weight:700;">S$378.00</td></tr>
+          <tr><td>UOB</td><td>3.73%</td><td style="font-weight:700;">S$373.00</td></tr>
+          <tr><td>OCBC</td><td>3.31%</td><td style="font-weight:700;">S$331.00</td></tr>
         </tbody>
       </table>
 
@@ -237,7 +237,7 @@ export const article = {
       <p>If you sell after the ex-dividend date but before the payment date, you still receive the dividend. The cutoff is the ex-dividend date, not the payment date.</p>
 
       <p><strong>How does the DBS dividend compare to OCBC and UOB?</strong></p>
-      <p>DBS currently offers the highest yield (4.10%) and the fastest dividend growth (25.18% five-year CAGR) of the three Singapore banks. UOB follows at 3.78%, with OCBC at 3.32%.</p>
+      <p>DBS currently offers the highest yield (4.10%) and the fastest dividend growth (25.18% five-year CAGR) of the three Singapore banks. UOB follows at 3.73%, with OCBC at 3.31%.</p>
 
       <h2>The Bottom Line</h2>
 
