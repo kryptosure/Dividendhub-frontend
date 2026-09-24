@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================================
+   ✅ CLS FIX: metric-matched fallback fonts
+   
+   Inter's actual metrics differ from Arial (the browser fallback)
+   by ~7% in width and ~3% in vertical metrics. Without these
+   overrides, when Inter swaps in after the first paint, every
+   paragraph of text reflows — that alone accounts for most of
+   the 0.39 CLS.
+   
+   These numbers calibrate Arial to render at approximately the
+   same width and line height as Inter, so the swap causes
+   near-zero layout movement.
+   ========================================================= */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  size-adjust: 107.64%;
+  ascent-override: 90.2%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono Fallback';
+  src: local('Consolas'), local('Menlo'), local('monospace');
+  size-adjust: 100%;
+  ascent-override: 102%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+
 @layer base {
   :root {
     /* Neutral, true-gray scale — no blue or warm tint, for a clean minimal look */
@@ -13,13 +44,10 @@
     --border-hover: #D4D4D8;
     --text-primary: #18181B;
     --text-secondary: #52525B;
-    /* ✅ FIX: was #A1A1AA (~3.4:1 on #FAFAFA) which failed WCAG AA for body text.
-       #71717A lands at ~5.4:1 and matches the dark-mode value. */
     --text-muted: #71717A;
     --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.03), 0 4px 16px -4px rgba(0, 0, 0, 0.06);
     --shadow-hover: 0 10px 30px -3px rgba(0, 0, 0, 0.10);
 
-    /* One accent color, used everywhere gold or a second brand color used to appear */
     --accent: #15803D;
     --accent-hover: #16A34A;
     --accent-glow: rgba(21, 128, 61, 0.20);
@@ -30,17 +58,14 @@
   }
 
   [data-theme="dark"] {
-    /* ✅ Phase-1 redesign: near-black, cool-neutral. Vercel / Linear / Perplexity palette. */
     --bg-primary: #08090A;
     --bg-secondary: #0F1011;
     --bg-surface: #131415;
     --bg-surface-hover: #1A1C1E;
 
-    /* Crisper borders for the flatter dark surface */
     --border-color: rgba(255, 255, 255, 0.07);
     --border-hover: rgba(255, 255, 255, 0.14);
 
-    /* Slightly softer text than pure white for less eye strain */
     --text-primary: #F7F8F8;
     --text-secondary: #9CA3AF;
     --text-muted: #6B7280;
@@ -48,7 +73,6 @@
     --shadow-card: 0 4px 30px rgba(0, 0, 0, 0.5);
     --shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.7);
 
-    /* Accent — same green family, tuned for the new bg + glow variant */
     --accent: #10B981;
     --accent-hover: #34D399;
     --accent-glow: rgba(16, 185, 129, 0.35);
@@ -58,7 +82,6 @@
     --status-safe: #34D399;
   }
 
-  /* ✅ FIX: merged the two `*` blocks into one (box-sizing + transition reset) */
   * {
     @apply box-border m-0 p-0;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
@@ -66,14 +89,15 @@
   html {
     transition: background-color 0.2s ease, color 0.2s ease;
   }
+  /* ✅ CLS FIX: set font-family explicitly with the metric-matched fallback
+     between Inter and the system stack. */
   body {
-    @apply bg-bg-primary text-text-primary font-sans antialiased overflow-x-hidden;
+    @apply bg-bg-primary text-text-primary antialiased overflow-x-hidden;
+    font-family: 'Inter', 'Inter Fallback', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
     position: relative;
   }
 
-  /* ✅ Phase-1 redesign: ambient green→teal→purple glow, dark mode only.
-     Fixed position so it stays anchored to the viewport top as you scroll. */
   body::before {
     content: '';
     position: fixed;
@@ -121,7 +145,6 @@
 }
 
 @layer components {
-  /* ✅ FIX: use the newly registered `shadow-hover` utility. */
   .card-hover {
     @apply transition-shadow duration-200 hover:shadow-hover;
   }
@@ -152,8 +175,6 @@
     text-wrap: balance;
   }
 
-  /* ✅ Phase-1 redesign: accent glow utilities for primary CTAs.
-     Visible in both themes, but only glows noticeably in dark mode. */
   .glow-accent {
     box-shadow: 0 0 20px var(--accent-glow);
   }
@@ -225,8 +246,6 @@
 }
 
 /* Date picker fixes for dark/light themes */
-/* ✅ FIX: `color-scheme` is now scoped per theme so the native date picker
-   doesn't render dark chrome in light mode. */
 [data-theme="dark"] input[type="date"] {
   color-scheme: dark;
   color: var(--text-primary) !important;
@@ -263,21 +282,14 @@ footer {
   right: 0;
   width: 100%;
   z-index: 9999;
-
-  /* ✅ FIX: opacity + backdrop-filter on the whole element was fading text
-     and had nothing to blur (background was fully opaque). Now the surface
-     itself is slightly translucent so the blur is meaningful, and text
-     stays full-opacity. */
   background-color: color-mix(in srgb, var(--bg-surface) 94%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
   border: 1px solid var(--border-color);
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
 }
 
-/* Ensure the dropdown text inside adapts to theme */
 .search-dropdown-50 li,
 .search-dropdown-50 li span {
   color: var(--text-primary);
@@ -414,7 +426,7 @@ footer {
   background: var(--bg-surface);
   padding: 3px 8px;
   border-radius: 6px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-size: 14px;
   border: 1px solid var(--border-color);
 }
@@ -457,7 +469,6 @@ footer {
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
-  /* ✅ FIX: use the theme-aware shadow token instead of a hardcoded dark one */
   box-shadow: var(--shadow-card);
 }
 
@@ -553,7 +564,7 @@ footer {
 .db-ig-row-val {
   width: 70px;
   text-align: right;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   font-weight: 700;
   color: var(--text-primary);
   flex-shrink: 0;
@@ -587,7 +598,7 @@ footer {
   font-weight: 900;
   color: var(--text-primary);
   margin-top: 3px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrains Mono', 'JetBrains Mono Fallback', monospace;
   line-height: 1.1;
 }
 
@@ -664,13 +675,11 @@ footer {
 }
 /* ===== MOBILE-FIRST IMPROVEMENTS ===== */
 
-/* Prevent horizontal overflow globally */
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
 }
 
-/* Mobile scroll wrappers for tables */
 .mobile-scroll {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -684,13 +693,11 @@ html, body {
   min-width: 600px;
 }
 
-/* Mobile: hide elements on small screens */
 @media (max-width: 640px) {
   .hide-mobile { display: none !important; }
   .mobile-full-width { width: 100% !important; }
 }
 
-/* Better text wrapping */
 .text-truncate-mobile {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -698,20 +705,11 @@ html, body {
   max-width: 100%;
 }
 
-/* Prevent iOS auto-zoom on input focus */
 @media (max-width: 768px) {
   input, select, textarea {
     font-size: 16px !important;
   }
 }
-
-/* ✅ NOTE: `.article-body table { display: block }` on mobile was removed.
-   It breaks table layout semantics (columns size independently). The
-   `.table-wrapper` / `.mobile-scroll` wrappers already provide horizontal
-   scroll while preserving `display: table`, which is the correct pattern.
-   If you *do* need to force scroll without a wrapper, use:
-     .article-body { overflow-x: auto; }
-   on the parent instead of on the table itself. */
 
 /* Infographic mobile tweaks */
 @media (max-width: 480px) {
@@ -750,7 +748,6 @@ html, body {
   }
 }
 
-/* Modal cards on small screens */
 @media (max-width: 400px) {
   .modal-compact-stack {
     grid-template-columns: 1fr !important;

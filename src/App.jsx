@@ -32,7 +32,6 @@ const SimulatorSingle = lazy(() => import('./pages/SimulatorSingle'));
 const SimulatorDCA = lazy(() => import('./pages/SimulatorDCA'));
 const MillionaireSimulator = lazy(() => import('./pages/MillionaireSimulator'));
 const Admin = lazy(() => import('./pages/Admin'));
-// ✅ NEW: Dividend Calendar
 const DividendCalendar = lazy(() => import('./pages/DividendCalendar'));
 
 // Components that are treated as full-page routes (in ./components)
@@ -65,9 +64,10 @@ function RouteTracker() {
   return null;
 }
 
-// Fallback shown while a route's chunk is loading
+// ✅ CLS FIX: reserve vertical space so the footer doesn't jump when
+// the real route content mounts.
 const PageLoader = () => (
-  <div className="py-20">
+  <div className="py-20" style={{ minHeight: '60vh' }}>
     <LoadingSpinner />
   </div>
 );
@@ -125,7 +125,10 @@ function App() {
 
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col font-sans antialiased selection:bg-accent-blue/20">
             <Header />
-            <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8 animate-in fade-in duration-300">
+            {/* ✅ CLS FIX: removed `animate-in fade-in` — during the fade
+                transition, some browsers measure layout mid-animation,
+                which compounds CLS from the route swap. */}
+            <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8">
               <Suspense fallback={<PageLoader />}>
                 <Routes>
                   <Route path="/" element={<TargetIncome />} />

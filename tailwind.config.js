@@ -35,24 +35,25 @@ export default {
           green: 'var(--status-safe)',
           red: 'var(--status-danger)',
           yellow: 'var(--status-caution)',
-          purple: 'var(--text-secondary)', /* decorative-only tags go neutral gray in a minimal palette */
+          purple: 'var(--text-secondary)',
           pink: 'var(--text-secondary)',
         },
       },
       // ✅ FIX: register shadow tokens so `shadow-card` / `hover:shadow-hover`
-      // actually generate CSS. Previously `.card-hover` silently did nothing
-      // because `shadow-shadow-hover` was not a real utility.
+      // actually generate CSS.
       boxShadow: {
         card: 'var(--shadow-card)',
         hover: 'var(--shadow-hover)',
       },
+      // ✅ CLS FIX: include the metric-matched fallback font so browsers
+      // reserve correct space before Inter/JetBrains Mono load.
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        sans: ['Inter', 'Inter Fallback', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'JetBrains Mono Fallback', 'monospace'],
       },
     },
   },
   plugins: [
-    typography, // ✅ This is the secret sauce for beautiful articles
+    typography,
   ],
 }

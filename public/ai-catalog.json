@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "name": "DividendBro",
+  "description": "Free dividend analysis and portfolio management tool covering US, Canadian, and SGX dividend stocks.",
+  "url": "https://dividendbro.com",
+  "resources": [
+    {
+      "id": "llms-txt",
+      "type": "text/plain",
+      "url": "https://dividendbro.com/llms.txt",
+      "description": "Curated index of DividendBro guides, tools, and data sources for AI agents."
+    },
+    {
+      "id": "llms-full-txt",
+      "type": "text/plain",
+      "url": "https://dividendbro.com/llms-full.txt",
+      "description": "Extended documentation covering DividendBro features, methodology, and FAQ."
+    },
+    {
+      "id": "sitemap-xml",
+      "type": "application/xml",
+      "url": "https://dividendbro.com/sitemap.xml",
+      "description": "XML sitemap of all public pages."
+    }
+  ]
+}
