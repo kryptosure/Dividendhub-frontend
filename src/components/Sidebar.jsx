@@ -12,6 +12,7 @@ import {
   Calculator,
   BookOpen,
   Sparkles,
+  LogIn,
   LogOut,
   User as UserIcon,
   Zap,
@@ -264,13 +265,25 @@ const Sidebar = () => {
             </button>
           </div>
         ) : (
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-bg-surface border border-border/50 text-text-primary text-[12px] font-bold hover:bg-bg-surface-hover hover:border-border-hover active:scale-95 transition-all"
-          >
-            <GoogleIcon size={14} />
-            Continue with Google
-          </button>
+          <div className="space-y-2">
+            {/* Option 1 — Continue with Google (secondary) */}
+            <button
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-bg-surface border border-border/50 text-text-primary text-[12px] font-bold hover:bg-bg-surface-hover hover:border-border-hover active:scale-95 transition-all"
+            >
+              <GoogleIcon size={14} />
+              Continue with Google
+            </button>
+
+            {/* Option 2 — Login with Email (primary) */}
+            <Link
+              to="/login"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-accent-blue text-white text-[12px] font-bold glow-accent hover:bg-accent-blue active:scale-95 transition-all"
+            >
+              <LogIn size={12} strokeWidth={2.5} />
+              Login with Email
+            </Link>
+          </div>
         )}
       </div>
     </aside>
