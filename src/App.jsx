@@ -5,16 +5,15 @@ import { Helmet } from 'react-helmet-async';
 import useStore from './store/useStore';
 import { trackPageView } from './services/tracker';
 
-// ---------- Eager: loaded on every page ----------
+// ---------- Eager ----------
 import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 import BottomNav from './components/BottomNav';
 import Footer from './components/Footer';
 import AppErrorBoundary from './components/AppErrorBoundary';
 import LoadingSpinner from './components/LoadingSpinner';
 
-// ---------- Lazy: only loaded when the route is visited ----------
-
-// Pages (in ./pages)
+// ---------- Lazy: pages ----------
 const TargetIncome = lazy(() => import('./pages/TargetIncome'));
 const SearchStocks = lazy(() => import('./pages/SearchStocks'));
 const DividendScreener = lazy(() => import('./pages/DividendScreener'));
@@ -34,11 +33,11 @@ const MillionaireSimulator = lazy(() => import('./pages/MillionaireSimulator'));
 const Admin = lazy(() => import('./pages/Admin'));
 const DividendCalendar = lazy(() => import('./pages/DividendCalendar'));
 
-// Components that are treated as full-page routes (in ./components)
+// ---------- Lazy: components-as-routes ----------
 const PortfolioView = lazy(() => import('./components/PortfolioView'));
 const TopStocks = lazy(() => import('./components/TopStocks'));
 
-// Deferred (loaded 3s after mount)
+// ---------- Deferred ----------
 const ChatWidget = lazy(() => import('./components/ChatWidget'));
 const BackToTop = lazy(() => import('./components/BackToTop'));
 
@@ -64,15 +63,12 @@ function RouteTracker() {
   return null;
 }
 
-// ✅ CLS FIX: reserve vertical space so the footer doesn't jump when
-// the real route content mounts.
 const PageLoader = () => (
   <div className="py-20" style={{ minHeight: '60vh' }}>
     <LoadingSpinner />
   </div>
 );
 
-// Defer the chat widget so it doesn't compete with LCP
 function DeferredChatWidget() {
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -123,41 +119,53 @@ function App() {
             <meta property="og:description" content="See what a sample dividend portfolio could look like for your monthly income goal. Free for US & SGX stocks." />
           </Helmet>
 
-          <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col font-sans antialiased selection:bg-accent-blue/20">
-            <Header />
-            {/* ✅ CLS FIX: removed `animate-in fade-in` — during the fade
-                transition, some browsers measure layout mid-animation,
-                which compounds CLS from the route swap. */}
-            <main className="flex-1 max-w-6xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8">
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<TargetIncome />} />
-                  <Route path="/search" element={<SearchStocks />} />
-                  <Route path="/screener" element={<DividendScreener />} />
-                  <Route path="/calendar" element={<DividendCalendar />} />
-                  <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />
-                  <Route path="/monthly-dividend-stocks" element={<MonthlyDividendStocks />} />
-                  <Route path="/daily-dividend-stocks" element={<DailyDividendStocks />} />
-                  <Route path="/reits-that-pay-monthly" element={<ReitsThatPayMonthly />} />
-                  <Route path="/income-planner" element={<Navigate to="/" replace />} />
+          {/* ============================================================
+              Layout: row on lg+ (sidebar + content column),
+              column on < lg (header stack + main + footer).
+              ============================================================ */}
+          <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col lg:flex-row font-sans antialiased selection:bg-accent-blue/20">
 
-                  <Route path="/portfolio" element={<PortfolioView />} />
-                  <Route path="/watchlist" element={<Watchlist />} />
-                  <Route path="/compare" element={<StockComparison />} />
-                  <Route path="/top" element={<TopStocks />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:slug" element={<Article />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/simulate/one-time" element={<SimulatorSingle />} />
-                  <Route path="/simulate/dca" element={<SimulatorDCA />} />
-                  <Route path="/millionaire" element={<MillionaireSimulator />} />
-                  <Route path="/admin" element={<Admin />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </Suspense>
-            </main>
-            <Footer />
+            {/* Sidebar — hidden below lg. Sticky full-height on lg+. */}
+            <Sidebar />
+
+            {/* Content column — flex-1 so it fills remaining width.
+                min-w-0 is required so children (tables) can shrink. */}
+            <div className="flex-1 flex flex-col min-w-0">
+              <Header />
+
+              <main className="flex-1 max-w-7xl mx-auto px-2 sm:px-4 py-8 w-full pb-24 md:pb-8">
+                <Suspense fallback={<PageLoader />}>
+                  <Routes>
+                    <Route path="/" element={<TargetIncome />} />
+                    <Route path="/search" element={<SearchStocks />} />
+                    <Route path="/screener" element={<DividendScreener />} />
+                    <Route path="/calendar" element={<DividendCalendar />} />
+                    <Route path="/weekly-dividend-etfs" element={<WeeklyDividendETFs />} />
+                    <Route path="/monthly-dividend-stocks" element={<MonthlyDividendStocks />} />
+                    <Route path="/daily-dividend-stocks" element={<DailyDividendStocks />} />
+                    <Route path="/reits-that-pay-monthly" element={<ReitsThatPayMonthly />} />
+                    <Route path="/income-planner" element={<Navigate to="/" replace />} />
+
+                    <Route path="/portfolio" element={<PortfolioView />} />
+                    <Route path="/watchlist" element={<Watchlist />} />
+                    <Route path="/compare" element={<StockComparison />} />
+                    <Route path="/top" element={<TopStocks />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<Article />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/simulate/one-time" element={<SimulatorSingle />} />
+                    <Route path="/simulate/dca" element={<SimulatorDCA />} />
+                    <Route path="/millionaire" element={<MillionaireSimulator />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </Suspense>
+              </main>
+
+              <Footer />
+            </div>
+
             <BottomNav />
             <Suspense fallback={null}>
               <BackToTop />

@@ -25,13 +25,13 @@ export default {
           muted: 'var(--text-muted)',
         },
         accent: {
-          /* Single accent color for the whole app, per the new minimal
-             direction — blue/teal/green/purple/pink all resolve to the
-             same var(--accent) (or a functional status color), so any
-             existing "from-accent-blue to-accent-teal" gradient utility
-             in the JSX now renders as a flat accent color automatically. */
+          /* DEFAULT registers bare `bg-accent` / `text-accent` / `border-accent`.
+             Header.jsx now uses the explicit `-blue` variants so it does not
+             depend on the DEFAULT key resolving in a given build cache. */
+          DEFAULT: 'var(--accent)',
           blue: 'var(--accent)',
           teal: 'var(--accent)',
+          hover: 'var(--accent-hover)',
           green: 'var(--status-safe)',
           red: 'var(--status-danger)',
           yellow: 'var(--status-caution)',
@@ -39,14 +39,10 @@ export default {
           pink: 'var(--text-secondary)',
         },
       },
-      // ✅ FIX: register shadow tokens so `shadow-card` / `hover:shadow-hover`
-      // actually generate CSS.
       boxShadow: {
         card: 'var(--shadow-card)',
         hover: 'var(--shadow-hover)',
       },
-      // ✅ CLS FIX: include the metric-matched fallback font so browsers
-      // reserve correct space before Inter/JetBrains Mono load.
       fontFamily: {
         sans: ['Inter', 'Inter Fallback', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'JetBrains Mono Fallback', 'monospace'],
