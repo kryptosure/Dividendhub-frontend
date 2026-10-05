@@ -11,6 +11,7 @@ import {
   Briefcase,
   Calculator,
   BookOpen,
+  Newspaper,
   Sparkles,
   LogIn,
   LogOut,
@@ -213,7 +214,8 @@ const Sidebar = () => {
         </Section>
 
         <Section label="Learn">
-          <NavLink to="/blog" icon={BookOpen} label="Insights" />
+          <NavLink to="/insights" icon={Newspaper} label="Market Insights" />
+          <NavLink to="/blog"     icon={BookOpen}  label="Financial Academy" />
         </Section>
 
       </nav>
@@ -266,7 +268,6 @@ const Sidebar = () => {
           </div>
         ) : (
           <div className="space-y-2">
-            {/* Option 1 — Continue with Google (secondary) */}
             <button
               onClick={handleGoogleLogin}
               className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-bg-surface border border-border/50 text-text-primary text-[12px] font-bold hover:bg-bg-surface-hover hover:border-border-hover active:scale-95 transition-all"
@@ -275,7 +276,6 @@ const Sidebar = () => {
               Continue with Google
             </button>
 
-            {/* Option 2 — Login with Email (primary) */}
             <Link
               to="/login"
               className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-accent-blue text-white text-[12px] font-bold glow-accent hover:bg-accent-blue active:scale-95 transition-all"

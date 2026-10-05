@@ -25,6 +25,8 @@ const Watchlist = lazy(() => import('./pages/Watchlist'));
 const StockComparison = lazy(() => import('./pages/StockComparison'));
 const Blog = lazy(() => import('./pages/Blog'));
 const Article = lazy(() => import('./pages/Article'));
+const Insights = lazy(() => import('./pages/Insights'));
+const Insight = lazy(() => import('./pages/Insight'));
 const Login = lazy(() => import('./pages/Login'));
 const Signup = lazy(() => import('./pages/Signup'));
 const SimulatorSingle = lazy(() => import('./pages/SimulatorSingle'));
@@ -119,17 +121,10 @@ function App() {
             <meta property="og:description" content="See what a sample dividend portfolio could look like for your monthly income goal. Free for US & SGX stocks." />
           </Helmet>
 
-          {/* ============================================================
-              Layout: row on lg+ (sidebar + content column),
-              column on < lg (header stack + main + footer).
-              ============================================================ */}
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col lg:flex-row font-sans antialiased selection:bg-accent-blue/20">
 
-            {/* Sidebar — hidden below lg. Sticky full-height on lg+. */}
             <Sidebar />
 
-            {/* Content column — flex-1 so it fills remaining width.
-                min-w-0 is required so children (tables) can shrink. */}
             <div className="flex-1 flex flex-col min-w-0">
               <Header />
 
@@ -152,6 +147,8 @@ function App() {
                     <Route path="/top" element={<TopStocks />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/:slug" element={<Article />} />
+                    <Route path="/insights" element={<Insights />} />
+                    <Route path="/insights/:slug" element={<Insight />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/simulate/one-time" element={<SimulatorSingle />} />
