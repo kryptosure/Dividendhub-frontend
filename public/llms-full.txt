@@ -213,6 +213,19 @@ Highest-yielding dividend stocks and ETFs across US, Canadian, and SGX markets, 
 
 ---
 
+## Market Insights
+
+**URL:** https://dividendbro.com/insights
+
+Short-form analysis feed published 2–3 times per week. Each insight is 300–800 words focused on dividend news, earnings, or policy changes — filtered for what actually affects income investors. Categories rotate through Earnings, Policy, Data Finding, Comparison, and Educational.
+
+**Current insights:**
+- **DBS Q3 2026 Earnings: What It Means for the Dividend** (Earnings) — Q3 results unchanged; dividend remains at S$0.81/quarter, 4.10% trailing yield. No action needed for income holders. Watch for 2027 capital return commentary.
+- **The Hidden Cost of the SGX Board Lot Change Nobody Is Talking About** (Data Finding) — Broker minimum commissions can eat 0.65% of a small trade even after SGX's 10-share lot reduction. Three approaches to mitigate: use a no-minimum broker, batch purchases, or accept the drag and focus on long-term yield.
+- **The 30% US Withholding Tax: What It Actually Costs Singapore Investors** (Educational) — After-tax yield comparison between US and SGX dividends. A US stock needs to yield 7.14% to match a SGX stock at 5%. Irish-domiciled ETFs reduce the withholding to 15%.
+
+---
+
 ## Blog & Research
 
 **URL:** https://dividendbro.com/blog
@@ -375,7 +388,7 @@ All original analysis, features, and content are © DividendBro 2025–2026.
 
 ## Changelog
 
-- **2026-10-05:** Added SGX board lot reduction article and SGX trading FAQ section. Updated blog list with pictorial-format rewritten articles.
+- **2026-10-05:** Added Market Insights section (short-form analysis feed). Added SGX board lot reduction article and SGX trading FAQ section. Updated blog list with pictorial-format rewritten articles.
 - **2026-09-19:** Added Canada (TSX) market coverage — 29 tickers, screener support, income planner integration, and Canadian dividend stocks guide. Updated ticker count from 643 to 672.
 - **2026-09-17:** llms-full.txt published. llms.txt updated with FAQ section.
 - **2026-09-01:** llms.txt introduced.

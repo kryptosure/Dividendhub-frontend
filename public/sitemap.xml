@@ -101,6 +101,14 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Market Insights hub -->
+  <url>
+    <loc>https://dividendbro.com/insights</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Blog / Insights Hub -->
   <url>
     <loc>https://dividendbro.com/blog</loc>
@@ -111,7 +119,7 @@
 
   <!-- ===== BLOG ARTICLES ===== -->
 
-  <!-- ✅ NEW: SGX board lot reduction (trending Oct 2026) -->
+  <!-- SGX board lot reduction (trending Oct 2026) -->
   <url>
     <loc>https://dividendbro.com/blog/sgx-board-lot-reduction-2026</loc>
     <lastmod>2026-10-05</lastmod>

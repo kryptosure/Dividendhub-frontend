@@ -22,6 +22,10 @@ DividendBro covers 672 dividend-paying securities across US, Canadian, and Singa
 - [REITs That Pay Monthly](https://dividendbro.com/reits-that-pay-monthly): The verified 2026 list of US REITs paying monthly dividends, with cadence changes and tax treatment for Singapore investors.
 - [Top Dividend Stocks](https://dividendbro.com/top): Highest-yielding dividend stocks and ETFs in the US, Canadian, and SGX markets, ranked by trailing yield.
 
+## Market Insights
+
+- [Market Insights](https://dividendbro.com/insights): Weekly short-form analysis on dividend news, earnings, and policy changes for US, Canadian, and SGX investors.
+
 ## Blog and Research
 
 - [Insights Hub](https://dividendbro.com/blog): Articles on dividend investing strategy, Singapore dividend stocks, Canadian dividend stocks, REITs, brokerage fees, and dividend growth analysis.
