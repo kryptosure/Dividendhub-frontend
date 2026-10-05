@@ -25,6 +25,7 @@ DividendBro covers 672 dividend-paying securities across US, Canadian, and Singa
 ## Blog and Research
 
 - [Insights Hub](https://dividendbro.com/blog): Articles on dividend investing strategy, Singapore dividend stocks, Canadian dividend stocks, REITs, brokerage fees, and dividend growth analysis.
+- [SGX Board Lot Reduction 2026](https://dividendbro.com/blog/sgx-board-lot-reduction-2026): Complete guide to SGX's October 2026 board lot change — full list of 11 affected stocks, new lot sizes, odd lot elimination, and how broker minimum commissions affect small trades.
 - [Best Canadian Dividend Stocks for 2026](https://dividendbro.com/blog/best-canadian-dividend-stocks-2026): Complete TSX guide covering the Big Six banks, energy pipelines, monthly REITs, TFSA strategy, and the non-resident withholding tax trap.
 
 ## FAQ
@@ -55,6 +56,12 @@ Canada imposes a 25% statutory withholding tax on dividends paid to non-resident
 
 **What is a TFSA and why does it matter for dividend investors?**
 The Tax-Free Savings Account (TFSA) is a Canadian registered account where Canadian dividends are 100% tax-free. The 2026 annual contribution limit is $7,000, with cumulative room of $109,000 for eligible Canadians who have never contributed. This is the single biggest tax advantage available to Canadian dividend investors.
+
+**What is the SGX board lot change of 2026?**
+Effective October 5, 2026, SGX reduced board lot sizes for 11 major stocks. Stocks priced S$10–S$100 now trade in lots of 10 shares (down from 100). Stocks above S$100 trade in lots of 1 share. The reduced lot sizes are permanent. Affected stocks include DBS, OCBC, UOB, SGX, Great Eastern, Jardine Matheson, Jardine C&C, Haw Par, Venture Corp, Prudential, and Keppel (Keppel kept 100-share lots since it trades below S$10).
+
+**Can I buy just 1 share of DBS on SGX?**
+No. DBS is priced between S$10 and S$100, so its board lot size is 10 shares. You can only buy 1 share of stocks priced above S$100.
 
 **Does DividendBro give financial advice?**
 No. DividendBro is an educational tool. It is not licensed under the Financial Advisers Act (Singapore) and is not a registered investment adviser in the US. All content and tools are for informational purposes only.
