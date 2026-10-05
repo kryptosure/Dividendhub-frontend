@@ -14,7 +14,7 @@ const DAILY_PAYERS = [
     annualRate: '13.00%',
     effectiveYield: '~13.88%',
     parValue: '$100.00',
-    perDay: '~$0.0492',
+    perDay: '~$0.0516',
     paymentDays: '~250/year',
     treasury: 'Bitcoin (23,156 BTC held unencumbered)',
     reserve: '18 months of dividend coverage',
@@ -27,51 +27,106 @@ const DAILY_PAYERS = [
     ticker: 'CHAD',
     name: 'DeFi Development Variable Rate Series C Perpetual Preferred Stock',
     issuer: 'DeFi Development Corp. (Nasdaq: DFDV)',
-    status: 'IPO priced, payments begin Oct 1, 2026',
+    status: 'Live',
     firstPayment: 'October 1, 2026',
     annualRate: '13.00%',
-    effectiveYield: '~16.25% (at IPO price)',
+    effectiveYield: '~13.5%+',
     parValue: '$10.00',
     perDay: '~$0.0036',
     paymentDays: '~250/year',
-    treasury: 'Solana (SOL)',
+    treasury: 'Solana (SOL) — $290M+ treasury',
     reserve: '$1.30 per share dividend reserve',
     description:
-      'CHAD is the second security attempting daily dividends. DeFi Development Corp. holds a Solana treasury and has funded a per-share dividend reserve. Dividends are cumulative and paid daily, when declared by the board.',
+      'CHAD is the second security paying daily dividends. DeFi Development Corp. holds a Solana treasury and has funded a per-share dividend reserve. Dividends are cumulative and paid daily, when declared by the board. The lower $10 par value makes it more accessible for small investors.',
     caveat:
-      'Backed by a Solana treasury. Even more volatile than Bitcoin. Very small offering ($11M) and highly speculative.',
+      'Backed by a Solana treasury. Even more volatile than Bitcoin. Small offering (~$11M) and highly speculative.',
+  },
+];
+
+const UPCOMING_PAYERS = [
+  {
+    ticker: 'STRC',
+    issuer: 'Strategy Inc. (Nasdaq: MSTR)',
+    status: 'Shareholder vote Oct 28',
+    expectedLive: 'November 2, 2026',
+    annualRate: '12.00%',
+    parValue: '$100.00',
+    size: '$9.3 billion',
+    description:
+      'Strategy\'s flagship preferred stock. A $9.3 billion instrument already paying semi-monthly. Moving to daily is expected to stabilize the price near par value.',
+  },
+  {
+    ticker: 'STRF',
+    issuer: 'Strategy Inc. (Nasdaq: MSTR)',
+    status: 'Shareholder vote Oct 28',
+    expectedLive: 'January 4, 2027',
+    annualRate: 'Variable',
+    parValue: '$100.00',
+    size: 'Multi-billion',
+    description:
+      'Strategy\'s fixed-rate preferred stock. Currently pays quarterly. The move to daily would align it with STRC.',
+  },
+  {
+    ticker: 'STRK',
+    issuer: 'Strategy Inc. (Nasdaq: MSTR)',
+    status: 'Shareholder vote Oct 28',
+    expectedLive: 'January 4, 2027',
+    annualRate: 'Variable',
+    parValue: '$100.00',
+    size: 'Multi-billion',
+    description:
+      'Strategy\'s convertible preferred stock. Moving to daily cadence for consistency across the preferred suite.',
+  },
+  {
+    ticker: 'STRD',
+    issuer: 'Strategy Inc. (Nasdaq: MSTR)',
+    status: 'Shareholder vote Oct 28',
+    expectedLive: 'January 4, 2027',
+    annualRate: 'Variable',
+    parValue: '$100.00',
+    size: 'Multi-billion',
+    description:
+      'Strategy\'s most recent preferred issuance. Would follow the same daily cadence as the other three.',
   },
 ];
 
 const FAQS = [
   {
-    q: 'Are there any daily dividend stocks besides SATA and CHAD?',
-    a: 'No. As of September 2026, SATA and CHAD are the only two securities in U.S. capital markets paying cash dividends every business day. No ETF, mutual fund, or traditional stock pays daily dividends. The concept was pioneered in June 2026 and the category is still essentially brand new.',
+    q: 'What is a daily dividend stock?',
+    a: 'A daily dividend stock pays cash dividends every business day — approximately 250 payments per year instead of 4 (quarterly) or 12 (monthly). The annual rate is fixed, but sliced into daily payments. The concept was pioneered in June 2026 when Strive Inc. began paying daily dividends on its SATA preferred stock.',
   },
   {
-    q: 'Do daily dividend stocks actually pay every day?',
-    a: 'They pay every business day — approximately 250 days per year. Weekends and market holidays are skipped. The exact number depends on the NYSE calendar each year. For SATA, the annualized rate is divided across those ~250 payment days.',
+    q: 'How many daily dividend stocks exist?',
+    a: 'As of October 2026, two are live: SATA (Strive, Bitcoin-backed) and CHAD (DeFi Development, Solana-backed). Four more are pending shareholder approval: STRC, STRF, STRK, and STRD — all issued by Strategy Inc. If approved, STRC goes live November 2, 2026, and the other three on January 4, 2027.',
   },
   {
-    q: 'How much do daily dividend payers pay per day?',
-    a: 'For SATA, the per-day accrual was approximately $0.049 per share in July 2026. For CHAD, the rate is about $0.0036 per share per day (based on $10 par value and 13% annualized). These amounts adjust whenever the board resets the annual rate.',
+    q: 'Are daily dividends better than monthly?',
+    a: 'They compound slightly faster. On a 13% stated rate, daily payments produce an effective yield of ~13.88% vs ~13.65% for monthly payments. The difference is roughly 0.23 percentage points per year — about $23 on a $10,000 investment.',
   },
   {
     q: 'Are daily dividend stocks safe?',
-    a: 'No. Both SATA and CHAD are preferred stocks issued by crypto-treasury companies. They are far riskier than blue-chip dividend stocks. The 13% rate is variable and can be reduced by the board at any time. The dividend reserve provides near-term coverage but is funded from the company\'s own assets — if the underlying crypto treasury collapses, so does the reserve.',
+    a: 'They carry unique risks. All are crypto-backed preferred stocks, which means their dividends depend on the health of Bitcoin or Solana treasuries. The 13% rate is variable and can be reduced by the board. These are not risk-free like Treasury bonds or blue-chip dividend stocks.',
   },
   {
-    q: 'How are daily dividends taxed?',
-    a: 'In most cases, daily preferred stock distributions are taxed as ordinary income, not qualified dividends. For Singapore-based investors, U.S. preferred stock dividends are subject to the standard 30% U.S. withholding tax. That means the 13% headline rate becomes ~9.1% after tax for most non-US investors.',
+    q: 'How do I buy daily dividend stocks?',
+    a: 'They trade on major US exchanges (NASDAQ). Buy them through any broker that offers US stock trading. Current tickers: SATA, CHAD. Pending: STRC, STRF, STRK, STRD.',
+  },
+  {
+    q: 'How are daily dividends taxed for Singapore investors?',
+    a: 'US preferred stock dividends are subject to the standard 30% US withholding tax for non-resident aliens. That means the 13% headline rate becomes roughly 9.1% after tax for most Singapore-based investors. There is no Singapore-US tax treaty reduction.',
+  },
+  {
+    q: 'When is the Strategy shareholder vote?',
+    a: 'October 28, 2026. Shareholders will vote on converting STRC, STRF, STRK, and STRD to a daily dividend schedule. Michael Saylor controls the majority of voting shares, so the proposal is widely expected to pass.',
   },
   {
     q: 'Will more daily dividend stocks launch?',
-    a: 'Likely yes. The crypto-treasury preferred stock model (pioneered by Strategy\'s STRC and Strive\'s SATA) has been copied quickly. Two or three more Bitcoin or Solana treasury companies have filed for similar instruments. But as of September 2026, only SATA and CHAD are live or priced.',
+    a: 'Likely. The crypto-treasury preferred stock model has been copied quickly by several companies. Strategy\'s proposal is the largest expansion so far. If approved, the daily dividend universe grows from 2 to 6 assets by January 2027.',
   },
 ];
 
 const FREQUENCY_COMPARISON = [
-  { frequency: 'Daily', count: 2, examples: 'SATA, CHAD', note: 'Preferred stocks only. No ETF exists.' },
+  { frequency: 'Daily', count: '2 live · 4 pending', examples: 'SATA, CHAD', note: 'Preferred stocks only. Crypto-backed.' },
   { frequency: 'Weekly', count: 73, examples: 'MSTY, ULTY, XDTE', note: 'Options-income ETFs. Return of capital.' },
   { frequency: 'Monthly', count: 133, examples: 'O, MAIN, JEPI', note: 'REITs, BDCs, CEFs, covered-call ETFs.' },
   { frequency: 'Quarterly', count: 373, examples: 'KO, JNJ, SCHD', note: 'Traditional dividend stocks.' },
@@ -91,11 +146,11 @@ const DailyDividendStocks = () => {
   return (
     <>
       <Helmet>
-        <title>Daily Dividend Stocks — The Complete List (2026) | DividendBro</title>
-        <meta name="description" content="Every security paying daily dividends in 2026. SATA and CHAD are the only two — this page tracks them, their yields, and the risks behind the 13% rate." />
+        <title>Daily Dividend Stocks 2026: Complete List (SATA, CHAD, Strategy)</title>
+        <meta name="description" content="Only 2 daily dividend stocks are live today — SATA and CHAD, both paying ~13% annually. See the complete list plus Strategy's 4 upcoming daily preferreds. Updated October 2026." />
         <link rel="canonical" href={`${SITE_URL}/daily-dividend-stocks`} />
-        <meta property="og:title" content="Daily Dividend Stocks — The Complete List (2026)" />
-        <meta property="og:description" content="Every security paying daily dividends in 2026. SATA and CHAD are the only two — here's what you need to know." />
+        <meta property="og:title" content="Daily Dividend Stocks 2026: Complete List (SATA, CHAD, Strategy)" />
+        <meta property="og:description" content="Two live, four pending. The complete guide to every security paying daily dividends in 2026." />
         <meta property="og:url" content={`${SITE_URL}/daily-dividend-stocks`} />
         <meta property="og:type" content="article" />
         <meta property="og:image" content={`${SITE_URL}/images/cover.png`} />
@@ -113,10 +168,10 @@ const DailyDividendStocks = () => {
             Daily Dividend Stocks: The <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Complete List</span>
           </h1>
           <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-3xl">
-            Only two securities in U.S. capital markets pay cash dividends every business day. Both launched in 2026. Here's everything you need to know about the daily dividend category — how it works, what it pays, and the risks behind the 13% headline rate.
+            Only two securities in U.S. capital markets pay cash dividends every business day. Four more are pending approval — Strategy Inc.'s proposal would bring the daily dividend universe to <strong className="text-text-primary">six assets by January 2027</strong>. Here's everything you need to know.
           </p>
           <p className="text-text-muted text-xs">
-            Updated September 2026 · 2 daily payers tracked · SATA + CHAD
+            Updated October 2026 · 2 live · 4 pending · SATA, CHAD, STRC, STRF, STRK, STRD
           </p>
         </header>
 
@@ -140,13 +195,13 @@ const DailyDividendStocks = () => {
             Daily dividends are only possible with <strong className="text-text-primary">cumulative preferred stock</strong>, not common stock. Preferred stock allows the board to set a variable rate and declare dividends monthly for the following month's payments. The daily accrual is mechanical — the annualized rate is simply divided by the number of business days in the year.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
-            The two live (or priced) products are both issued by crypto-treasury companies: SATA by Strive (Bitcoin treasury) and CHAD by DeFi Development Corp (Solana treasury). Both pay ~13% annualized.
+            All six current and pending daily dividend payers are issued by crypto-treasury companies: Strive (Bitcoin), DeFi Development (Solana), and Strategy (Bitcoin).
           </p>
         </section>
 
         <section className="space-y-4">
           <h2 className="text-2xl font-black text-text-primary tracking-tight">
-            The only two daily dividend payers in existence
+            The two live daily dividend payers
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
             Every field below is verified against SEC filings, the issuer's investor relations page, or GlobeNewswire press releases. Yields move daily.
@@ -159,11 +214,9 @@ const DailyDividendStocks = () => {
                   <div>
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-mono text-lg font-black text-accent-teal">{p.ticker}</span>
-                      <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border ${
-                        p.status === 'Live'
-                          ? 'bg-accent-green/10 border-accent-green/20 text-accent-green'
-                          : 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow'
-                      }`}>{p.status}</span>
+                      <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border bg-accent-green/10 border-accent-green/20 text-accent-green">
+                        {p.status}
+                      </span>
                     </div>
                     <p className="text-sm font-bold text-text-primary mt-1">{p.name}</p>
                     <p className="text-[11px] text-text-muted mt-0.5">{p.issuer}</p>
@@ -221,6 +274,63 @@ const DailyDividendStocks = () => {
         </section>
 
         <section className="space-y-4">
+          <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-blue/5 border border-accent-blue/25 rounded-2xl p-5">
+            <p className="text-[10px] font-black uppercase tracking-widest text-accent-blue mb-2">
+              Breaking · Shareholder vote October 28, 2026
+            </p>
+            <h3 className="text-lg font-black text-text-primary mb-2">
+              Strategy's 4 daily preferreds would triple the universe
+            </h3>
+            <p className="text-sm text-text-secondary leading-relaxed">
+              Strategy Inc. (Nasdaq: MSTR) has proposed converting four of its preferred stocks to a daily dividend schedule. If approved, the daily dividend universe grows from 2 to 6 assets by January 2027 — a 3x expansion in 6 months.
+            </p>
+          </div>
+
+          <h2 className="text-2xl font-black text-text-primary tracking-tight">
+            The four upcoming daily dividend payers
+          </h2>
+
+          <div className="space-y-3">
+            {UPCOMING_PAYERS.map((p) => (
+              <div key={p.ticker} className="bg-bg-surface border border-border/50 rounded-2xl p-5 space-y-3">
+                <div className="flex items-start justify-between flex-wrap gap-2">
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-mono text-lg font-black text-accent-yellow">{p.ticker}</span>
+                      <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow">
+                        Pending
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-text-muted mt-0.5">{p.issuer}</p>
+                  </div>
+                </div>
+
+                <p className="text-sm text-text-secondary leading-relaxed">{p.description}</p>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div className="bg-bg-primary border border-border/40 rounded-lg p-2.5">
+                    <p className="text-[9px] uppercase text-text-muted font-bold tracking-wider">Stated Rate</p>
+                    <p className="text-sm font-black text-text-primary mt-0.5">{p.annualRate}</p>
+                  </div>
+                  <div className="bg-bg-primary border border-border/40 rounded-lg p-2.5">
+                    <p className="text-[9px] uppercase text-text-muted font-bold tracking-wider">Par Value</p>
+                    <p className="text-sm font-black text-text-primary mt-0.5">{p.parValue}</p>
+                  </div>
+                  <div className="bg-bg-primary border border-border/40 rounded-lg p-2.5">
+                    <p className="text-[9px] uppercase text-text-muted font-bold tracking-wider">Size</p>
+                    <p className="text-sm font-black text-text-primary mt-0.5">{p.size}</p>
+                  </div>
+                  <div className="bg-bg-primary border border-border/40 rounded-lg p-2.5">
+                    <p className="text-[9px] uppercase text-text-muted font-bold tracking-wider">Expected Live</p>
+                    <p className="text-sm font-black text-accent-yellow mt-0.5">{p.expectedLive}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-4">
           <h2 className="text-2xl font-black text-text-primary tracking-tight">
             How daily dividends compare to other frequencies
           </h2>
@@ -230,7 +340,7 @@ const DailyDividendStocks = () => {
               <thead className="bg-bg-primary/50 text-text-muted uppercase font-bold tracking-wider text-[10px]">
                 <tr>
                   <th className="px-4 py-3 text-left">Frequency</th>
-                  <th className="px-4 py-3 text-right">Count</th>
+                  <th className="px-4 py-3 text-left">Count</th>
                   <th className="px-4 py-3 text-left">Examples</th>
                   <th className="px-4 py-3 text-left">Notes</th>
                 </tr>
@@ -239,7 +349,7 @@ const DailyDividendStocks = () => {
                 {FREQUENCY_COMPARISON.map((row) => (
                   <tr key={row.frequency} className={row.frequency === 'Daily' ? 'bg-accent-teal/5' : ''}>
                     <td className="px-4 py-3 font-bold text-text-primary">{row.frequency}</td>
-                    <td className="px-4 py-3 text-right font-mono text-accent-blue font-bold">{row.count}</td>
+                    <td className="px-4 py-3 font-mono text-accent-blue font-bold">{row.count}</td>
                     <td className="px-4 py-3 font-mono text-xs text-accent-teal">{row.examples}</td>
                     <td className="px-4 py-3 text-xs text-text-muted">{row.note}</td>
                   </tr>
@@ -289,6 +399,13 @@ const DailyDividendStocks = () => {
                 Strive's own marketing points out that daily compounding lifts the effective yield by ~7.6 basis points versus monthly. That's real but tiny. If the underlying security is risky, receiving dividends more frequently doesn't make it less risky.
               </p>
             </div>
+
+            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
+              <h3 className="font-bold text-text-primary text-base mb-2">Strategy's vote could fail</h3>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                While the STRC/STRF/STRK/STRD proposal is widely expected to pass, shareholder votes can surprise. If it fails, the daily dividend universe stays at two assets (SATA and CHAD) indefinitely.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -313,10 +430,10 @@ const DailyDividendStocks = () => {
 
         <section className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight mb-2">
-            See all 643 dividend payers — daily, weekly, monthly, quarterly
+            See every dividend payer — daily, weekly, monthly, quarterly
           </h2>
           <p className="text-text-secondary text-sm mb-5 max-w-xl mx-auto">
-            Our screener tracks every dividend-paying security across US and SGX markets. Filter by payout frequency, asset type, and risk.
+            Our screener tracks every dividend-paying security across US, Canadian, and SGX markets. Filter by payout frequency, asset type, and risk.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -339,7 +456,7 @@ const DailyDividendStocks = () => {
             Important Disclosures
           </p>
           <p className="text-[11px] text-text-muted leading-relaxed">
-            DividendBro is not a licensed financial adviser. This page is for educational purposes only and does not constitute investment advice. Daily dividend securities carry significant risk, including loss of principal. The 13% rates shown are variable and subject to adjustment by the issuers' boards. Neither SATA nor CHAD have a payment history long enough to establish reliability. Past performance is not indicative of future results. Consult a licensed financial adviser before investing.
+            DividendBro is not a licensed financial adviser. This page is for educational purposes only and does not constitute investment advice. Daily dividend securities carry significant risk, including loss of principal. The 13% rates shown are variable and subject to adjustment by the issuers' boards. Neither SATA nor CHAD have a payment history long enough to establish reliability. Strategy's proposal is subject to shareholder approval on October 28, 2026, and may not be implemented as described. Past performance is not indicative of future results. Consult a licensed financial adviser before investing.
           </p>
         </div>
       </div>
