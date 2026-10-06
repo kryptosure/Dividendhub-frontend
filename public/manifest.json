@@ -1,7 +1,7 @@
 {
-  "name": "DividendBro",
+  "name": "DividendBro — Free Dividend Tracker",
   "short_name": "DividendBro",
-  "description": "Track dividends, High Yield Dividend Stocks, Dividend Payout Calendar and portfolio performance for US and Singapore stocks.",
+  "description": "Free dividend tracker for US, SGX, and TSX stocks. Track yields, ex-dividend dates, payout calendar, and portfolio income.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

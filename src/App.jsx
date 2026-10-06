@@ -117,8 +117,10 @@ function App() {
             <meta property="og:url" content={SITE_URL} />
             <meta property="og:image" content={DEFAULT_IMAGE} />
             <meta name="twitter:card" content="summary_large_image" />
-            <meta property="og:title" content="DividendBro – Monthly Dividend Income Planner" />
-            <meta property="og:description" content="See what a sample dividend portfolio could look like for your monthly income goal. Free for US & SGX stocks." />
+            <meta property="og:title" content="Free Dividend Tracker — Yields, Payout Dates & Income" />
+            <meta property="og:description" content="Track 670+ dividend stocks across US, SGX & TSX. Real-time yields, ex-dividend dates, payout calendar, and monthly income projections. Free." />
+            <meta name="twitter:title" content="Free Dividend Tracker — Yields, Payout Dates & Income" />
+            <meta name="twitter:description" content="Track 670+ dividend stocks across US, SGX & TSX. Real-time yields, ex-dividend dates, payout calendar, and monthly income projections." />
           </Helmet>
 
           <div className="min-h-screen bg-bg-primary text-text-primary flex flex-col lg:flex-row font-sans antialiased selection:bg-accent-blue/20">

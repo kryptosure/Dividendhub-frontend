@@ -1,6 +1,6 @@
 # DividendBro
 
-> DividendBro is a free dividend analysis and management tool for US, Canadian (TSX), and Singapore (SGX) stocks. It provides real-time dividend yield data, payout ratios, dividend growth rates, portfolio tracking, stock comparison, and a Monthly Dividend Income Planner. Educational tool only — not financial advice.
+> DividendBro is a free dividend tracker for US, Canadian (TSX), and Singapore (SGX) stocks. Track real-time dividend yields, ex-dividend payout dates, dividend calendars, payout ratios, and monthly income projections across 670+ securities. Includes a portfolio tracker, dividend screener, and stock comparison tool. Educational tool only — not financial advice.
 
 DividendBro covers 672 dividend-paying securities across US, Canadian, and Singapore markets, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. All data is sourced from Yahoo Finance and Financial Modeling Prep.
 
@@ -16,7 +16,7 @@ DividendBro covers 672 dividend-paying securities across US, Canadian, and Singa
 
 ## Reference Guides
 
-- [Daily Dividend Stocks](https://dividendbro.com/daily-dividend-stocks): The complete list of securities paying dividends every business day in 2026. Currently only SATA and CHAD exist.
+- [Daily Dividend Stocks](https://dividendbro.com/daily-dividend-stocks): The complete list of securities paying dividends every business day in 2026. SATA and CHAD are live, with four Strategy preferred stocks (STRC, STRF, STRK, STRD) pending approval.
 - [Weekly Dividend ETFs](https://dividendbro.com/weekly-dividend-etfs): Complete list of 73 weekly dividend ETFs, their issuers (YieldMax, Roundhill, Defiance, GraniteShares), and the return-of-capital risks behind the headline yields.
 - [Monthly Dividend Stocks](https://dividendbro.com/monthly-dividend-stocks): Full list of 133 monthly dividend payers — REITs, BDCs, closed-end funds, and covered-call ETFs.
 - [REITs That Pay Monthly](https://dividendbro.com/reits-that-pay-monthly): The verified 2026 list of US REITs paying monthly dividends, with cadence changes and tax treatment for Singapore investors.
@@ -34,8 +34,11 @@ DividendBro covers 672 dividend-paying securities across US, Canadian, and Singa
 
 ## FAQ
 
+**What is a dividend tracker?**
+A dividend tracker is a tool that monitors your dividend income, yield, ex-dividend dates, and payout history across your portfolio. DividendBro is a free dividend tracker covering 670+ stocks across US, SGX, and TSX markets.
+
 **What does DividendBro do?**
-DividendBro is a free dividend analysis tool for US, Canadian, and SGX markets. It tracks dividend history, yield, payout ratio, dividend growth, and safety metrics for 672 securities across stocks, REITs, ETFs, bond ETFs, and preferred stocks.
+DividendBro is a free dividend tracker for US, Canadian, and SGX markets. It tracks dividend history, yield, payout dates, dividend growth, and safety metrics for 672 securities across stocks, REITs, ETFs, bond ETFs, and preferred stocks.
 
 **Is DividendBro free?**
 Yes. All features are free — no paywall, no subscription, no credit card required. Basic stock analysis doesn't even require sign-up.
@@ -46,6 +49,15 @@ Yes. SGX stocks including DBS, OCBC, UOB, Singtel, Singapore Airlines, and all m
 **Does DividendBro cover Canadian stocks?**
 Yes. 29 TSX-listed dividend stocks are covered, including the Big Six banks (RBC, TD, Scotiabank, BMO, CIBC, National Bank), major pipelines (Enbridge, TC Energy, Pembina, Suncor), telecoms (BCE, Telus), utilities (Fortis, Canadian Utilities), and Canadian REITs (SmartCentres, RioCan, Granite, Choice Properties). The screener, income planner, and stock detail pages all support the Canadian market.
 
+**How much do I need to invest to make $1,000 a month in dividends?**
+To earn $1,000 per month ($12,000 per year) in dividends, you generally need to invest between $150,000 and $200,000, depending on your portfolio's average yield. Use DividendBro's income planner to simulate exact monthly income based on your SGX and US holdings.
+
+**Which stocks in Singapore pay the highest dividends?**
+DBS, OCBC, and UOB are highly popular among Singapore investors for stable yields. DividendBro tracks their exact ex-dividend dates, dividend yield, and full payout history.
+
+**What is an ex-dividend date?**
+The ex-dividend date is the cutoff date to be a shareholder of record to receive the next dividend. Buy on or after this date and you won't receive that dividend. DividendBro shows upcoming ex-dividend dates for every stock it tracks.
+
 **What's the difference between weekly and monthly dividend ETFs?**
 Weekly dividend ETFs are almost entirely options-income strategies that sell call options and pass the premium to shareholders. Distributions often include return of capital. Monthly dividend stocks include REITs, BDCs, and closed-end funds that pay from actual business income — a more traditional income category.
 
@@ -53,7 +65,7 @@ Weekly dividend ETFs are almost entirely options-income strategies that sell cal
 Realty Income (O), Agree Realty (ADC), LTC Properties (LTC), EPR Properties (EPR), Healthpeak (DOC), Apple Hospitality (APLE), Gladstone Commercial (GOOD), and AGNC Investment (AGNC) are among the ~19 US-listed REITs that pay monthly in 2026.
 
 **Are there daily dividend stocks?**
-Only two securities in US capital markets pay cash dividends every business day: SATA (Strive Bitcoin-backed preferred stock) and CHAD (DeFi Development Solana-backed preferred stock). Both launched in 2026.
+SATA (Strive Bitcoin-backed preferred stock) and CHAD (DeFi Development Solana-backed preferred stock) are the only two live daily dividend payers. Four more from Strategy (STRC, STRF, STRK, STRD) are pending shareholder approval in October 2026.
 
 **How are Canadian dividends taxed for non-residents?**
 Canada imposes a 25% statutory withholding tax on dividends paid to non-residents, reduced to 15% under most tax treaties (including US, UK, Singapore, Australia). The tax is withheld at source and cannot be reclaimed by filing a Canadian return.
