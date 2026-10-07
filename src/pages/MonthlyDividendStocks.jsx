@@ -34,7 +34,7 @@ const CATEGORIES = [
     yieldRange: '6.0% – 13.0%',
     examples: 'PIMCO Dynamic Income (PDI), PIMCO Corporate & Income (PTY)',
     description: 'Professionally managed funds that trade on exchanges like stocks. Often use leverage to boost yield.',
-    riskNote: 'Some CEF distributions include return of capital — that means they\'re partially paying you back your own money.',
+    riskNote: "Some CEF distributions include return of capital — that means they're partially paying you back your own money.",
   },
   {
     name: 'Covered-Call ETFs',
@@ -51,7 +51,7 @@ const CATEGORIES = [
     count: 6,
     yieldRange: '10.0% – 15.0%',
     examples: 'AGNC Investment (AGNC), Annaly Capital (NLY), ARMOUR (ARR)',
-    description: 'These don\'t own property — they own mortgage-backed securities. Very high yield, very high volatility.',
+    description: "These don't own property — they own mortgage-backed securities. Very high yield, very high volatility.",
     riskNote: 'Rising interest rates crush mREIT book values. Only for investors who can stomach 30%+ drawdowns.',
   },
   {
@@ -91,11 +91,11 @@ const FAQS = [
   },
   {
     q: 'What is the safest monthly dividend stock?',
-    a: 'Realty Income (O) is widely considered the safest monthly dividend stock. It has paid 632 consecutive monthly dividends since 1994, has never cut, and owns 15,000+ properties across the US and Europe. Current yield: roughly 5.5%. It\'s classified as "Safe" on DividendBro\'s safety scale.',
+    a: "Realty Income (O) is widely considered the safest monthly dividend stock. It has paid 632 consecutive monthly dividends since 1994, has never cut, and owns 15,000+ properties across the US and Europe. Current yield: roughly 5.5%. It's classified as Safe on DividendBro's safety scale.",
   },
   {
     q: 'How much do I need to earn $1,000 a month from monthly dividend stocks?',
-    a: 'At an average yield of 6%, you need roughly $200,000 invested to earn $1,000/month ($12,000/year). At 8% average yield, $150,000 is enough. DividendBro\'s Income Planner can model the exact number based on your specific mix of REITs, BDCs, and ETFs.',
+    a: "At an average yield of 6%, you need roughly $200,000 invested to earn $1,000/month ($12,000/year). At 8% average yield, $150,000 is enough. DividendBro's Income Planner can model the exact number based on your specific mix of REITs, BDCs, and ETFs.",
   },
   {
     q: 'Are monthly dividend stocks better than quarterly?',
@@ -103,11 +103,11 @@ const FAQS = [
   },
   {
     q: 'What is the highest-yielding monthly dividend stock?',
-    a: 'AGNC Investment (AGNC) currently yields around 14% — the highest among monthly payers. But it\'s a mortgage REIT, meaning the yield comes with significant price volatility. The stock has fallen more than 40% in past rate cycles. Higher yield always means higher risk.',
+    a: "AGNC Investment (AGNC) currently yields around 14% — the highest among monthly payers. But it's a mortgage REIT, meaning the yield comes with significant price volatility. The stock has fallen more than 40% in past rate cycles. Higher yield always means higher risk.",
   },
   {
     q: 'Are monthly dividends taxed differently?',
-    a: 'In the US, REIT and BDC distributions are taxed as ordinary income, not qualified dividends. For Singapore investors, all US monthly dividend stocks are subject to 30% withholding tax. That means a 6% US yield becomes ~4.2% after tax. SGX REITs pay monthly? None do — SGX REITs pay quarterly or semi-annual.',
+    a: 'In the US, REIT and BDC distributions are taxed as ordinary income, not qualified dividends. For Singapore investors, all US monthly dividend stocks are subject to 30% withholding tax. That means a 6% US yield becomes ~4.2% after tax. SGX REITs pay quarterly or semi-annual, not monthly.',
   },
   {
     q: 'How many monthly dividend stocks are there?',
@@ -183,36 +183,36 @@ const MonthlyDividendStocks = () => {
         </div>
 
         {/* ─── ANSWER BOX ─── */}
-        <div class="db-ig">
-          <div class="db-ig-header">
-            <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
-            <a href="/screener" class="db-ig-link">Live Screener →</a>
+        <div className="db-ig">
+          <div className="db-ig-header">
+            <a href="/" className="db-ig-brand"><span className="db-ig-logo">D</span> DividendBro</a>
+            <a href="/screener" className="db-ig-link">Live Screener →</a>
           </div>
-          <h4 class="db-ig-title">📊 Monthly Dividend Stocks at a Glance</h4>
-          <p class="db-ig-sub">The numbers that matter — October 2026</p>
-          <div class="db-ig-grid">
-            <div class="db-ig-stat">
-              <div class="db-ig-stat-label">Total Monthly Payers</div>
-              <div class="db-ig-stat-val" style="color:#60a5fa;">133</div>
-              <div class="db-ig-stat-sub">Across 6 categories</div>
+          <h4 className="db-ig-title">📊 Monthly Dividend Stocks at a Glance</h4>
+          <p className="db-ig-sub">The numbers that matter — October 2026</p>
+          <div className="db-ig-grid">
+            <div className="db-ig-stat">
+              <div className="db-ig-stat-label">Total Monthly Payers</div>
+              <div className="db-ig-stat-val" style={{ color: '#60a5fa' }}>133</div>
+              <div className="db-ig-stat-sub">Across 6 categories</div>
             </div>
-            <div class="db-ig-stat">
-              <div class="db-ig-stat-label">Typical Yield Range</div>
-              <div class="db-ig-stat-val">3.9% – 14%</div>
-              <div class="db-ig-stat-sub">Varies by category</div>
+            <div className="db-ig-stat">
+              <div className="db-ig-stat-label">Typical Yield Range</div>
+              <div className="db-ig-stat-val">3.9% – 14%</div>
+              <div className="db-ig-stat-sub">Varies by category</div>
             </div>
-            <div class="db-ig-stat">
-              <div class="db-ig-stat-label">Capital for $1k/mo</div>
-              <div class="db-ig-stat-val" style="color:#fbbf24;">~$200,000</div>
-              <div class="db-ig-stat-sub">At 6% average yield</div>
+            <div className="db-ig-stat">
+              <div className="db-ig-stat-label">Capital for $1k/mo</div>
+              <div className="db-ig-stat-val" style={{ color: '#fbbf24' }}>~$200,000</div>
+              <div className="db-ig-stat-sub">At 6% average yield</div>
             </div>
-            <div class="db-ig-stat">
-              <div class="db-ig-stat-label">Compounding Edge</div>
-              <div class="db-ig-stat-val" style="color:#34d399;">+3 bps</div>
-              <div class="db-ig-stat-sub">vs quarterly payers</div>
+            <div className="db-ig-stat">
+              <div className="db-ig-stat-label">Compounding Edge</div>
+              <div className="db-ig-stat-val" style={{ color: '#34d399' }}>+3 bps</div>
+              <div className="db-ig-stat-sub">vs quarterly payers</div>
             </div>
           </div>
-          <div class="db-ig-footer">
+          <div className="db-ig-footer">
             Most monthly payers are REITs, BDCs, and covered-call ETFs — not traditional dividend stocks
           </div>
         </div>
@@ -335,48 +335,58 @@ const MonthlyDividendStocks = () => {
             How monthly payers compare by yield
           </h2>
 
-          <div class="db-ig">
-            <div class="db-ig-header">
-              <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
-              <a href="/screener" class="db-ig-link">Screener →</a>
+          <div className="db-ig">
+            <div className="db-ig-header">
+              <a href="/" className="db-ig-brand"><span className="db-ig-logo">D</span> DividendBro</a>
+              <a href="/screener" className="db-ig-link">Screener →</a>
             </div>
-            <h4 class="db-ig-title">📊 Average Yield by Category</h4>
-            <p class="db-ig-sub">Green = safer · Amber = medium risk · Red = high risk</p>
-            <div class="db-ig-body">
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">REITs</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:58%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
-                <span class="db-ig-row-val" style="color:#34d399;">~5.8%</span>
+            <h4 className="db-ig-title">📊 Average Yield by Category</h4>
+            <p className="db-ig-sub">Green = safer · Amber = medium risk · Red = high risk</p>
+            <div className="db-ig-body">
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">REITs</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '58%', background: 'linear-gradient(90deg,#10b981,#34d399)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#34d399' }}>~5.8%</span>
               </div>
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">BDCs</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:80%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
-                <span class="db-ig-row-val" style="color:#34d399;">~8.0%</span>
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">BDCs</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '80%', background: 'linear-gradient(90deg,#10b981,#34d399)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#34d399' }}>~8.0%</span>
               </div>
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">Covered-Call ETFs</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:75%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
-                <span class="db-ig-row-val" style="color:#fbbf24;">~7.5%</span>
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">Covered-Call ETFs</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '75%', background: 'linear-gradient(90deg,#fbbf24,#f59e0b)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#fbbf24' }}>~7.5%</span>
               </div>
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">Closed-End Funds</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:90%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
-                <span class="db-ig-row-val" style="color:#fbbf24;">~9.0%</span>
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">Closed-End Funds</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '90%', background: 'linear-gradient(90deg,#fbbf24,#f59e0b)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#fbbf24' }}>~9.0%</span>
               </div>
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">Mortgage REITs</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:100%;background:linear-gradient(90deg,#f87171,#ef4444);"></div></div>
-                <span class="db-ig-row-val" style="color:#f87171;">~12.0%</span>
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">Mortgage REITs</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '100%', background: 'linear-gradient(90deg,#f87171,#ef4444)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#f87171' }}>~12.0%</span>
               </div>
             </div>
-            <div class="db-ig-footer">
+            <div className="db-ig-footer">
               Higher yield = higher risk. Mortgage REITs pay the most but can lose 40% in a rate cycle.
             </div>
           </div>
         </section>
 
         {/* ─── QUOTE FACTS ─── */}
-        <section className="bg-gradient-to-br from-accent-blue/8 via-bg-surface to-accent-teal/8 border border-accent-blue/25 rounded-2xl p-6 space-y-4">
+        <section className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/25 rounded-2xl p-6 space-y-4">
           <div>
             <p className="text-[10px] font-black uppercase tracking-widest text-accent-blue mb-2">
               Facts worth quoting
@@ -411,36 +421,44 @@ const MonthlyDividendStocks = () => {
             How much capital do you need for $1,000/month?
           </h2>
 
-          <div class="db-ig">
-            <div class="db-ig-header">
-              <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
-              <a href="/" class="db-ig-link">Income Planner →</a>
+          <div className="db-ig">
+            <div className="db-ig-header">
+              <a href="/" className="db-ig-brand"><span className="db-ig-logo">D</span> DividendBro</a>
+              <a href="/" className="db-ig-link">Income Planner →</a>
             </div>
-            <h4 class="db-ig-title">💰 Capital Required for $1,000/Month</h4>
-            <p class="db-ig-sub">At different average yields</p>
-            <div class="db-ig-body">
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">At 4% yield</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:100%;background:linear-gradient(90deg,#3b82f6,#06b6d4);"></div></div>
-                <span class="db-ig-row-val">$300,000</span>
+            <h4 className="db-ig-title">💰 Capital Required for $1,000/Month</h4>
+            <p className="db-ig-sub">At different average yields</p>
+            <div className="db-ig-body">
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">At 4% yield</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '100%', background: 'linear-gradient(90deg,#3b82f6,#06b6d4)' }} />
+                </div>
+                <span className="db-ig-row-val">$300,000</span>
               </div>
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">At 6% yield</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:67%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
-                <span class="db-ig-row-val" style="color:#34d399;">$200,000</span>
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">At 6% yield</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '67%', background: 'linear-gradient(90deg,#10b981,#34d399)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#34d399' }}>$200,000</span>
               </div>
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">At 8% yield</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:50%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
-                <span class="db-ig-row-val" style="color:#fbbf24;">$150,000</span>
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">At 8% yield</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '50%', background: 'linear-gradient(90deg,#fbbf24,#f59e0b)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#fbbf24' }}>$150,000</span>
               </div>
-              <div class="db-ig-row">
-                <span class="db-ig-row-label">At 12% yield</span>
-                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:33%;background:linear-gradient(90deg,#f87171,#ef4444);"></div></div>
-                <span class="db-ig-row-val" style="color:#f87171;">$100,000</span>
+              <div className="db-ig-row">
+                <span className="db-ig-row-label">At 12% yield</span>
+                <div className="db-ig-row-track">
+                  <div className="db-ig-row-fill" style={{ width: '33%', background: 'linear-gradient(90deg,#f87171,#ef4444)' }} />
+                </div>
+                <span className="db-ig-row-val" style={{ color: '#f87171' }}>$100,000</span>
               </div>
             </div>
-            <div class="db-ig-footer">
+            <div className="db-ig-footer">
               Higher yield means less capital — but more risk. The 12% row is mortgage REIT territory.
             </div>
           </div>
