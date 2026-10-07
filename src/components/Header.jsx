@@ -171,6 +171,7 @@ const Header = () => {
             <Link to="/simulate/one-time" className="py-3 flex items-center text-text-primary">Single Purchase Engine</Link>
             <Link to="/simulate/dca" className="py-3 flex items-center text-text-primary">Regular Investment DCA Calculator</Link>
             <Link to="/millionaire" className="py-3 flex items-center text-text-primary">Millionaire Simulator</Link>
+            <Link to="/insights" className="py-3 flex items-center text-text-primary">Market Insights</Link>
             <Link to="/blog" className="py-3 flex items-center text-text-primary">Financial Academy Hub</Link>
             <a href="https://ai.dividendbro.com" className="py-3 flex items-center text-accent-blue font-bold">Ask AI ✨</a>
             {isAdmin && (

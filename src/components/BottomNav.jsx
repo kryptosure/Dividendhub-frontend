@@ -19,9 +19,9 @@ const BottomNav = () => {
         <span className="text-base mb-0.5">📊</span>
         <span>PORTFOLIO</span>
       </Link>
-      <Link to="/blog" className={`flex flex-col items-center text-[9px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all active:scale-95 ${isActive('/blog') ? 'text-accent-blue bg-accent-blue/5' : 'text-text-muted'}`}>
-        <span className="text-base mb-0.5">📝</span>
-        <span>LEARNING</span>
+      <Link to="/insights" className={`flex flex-col items-center text-[9px] font-bold uppercase tracking-wider py-1.5 px-3 rounded-lg transition-all active:scale-95 ${isActive('/insights') ? 'text-accent-blue bg-accent-blue/5' : 'text-text-muted'}`}>
+        <span className="text-base mb-0.5">📰</span>
+        <span>INSIGHTS</span>
       </Link>
     </nav>
   );
