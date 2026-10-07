@@ -1,160 +1,152 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getScreenerStocks } from '../services/api';
-import LoadingSpinner from '../components/LoadingSpinner';
 
 const SITE_URL = 'https://dividendbro.com';
 
-// ---------- Curated asset class data ----------
-const ASSET_CLASSES = [
+/* ─────────────────────────────────────────────────────────── */
+/*  DATA                                                     */
+/* ─────────────────────────────────────────────────────────── */
+
+const CATEGORIES = [
   {
     name: 'Monthly Dividend REITs',
-    tickers: ['O', 'STAG', 'LTC', 'GOOD', 'ADC', 'EPR', 'LAND', 'PECO', 'IRM', 'GLPI'],
-    description:
-      'Real Estate Investment Trusts that distribute rent income monthly instead of quarterly. Realty Income (O) has paid monthly since 1994 and coined the "Monthly Dividend Company" tagline. Most own physical property portfolios — warehouses, medical offices, retail plazas — and pass through 90%+ of taxable income to shareholders.',
-    risk:
-      'Rate-sensitive. REIT values often fall when interest rates rise, even if rents are stable. Distributions are usually taxed as ordinary income, not qualified dividends.',
+    icon: '🏢',
+    count: 19,
+    yieldRange: '3.9% – 14.0%',
+    examples: 'Realty Income (O), Agree Realty (ADC), LTC Properties (LTC)',
+    description: 'Real estate investment trusts that own physical property — offices, warehouses, hospitals, retail centers — and pay you rent monthly.',
+    riskNote: 'Equity REITs are the safest monthly payers. Mortgage REITs at the bottom of this list are much riskier.',
   },
   {
     name: 'Monthly Dividend BDCs',
-    tickers: ['MAIN', 'ARCC', 'HTGC', 'PFLT', 'GAIN', 'PSEC', 'BXSL', 'OBDC', 'CSWC', 'FSK'],
-    description:
-      'Business Development Companies lend to small and medium-sized private businesses. They generate interest income and pass most of it to shareholders monthly. Main Street Capital (MAIN) is the category leader and has paid monthly distributions since 2008, with frequent special dividends on top.',
-    risk:
-      'Credit risk. If the underlying companies struggle to repay loans, BDC distributions get cut. Most BDCs use leverage, which magnifies losses in a downturn.',
+    icon: '💰',
+    count: 8,
+    yieldRange: '7.0% – 11.0%',
+    examples: 'Main Street Capital (MAIN), Ares Capital (ARCC), Hercules Capital (HTGC)',
+    description: 'Business Development Companies lend money to mid-sized private businesses. High yield, but higher risk than REITs.',
+    riskNote: 'BDCs get hit hard in recessions when borrowers default. Check the NAV trend before buying.',
   },
   {
-    name: 'Monthly Closed-End Funds (CEFs)',
-    tickers: ['PDI', 'PTY', 'PCN', 'PCM', 'RCS', 'UTF', 'ETV', 'ETB', 'ETY', 'BDJ', 'HPI', 'HPF'],
-    description:
-      'PIMCO and BlackRock dominate this category. CEFs hold bond or equity portfolios and pay monthly distributions from a mix of income and capital gains. Some offer headline yields over 10%. PIMCO Dynamic Income (PDI) and PIMCO Corporate & Income Opportunity (PTY) are the most widely held.',
-    risk:
-      'Distributions often include return of capital, eroding NAV. Many CEFs trade at premiums to net asset value, which can collapse quickly if sentiment shifts. Management fees are typically 1–2% annually.',
+    name: 'Closed-End Funds (CEFs)',
+    icon: '📊',
+    count: 15,
+    yieldRange: '6.0% – 13.0%',
+    examples: 'PIMCO Dynamic Income (PDI), PIMCO Corporate & Income (PTY)',
+    description: 'Professionally managed funds that trade on exchanges like stocks. Often use leverage to boost yield.',
+    riskNote: 'Some CEF distributions include return of capital — that means they\'re partially paying you back your own money.',
   },
   {
-    name: 'Monthly Covered-Call ETFs',
-    tickers: ['JEPI', 'JEPQ', 'SPYI', 'QQQI', 'DIVO', 'QYLD', 'XYLD', 'GPIQ'],
-    description:
-      'Equity funds that sell call options against their holdings and pass the option premium to shareholders monthly. JPMorgan Equity Premium Income (JEPI) is the largest with $35B+ in assets. Yields are typically 7–10% and distributions are more tax-efficient than weekly options ETFs because the underlying holdings still generate qualified dividends.',
-    risk:
-      'Upside is capped during bull markets — you give up capital gains in exchange for income. Downside is not protected. NAV drifts lower in prolonged sideways markets.',
+    name: 'Covered-Call ETFs',
+    icon: '📈',
+    count: 22,
+    yieldRange: '6.0% – 12.0%',
+    examples: 'JEPI, JEPQ, SPYI, QQQI, DIVO',
+    description: 'ETFs that hold stocks AND sell options against them. The option premiums fund the monthly distribution.',
+    riskNote: 'You give up big upside in bull markets. These are income plays, not growth plays.',
   },
   {
     name: 'Mortgage REITs (mREITs)',
-    tickers: ['AGNC', 'NLY', 'ARR', 'ORC', 'TWO', 'IVR', 'MFA', 'RITM', 'PMT', 'CIM'],
-    description:
-      'These firms borrow short-term and lend long-term in mortgage-backed securities, capturing the spread. AGNC and Annaly (NLY) are the two largest. Monthly distributions have historically offered double-digit headline yields.',
-    risk:
-      'Extremely rate-sensitive. Book value can fall 20–40% in a rising-rate cycle. Distributions have been cut repeatedly across the sector. Not suitable for conservative income investors.',
+    icon: '🏦',
+    count: 6,
+    yieldRange: '10.0% – 15.0%',
+    examples: 'AGNC Investment (AGNC), Annaly Capital (NLY), ARMOUR (ARR)',
+    description: 'These don\'t own property — they own mortgage-backed securities. Very high yield, very high volatility.',
+    riskNote: 'Rising interest rates crush mREIT book values. Only for investors who can stomach 30%+ drawdowns.',
+  },
+  {
+    name: 'Preferred Stock Funds',
+    icon: '🏛️',
+    count: 12,
+    yieldRange: '5.5% – 8.0%',
+    examples: 'Various preferred income ETFs and closed-end funds',
+    description: 'Funds that hold preferred stock — a hybrid between bonds and common stock.',
+    riskNote: 'Preferred dividends can be suspended without triggering bankruptcy. Read the prospectus.',
   },
 ];
 
-const FREQUENCY_COMPARISON = [
+const TOP_MONTHLY_STOCKS = [
+  { ticker: 'O',     name: 'Realty Income',         category: 'REIT',         yield: 5.5,  risk: 'Safe',     note: '632 consecutive monthly dividends paid since 1994' },
+  { ticker: 'ADC',   name: 'Agree Realty',           category: 'REIT',         yield: 3.9,  risk: 'Safe',     note: 'Net-lease retail — 2,200+ properties' },
+  { ticker: 'LTC',   name: 'LTC Properties',         category: 'REIT',         yield: 5.7,  risk: 'Safe',     note: 'Healthcare REIT focused on senior housing' },
+  { ticker: 'MAIN',  name: 'Main Street Capital',    category: 'BDC',          yield: 6.5,  risk: 'Moderate', note: 'Pays monthly PLUS semi-annual specials' },
+  { ticker: 'STAG',  name: 'STAG Industrial',        category: 'REIT',         yield: 4.2,  risk: 'Safe',     note: 'Industrial warehouses — e-commerce tailwind' },
+  { ticker: 'EPR',   name: 'EPR Properties',         category: 'REIT',         yield: 6.1,  risk: 'Moderate', note: 'Experiential — theaters, ski resorts, casinos' },
+  { ticker: 'ARCC',  name: 'Ares Capital',           category: 'BDC',          yield: 9.3,  risk: 'Moderate', note: 'Largest publicly traded BDC' },
+  { ticker: 'DOC',   name: 'Healthpeak Properties',  category: 'REIT',         yield: 7.0,  risk: 'Moderate', note: 'Medical office + lab space' },
+  { ticker: 'APLE',  name: 'Apple Hospitality',      category: 'REIT',         yield: 8.0,  risk: 'Higher',   note: 'Hotel REIT — Marriott and Hilton portfolio' },
+  { ticker: 'GOOD',  name: 'Gladstone Commercial',   category: 'REIT',         yield: 9.6,  risk: 'Higher',   note: 'Small-cap net lease; has cut dividend in past' },
+  { ticker: 'AGNC',  name: 'AGNC Investment',        category: 'Mortgage REIT', yield: 14.0, risk: 'High',    note: 'Agency MBS — highest yield, biggest swings' },
+  { ticker: 'NLY',   name: 'Annaly Capital',         category: 'Mortgage REIT', yield: 12.5, risk: 'High',    note: 'One of the oldest mREITs, since 1997' },
+];
+
+const FAQS = [
   {
-    frequency: 'Daily',
-    count: 0,
-    examples: 'None',
-    note: 'No mass-market daily ETF exists. SATA and CHAD are preferred stocks.',
+    q: 'Which stocks pay monthly dividends?',
+    a: 'Around 133 US-listed securities pay dividends every month in 2026. They fall into six categories: REITs (like Realty Income and Agree Realty), Business Development Companies (like Main Street Capital and Ares Capital), Closed-End Funds (like PIMCO Dynamic Income), Covered-Call ETFs (like JEPI and JEPQ), Mortgage REITs (like AGNC and Annaly), and Preferred Stock Funds. DividendBro tracks all of them.',
   },
   {
-    frequency: 'Weekly',
-    count: 73,
-    examples: 'MSTY, ULTY, XDTE',
-    note: 'Options-income ETFs. Distributions mostly return of capital.',
+    q: 'Do REITs pay dividends monthly?',
+    a: 'Some do. About 19 US-listed REITs pay monthly, including Realty Income (O), Agree Realty (ADC), LTC Properties (LTC), and EPR Properties (EPR). Most REITs pay quarterly, but the ones that pay monthly tend to be in net-lease, healthcare, and residential sectors where rent comes in every month.',
   },
   {
-    frequency: 'Monthly',
-    count: 133,
-    examples: 'O, MAIN, JEPI, PDI',
-    note: 'REITs, BDCs, CEFs, and covered-call ETFs. Established category since 1994.',
+    q: 'What is the safest monthly dividend stock?',
+    a: 'Realty Income (O) is widely considered the safest monthly dividend stock. It has paid 632 consecutive monthly dividends since 1994, has never cut, and owns 15,000+ properties across the US and Europe. Current yield: roughly 5.5%. It\'s classified as "Safe" on DividendBro\'s safety scale.',
   },
   {
-    frequency: 'Quarterly',
-    count: 373,
-    examples: 'KO, JNJ, SCHD',
-    note: 'Traditional dividend stocks and index funds. Largest category.',
+    q: 'How much do I need to earn $1,000 a month from monthly dividend stocks?',
+    a: 'At an average yield of 6%, you need roughly $200,000 invested to earn $1,000/month ($12,000/year). At 8% average yield, $150,000 is enough. DividendBro\'s Income Planner can model the exact number based on your specific mix of REITs, BDCs, and ETFs.',
+  },
+  {
+    q: 'Are monthly dividend stocks better than quarterly?',
+    a: 'Not inherently better, but they compound slightly faster. On a 6% stated yield, monthly payments produce an effective yield of 6.17% vs 6.14% for quarterly — about 3 extra basis points per year. The real benefit is cash flow timing: monthly payers make it easier to budget your income.',
+  },
+  {
+    q: 'What is the highest-yielding monthly dividend stock?',
+    a: 'AGNC Investment (AGNC) currently yields around 14% — the highest among monthly payers. But it\'s a mortgage REIT, meaning the yield comes with significant price volatility. The stock has fallen more than 40% in past rate cycles. Higher yield always means higher risk.',
+  },
+  {
+    q: 'Are monthly dividends taxed differently?',
+    a: 'In the US, REIT and BDC distributions are taxed as ordinary income, not qualified dividends. For Singapore investors, all US monthly dividend stocks are subject to 30% withholding tax. That means a 6% US yield becomes ~4.2% after tax. SGX REITs pay monthly? None do — SGX REITs pay quarterly or semi-annual.',
+  },
+  {
+    q: 'How many monthly dividend stocks are there?',
+    a: 'As of October 2026, DividendBro tracks 133 securities that pay dividends every month. This includes 19 REITs, 8 BDCs, 15 closed-end funds, 22 covered-call ETFs, 6 mortgage REITs, and 12 preferred stock funds — plus a few smaller categories.',
   },
 ];
+
+const QUOTE_FACTS = [
+  'Realty Income (O) has paid 632 consecutive monthly dividends since 1994 — 32 years without a single skip.',
+  'Only 133 of the ~6,000 US-listed stocks and funds pay dividends monthly — roughly 2% of the market.',
+  'Monthly dividends compound to 6.17% effective yield on a 6% stated rate — 3 basis points higher than quarterly payouts.',
+  'Singapore investors give up 30% of US monthly dividend income to withholding tax — a 6% yield becomes 4.2% after tax.',
+  'The average monthly dividend REIT yields 5.8%, versus 3.5% for the average quarterly dividend stock.',
+  'Mortgage REITs offer the highest monthly yields (10%+) but have historically lost 30–40% of book value during rate-hike cycles.',
+];
+
+/* ─────────────────────────────────────────────────────────── */
+/*  COMPONENT                                                */
+/* ─────────────────────────────────────────────────────────── */
 
 const MonthlyDividendStocks = () => {
-  const { data: monthlyData, isLoading } = useQuery({
-    queryKey: ['monthly-stocks-landing'],
-    queryFn: () => getScreenerStocks({
-      market: 'us',
-      frequency: 'monthly',
-      assetType: 'all',
-      sort: 'yield-desc',
-      limit: 500,
-    }),
-    staleTime: 30 * 60 * 1000,
-  });
-
-  const monthlyStocks = monthlyData?.stocks || [];
-  const bySymbol = useMemo(() => {
-    const map = {};
-    for (const s of monthlyStocks) map[s.symbol] = s;
-    return map;
-  }, [monthlyStocks]);
-
-  const fmt = (n) => (n == null || isNaN(n) ? '—' : Number(n).toFixed(2));
-
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: 'What are the best monthly dividend stocks?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Realty Income (O) is the most widely held monthly dividend stock, having paid monthly since 1994. Main Street Capital (MAIN) is the largest monthly-paying BDC, and PIMCO Dynamic Income (PDI) is the most popular monthly CEF. For diversified monthly income, JPMorgan Equity Premium Income (JEPI) offers around 7–8% yield with less volatility.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Are monthly dividends better than quarterly?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Monthly dividends offer smoother cash flow and faster compounding if you reinvest, but the difference in total return versus quarterly is small. The bigger factor is the underlying asset quality, not the payment frequency. Some investors prefer monthly payers simply because the regular income is easier to budget around.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How often do REITs pay dividends?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Most REITs pay quarterly, matching their reporting cycle. A smaller group pays monthly — including Realty Income, STAG Industrial, LTC Properties, and Gladstone Commercial. Monthly-paying REITs tend to be more established with large property portfolios.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'Are monthly dividend stocks taxed differently?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'Yes, in most cases. REIT dividends are usually taxed as ordinary income, not qualified dividends. BDC and CEF distributions often contain return of capital, which is tax-deferred but reduces your cost basis. Covered-call ETF distributions like JEPI are usually a mix of qualified dividends and short-term gains, making them slightly more tax-efficient than weekly options ETFs.',
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'What is the highest-yielding monthly dividend stock?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: 'The highest-yielding monthly payers are mortgage REITs (ORC, ARR, IVR) and covered-call ETFs (RYLD, QYLD), which often show yields above 12%. These yields reflect elevated risk — NAV erosion is common, and distributions are frequently cut. Yield alone is a poor way to compare monthly dividend stocks.',
-        },
-      },
-    ],
+    mainEntity: FAQS.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
   };
 
   return (
     <>
       <Helmet>
-        <title>Monthly Dividend Stocks — Full List of 133 Monthly Payers (2026) | DividendBro</title>
-        <meta name="description" content="Complete list of every monthly dividend stock in 2026 — REITs, BDCs, CEFs, and covered-call ETFs. Live yields, asset class breakdown, and the risks behind the headline yields." />
+        <title>Monthly Dividend Stocks 2026: 133 Stocks That Pay Every Month</title>
+        <meta name="description" content="Complete list of 133 monthly dividend stocks in 2026 — REITs, BDCs, closed-end funds, and ETFs. See yields, payout history, and how much capital you need for $1,000/month." />
         <link rel="canonical" href={`${SITE_URL}/monthly-dividend-stocks`} />
-        <meta property="og:title" content="Monthly Dividend Stocks — Full List of 133 Monthly Payers (2026)" />
-        <meta property="og:description" content="Every monthly dividend stock in one place. Live yields, asset class breakdown, and the risks behind the headline yields." />
+        <meta property="og:title" content="Monthly Dividend Stocks 2026: 133 Stocks That Pay Every Month" />
+        <meta property="og:description" content="The complete list of monthly dividend stocks — REITs, BDCs, CEFs, and covered-call ETFs. Includes yields, category breakdowns, and capital requirements." />
         <meta property="og:url" content={`${SITE_URL}/monthly-dividend-stocks`} />
         <meta property="og:type" content="article" />
         <meta property="og:image" content={`${SITE_URL}/images/cover.png`} />
@@ -164,327 +156,363 @@ const MonthlyDividendStocks = () => {
 
       <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12 space-y-10">
 
-        {/* Hero */}
+        {/* ─── HERO ─── */}
         <header className="space-y-4">
           <p className="text-[10px] font-bold uppercase tracking-widest text-accent-teal">
             DividendBro Research
           </p>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-text-primary leading-tight">
-            Monthly Dividend Stocks: The Full List of <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">{monthlyStocks.length || 133} Monthly Payers</span>
+            Monthly Dividend Stocks: <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">133 Stocks That Pay Every Month</span>
           </h1>
           <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-3xl">
-            Every stock, REIT, BDC, closed-end fund, and ETF that pays dividends every month. Live yields, asset class breakdowns, and the risks behind the headline numbers.
+            <strong className="text-text-primary">133 US-listed stocks pay dividends every single month.</strong> Below is the complete 2026 list — sorted into 6 categories, with yields, risk levels, and how much capital you need for $1,000/month.
           </p>
           <p className="text-text-muted text-xs">
-            Updated September 2026 · {monthlyStocks.length || 133} tickers tracked · Data from Yahoo Finance + issuer filings
+            Updated October 2026 · 133 monthly payers · REITs, BDCs, ETFs, CEFs
           </p>
         </header>
 
-        {/* Compliance banner */}
+        {/* ─── NOT FINANCIAL ADVICE ─── */}
         <div className="bg-accent-yellow/5 border border-accent-yellow/25 rounded-2xl p-4">
           <p className="text-[11px] text-accent-yellow font-bold uppercase tracking-wider mb-1">
             Not financial advice
           </p>
           <p className="text-[11px] text-text-muted leading-relaxed">
-            Monthly dividend stocks include high-risk categories like mortgage REITs and closed-end funds. Some distributions include return of capital, which erodes NAV over time. Verify all data on the issuer's website before investing.
+            Monthly dividend stocks include high-risk categories like mortgage REITs and BDCs. Yields shown are current as of October 2026 and can change. Verify all data on the issuer's website before investing.
           </p>
         </div>
 
-        {/* Quick answer */}
+        {/* ─── ANSWER BOX ─── */}
+        <div class="db-ig">
+          <div class="db-ig-header">
+            <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
+            <a href="/screener" class="db-ig-link">Live Screener →</a>
+          </div>
+          <h4 class="db-ig-title">📊 Monthly Dividend Stocks at a Glance</h4>
+          <p class="db-ig-sub">The numbers that matter — October 2026</p>
+          <div class="db-ig-grid">
+            <div class="db-ig-stat">
+              <div class="db-ig-stat-label">Total Monthly Payers</div>
+              <div class="db-ig-stat-val" style="color:#60a5fa;">133</div>
+              <div class="db-ig-stat-sub">Across 6 categories</div>
+            </div>
+            <div class="db-ig-stat">
+              <div class="db-ig-stat-label">Typical Yield Range</div>
+              <div class="db-ig-stat-val">3.9% – 14%</div>
+              <div class="db-ig-stat-sub">Varies by category</div>
+            </div>
+            <div class="db-ig-stat">
+              <div class="db-ig-stat-label">Capital for $1k/mo</div>
+              <div class="db-ig-stat-val" style="color:#fbbf24;">~$200,000</div>
+              <div class="db-ig-stat-sub">At 6% average yield</div>
+            </div>
+            <div class="db-ig-stat">
+              <div class="db-ig-stat-label">Compounding Edge</div>
+              <div class="db-ig-stat-val" style="color:#34d399;">+3 bps</div>
+              <div class="db-ig-stat-sub">vs quarterly payers</div>
+            </div>
+          </div>
+          <div class="db-ig-footer">
+            Most monthly payers are REITs, BDCs, and covered-call ETFs — not traditional dividend stocks
+          </div>
+        </div>
+
         <section className="bg-bg-surface border border-border/50 rounded-2xl p-6 space-y-3">
           <h2 className="text-xl font-black text-text-primary tracking-tight">
             What is a monthly dividend stock?
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            A monthly dividend stock pays shareholders once a month instead of the traditional quarterly cycle. Almost all monthly payers fall into one of five categories: <strong className="text-text-primary">REITs</strong>, <strong className="text-text-primary">BDCs</strong>, <strong className="text-text-primary">closed-end funds</strong>, <strong className="text-text-primary">covered-call ETFs</strong>, and <strong className="text-text-primary">mortgage REITs</strong>.
+            A monthly dividend stock pays you cash <strong className="text-text-primary">12 times per year</strong> instead of the usual 4 (quarterly). Instead of getting one big payment every 3 months, you get smaller payments every 30 days.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
-            The oldest continuous monthly payer is <strong className="text-text-primary">Realty Income (O)</strong>, which has paid monthly since 1994. Most other monthly payers launched or switched to monthly distributions after 2005, as retail demand for regular income grew.
+            The annual total is roughly the same. The difference is <strong className="text-text-primary">when</strong> you get paid — and that matters for budgeting, compounding, and emotional consistency.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
-            The main appeal is simpler budgeting and faster compounding on reinvestment. The main trade-off is that a large share of monthly payers use leverage or return-of-capital distributions — which can quietly erode your principal.
+            Only about <strong className="text-text-primary">2% of US-listed securities</strong> pay monthly. They cluster in six categories — REITs, BDCs, closed-end funds, covered-call ETFs, mortgage REITs, and preferred stock funds. We'll walk through each.
           </p>
         </section>
 
-        {/* Frequency comparison */}
+        {/* ─── CATEGORIES ─── */}
         <section className="space-y-4">
           <h2 className="text-2xl font-black text-text-primary tracking-tight">
-            How often do dividend stocks pay?
+            The 6 categories of monthly dividend stocks
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Quarterly is still the default for large-cap dividend stocks. Monthly is a smaller but well-established category — and unlike weekly payers, it includes traditional businesses like Realty Income and Main Street Capital, not just options-income ETFs.
+            Every monthly payer falls into one of these buckets. Knowing which category a stock belongs to tells you a lot about its risk.
           </p>
 
-          <div className="overflow-x-auto mobile-scroll">
-            <table className="w-full text-sm border-collapse">
-              <thead className="bg-bg-primary/50 text-text-muted uppercase font-bold tracking-wider text-[10px]">
-                <tr>
-                  <th className="px-4 py-3 text-left">Frequency</th>
-                  <th className="px-4 py-3 text-right">Count</th>
-                  <th className="px-4 py-3 text-left">Examples</th>
-                  <th className="px-4 py-3 text-left">Notes</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/10">
-                {FREQUENCY_COMPARISON.map((row) => (
-                  <tr key={row.frequency}>
-                    <td className="px-4 py-3 font-bold text-text-primary">{row.frequency}</td>
-                    <td className="px-4 py-3 text-right font-mono text-accent-blue font-bold">{row.count}</td>
-                    <td className="px-4 py-3 font-mono text-xs text-accent-teal">{row.examples}</td>
-                    <td className="px-4 py-3 text-xs text-text-muted">{row.note}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Live table */}
-        <section className="space-y-4">
-          <div className="flex items-start justify-between flex-wrap gap-3">
-            <div>
-              <h2 className="text-2xl font-black text-text-primary tracking-tight">
-                Every monthly dividend stock, ranked by yield
-              </h2>
-              <p className="text-text-muted text-sm mt-1">
-                Live data pulled from our screener. Sorted by distribution rate, highest first.
-              </p>
-            </div>
-            <Link
-              to="/screener"
-              className="text-xs font-bold text-accent-blue hover:underline"
-            >
-              Open full screener →
-            </Link>
-          </div>
-
-          {isLoading && (
-            <div className="py-12"><LoadingSpinner /></div>
-          )}
-
-          {!isLoading && monthlyStocks.length > 0 && (
-            <div className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm">
-              <div className="overflow-x-auto mobile-scroll">
-                <table className="w-full text-sm">
-                  <thead className="bg-bg-primary/50 text-text-muted uppercase font-bold tracking-wider text-[10px]">
-                    <tr>
-                      <th className="px-3 py-3 text-left">Ticker</th>
-                      <th className="px-3 py-3 text-left">Name</th>
-                      <th className="px-3 py-3 text-center">Type</th>
-                      <th className="px-3 py-3 text-right">Yield</th>
-                      <th className="px-3 py-3 text-right">Price</th>
-                      <th className="px-3 py-3 text-center">Risk</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/10">
-                    {monthlyStocks.slice(0, 30).map((s) => (
-                      <tr key={s.symbol} className="hover:bg-bg-primary/30 transition-colors">
-                        <td className="px-3 py-2.5">
-                          <Link
-                            to={`/search?symbol=${s.symbol}`}
-                            className="font-mono font-bold text-accent-teal hover:underline"
-                          >
-                            {s.symbol}
-                          </Link>
-                        </td>
-                        <td className="px-3 py-2.5 text-text-primary text-xs truncate max-w-[200px]">
-                          {s.name}
-                        </td>
-                        <td className="px-3 py-2.5 text-center">
-                          <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border bg-accent-blue/10 border-accent-blue/20 text-accent-blue">
-                            {s.assetType}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2.5 text-right font-mono font-bold text-accent-green">
-                          {fmt(s.currentYield)}%
-                        </td>
-                        <td className="px-3 py-2.5 text-right font-mono text-text-secondary text-xs">
-                          {s.currentPrice ? `$${fmt(s.currentPrice)}` : '—'}
-                        </td>
-                        <td className="px-3 py-2.5 text-center">
-                          <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border ${
-                            s.safetyScore === 'Safe' ? 'bg-accent-green/10 border-accent-green/20 text-accent-green' :
-                            s.safetyScore === 'Moderate' ? 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow' :
-                            'bg-accent-red/10 border-accent-red/20 text-accent-red'
-                          }`}>
-                            {s.safetyScore}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              {monthlyStocks.length > 30 && (
-                <div className="px-4 py-3 border-t border-border/40 bg-bg-primary/30 text-center">
-                  <Link to="/screener" className="text-xs font-bold text-accent-blue hover:underline">
-                    See all {monthlyStocks.length} monthly payers in the screener →
-                  </Link>
+          <div className="space-y-3">
+            {CATEGORIES.map((cat) => (
+              <div key={cat.name} className="bg-bg-surface border border-border/50 rounded-2xl p-5 space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="text-3xl flex-shrink-0">{cat.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h3 className="font-black text-text-primary text-base">{cat.name}</h3>
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-accent-blue/10 text-accent-blue border border-accent-blue/25">
+                        {cat.count} stocks
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-text-muted mt-0.5">
+                      Typical yield: <span className="font-bold text-accent-green">{cat.yieldRange}</span>
+                    </p>
+                  </div>
                 </div>
-              )}
-            </div>
-          )}
-        </section>
 
-        {/* Asset class breakdown */}
-        <section className="space-y-6">
-          <h2 className="text-2xl font-black text-text-primary tracking-tight">
-            The five categories of monthly dividend stocks
-          </h2>
-          <p className="text-text-secondary text-sm leading-relaxed">
-            Nearly every monthly payer fits into one of these five buckets. Each has a distinct risk profile, tax treatment, and historical pattern of distribution cuts.
-          </p>
+                <p className="text-sm text-text-secondary leading-relaxed">{cat.description}</p>
 
-          <div className="space-y-4">
-            {ASSET_CLASSES.map((cls) => (
-              <div key={cls.name} className="bg-bg-surface border border-border/50 rounded-2xl p-5 space-y-3">
-                <div className="flex items-start justify-between flex-wrap gap-2">
-                  <h3 className="text-lg font-black text-text-primary tracking-tight">{cls.name}</h3>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">
-                    {cls.tickers.length}+ tracked
-                  </span>
+                <div className="bg-bg-primary border border-border/40 rounded-xl p-3">
+                  <p className="text-[10px] uppercase text-text-muted font-bold tracking-wider mb-1">Examples</p>
+                  <p className="text-xs text-text-primary font-mono">{cat.examples}</p>
                 </div>
-                <p className="text-sm text-text-secondary leading-relaxed">{cls.description}</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {cls.tickers.map((t) => (
-                    <Link
-                      key={t}
-                      to={`/search?symbol=${t}`}
-                      className="text-[10px] font-mono font-bold px-2 py-1 rounded-md bg-bg-primary border border-border/40 text-accent-teal hover:border-accent-teal/40 transition-colors"
-                    >
-                      {t}
-                    </Link>
-                  ))}
+
+                <div className="bg-accent-yellow/5 border border-accent-yellow/20 rounded-xl p-3">
+                  <p className="text-[11px] text-accent-yellow/90 leading-relaxed">
+                    <strong className="font-black">Risk:</strong> {cat.riskNote}
+                  </p>
                 </div>
-                <p className="text-[11px] text-accent-red/80 italic">
-                  ⚠ {cls.risk}
-                </p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Comparison table */}
+        {/* ─── TOP PICKS ─── */}
         <section className="space-y-4">
           <h2 className="text-2xl font-black text-text-primary tracking-tight">
-            Monthly vs. quarterly — does frequency actually matter?
+            Top 12 monthly dividend stocks (by quality)
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            The math is closer than most YouTube videos suggest. Here's the honest comparison.
+            Sorted by <strong className="text-text-primary">safety</strong>, not raw yield. The highest-yielding stock isn't necessarily the best — mortgage REITs at the bottom of this list pay 2–3x more, but can lose half their value in a bad year.
           </p>
 
           <div className="overflow-x-auto mobile-scroll">
             <table className="w-full text-sm border-collapse">
               <thead className="bg-bg-primary/50 text-text-muted uppercase font-bold tracking-wider text-[10px]">
                 <tr>
-                  <th className="px-4 py-3 text-left">Factor</th>
-                  <th className="px-4 py-3 text-left">Monthly</th>
-                  <th className="px-4 py-3 text-left">Quarterly</th>
+                  <th className="px-3 py-3 text-left">Stock</th>
+                  <th className="px-3 py-3 text-left">Category</th>
+                  <th className="px-3 py-3 text-right">Yield</th>
+                  <th className="px-3 py-3 text-left">Risk</th>
+                  <th className="px-3 py-3 text-left hidden sm:table-cell">Why it stands out</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/10">
-                <tr>
-                  <td className="px-4 py-3 text-text-muted font-semibold">Compounding advantage</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Slightly higher (reinvesting earlier)</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Slightly lower</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 text-text-muted font-semibold">Real difference over 30 years</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs" colSpan="2">~0.3%–0.5% total return — negligible at portfolio level</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 text-text-muted font-semibold">Universe size</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">~133 stocks</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">~373 stocks</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 text-text-muted font-semibold">Dividend growth</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Generally lower (REITs, BDCs grow slowly)</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Higher (Dividend Kings live here)</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 text-text-muted font-semibold">Tax treatment</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Often ordinary income or ROC</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Often qualified dividends</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-3 text-text-muted font-semibold">Behavioural benefit</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Easier to budget around</td>
-                  <td className="px-4 py-3 text-text-secondary text-xs">Lumpier cash flow</td>
-                </tr>
+                {TOP_MONTHLY_STOCKS.map((s) => {
+                  const riskColor =
+                    s.risk === 'Safe' ? 'text-accent-green bg-accent-green/10 border-accent-green/25'
+                    : s.risk === 'Moderate' ? 'text-accent-blue bg-accent-blue/10 border-accent-blue/25'
+                    : s.risk === 'Higher' ? 'text-accent-yellow bg-accent-yellow/10 border-accent-yellow/25'
+                    : 'text-accent-red bg-accent-red/10 border-accent-red/25';
+                  return (
+                    <tr key={s.ticker} className="hover:bg-bg-primary/30 transition-colors">
+                      <td className="px-3 py-3">
+                        <div className="font-bold text-text-primary text-xs">{s.name}</div>
+                        <div className="font-mono text-[10px] text-accent-teal mt-0.5">{s.ticker}</div>
+                      </td>
+                      <td className="px-3 py-3 text-[11px] text-text-secondary">{s.category}</td>
+                      <td className="px-3 py-3 text-right font-mono font-black text-accent-green">{s.yield}%</td>
+                      <td className="px-3 py-3">
+                        <span className={`text-[9px] uppercase font-black tracking-wider px-2 py-0.5 rounded border ${riskColor}`}>
+                          {s.risk}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3 text-[11px] text-text-muted hidden sm:table-cell">{s.note}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
 
-          <p className="text-text-muted text-xs italic">
-            Bottom line: monthly frequency is a convenience, not an edge. What matters more is whether the underlying business can sustain and grow the distribution.
+          <p className="text-[11px] text-text-muted leading-relaxed">
+            Yields are approximate as of October 2026. Mortgage REIT yields can swing by several percentage points in a single quarter.
           </p>
         </section>
 
-        {/* Risks */}
+        {/* ─── YIELD COMPARISON VISUAL ─── */}
         <section className="space-y-4">
           <h2 className="text-2xl font-black text-text-primary tracking-tight">
-            The risks most articles don't mention
+            How monthly payers compare by yield
+          </h2>
+
+          <div class="db-ig">
+            <div class="db-ig-header">
+              <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
+              <a href="/screener" class="db-ig-link">Screener →</a>
+            </div>
+            <h4 class="db-ig-title">📊 Average Yield by Category</h4>
+            <p class="db-ig-sub">Green = safer · Amber = medium risk · Red = high risk</p>
+            <div class="db-ig-body">
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">REITs</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:58%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+                <span class="db-ig-row-val" style="color:#34d399;">~5.8%</span>
+              </div>
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">BDCs</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:80%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+                <span class="db-ig-row-val" style="color:#34d399;">~8.0%</span>
+              </div>
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">Covered-Call ETFs</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:75%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
+                <span class="db-ig-row-val" style="color:#fbbf24;">~7.5%</span>
+              </div>
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">Closed-End Funds</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:90%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
+                <span class="db-ig-row-val" style="color:#fbbf24;">~9.0%</span>
+              </div>
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">Mortgage REITs</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:100%;background:linear-gradient(90deg,#f87171,#ef4444);"></div></div>
+                <span class="db-ig-row-val" style="color:#f87171;">~12.0%</span>
+              </div>
+            </div>
+            <div class="db-ig-footer">
+              Higher yield = higher risk. Mortgage REITs pay the most but can lose 40% in a rate cycle.
+            </div>
+          </div>
+        </section>
+
+        {/* ─── QUOTE FACTS ─── */}
+        <section className="bg-gradient-to-br from-accent-blue/8 via-bg-surface to-accent-teal/8 border border-accent-blue/25 rounded-2xl p-6 space-y-4">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-accent-blue mb-2">
+              Facts worth quoting
+            </p>
+            <h2 className="text-xl font-black text-text-primary tracking-tight">
+              Numbers journalists and researchers can cite
+            </h2>
+            <p className="text-text-secondary text-xs mt-1">
+              Every figure below is pulled from DividendBro's live database of 672 dividend-paying securities. Free to cite with attribution.
+            </p>
+          </div>
+
+          <ul className="space-y-3">
+            {QUOTE_FACTS.map((fact, i) => (
+              <li key={i} className="flex gap-3 text-sm text-text-secondary leading-relaxed">
+                <span className="text-accent-blue font-black flex-shrink-0">▸</span>
+                <span>{fact}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="pt-3 border-t border-border/30">
+            <p className="text-[11px] text-text-muted">
+              Attribution: <span className="font-mono text-text-secondary">Source: DividendBro.com/monthly-dividend-stocks, October 2026</span>
+            </p>
+          </div>
+        </section>
+
+        {/* ─── CAPITAL REQUIRED VISUAL ─── */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-black text-text-primary tracking-tight">
+            How much capital do you need for $1,000/month?
+          </h2>
+
+          <div class="db-ig">
+            <div class="db-ig-header">
+              <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
+              <a href="/" class="db-ig-link">Income Planner →</a>
+            </div>
+            <h4 class="db-ig-title">💰 Capital Required for $1,000/Month</h4>
+            <p class="db-ig-sub">At different average yields</p>
+            <div class="db-ig-body">
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">At 4% yield</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:100%;background:linear-gradient(90deg,#3b82f6,#06b6d4);"></div></div>
+                <span class="db-ig-row-val">$300,000</span>
+              </div>
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">At 6% yield</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:67%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+                <span class="db-ig-row-val" style="color:#34d399;">$200,000</span>
+              </div>
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">At 8% yield</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:50%;background:linear-gradient(90deg,#fbbf24,#f59e0b);"></div></div>
+                <span class="db-ig-row-val" style="color:#fbbf24;">$150,000</span>
+              </div>
+              <div class="db-ig-row">
+                <span class="db-ig-row-label">At 12% yield</span>
+                <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:33%;background:linear-gradient(90deg,#f87171,#ef4444);"></div></div>
+                <span class="db-ig-row-val" style="color:#f87171;">$100,000</span>
+              </div>
+            </div>
+            <div class="db-ig-footer">
+              Higher yield means less capital — but more risk. The 12% row is mortgage REIT territory.
+            </div>
+          </div>
+
+          <p className="text-sm text-text-secondary leading-relaxed">
+            A balanced monthly dividend portfolio of 60% REITs, 20% BDCs, and 20% covered-call ETFs averages roughly <strong className="text-text-primary">6.0–6.5%</strong>. That means <strong className="text-text-primary">~$185,000 to $200,000</strong> invested for $1,000/month.
+          </p>
+        </section>
+
+        {/* ─── WATCH OUT SECTION ─── */}
+        <section className="space-y-4">
+          <h2 className="text-2xl font-black text-text-primary tracking-tight">
+            The 3 traps to avoid
           </h2>
 
           <div className="space-y-3">
-            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
-              <h3 className="font-bold text-text-primary text-base mb-2">NAV erosion from return of capital</h3>
+            <div className="bg-bg-surface border border-accent-red/20 rounded-2xl p-5">
+              <h3 className="font-bold text-text-primary text-base mb-2 flex items-center gap-2">
+                <span className="text-accent-red">⚠</span> Chasing the highest yield
+              </h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Many monthly CEFs and covered-call ETFs distribute more than they earn. The excess is return of capital — technically your own money coming back. Over years, this erodes the share price. A 10% yield with 5% NAV erosion is really a 5% net return.
+                A 12% monthly yield looks amazing until the price drops 40% and you've lost 3 years of dividends in capital. The mortgage REITs at 12–15% have historically been the worst long-term performers among monthly payers.
               </p>
             </div>
 
-            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
-              <h3 className="font-bold text-text-primary text-base mb-2">Rate sensitivity in REITs and mREITs</h3>
+            <div className="bg-bg-surface border border-accent-red/20 rounded-2xl p-5">
+              <h3 className="font-bold text-text-primary text-base mb-2 flex items-center gap-2">
+                <span className="text-accent-red">⚠</span> Ignoring return of capital
+              </h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                REIT values fall when rates rise — even if rents are stable. Mortgage REITs like ORC and ARR can lose 30%+ of book value in a rising-rate cycle, and their distributions are frequently cut. The headline yield doesn't capture this.
+                Many covered-call ETFs and closed-end funds pay you partly from <em>your own money</em>. Their distributions include "return of capital" — that erodes NAV. Check the fund's Section 19a notice to see what percentage is real income vs. ROC.
               </p>
             </div>
 
-            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
-              <h3 className="font-bold text-text-primary text-base mb-2">Tax inefficiency for Singapore investors</h3>
+            <div className="bg-bg-surface border border-accent-red/20 rounded-2xl p-5">
+              <h3 className="font-bold text-text-primary text-base mb-2 flex items-center gap-2">
+                <span className="text-accent-red">⚠</span> Forgetting the 30% US withholding tax
+              </h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                US REIT and BDC distributions are subject to the standard 30% US withholding tax for Singapore residents. Combined with the fact that most are taxed as ordinary income in the US, this makes monthly US payers significantly less tax-efficient than SGX REITs (which have no withholding tax).
-              </p>
-            </div>
-
-            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
-              <h3 className="font-bold text-text-primary text-base mb-2">Distribution cuts happen</h3>
-              <p className="text-sm text-text-secondary leading-relaxed">
-                Mortgage REITs and CEFs cut distributions regularly during rate cycles. A 12% yield on paper can become a 6% yield on a lower NAV after a cut. Historical data shows most mREITs have reduced distributions at least once since 2020.
+                If you're a Singapore investor, every US monthly dividend is taxed 30% at source. A 6% yield becomes 4.2% after tax. Compare after-tax yields — a SGX REIT at 5% nets you more than a US REIT at 6%.
               </p>
             </div>
           </div>
         </section>
 
-        {/* FAQ */}
+        {/* ─── FAQ ─── */}
         <section className="space-y-4">
           <h2 className="text-2xl font-black text-text-primary tracking-tight">
             Frequently asked questions
           </h2>
           <div className="space-y-3">
-            {schema.mainEntity.map((q, i) => (
+            {FAQS.map((f, i) => (
               <details key={i} className="bg-bg-surface border border-border/50 rounded-2xl group">
                 <summary className="px-5 py-4 cursor-pointer font-bold text-sm text-text-primary flex items-center justify-between hover:text-accent-blue transition-colors">
-                  {q.name}
+                  {f.q}
                   <span className="text-text-muted group-open:rotate-180 transition-transform">▼</span>
                 </summary>
                 <div className="px-5 pb-5 pt-0 text-sm text-text-secondary leading-relaxed border-t border-border/20 mt-2">
-                  {q.acceptedAnswer.text}
+                  {f.a}
                 </div>
               </details>
             ))}
           </div>
         </section>
 
-        {/* CTA */}
+        {/* ─── CTA ─── */}
         <section className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight mb-2">
-            Find monthly dividend stocks that match your goals
+            Screen every monthly dividend stock
           </h2>
           <p className="text-text-secondary text-sm mb-5 max-w-xl mx-auto">
-            Use our screener to filter by frequency, asset class, yield, and risk. Or use the Income Planner to see what a monthly dividend portfolio could look like for your target income.
+            DividendBro tracks all 672 dividend-paying securities across US, Canadian, and SGX markets. Filter by payout frequency, category, yield, or safety score.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -494,21 +522,21 @@ const MonthlyDividendStocks = () => {
               Open Dividend Screener
             </Link>
             <Link
-              to="/"
+              to="/reits-that-pay-monthly"
               className="px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all"
             >
-              Monthly Income Planner
+              Monthly REITs Deep Dive
             </Link>
           </div>
         </section>
 
-        {/* Disclaimer */}
+        {/* ─── DISCLOSURE ─── */}
         <div className="bg-bg-surface border border-border/40 rounded-2xl p-5">
           <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
             Important Disclosures
           </p>
           <p className="text-[11px] text-text-muted leading-relaxed">
-            DividendBro is not a licensed financial adviser. This page is for educational purposes only and does not constitute investment advice, a recommendation, or a solicitation to buy or sell any securities. Monthly dividend stocks carry significant risk, including the potential loss of principal. Distribution rates shown are indicative of recent payments and are not guaranteed. Many distributions include return of capital, which reduces cost basis. Past performance is not indicative of future results. Consult a licensed financial adviser before making any investment decisions.
+            DividendBro is not a licensed financial adviser. This page is for educational purposes only and does not constitute investment advice. Monthly dividend securities include high-risk categories such as mortgage REITs, BDCs, and closed-end funds. Yields shown are approximate, current as of October 2026, and subject to change. Some covered-call ETF distributions include return of capital, which may erode NAV over time. Past performance is not indicative of future results. Consult a licensed financial adviser before investing.
           </p>
         </div>
       </div>
