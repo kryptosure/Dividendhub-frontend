@@ -46,4 +46,4 @@ Allow: /
 
 # ─── Discovery ───
 Sitemap: https://dividendbro.com/sitemap.xml
-Agentmap: https://dividendbro.com/.well-known/ai-catalog.json
+Agentmap: https://dividendbro.com/ai-catalog.json

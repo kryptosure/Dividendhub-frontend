@@ -1,14 +1,14 @@
 {
   "version": "1.0",
   "name": "DividendBro",
-  "description": "Free dividend analysis and portfolio management tool covering US, Canadian, and SGX dividend stocks.",
+  "description": "Free dividend tracker for US, Canadian, and Singapore stocks. Track dividend yields, ex-dividend payout dates, dividend calendars, and portfolio income across 670+ securities.",
   "url": "https://dividendbro.com",
   "resources": [
     {
       "id": "llms-txt",
       "type": "text/plain",
       "url": "https://dividendbro.com/llms.txt",
-      "description": "Curated index of DividendBro guides, tools, and data sources for AI agents."
+      "description": "Curated index of DividendBro tools, guides, and data sources for AI agents."
     },
     {
       "id": "llms-full-txt",
