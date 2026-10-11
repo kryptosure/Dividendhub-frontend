@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ const TopStocks = () => {
   const { market, currency } = useStore();
   const navigate = useNavigate();
   const [type, setType] = useState('stock');
+  const [riskFilter, setRiskFilter] = useState('all'); // 'all' | 'safe-moderate' | 'safe'
   const [exchangeRate, setExchangeRate] = useState(null);
   const topStocksRef = useRef(null);
   const curSymbol = currency === 'sgd' ? 'S$' : currency === 'cad' ? 'C$' : '$';
@@ -51,9 +52,36 @@ const TopStocks = () => {
     return price;
   };
 
-  const getCSVData = () => {
+  /* ─── Risk filter ─── */
+  const filteredData = useMemo(() => {
     if (!data) return [];
-    return data.map(item => ({
+    if (riskFilter === 'all') return data;
+    if (riskFilter === 'safe-moderate') {
+      return data.filter((item) => item.safetyScore !== 'Caution');
+    }
+    if (riskFilter === 'safe') {
+      return data.filter((item) => item.safetyScore === 'Safe');
+    }
+    return data;
+  }, [data, riskFilter]);
+
+  const riskCounts = useMemo(() => {
+    if (!data) return { safe: 0, moderate: 0, caution: 0 };
+    return {
+      safe: data.filter((d) => d.safetyScore === 'Safe').length,
+      moderate: data.filter((d) => d.safetyScore === 'Moderate').length,
+      caution: data.filter((d) => d.safetyScore === 'Caution').length,
+    };
+  }, [data]);
+
+  const riskFilterLabel =
+    riskFilter === 'all' ? 'All'
+    : riskFilter === 'safe-moderate' ? 'Safe + Moderate'
+    : 'Safe only';
+
+  const getCSVData = () => {
+    if (!filteredData) return [];
+    return filteredData.map(item => ({
       Name: item.name,
       Symbol: item.symbol,
       Price: convertPrice(item.currentPrice),
@@ -67,17 +95,18 @@ const TopStocks = () => {
 
   const reportData = {
     title: `Top Dividend ${type === 'stock' ? 'Stocks' : 'ETFs'} (${market.toUpperCase()})`,
-    subtitle: `Sorted by regular yield • ${data?.length || 0} entries`,
+    subtitle: `${riskFilterLabel} • sorted by regular yield • ${filteredData?.length || 0} entries`,
     kpis: [
-      { label: 'Total Entries', value: data?.length || 0 },
+      { label: 'Total Entries', value: filteredData?.length || 0 },
       { label: 'Market', value: market.toUpperCase() },
       { label: 'Type', value: type === 'stock' ? 'Stocks' : 'ETFs' },
+      { label: 'Risk Filter', value: riskFilterLabel },
     ],
     tables: [
       {
         title: 'Top Dividend Rankings',
         headers: ['#', 'Name', 'Symbol', 'Price', 'Yield (Regular)', 'Yield (With Special)', 'Payouts', 'Safety'],
-        rows: (data || []).map((item, i) => [
+        rows: (filteredData || []).map((item, i) => [
           i + 1,
           item.name || item.symbol,
           item.symbol,
@@ -123,11 +152,13 @@ const TopStocks = () => {
       </Helmet>
       <div ref={topStocksRef} className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-300">
         <div className="p-5 border-b border-border/40 flex justify-between items-start flex-wrap gap-4 bg-bg-secondary/20">
-          <div>
+          <div className="flex-1 min-w-[240px]">
             <h2 className="text-xl font-black text-text-primary tracking-tight">High-Dividend Yield Board</h2>
             <p className="text-xs text-text-muted font-medium mt-0.5">
               Sorted by <strong className="text-text-secondary">regular yield</strong>. Special dividends shown separately.
             </p>
+
+            {/* Type toggle */}
             <div className="flex gap-1.5 mt-3 bg-bg-primary/40 border border-border/30 p-0.5 rounded-lg text-xs font-bold w-fit">
               <button
                 className={`px-4 py-1.5 rounded-md transition-all ${type === 'stock' ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm font-extrabold' : 'text-text-muted'}`}
@@ -142,81 +173,148 @@ const TopStocks = () => {
                 ETFs
               </button>
             </div>
+
+            {/* Risk filter */}
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-text-muted">
+                Risk filter:
+              </span>
+              <div className="flex gap-1 bg-bg-primary/40 border border-border/30 p-0.5 rounded-lg text-xs font-bold">
+                <button
+                  onClick={() => setRiskFilter('all')}
+                  className={`px-3 py-1 rounded-md transition-all ${
+                    riskFilter === 'all'
+                      ? 'bg-bg-secondary text-text-primary border border-border/20 shadow-sm font-extrabold'
+                      : 'text-text-muted hover:text-text-secondary'
+                  }`}
+                >
+                  All ({data.length})
+                </button>
+                <button
+                  onClick={() => setRiskFilter('safe-moderate')}
+                  className={`px-3 py-1 rounded-md transition-all ${
+                    riskFilter === 'safe-moderate'
+                      ? 'bg-accent-green/15 text-accent-green border border-accent-green/30 shadow-sm font-extrabold'
+                      : 'text-text-muted hover:text-text-secondary'
+                  }`}
+                >
+                  Safe + Moderate ({riskCounts.safe + riskCounts.moderate})
+                </button>
+                <button
+                  onClick={() => setRiskFilter('safe')}
+                  className={`px-3 py-1 rounded-md transition-all ${
+                    riskFilter === 'safe'
+                      ? 'bg-accent-green/15 text-accent-green border border-accent-green/30 shadow-sm font-extrabold'
+                      : 'text-text-muted hover:text-text-secondary'
+                  }`}
+                >
+                  Safe only ({riskCounts.safe})
+                </button>
+              </div>
+            </div>
+
+            {/* Contextual note */}
+            {riskFilter !== 'all' && (
+              <p className="text-[10px] text-text-muted mt-2 leading-relaxed">
+                Showing {filteredData.length} of {data.length} {type === 'stock' ? 'stocks' : 'ETFs'}
+                {riskFilter === 'safe-moderate' && ` · ${riskCounts.caution} Caution-rated hidden`}
+                {riskFilter === 'safe' && ` · ${riskCounts.moderate} Moderate + ${riskCounts.caution} Caution hidden`}
+              </p>
+            )}
           </div>
           <ExportButtons
             data={getCSVData()}
-            filename={`top_${type}_${market}`}
+            filename={`top_${type}_${market}_${riskFilter}`}
             headers={['Name', 'Symbol', 'Price', 'Yield (Regular)', 'Yield (With Special)', 'Special Amount', 'Payouts', 'Safety']}
             reportData={reportData}
-            shareMessage={`Reviewing top high-yield dividend stocks on DividendBro.`}
+            shareMessage={`Reviewing top high-yield dividend ${type === 'stock' ? 'stocks' : 'ETFs'} on DividendBro (${riskFilterLabel}).`}
           />
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm divide-y divide-border/20">
-            <thead className="bg-bg-secondary/40 text-[10px] uppercase font-bold text-text-muted tracking-wider">
-              <tr>
-                <th className="px-4 py-3">Rank</th>
-                <th className="px-4 py-3">Stock</th>
-                <th className="px-4 py-3 text-right">Price</th>
-                <th className="px-4 py-3 text-right">Yield (Regular)</th>
-                <th className="px-4 py-3 text-right">With Special</th>
-                <th className="px-4 py-3 text-right">Payouts</th>
-                <th className="px-4 py-3 text-right">Risk</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/10 font-medium">
-              {data.map((item, index) => {
-                const hasSpecial = item.hasSpecialDividend;
-                const regularYield = item.currentYield || 0;
-                const totalYield = item.currentYieldWithSpecial || regularYield;
+        {/* Empty state */}
+        {filteredData.length === 0 ? (
+          <div className="px-6 py-12 text-center">
+            <p className="text-sm font-bold text-text-secondary mb-1">
+              No {type === 'stock' ? 'stocks' : 'ETFs'} match this risk filter.
+            </p>
+            <p className="text-xs text-text-muted mb-4">
+              All {data.length} {type === 'stock' ? 'stocks' : 'ETFs'} in this market are rated{' '}
+              {riskFilter === 'safe' ? 'Moderate or Caution' : 'Caution'}.
+            </p>
+            <button
+              onClick={() => setRiskFilter('all')}
+              className="text-xs font-bold text-accent-blue hover:text-accent-teal transition-colors"
+            >
+              Show all {data.length} →
+            </button>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm divide-y divide-border/20">
+              <thead className="bg-bg-secondary/40 text-[10px] uppercase font-bold text-text-muted tracking-wider">
+                <tr>
+                  <th className="px-4 py-3">Rank</th>
+                  <th className="px-4 py-3">Stock</th>
+                  <th className="px-4 py-3 text-right">Price</th>
+                  <th className="px-4 py-3 text-right">Yield (Regular)</th>
+                  <th className="px-4 py-3 text-right">With Special</th>
+                  <th className="px-4 py-3 text-right">Payouts</th>
+                  <th className="px-4 py-3 text-right">Risk</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/10 font-medium">
+                {filteredData.map((item, index) => {
+                  const hasSpecial = item.hasSpecialDividend;
+                  const regularYield = item.currentYield || 0;
+                  const totalYield = item.currentYieldWithSpecial || regularYield;
 
-                return (
-                  <tr
-                    key={item.symbol}
-                    className="hover:bg-bg-secondary/30 cursor-pointer transition-colors"
-                    onClick={() => navigate(`/search?symbol=${encodeURIComponent(item.symbol)}`)}
-                  >
-                    <td className="px-4 py-3.5 text-text-muted font-mono text-xs">{index + 1}</td>
-                    <td className="px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-1">
-                      <span className="font-bold text-text-primary">{item.name || item.symbol}</span>
-                      <span className="font-mono text-accent-teal text-xs tracking-wide bg-bg-secondary px-1.5 py-0.5 border border-border/30 rounded w-fit">{item.symbol}</span>
-                    </td>
-                    <td className="px-4 py-3.5 text-right font-mono text-xs text-text-secondary">
-                      {item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '—'}
-                    </td>
-                    <td className="px-4 py-3.5 text-right font-mono text-sm font-black text-accent-green">
-                      {regularYield ? formatPercent(regularYield) : '—'}
-                    </td>
-                    <td className="px-4 py-3.5 text-right font-mono text-xs">
-                      {hasSpecial ? (
-                        <span
-                          className="inline-flex items-center gap-1.5 justify-end"
-                          title={`Includes special dividend of ${curSymbol}${Number(item.specialDividendAmount).toFixed(2)} — one-off, not recurring`}
-                        >
-                          <span className="text-text-primary font-bold">{Number(totalYield).toFixed(2)}%</span>
-                          <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border bg-accent-yellow/10 border-accent-yellow/30 text-accent-yellow">
-                            ⚡ Special
+                  return (
+                    <tr
+                      key={item.symbol}
+                      className="hover:bg-bg-secondary/30 cursor-pointer transition-colors"
+                      onClick={() => navigate(`/search?symbol=${encodeURIComponent(item.symbol)}`)}
+                    >
+                      <td className="px-4 py-3.5 text-text-muted font-mono text-xs">{index + 1}</td>
+                      <td className="px-4 py-3.5 flex flex-col sm:flex-row sm:items-center gap-1">
+                        <span className="font-bold text-text-primary">{item.name || item.symbol}</span>
+                        <span className="font-mono text-accent-teal text-xs tracking-wide bg-bg-secondary px-1.5 py-0.5 border border-border/30 rounded w-fit">{item.symbol}</span>
+                      </td>
+                      <td className="px-4 py-3.5 text-right font-mono text-xs text-text-secondary">
+                        {item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '—'}
+                      </td>
+                      <td className="px-4 py-3.5 text-right font-mono text-sm font-black text-accent-green">
+                        {regularYield ? formatPercent(regularYield) : '—'}
+                      </td>
+                      <td className="px-4 py-3.5 text-right font-mono text-xs">
+                        {hasSpecial ? (
+                          <span
+                            className="inline-flex items-center gap-1.5 justify-end"
+                            title={`Includes special dividend of ${curSymbol}${Number(item.specialDividendAmount).toFixed(2)} — one-off, not recurring`}
+                          >
+                            <span className="text-text-primary font-bold">{Number(totalYield).toFixed(2)}%</span>
+                            <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border bg-accent-yellow/10 border-accent-yellow/30 text-accent-yellow">
+                              ⚡ Special
+                            </span>
                           </span>
+                        ) : (
+                          <span className="text-text-muted">—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3.5 text-right font-mono text-xs text-text-muted">{item.payoutCount || 0}</td>
+                      <td className="px-4 py-3.5 text-right">
+                        <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${
+                          safetyColors[item.safetyScore] || 'bg-bg-primary text-text-muted border-border/40'
+                        }`}>
+                          {item.safetyScore || '—'}
                         </span>
-                      ) : (
-                        <span className="text-text-muted">—</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-3.5 text-right font-mono text-xs text-text-muted">{item.payoutCount || 0}</td>
-                    <td className="px-4 py-3.5 text-right">
-                      <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${
-                        safetyColors[item.safetyScore] || 'bg-bg-primary text-text-muted border-border/40'
-                      }`}>
-                        {item.safetyScore || '—'}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         <div className="px-4 py-3 border-t border-border/40 bg-bg-primary/30">
           <p className="text-[10px] text-text-muted leading-relaxed">
