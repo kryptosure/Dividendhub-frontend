@@ -1,5 +1,5 @@
 # DividendBro — robots.txt
-# Last updated: 2026-10-07
+# Last updated: 2026-10-15
 #
 # Policy: We welcome all crawlers, including AI agents.
 # Attribution to dividendbro.com is appreciated but not required.
@@ -46,4 +46,3 @@ Allow: /
 
 # ─── Discovery ───
 Sitemap: https://dividendbro.com/sitemap.xml
-Agentmap: https://dividendbro.com/ai-catalog.json
