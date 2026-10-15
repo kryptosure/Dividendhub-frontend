@@ -1,26 +1,31 @@
 {
-  "version": "1.0",
-  "name": "DividendBro",
-  "description": "Free dividend tracker for US, Canadian, and Singapore stocks. Track dividend yields, ex-dividend payout dates, dividend calendars, and portfolio income across 670+ securities.",
-  "url": "https://dividendbro.com",
-  "resources": [
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "DividendBro",
+    "identifier": "dividendbro.com",
+    "url": "https://dividendbro.com"
+  },
+  "entries": [
     {
-      "id": "llms-txt",
+      "identifier": "urn:air:dividendbro.com:knowledge:llms-txt",
+      "displayName": "DividendBro AI Index (llms.txt)",
       "type": "text/plain",
       "url": "https://dividendbro.com/llms.txt",
       "description": "Curated index of DividendBro tools, guides, and data sources for AI agents."
     },
     {
-      "id": "llms-full-txt",
+      "identifier": "urn:air:dividendbro.com:knowledge:llms-full-txt",
+      "displayName": "DividendBro Extended AI Docs (llms-full.txt)",
       "type": "text/plain",
       "url": "https://dividendbro.com/llms-full.txt",
       "description": "Extended documentation covering DividendBro features, methodology, and FAQ."
     },
     {
-      "id": "sitemap-xml",
+      "identifier": "urn:air:dividendbro.com:data:sitemap-xml",
+      "displayName": "DividendBro Sitemap",
       "type": "application/xml",
       "url": "https://dividendbro.com/sitemap.xml",
-      "description": "XML sitemap of all public pages."
+      "description": "XML sitemap of all public pages on DividendBro."
     }
   ]
 }
