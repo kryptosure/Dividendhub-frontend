@@ -2,30 +2,44 @@
   "specVersion": "1.0",
   "host": {
     "displayName": "DividendBro",
-    "identifier": "dividendbro.com",
-    "url": "https://dividendbro.com"
+    "identifier": "dividendbro.com"
   },
   "entries": [
     {
       "identifier": "urn:air:dividendbro.com:knowledge:llms-txt",
       "displayName": "DividendBro AI Index (llms.txt)",
-      "type": "text/plain",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
       "url": "https://dividendbro.com/llms.txt",
-      "description": "Curated index of DividendBro tools, guides, and data sources for AI agents."
+      "description": "Curated index of DividendBro tools, guides, and data sources for AI agents.",
+      "representativeQueries": [
+        "What tools does DividendBro offer?",
+        "Find a dividend tracker for Singapore stocks",
+        "Where can I find dividend investing guides?"
+      ]
     },
     {
       "identifier": "urn:air:dividendbro.com:knowledge:llms-full-txt",
       "displayName": "DividendBro Extended AI Docs (llms-full.txt)",
-      "type": "text/plain",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
       "url": "https://dividendbro.com/llms-full.txt",
-      "description": "Extended documentation covering DividendBro features, methodology, and FAQ."
+      "description": "Extended documentation covering DividendBro features, methodology, and FAQ.",
+      "representativeQueries": [
+        "How does DividendBro calculate dividend yield?",
+        "Explain the methodology behind the dividend safety score",
+        "What data sources does DividendBro use?"
+      ]
     },
     {
       "identifier": "urn:air:dividendbro.com:data:sitemap-xml",
       "displayName": "DividendBro Sitemap",
       "type": "application/xml",
       "url": "https://dividendbro.com/sitemap.xml",
-      "description": "XML sitemap of all public pages on DividendBro."
+      "description": "XML sitemap of all public pages on DividendBro.",
+      "representativeQueries": [
+        "List all dividend guide articles on DividendBro",
+        "Find the monthly dividend stocks page",
+        "What pages are available on DividendBro?"
+      ]
     }
   ]
 }
