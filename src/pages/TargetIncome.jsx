@@ -364,20 +364,20 @@ const TargetIncome = () => {
 
                 {/* ===== STEP 2 ===== */}
                 {step === 2 && (
-                  <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
+                  <div className="space-y-2.5 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-0.5 sm:mb-2">
                         Question 2 of 3
                       </p>
-                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
+                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         Where are you investing from?
                       </h2>
-                      <p className="text-xs sm:text-sm text-text-muted mt-1.5 sm:mt-2">
-                        This affects which stocks we show. Singapore, US, and Canadian investors all have different tax situations.
+                      <p className="text-[11px] sm:text-sm text-text-muted mt-1 sm:mt-2">
+                        This affects which stocks and tax rules apply to you.
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-lg mx-auto">
+                    <div className="grid grid-cols-2 gap-2 sm:gap-3 max-w-lg mx-auto">
                       {LOCATIONS.map((loc) => {
                         const active = location === loc.key;
                         const FlagComponent = loc.Flag;
@@ -387,13 +387,13 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setLocation(loc.key)}
                             aria-pressed={active}
-                            className={`min-h-[76px] sm:min-h-[100px] rounded-xl p-3 sm:p-4 border-2 text-left transition-all active:scale-[0.98] ${
+                            className={`min-h-[64px] sm:min-h-[100px] rounded-xl p-2.5 sm:p-4 border-2 text-left transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
                             }`}
                           >
-                            <div className="mb-1.5 sm:mb-2 h-5 sm:h-6 flex items-center">
+                            <div className="mb-1 sm:mb-2 h-5 sm:h-6 flex items-center">
                               {FlagComponent ? (
                                 <FlagComponent
                                   title={loc.label}
@@ -419,16 +419,16 @@ const TargetIncome = () => {
 
                 {/* ===== STEP 3 ===== */}
                 {step === 3 && (
-                  <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
+                  <div className="space-y-2.5 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-0.5 sm:mb-2">
                         Question 3 of 3
                       </p>
-                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
+                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         How much risk are you okay with?
                       </h2>
-                      <p className="text-xs sm:text-sm text-text-muted mt-1.5 sm:mt-2">
-                        Higher risk usually means higher income, but the dividend could get cut. If you're new, <strong className="text-text-secondary">Balanced</strong> is a good start.
+                      <p className="text-[11px] sm:text-sm text-text-muted mt-1 sm:mt-2">
+                        Higher risk usually means higher income, but the dividend could get cut.
                       </p>
                     </div>
 
@@ -441,7 +441,7 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setRiskProfile(r.key)}
                             aria-pressed={active}
-                            className={`min-h-[68px] sm:min-h-[88px] rounded-xl p-3 sm:p-3 border-2 transition-all active:scale-[0.98] ${
+                            className={`min-h-[60px] sm:min-h-[88px] rounded-xl p-2.5 sm:p-3 border-2 transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
@@ -450,7 +450,7 @@ const TargetIncome = () => {
                             <div className={`text-sm sm:text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
                               {r.label}
                             </div>
-                            <div className="text-[11px] text-text-muted mt-1 leading-tight">{r.desc}</div>
+                            <div className="text-[11px] text-text-muted mt-0.5 sm:mt-1 leading-tight">{r.desc}</div>
                           </button>
                         );
                       })}
