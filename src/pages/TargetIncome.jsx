@@ -162,7 +162,6 @@ const TargetIncome = () => {
     }
   }, [searchParams, navigate]);
 
-  // Auto-advance the reveal phases every REVEAL_INTERVAL_MS
   useEffect(() => {
     if (!result || !result.ok) return;
     if (resultPhase >= MAX_PHASE) return;
@@ -470,7 +469,7 @@ const TargetIncome = () => {
                         How much risk are you okay with?
                       </h2>
                       <p className="text-[11px] sm:text-sm text-text-muted mt-1 sm:mt-2">
-                        Higher risk usually means higher income, but the dividend could get cut.
+                        Safe and High Income pay more today. Growth pays less today but grows over time.
                       </p>
                     </div>
 
