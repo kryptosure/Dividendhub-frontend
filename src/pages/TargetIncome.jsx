@@ -245,10 +245,10 @@ const TargetIncome = () => {
 
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-text-primary leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary leading-tight">
             Monthly Dividend <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Income Planner</span>
           </h1>
-          <p className="text-xs sm:text-sm text-text-muted mt-1.5 sm:mt-2 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-sm text-text-muted mt-1.5 sm:mt-2 max-w-2xl mx-auto">
             Answer 3 quick questions and we'll build a sample dividend portfolio for you.
           </p>
         </div>
@@ -274,7 +274,7 @@ const TargetIncome = () => {
                       aria-label={`Go to step ${n}`}
                     >
                       <div
-                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                        className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-black transition-all ${
                           isActive
                             ? 'bg-gradient-to-br from-accent-blue to-accent-teal text-white shadow-md'
                             : isDone
@@ -285,7 +285,7 @@ const TargetIncome = () => {
                         {isDone ? '✓' : n}
                       </div>
                       <span
-                        className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wider ${
+                        className={`text-[10px] font-bold uppercase tracking-wider ${
                           isActive ? 'text-accent-blue' : isDone ? 'text-accent-green' : 'text-text-muted'
                         }`}
                       >
@@ -315,19 +315,19 @@ const TargetIncome = () => {
                 {step === 1 && (
                   <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
                         Question 1 of 3
                       </p>
-                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
+                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         How much dividend income do you want per month?
                       </h2>
-                      <p className="text-[11px] sm:text-xs text-text-muted mt-1.5 sm:mt-2">
+                      <p className="text-xs sm:text-sm text-text-muted mt-1.5 sm:mt-2">
                         Pick a target. Most dividend investors aim for 3 to 6% per year on their investment.
                       </p>
                     </div>
 
                     <div className="flex items-center gap-2 sm:gap-3 max-w-md mx-auto">
-                      <span className="text-2xl sm:text-3xl font-black text-accent-blue font-mono" aria-hidden="true">
+                      <span className="text-3xl sm:text-3xl font-black text-accent-blue font-mono" aria-hidden="true">
                         {curSymbol}
                       </span>
                       <input
@@ -338,9 +338,9 @@ const TargetIncome = () => {
                         max="1000000"
                         step="50"
                         aria-label="Target monthly dividend income in dollars"
-                        className="flex-1 bg-bg-primary border-2 border-border/60 rounded-xl px-3 sm:px-4 py-3 sm:py-4 text-2xl sm:text-3xl font-black text-text-primary text-center focus:outline-none focus:border-accent-blue transition-colors"
+                        className="flex-1 bg-bg-primary border-2 border-border/60 rounded-xl px-3 sm:px-4 py-3 sm:py-4 text-3xl sm:text-3xl font-black text-text-primary text-center focus:outline-none focus:border-accent-blue transition-colors"
                       />
-                      <span className="text-xs sm:text-sm font-bold text-text-muted">/mo</span>
+                      <span className="text-sm sm:text-sm font-bold text-text-muted">/mo</span>
                     </div>
 
                     <div className="flex flex-wrap gap-2 justify-center">
@@ -349,7 +349,7 @@ const TargetIncome = () => {
                           key={v}
                           type="button"
                           onClick={() => setTargetMonthly(v)}
-                          className={`text-xs sm:text-sm font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all ${
+                          className={`text-sm sm:text-sm font-bold px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all ${
                             targetMonthly === v
                               ? 'bg-accent-blue text-white border-accent-blue shadow-sm'
                               : 'bg-bg-primary border-border/60 text-text-secondary hover:border-accent-blue/60'
@@ -366,13 +366,13 @@ const TargetIncome = () => {
                 {step === 2 && (
                   <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
                         Question 2 of 3
                       </p>
-                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
+                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         Where are you investing from?
                       </h2>
-                      <p className="text-[11px] sm:text-xs text-text-muted mt-1.5 sm:mt-2">
+                      <p className="text-xs sm:text-sm text-text-muted mt-1.5 sm:mt-2">
                         This affects which stocks we show. Singapore, US, and Canadian investors all have different tax situations.
                       </p>
                     </div>
@@ -387,7 +387,7 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setLocation(loc.key)}
                             aria-pressed={active}
-                            className={`min-h-[84px] sm:min-h-[100px] rounded-xl p-3 sm:p-4 border-2 text-left transition-all active:scale-[0.98] ${
+                            className={`min-h-[88px] sm:min-h-[100px] rounded-xl p-3 sm:p-4 border-2 text-left transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
@@ -406,10 +406,10 @@ const TargetIncome = () => {
                                 />
                               )}
                             </div>
-                            <p className={`text-xs sm:text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
+                            <p className={`text-sm sm:text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
                               {loc.label}
                             </p>
-                            <p className="text-[10px] text-text-muted mt-0.5">{loc.sub}</p>
+                            <p className="text-[11px] text-text-muted mt-0.5">{loc.sub}</p>
                           </button>
                         );
                       })}
@@ -421,13 +421,13 @@ const TargetIncome = () => {
                 {step === 3 && (
                   <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
                         Question 3 of 3
                       </p>
-                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
+                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         How much risk are you okay with?
                       </h2>
-                      <p className="text-[11px] sm:text-xs text-text-muted mt-1.5 sm:mt-2">
+                      <p className="text-xs sm:text-sm text-text-muted mt-1.5 sm:mt-2">
                         Higher risk usually means higher income, but the dividend could get cut. If you're new, <strong className="text-text-secondary">Balanced</strong> is a good start.
                       </p>
                     </div>
@@ -441,16 +441,16 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setRiskProfile(r.key)}
                             aria-pressed={active}
-                            className={`min-h-[72px] sm:min-h-[88px] rounded-xl p-2.5 sm:p-3 border-2 transition-all active:scale-[0.98] ${
+                            className={`min-h-[80px] sm:min-h-[88px] rounded-xl p-3 sm:p-3 border-2 transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
                             }`}
                           >
-                            <div className={`text-xs sm:text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
+                            <div className={`text-sm sm:text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
                               {r.label}
                             </div>
-                            <div className="text-[10px] text-text-muted mt-1 leading-tight">{r.desc}</div>
+                            <div className="text-[11px] text-text-muted mt-1 leading-tight">{r.desc}</div>
                           </button>
                         );
                       })}
@@ -472,7 +472,7 @@ const TargetIncome = () => {
                     <button
                       type="button"
                       onClick={goBack}
-                      className="min-h-[42px] sm:min-h-[48px] px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider border bg-bg-surface border-border/60 text-text-secondary hover:bg-bg-surface-hover transition-all"
+                      className="min-h-[44px] sm:min-h-[48px] px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-xs sm:text-xs font-bold uppercase tracking-wider border bg-bg-surface border-border/60 text-text-secondary hover:bg-bg-surface-hover transition-all"
                     >
                       ← Back
                     </button>
@@ -505,7 +505,7 @@ const TargetIncome = () => {
                       type="button"
                       onClick={goNext}
                       disabled={step === 1 && (!targetMonthly || targetMonthly < 50)}
-                      className="min-h-[42px] sm:min-h-[48px] px-4 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
+                      className="min-h-[44px] sm:min-h-[48px] px-4 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs sm:text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
                     >
                       Next →
                     </button>
@@ -514,7 +514,7 @@ const TargetIncome = () => {
                       type="button"
                       onClick={runGeneration}
                       disabled={!targetMonthly}
-                      className="min-h-[42px] sm:min-h-[48px] px-3 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
+                      className="min-h-[44px] sm:min-h-[48px] px-3 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs sm:text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
                     >
                       ✨ Show Sample Portfolio
                     </button>

@@ -73,11 +73,13 @@ const PageLoader = () => (
 
 function DeferredChatWidget() {
   const [show, setShow] = useState(false);
+  const location = useLocation();
   useEffect(() => {
     const t = setTimeout(() => setShow(true), 3000);
     return () => clearTimeout(t);
   }, []);
   if (!show) return null;
+  if (location.pathname === '/') return null;
   return <ChatWidget />;
 }
 
