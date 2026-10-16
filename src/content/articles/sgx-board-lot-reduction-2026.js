@@ -8,7 +8,7 @@ export const article = {
   excerpt: "From Oct 5, 2026, SGX cuts board lot sizes by 90% for 11 top stocks including DBS, OCBC, and UOB. See the full list, new rules, odd lot changes, and how broker fees affect your actual cost.",
   author: "DividendBro Research Team",
   content: `
-      <p><strong>Starting October 5, 2026, buying Singapore's biggest stocks just got 90% cheaper.</strong> SGX has cut the board lot size for 11 major counters — including all three local banks — from 100 shares to just 10 shares.</p>
+      <p><strong>Starting October 5, 2026, buying Singapore's biggest stocks just got 90% cheaper.</strong> SGX has cut the board lot size for 11 major counters (including all three local banks) from 100 shares to just 10 shares.</p>
 
       <p>For DBS, that means the minimum investment drops from roughly <strong>S$7,700 to S$770</strong>. This is the biggest structural change to SGX trading since 2015.</p>
 
@@ -21,7 +21,7 @@ export const article = {
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="https://dividendbro.com" class="db-ig-link">Live data</a>
         </div>
-        <h4 class="db-ig-title">📊 SGX Board Lot Size — New Rules</h4>
+        <h4 class="db-ig-title">📊 SGX Board Lot Size: New Rules</h4>
         <p class="db-ig-sub">Effective October 5, 2026 · Permanent once applied</p>
         <div class="db-ig-body">
           <div class="db-ig-row">
@@ -41,39 +41,39 @@ export const article = {
           </div>
         </div>
         <div class="db-ig-footer">
-          <strong>Key rule:</strong> The reduced lot size is permanent — it stays even if the stock price later falls below S$10 or S$100.
+          <strong>Key rule:</strong> The reduced lot size is permanent. It stays even if the stock price later falls below S$10 or S$100.
         </div>
       </div>
 
       <h2>What This Means in Real Dollars</h2>
 
-      <p>Here is the actual cost to buy one board lot of each bank — before and after October 5.</p>
+      <p>Here is the actual cost to buy one board lot of each bank, before and after October 5.</p>
 
       <div class="db-ig">
         <div class="db-ig-header">
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="https://dividendbro.com" class="db-ig-link">Income Planner →</a>
         </div>
-        <h4 class="db-ig-title">💰 Cost to Buy 1 Board Lot — Before vs. After</h4>
+        <h4 class="db-ig-title">💰 Cost to Buy 1 Board Lot: Before vs. After</h4>
         <p class="db-ig-sub">Based on approximate prices as of October 2026</p>
         <div class="db-ig-grid">
           <div class="db-ig-stat">
-            <div class="db-ig-stat-label">DBS — Before</div>
+            <div class="db-ig-stat-label">DBS (Before)</div>
             <div class="db-ig-stat-val" style="color:#f87171;">S$7,700</div>
             <div class="db-ig-stat-sub">100 shares × S$77</div>
           </div>
           <div class="db-ig-stat">
-            <div class="db-ig-stat-label">DBS — After</div>
+            <div class="db-ig-stat-label">DBS (After)</div>
             <div class="db-ig-stat-val" style="color:#34d399;">S$770</div>
             <div class="db-ig-stat-sub">10 shares × S$77</div>
           </div>
           <div class="db-ig-stat">
-            <div class="db-ig-stat-label">OCBC — Before</div>
+            <div class="db-ig-stat-label">OCBC (Before)</div>
             <div class="db-ig-stat-val" style="color:#f87171;">S$3,100</div>
             <div class="db-ig-stat-sub">100 shares × S$31</div>
           </div>
           <div class="db-ig-stat">
-            <div class="db-ig-stat-label">OCBC — After</div>
+            <div class="db-ig-stat-label">OCBC (After)</div>
             <div class="db-ig-stat-val" style="color:#34d399;">S$310</div>
             <div class="db-ig-stat-sub">10 shares × S$31</div>
           </div>
@@ -85,7 +85,7 @@ export const article = {
 
       <h2>The Full List of 11 Affected Stocks</h2>
 
-      <p>These 11 stocks were in SGX's first batch. Together, they accounted for <strong>35% of all trading activity</strong> on SGX in the first half of 2026[reference:0].</p>
+      <p>These 11 stocks were in SGX's first batch. Together, they accounted for <strong>35% of all trading activity</strong> on SGX in the first half of 2026.</p>
 
       <table>
         <thead>
@@ -111,7 +111,7 @@ export const article = {
         </tbody>
       </table>
 
-      <p><em>Note: Keppel is priced below S$10, so its board lot size did not change in this round.[reference:1]</em></p>
+      <p><em>Note: Keppel is priced below S$10, so its board lot size did not change in this round.</em></p>
 
       <h2>Why SGX Made This Change</h2>
 
@@ -149,13 +149,13 @@ export const article = {
         </div>
       </div>
 
-      <p>SGX's Head of Equities, Ng Yao Loong, said: "Share prices of some of our largest stocks have risen significantly in recent years, and about 30% of trading activity now comes from stocks priced above S$10. By reducing the board lot size, we bring the minimum investment down from a few thousand dollars to just a few hundred."[reference:2]</p>
+      <p>SGX's Head of Equities, Ng Yao Loong, said: "Share prices of some of our largest stocks have risen significantly in recent years, and about 30% of trading activity now comes from stocks priced above S$10. By reducing the board lot size, we bring the minimum investment down from a few thousand dollars to just a few hundred."</p>
 
-      <p>This move is part of a broader push by the Monetary Authority of Singapore (MAS) and SGX to revitalise the local stock market and attract more retail investors, especially younger ones.[reference:3]</p>
+      <p>This move is part of a broader push by the Monetary Authority of Singapore (MAS) and SGX to revitalise the local stock market and attract more retail investors, especially younger ones.</p>
 
       <h2>The Hidden Benefit: Odd Lots Are Now Easier</h2>
 
-      <p>Before this change, if you wanted to buy fewer than 100 shares of a stock, you had to use the <strong>Unit Share Market</strong> (also called the Odd Lot Market). This market often had lower liquidity and wider bid-ask spreads, making it harder to get a fair price.[reference:4]</p>
+      <p>Before this change, if you wanted to buy fewer than 100 shares of a stock, you had to use the <strong>Unit Share Market</strong> (also called the Odd Lot Market). This market often had lower liquidity and wider bid-ask spreads, making it harder to get a fair price.</p>
 
       <p>With the new 10-share board lot, you can now buy standard lots of 10 shares directly on the main market. No more odd lots for these 11 stocks.</p>
 
@@ -187,7 +187,7 @@ export const article = {
 
       <p>This is the most important thing to understand before you start buying 10-share lots.</p>
 
-      <p>While the board lot size has dropped, most brokers still charge a <strong>minimum commission</strong> per trade. If you buy a S$770 lot of DBS and your broker charges a S$5 minimum, that's <strong>0.65% of your investment</strong> going to fees — before you've made a single cent in dividends.</p>
+      <p>While the board lot size has dropped, most brokers still charge a <strong>minimum commission</strong> per trade. If you buy a S$770 lot of DBS and your broker charges a S$5 minimum, that's <strong>0.65% of your investment</strong> going to fees before you've made a single cent in dividends.</p>
 
       <div class="db-ig">
         <div class="db-ig-header">
@@ -213,9 +213,9 @@ export const article = {
         </div>
       </div>
 
-      <p><strong>The good news:</strong> OCBC Securities announced on October 1 that it will <strong>permanently remove minimum commissions</strong> for all online SGX trades from October 5. Their managing director noted: "If we reduce the minimum board lot size but still charge high minimum commissions, all the returns would basically be eroded by the commission fee."[reference:5]</p>
+      <p><strong>The good news:</strong> OCBC Securities announced on October 1 that it will <strong>permanently remove minimum commissions</strong> for all online SGX trades from October 5. Their managing director noted: "If we reduce the minimum board lot size but still charge high minimum commissions, all the returns would basically be eroded by the commission fee."</p>
 
-      <p><strong>What you should do:</strong> Check your broker's commission structure before you start buying 10-share lots. If your broker still charges a S$5–10 minimum, larger trades may still be more cost-effective.</p>
+      <p><strong>What you should do:</strong> Check your broker's commission structure before you start buying 10-share lots. If your broker still charges a S$5 to S$10 minimum, larger trades may still be more cost-effective.</p>
 
       <h2>What This Means for Your Strategy</h2>
 
@@ -232,13 +232,13 @@ export const article = {
       No. DBS is priced between S$10 and S$100, so the new board lot size is <strong>10 shares</strong>, not 1. You can buy 1 share only if the stock price is above S$100.</p>
 
       <p><strong>When did this change take effect?</strong><br/>
-      The first batch of 11 stocks changed on October 5, 2026.[reference:6]</p>
+      The first batch of 11 stocks changed on October 5, 2026.</p>
 
       <p><strong>Will more stocks be added?</strong><br/>
-      Yes. SGX will review the list every quarter. The next review is scheduled for January 2027.[reference:7]</p>
+      Yes. SGX will review the list every quarter. The next review is scheduled for January 2027.</p>
 
       <p><strong>Will the lot size go back to 100 if the price drops?</strong><br/>
-      No. SGX has stated the reduced lot size is permanent for these stocks, even if prices fall below the thresholds.[reference:8]</p>
+      No. SGX has stated the reduced lot size is permanent for these stocks, even if prices fall below the thresholds.</p>
 
       <p><strong>Does this apply to US stocks too?</strong><br/>
       No. This change only applies to SGX-listed stocks. US fractional shares are a separate feature offered by some brokers.</p>

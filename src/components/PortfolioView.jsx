@@ -403,7 +403,7 @@ const PortfolioView = () => {
       Stock: h.name,
       Symbol: h.symbol,
       Shares: h.shares,
-      'Purchase Price': h.purchasePrice || '—',
+      'Purchase Price': h.purchasePrice || '-',
       'Current Price': h.priceInBase,
       Value: h.valueInBase,
       'Cost Basis': h.costBasis,
@@ -562,7 +562,7 @@ const PortfolioView = () => {
                   </div>
                   <div>
                     <span className="text-xs text-text-muted">Avg Cost</span>
-                    <div className="font-medium text-sm">{h.purchasePrice ? formatCurrency(h.purchasePrice, curSymbol) : '—'}</div>
+                    <div className="font-medium text-sm">{h.purchasePrice ? formatCurrency(h.purchasePrice, curSymbol) : '-'}</div>
                   </div>
                   <div>
                     <span className="text-xs text-text-muted">Close Market</span>

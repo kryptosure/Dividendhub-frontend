@@ -13,14 +13,14 @@ export const insight = {
     <figure style="margin: 2rem 0;">
       <img
         src="/images/blog/strategy-daily-dividend-vote-infographic.webp"
-        alt="Infographic explaining Strategy's daily dividend vote on October 28, 2026 — covering the vote details, four affected preferred stocks (STRC, STRF, STRK, STRD), schedule changes, and the three reasons behind the daily plan"
+        alt="Infographic explaining Strategy's daily dividend vote on October 28, 2026, covering the vote details, four affected preferred stocks (STRC, STRF, STRK, STRD), schedule changes, and the three reasons behind the daily plan"
         width="1400"
         height="788"
         loading="eager"
         style="width: 100%; border-radius: 12px; border: 1px solid var(--border-color);"
       />
       <figcaption style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">
-        Strategy's Daily Dividend Vote — Key Implications · Source: Strategy (MSTR) Proxy Statement, Oct 15, 2026
+        Strategy's Daily Dividend Vote: Key Implications · Source: Strategy (MSTR) Proxy Statement, Oct 15, 2026
       </figcaption>
     </figure>
 
@@ -70,7 +70,7 @@ export const insight = {
       </tbody>
     </table>
 
-    <p>Under the new schedule, <strong>every calendar day</strong> — including weekends and holidays — becomes a dividend record date. If you own shares on any given day, you accrue a small dividend for that day, paid on the next business day.</p>
+    <p>Under the new schedule, <strong>every calendar day</strong>, including weekends and holidays, becomes a dividend record date. If you own shares on any given day, you accrue a small dividend for that day, paid on the next business day.</p>
 
     <h2>Why Is Strategy Proposing Daily Dividends?</h2>
 
@@ -80,7 +80,7 @@ export const insight = {
     <p>STRC, Strategy's flagship preferred stock, has traded as low as $71 in 2026. The company wants it to trade closer to its $100 target price. By paying daily, the price drop on any single ex-dividend date becomes much smaller, which reduces the "ex-dividend drop" that can spook investors.</p>
 
     <p><strong>2. Reduce Reinvestment Lag</strong></p>
-    <p>When you receive a quarterly dividend, you have to wait up to 90 days before you can reinvest it. Daily dividends mean the cash hits your account every day, so you can compound faster. For large positions, this actually matters — a 12% yield compounded daily produces a slightly higher effective yield than the same rate paid quarterly.</p>
+    <p>When you receive a quarterly dividend, you have to wait up to 90 days before you can reinvest it. Daily dividends mean the cash hits your account every day, so you can compound faster. For large positions, this actually matters. A 12% yield compounded daily produces a slightly higher effective yield than the same rate paid quarterly.</p>
 
     <p><strong>3. Attract New Buyers</strong></p>
     <p>Daily dividends are a novelty. Strategy is positioning these as the first securities with true calendar-day accruals. That's a marketing angle designed to attract income-focused investors who might otherwise ignore preferred stocks.</p>

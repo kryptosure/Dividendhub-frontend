@@ -13,13 +13,13 @@ const ISSUERS = [
   {
     name: 'YieldMax',
     tickers: ['MSTY', 'CONY', 'ULTY', 'TSLY', 'NVDY', 'YMAX', 'YMAG', 'SLTY', 'CHPY', 'GPTY', 'LFGY'],
-    strategy: 'Single-stock option income — sells call spreads on one underlying company. Captures premium, but caps upside.',
+    strategy: 'Single-stock option income. Sells call spreads on one underlying company. Captures premium, but caps upside.',
     note: 'Largest weekly-payer family. Distribution rates range from ~30% to ~200%+ annualised.',
   },
   {
     name: 'Roundhill',
     tickers: ['XDTE', 'QDTE', 'RDTE', 'MAGY', 'WEEK', 'AAPW', 'NVW', 'TSLW', 'MSTW', 'PLTW', 'COIW'],
-    strategy: '0DTE covered calls on broad indices, plus WeeklyPay single-stock leverage. WEEK is a T-bill ladder — the only non-options weekly payer.',
+    strategy: '0DTE covered calls on broad indices, plus WeeklyPay single-stock leverage. WEEK is a T-bill ladder, the only non-options weekly payer.',
     note: 'WEEK is the only "safe" weekly payer in the market. Everything else is an options strategy.',
   },
   {
@@ -31,7 +31,7 @@ const ISSUERS = [
   {
     name: 'GraniteShares',
     tickers: ['NVYY', 'XBTY', 'COYY', 'TSYY', 'AMYY', 'TQQY', 'IOYY', 'YSPY', 'QBY', 'RGYY'],
-    strategy: 'YieldBOOST — leverages the underlying stock and writes puts to generate weekly premium.',
+    strategy: 'YieldBOOST. Leverages the underlying stock and writes puts to generate weekly premium.',
     note: 'Highest-yielding group. TSYY and COYY frequently show 200%+ headline yields.',
   },
   {
@@ -73,7 +73,7 @@ const WeeklyDividendETFs = () => {
     return map;
   }, [weeklyEtfs]);
 
-  const fmt = (n) => (n == null || isNaN(n) ? '—' : Number(n).toFixed(2));
+  const fmt = (n) => (n == null || isNaN(n) ? '-' : Number(n).toFixed(2));
 
   // Structured data for Google
   const schema = {
@@ -93,7 +93,7 @@ const WeeklyDividendETFs = () => {
         name: 'Are weekly dividend ETFs safe?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Most weekly dividend ETFs are high-risk. Their headline yields of 30% to 200%+ come from selling options, not from underlying dividend income. Many experience NAV erosion — the fund pays out more than it earns, reducing the share price over time. The Roundhill Weekly T-Bill ETF (WEEK) is the only widely-held weekly payer that generates income from Treasury bills rather than options.',
+          text: 'Most weekly dividend ETFs are high-risk. Their headline yields of 30% to 200%+ come from selling options, not from underlying dividend income. Many experience NAV erosion, where the fund pays out more than it earns and reduces the share price over time. The Roundhill Weekly T-Bill ETF (WEEK) is the only widely-held weekly payer that generates income from Treasury bills rather than options.',
         },
       },
       {
@@ -101,7 +101,7 @@ const WeeklyDividendETFs = () => {
         name: 'What is the highest-yielding weekly dividend ETF?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'As of September 2026, MSTY (YieldMax MSTR Option Income Strategy ETF) and TSYY (GraniteShares YieldBOOST TSLA) have shown the highest headline distribution rates, occasionally exceeding 400% annualised. These figures are misleading — they reflect return of capital and are not sustainable. Always check the 30-day SEC yield alongside the distribution rate.',
+          text: 'As of September 2026, MSTY (YieldMax MSTR Option Income Strategy ETF) and TSYY (GraniteShares YieldBOOST TSLA) have shown the highest headline distribution rates, occasionally exceeding 400% annualised. These figures are misleading. They reflect return of capital and are not sustainable. Always check the 30-day SEC yield alongside the distribution rate.',
         },
       },
       {
@@ -109,7 +109,7 @@ const WeeklyDividendETFs = () => {
         name: 'Do weekly dividend ETFs pay qualified dividends?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Rarely. Most weekly distributions from options-income ETFs are classified as ordinary income or return of capital, not qualified dividends. Return of capital is not immediately taxed — it reduces your cost basis — but the tax bill is deferred, not eliminated. This makes weekly ETFs less tax-efficient than traditional dividend stocks in a taxable account.',
+          text: 'Rarely. Most weekly distributions from options-income ETFs are classified as ordinary income or return of capital, not qualified dividends. Return of capital is not immediately taxed, but it reduces your cost basis. The tax bill is deferred, not eliminated. This makes weekly ETFs less tax-efficient than traditional dividend stocks in a taxable account.',
         },
       },
     ],
@@ -118,10 +118,10 @@ const WeeklyDividendETFs = () => {
   return (
     <>
       <Helmet>
-        <title>Weekly Dividend ETFs — Full List of 73 Weekly Payers (2026) | DividendBro</title>
+        <title>Weekly Dividend ETFs: Full List of 73 Weekly Payers (2026) | DividendBro</title>
         <meta name="description" content="Complete list of every weekly dividend ETF in 2026, filtered by issuer, yield, and strategy. Includes YieldMax, Roundhill, Defiance, and GraniteShares weekly payers. Updated live." />
         <link rel="canonical" href={`${SITE_URL}/weekly-dividend-etfs`} />
-        <meta property="og:title" content="Weekly Dividend ETFs — Full List of 73 Weekly Payers (2026)" />
+        <meta property="og:title" content="Weekly Dividend ETFs: Full List of 73 Weekly Payers (2026)" />
         <meta property="og:description" content="Every weekly dividend ETF in one place. Live yields, issuer breakdown, and the risks nobody talks about." />
         <meta property="og:url" content={`${SITE_URL}/weekly-dividend-etfs`} />
         <meta property="og:type" content="article" />
@@ -141,7 +141,7 @@ const WeeklyDividendETFs = () => {
             Weekly Dividend ETFs: The Full List of <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">{weeklyEtfs.length || 73} Weekly Payers</span>
           </h1>
           <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-3xl">
-            Every ETF that pays cash to shareholders every week — YieldMax, Roundhill, Defiance, GraniteShares, and REX. Live yields, strategies, and the risks most YouTube videos won't tell you about.
+            Every ETF that pays cash to shareholders every week: YieldMax, Roundhill, Defiance, GraniteShares, and REX. Live yields, strategies, and the risks most YouTube videos won't tell you about.
           </p>
           <p className="text-text-muted text-xs">
             Updated September 2026 · {weeklyEtfs.length || 73} tickers tracked · Data from Yahoo Finance + issuer disclosures
@@ -164,7 +164,7 @@ const WeeklyDividendETFs = () => {
             What is a weekly dividend ETF?
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            A weekly dividend ETF distributes cash to shareholders every week instead of the traditional quarterly or monthly schedule. Almost all of them use <strong className="text-text-primary">options-selling strategies</strong> — they sell call options on an underlying stock or index and pass the premium to shareholders as a "dividend."
+            A weekly dividend ETF distributes cash to shareholders every week instead of the traditional quarterly or monthly schedule. Almost all of them use <strong className="text-text-primary">options-selling strategies</strong>. They sell call options on an underlying stock or index and pass the premium to shareholders as a "dividend."
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
             That distinction matters. These aren't dividends in the traditional sense. Most distributions are classified as <strong className="text-text-primary">return of capital</strong>, which means the fund is partly paying you back your own money. Your share price (NAV) typically declines over time as a result.
@@ -180,7 +180,7 @@ const WeeklyDividendETFs = () => {
             How often do ETFs pay dividends?
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Most dividend ETFs pay quarterly. A small but growing group pays monthly. Weekly payers are a niche within a niche — all launched since 2022.
+            Most dividend ETFs pay quarterly. A small but growing group pays monthly. Weekly payers are a niche within a niche, all launched since 2022.
           </p>
 
           <div className="overflow-x-auto mobile-scroll">
@@ -261,7 +261,7 @@ const WeeklyDividendETFs = () => {
                           {fmt(etf.currentYield)}%
                         </td>
                         <td className="px-3 py-2.5 text-right font-mono text-text-secondary text-xs">
-                          {etf.currentPrice ? `$${fmt(etf.currentPrice)}` : '—'}
+                          {etf.currentPrice ? `$${fmt(etf.currentPrice)}` : '-'}
                         </td>
                         <td className="px-3 py-2.5 text-center">
                           <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border ${
@@ -334,7 +334,7 @@ const WeeklyDividendETFs = () => {
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
               <h3 className="font-bold text-text-primary text-base mb-2">Return of capital, not dividends</h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                YieldMax's own August 2026 estimate classified 100% of TSLY's distributions as return of capital. That means the fund isn't earning that income — it's paying you back from its own assets. The distribution looks like income on a statement, but your cost basis is being reduced.
+                YieldMax's own August 2026 estimate classified 100% of TSLY's distributions as return of capital. That means the fund isn't earning that income. It's paying you back from its own assets. The distribution looks like income on a statement, but your cost basis is being reduced.
               </p>
             </div>
 
@@ -355,7 +355,7 @@ const WeeklyDividendETFs = () => {
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
               <h3 className="font-bold text-text-primary text-base mb-2">Tax treatment</h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Return of capital isn't immediately taxable, which sounds good. But it reduces your cost basis. When you eventually sell, you pay capital gains on the difference — often at less favorable rates than if you'd received qualified dividends. The tax bill is deferred, not eliminated.
+                Return of capital isn't immediately taxable, which sounds good. But it reduces your cost basis. When you eventually sell, you pay capital gains on the difference, often at less favorable rates than if you'd received qualified dividends. The tax bill is deferred, not eliminated.
               </p>
             </div>
 
@@ -392,7 +392,7 @@ const WeeklyDividendETFs = () => {
         {/* ========== CTA ========== */}
         <section className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight mb-2">
-            See all 643 dividend payers — weekly, monthly, and quarterly
+            See all 643 dividend payers: weekly, monthly, and quarterly
           </h2>
           <p className="text-text-secondary text-sm mb-5 max-w-xl mx-auto">
             Our screener tracks every dividend-paying stock, REIT, ETF, and preferred stock across US and SGX markets. Filter by frequency, asset type, and risk.
