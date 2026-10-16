@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import useStore from '../store/useStore';
@@ -7,12 +7,11 @@ import { track } from '../services/tracker';
 import LoadingSpinner from '../components/LoadingSpinner';
 import InfoTip from '../components/InfoTip';
 
-// ✅ CA added. 'All' replaces 'Both' as the mixed-markets option.
 const LOCATIONS = [
-  { key: 'SG', label: 'Singapore', sub: 'SGX stocks only' },
-  { key: 'US', label: 'United States', sub: 'US stocks only' },
-  { key: 'CA', label: 'Canada', sub: 'TSX stocks only' },
-  { key: 'All', label: 'All Markets', sub: 'US + CA + SGX' },
+  { key: 'SG', label: 'Singapore', sub: 'SGX stocks only', emoji: '🇸🇬' },
+  { key: 'US', label: 'United States', sub: 'US stocks only', emoji: '🇺🇸' },
+  { key: 'CA', label: 'Canada', sub: 'TSX stocks only', emoji: '🇨🇦' },
+  { key: 'All', label: 'All Markets', sub: 'US + CA + SGX', emoji: '🌏' },
 ];
 
 const RISK_LABELS = [
@@ -39,7 +38,6 @@ const SECTOR_LABELS = {
 
 const sectorLabel = (s) => SECTOR_LABELS[s] || s;
 
-// ✅ Map store market → planner location, so the header toggle drives the default.
 function marketToLocation(market) {
   if (market === 'sg') return 'SG';
   if (market === 'ca') return 'CA';
@@ -53,21 +51,19 @@ const TargetIncome = () => {
   const [searchParams] = useSearchParams();
 
   const [targetMonthly, setTargetMonthly] = useState(500);
-  const [capital, setCapital] = useState('');
-  // ✅ Initialize from store market on first render
   const [location, setLocation] = useState(() => marketToLocation(storeMarket));
   const [riskProfile, setRiskProfile] = useState('balanced');
 
+  const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
 
+  const resultsRef = useRef(null);
+
   const curSymbol = currency === 'sgd' ? 'S$' : currency === 'cad' ? 'C$' : '$';
 
-  // ✅ Keep the planner location in sync when the user changes market in the header.
-  // Selecting manually inside the planner still works, this only re-fires
-  // when the store value actually changes.
   useEffect(() => {
     setLocation(marketToLocation(storeMarket));
   }, [storeMarket]);
@@ -79,8 +75,7 @@ const TargetIncome = () => {
     }
   }, [searchParams, navigate]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const runGeneration = async () => {
     setIsLoading(true);
     setError(null);
     setResult(null);
@@ -88,7 +83,7 @@ const TargetIncome = () => {
 
     track('income_planner_generate', {
       targetMonthly,
-      capital: capital ? Number(capital) : 0,
+      capital: 0,
       location,
       riskProfile,
     });
@@ -96,11 +91,16 @@ const TargetIncome = () => {
     try {
       const data = await generateIncomeAllocation({
         targetMonthly: Number(targetMonthly),
-        capital: capital ? Number(capital) : 0,
+        capital: 0,
         location,
         riskProfile,
       });
       setResult(data);
+
+      // Scroll to results after render
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     } catch (err) {
       const msg = err.response?.data?.error || err.message || 'Something went wrong. Try again.';
       setError(msg);
@@ -114,7 +114,6 @@ const TargetIncome = () => {
     const newHoldings = result.positions.map((p) => ({
       symbol: p.symbol,
       name: p.name,
-      // ✅ CA: detect market from ticker suffix
       market: p.symbol.endsWith('.SI') ? 'sg' : p.symbol.endsWith('.TO') ? 'ca' : 'us',
       shares: p.shares,
       purchasePrice: p.currentPrice,
@@ -134,6 +133,10 @@ const TargetIncome = () => {
     return Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
+  const goNext = () => setStep((s) => Math.min(s + 1, 3));
+  const goBack = () => setStep((s) => Math.max(s - 1, 1));
+  const goToStep = (n) => setStep(n);
+
   return (
     <>
       <Helmet>
@@ -144,178 +147,238 @@ const TargetIncome = () => {
       <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
 
         {/* Header */}
-        <div>
+        <div className="text-center">
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
             Monthly Dividend <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Income Planner</span>
           </h1>
-          <p className="text-text-muted text-sm mt-2 max-w-3xl">
-            Want to earn <strong className="text-text-secondary">{curSymbol}500 every month</strong> from dividends? Tell us your goal and we'll show you what a portfolio could look like.
+          <p className="text-text-muted text-sm mt-2 max-w-2xl mx-auto">
+            Answer 3 quick questions and we'll build a sample dividend portfolio for you.
           </p>
         </div>
 
-        {/* Compliance banner */}
-        <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4">
-          <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
-            This is a learning tool, not financial advice
-          </p>
-          <p className="text-[11px] text-text-secondary leading-relaxed">
-            DividendBro is not a licensed financial adviser. We use public market data to show you <strong className="text-text-primary">an example</strong> of what a portfolio could look like. It's not a recommendation. Always do your own research before investing.
-          </p>
-        </div>
+        {/* ============ WIZARD ============ */}
+        <div className="bg-bg-surface border border-border/50 rounded-2xl shadow-sm overflow-hidden">
 
-        {/* Input form */}
-        <form onSubmit={handleSubmit} className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm space-y-6">
-
-          {/* Target income */}
-          <div>
-            <div className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
-              <label htmlFor="target-monthly-input">
-                How much do you want per month?
-              </label>
-              <InfoTip text="This is your monthly income goal from dividends. Pick something realistic, most dividend investors aim for 3-6% per year on their investment." />
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-2xl font-black text-accent-blue font-mono" aria-hidden="true">{curSymbol}</span>
-              <input
-                id="target-monthly-input"
-                type="number"
-                value={targetMonthly}
-                onChange={(e) => setTargetMonthly(Number(e.target.value) || 0)}
-                min="50"
-                max="1000000"
-                step="50"
-                required
-                aria-label="Target monthly dividend income in dollars"
-                className="flex-1 bg-bg-primary border border-border/60 rounded-xl px-4 py-3 text-2xl font-black text-text-primary focus:outline-none focus:border-accent-blue"
-              />
-              <span className="text-sm font-bold text-text-muted">/ month</span>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-3">
-              {[200, 500, 1000, 2000].map((v) => (
-                <button
-                  key={v}
-                  type="button"
-                  onClick={() => setTargetMonthly(v)}
-                  className={`min-h-[40px] text-[12px] font-bold px-4 py-2 rounded-lg border transition-all ${
-                    targetMonthly === v
-                      ? 'bg-accent-blue text-white border-accent-blue'
-                      : 'bg-bg-primary border-border/60 text-text-secondary hover:border-accent-blue/60'
-                  }`}
-                >
-                  {curSymbol}{v.toLocaleString()}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Capital (optional) */}
-          <div>
-            <div className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
-              <label htmlFor="capital-input">
-                How much do you have to invest?
-              </label>
-              <span className="text-text-muted/70 normal-case tracking-normal font-medium ml-1">(optional)</span>
-              <InfoTip text="Enter the amount you can invest today. We'll show what monthly income that could produce. Leave blank to see how much you'd need for your goal." />
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xl font-black text-accent-teal font-mono" aria-hidden="true">{curSymbol}</span>
-              <input
-                id="capital-input"
-                type="number"
-                value={capital}
-                onChange={(e) => setCapital(e.target.value)}
-                placeholder="Leave blank to see how much you'd need"
-                min="0"
-                step="100"
-                aria-label="Amount you have to invest today in dollars"
-                className="flex-1 bg-bg-primary border border-border/60 rounded-xl px-4 py-3 text-lg font-bold text-text-primary placeholder-text-muted/50 focus:outline-none focus:border-accent-teal"
-              />
-            </div>
-          </div>
-
-          {/* Location */}
-          <fieldset>
-            <legend className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-2">
-              Where are you investing from?
-              <InfoTip text="This affects which stocks we show. Singapore, US, and Canadian investors all have different tax situations." />
-            </legend>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {LOCATIONS.map((loc) => (
-                <button
-                  key={loc.key}
-                  type="button"
-                  onClick={() => setLocation(loc.key)}
-                  aria-pressed={location === loc.key}
-                  className={`min-h-[64px] rounded-xl p-3 border text-left transition-all ${
-                    location === loc.key
-                      ? 'border-accent-blue bg-accent-blue/5'
-                      : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
-                  }`}
-                >
-                  <p className="text-xs font-bold text-text-primary">{loc.label}</p>
-                  <p className="text-[10px] text-text-muted mt-0.5">{loc.sub}</p>
-                </button>
-              ))}
-            </div>
-          </fieldset>
-
-          {/* Risk profile */}
-          <div>
-            <div className="flex items-center text-[10px] uppercase text-text-muted font-bold tracking-widest mb-3">
-              <label htmlFor="risk-profile-slider">
-                How much risk are you okay with?
-              </label>
-              <InfoTip text="Higher risk usually means higher income, but the dividend could get cut. If you're new to investing, 'Balanced' is a good starting point." />
-            </div>
-
-            <input
-              id="risk-profile-slider"
-              type="range"
-              min="0"
-              max="3"
-              step="1"
-              value={RISK_LABELS.findIndex(r => r.key === riskProfile)}
-              onChange={(e) => setRiskProfile(RISK_LABELS[Number(e.target.value)].key)}
-              aria-label="Risk profile selector"
-              aria-valuemin="0"
-              aria-valuemax="3"
-              aria-valuenow={RISK_LABELS.findIndex(r => r.key === riskProfile)}
-              aria-valuetext={RISK_LABELS.find(r => r.key === riskProfile)?.label || 'Balanced'}
-              className="w-full accent-accent-blue cursor-pointer"
-            />
-
-            <div className="grid grid-cols-4 gap-1 mt-3">
-              {RISK_LABELS.map((r) => {
-                const active = r.key === riskProfile;
+          {/* Progress bar */}
+          <div className="px-5 sm:px-8 pt-6 pb-4 border-b border-border/40 bg-bg-primary/20">
+            <div className="flex items-center justify-between">
+              {[1, 2, 3].map((n, i) => {
+                const isActive = step === n;
+                const isDone = step > n;
                 return (
-                  <button
-                    key={r.key}
-                    type="button"
-                    onClick={() => setRiskProfile(r.key)}
-                    aria-pressed={active}
-                    className={`min-h-[56px] text-center rounded-lg py-2.5 px-1 transition-all ${
-                      active ? 'bg-accent-blue/10 border border-accent-blue/40' : 'border border-transparent hover:bg-bg-primary'
-                    }`}
-                  >
-                    <div className={`text-[11px] font-black ${active ? 'text-accent-blue' : 'text-text-secondary'}`}>
-                      {r.label}
-                    </div>
-                    <div className="text-[9px] text-text-muted mt-0.5">{r.desc}</div>
-                  </button>
+                  <React.Fragment key={n}>
+                    <button
+                      type="button"
+                      onClick={() => goToStep(n)}
+                      className="flex flex-col items-center gap-1.5 group"
+                      aria-label={`Go to step ${n}`}
+                    >
+                      <div
+                        className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                          isActive
+                            ? 'bg-gradient-to-br from-accent-blue to-accent-teal text-white shadow-md'
+                            : isDone
+                            ? 'bg-accent-green/20 text-accent-green border border-accent-green/40'
+                            : 'bg-bg-primary border border-border/60 text-text-muted group-hover:border-accent-blue/50'
+                        }`}
+                      >
+                        {isDone ? '✓' : n}
+                      </div>
+                      <span
+                        className={`text-[10px] font-bold uppercase tracking-wider ${
+                          isActive ? 'text-accent-blue' : isDone ? 'text-accent-green' : 'text-text-muted'
+                        }`}
+                      >
+                        {n === 1 ? 'Income' : n === 2 ? 'Market' : 'Risk'}
+                      </span>
+                    </button>
+                    {i < 2 && (
+                      <div
+                        className={`flex-1 h-0.5 mx-2 sm:mx-3 rounded-full transition-colors ${
+                          step > n ? 'bg-accent-green/40' : 'bg-border/40'
+                        }`}
+                      />
+                    )}
+                  </React.Fragment>
                 );
               })}
             </div>
           </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={isLoading || !targetMonthly}
-            className="w-full min-h-[56px] py-4 bg-gradient-to-r from-accent-blue to-accent-teal text-white font-bold text-sm tracking-wider uppercase rounded-xl shadow-md hover:opacity-95 active:scale-[0.99] transition-all disabled:opacity-40"
-          >
-            {isLoading ? 'Building your sample portfolio…' : 'Show Me A Sample Portfolio'}
-          </button>
-        </form>
+          {/* Step content */}
+          <div className="px-5 sm:px-8 py-8 min-h-[300px] flex flex-col justify-center">
+
+            {/* ===== STEP 1: Target monthly income ===== */}
+            {step === 1 && (
+              <div className="space-y-6 max-w-2xl mx-auto w-full">
+                <div className="text-center">
+                  <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                    Question 1 of 3
+                  </p>
+                  <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">
+                    How much dividend income do you want per month?
+                  </h2>
+                  <p className="text-xs text-text-muted mt-2">
+                    Pick a target. Most dividend investors aim for 3 to 6% per year on their investment.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3 max-w-md mx-auto">
+                  <span className="text-3xl font-black text-accent-blue font-mono" aria-hidden="true">
+                    {curSymbol}
+                  </span>
+                  <input
+                    type="number"
+                    value={targetMonthly}
+                    onChange={(e) => setTargetMonthly(Number(e.target.value) || 0)}
+                    min="50"
+                    max="1000000"
+                    step="50"
+                    aria-label="Target monthly dividend income in dollars"
+                    className="flex-1 bg-bg-primary border-2 border-border/60 rounded-xl px-4 py-4 text-3xl font-black text-text-primary text-center focus:outline-none focus:border-accent-blue transition-colors"
+                  />
+                  <span className="text-sm font-bold text-text-muted">/mo</span>
+                </div>
+
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {[200, 500, 1000, 2000].map((v) => (
+                    <button
+                      key={v}
+                      type="button"
+                      onClick={() => setTargetMonthly(v)}
+                      className={`text-sm font-bold px-4 py-2 rounded-lg border transition-all ${
+                        targetMonthly === v
+                          ? 'bg-accent-blue text-white border-accent-blue shadow-sm'
+                          : 'bg-bg-primary border-border/60 text-text-secondary hover:border-accent-blue/60'
+                      }`}
+                    >
+                      {curSymbol}{v.toLocaleString()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ===== STEP 2: Location ===== */}
+            {step === 2 && (
+              <div className="space-y-6 max-w-2xl mx-auto w-full">
+                <div className="text-center">
+                  <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                    Question 2 of 3
+                  </p>
+                  <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">
+                    Where are you investing from?
+                  </h2>
+                  <p className="text-xs text-text-muted mt-2">
+                    This affects which stocks we show. Singapore, US, and Canadian investors all have different tax situations.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+                  {LOCATIONS.map((loc) => {
+                    const active = location === loc.key;
+                    return (
+                      <button
+                        key={loc.key}
+                        type="button"
+                        onClick={() => setLocation(loc.key)}
+                        aria-pressed={active}
+                        className={`min-h-[88px] rounded-xl p-4 border-2 text-left transition-all active:scale-[0.98] ${
+                          active
+                            ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
+                            : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
+                        }`}
+                      >
+                        <div className="text-2xl mb-1">{loc.emoji}</div>
+                        <p className={`text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
+                          {loc.label}
+                        </p>
+                        <p className="text-[10px] text-text-muted mt-0.5">{loc.sub}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* ===== STEP 3: Risk ===== */}
+            {step === 3 && (
+              <div className="space-y-6 max-w-2xl mx-auto w-full">
+                <div className="text-center">
+                  <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                    Question 3 of 3
+                  </p>
+                  <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">
+                    How much risk are you okay with?
+                  </h2>
+                  <p className="text-xs text-text-muted mt-2">
+                    Higher risk usually means higher income, but the dividend could get cut. If you're new, <strong className="text-text-secondary">Balanced</strong> is a good start.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-2xl mx-auto">
+                  {RISK_LABELS.map((r) => {
+                    const active = r.key === riskProfile;
+                    return (
+                      <button
+                        key={r.key}
+                        type="button"
+                        onClick={() => setRiskProfile(r.key)}
+                        aria-pressed={active}
+                        className={`min-h-[88px] rounded-xl p-3 border-2 transition-all active:scale-[0.98] ${
+                          active
+                            ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
+                            : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
+                        }`}
+                      >
+                        <div className={`text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
+                          {r.label}
+                        </div>
+                        <div className="text-[10px] text-text-muted mt-1 leading-tight">{r.desc}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Navigation footer */}
+          <div className="px-5 sm:px-8 py-5 border-t border-border/40 bg-bg-primary/20 flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={goBack}
+              disabled={step === 1}
+              className={`min-h-[48px] px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all ${
+                step === 1
+                  ? 'opacity-0 pointer-events-none'
+                  : 'bg-bg-surface border-border/60 text-text-secondary hover:bg-bg-surface-hover'
+              }`}
+            >
+              ← Back
+            </button>
+
+            {step < 3 ? (
+              <button
+                type="button"
+                onClick={goNext}
+                disabled={step === 1 && (!targetMonthly || targetMonthly < 50)}
+                className="min-h-[48px] px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
+              >
+                Next →
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={runGeneration}
+                disabled={isLoading || !targetMonthly}
+                className="min-h-[48px] px-6 sm:px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
+              >
+                {isLoading ? 'Building…' : '✨ Show Me a Sample Portfolio'}
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Loading */}
         {isLoading && <div className="py-12"><LoadingSpinner /></div>}
@@ -329,7 +392,7 @@ const TargetIncome = () => {
 
         {/* Results */}
         {result && result.ok && (
-          <>
+          <div ref={resultsRef} className="space-y-6">
             <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center md:text-left">
@@ -351,16 +414,6 @@ const TargetIncome = () => {
                   <p className="text-xs text-text-muted">/ month from {result.summary.positionCount} stocks</p>
                 </div>
               </div>
-
-              {result.summary.gap > 0 && (
-                <div className="mt-4 pt-4 border-t border-border/30 text-center">
-                  <p className="text-xs text-text-muted">
-                    You have <span className="font-bold text-text-primary">{curSymbol}{fmt(result.summary.providedCapital)}</span>.
-                    Your goal needs <span className="font-bold text-text-primary">{curSymbol}{fmt(result.summary.requiredCapital)}</span>.
-                    Shortfall: <span className="font-bold text-amber-300">{curSymbol}{fmt(result.summary.gap)}</span>.
-                  </p>
-                </div>
-              )}
             </div>
 
             {result.warnings?.length > 0 && (
@@ -518,17 +571,18 @@ const TargetIncome = () => {
               <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Important</p>
               <p className="text-[11px] text-text-muted leading-relaxed">{result.disclaimer}</p>
             </div>
-          </>
-        )}
-
-        {!result && !isLoading && !error && (
-          <div className="bg-bg-surface border border-dashed border-border/40 rounded-2xl p-10 text-center">
-            <p className="text-sm font-bold text-text-primary">Tell us your goal and we'll show you a sample</p>
-            <p className="text-xs text-text-muted mt-1 max-w-md mx-auto">
-              Enter a monthly target above and press the button. We'll build a sample portfolio from real market data.
-            </p>
           </div>
         )}
+
+        {/* ============ DISCLAIMER (moved to bottom) ============ */}
+        <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4 mt-8">
+          <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
+            This is a learning tool, not financial advice
+          </p>
+          <p className="text-[11px] text-text-secondary leading-relaxed">
+            DividendBro is not a licensed financial adviser. We use public market data to show you <strong className="text-text-primary">an example</strong> of what a portfolio could look like. It's not a recommendation. Always do your own research before investing.
+          </p>
+        </div>
       </div>
     </>
   );
