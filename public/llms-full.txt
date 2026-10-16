@@ -1,319 +1,143 @@
-# DividendBro — Full Documentation for AI Systems
-
-> DividendBro is a free dividend tracker for US, Canadian (TSX), and Singapore (SGX) stocks. Track dividend yields, ex-dividend payout dates, dividend calendars, payout ratios, dividend growth, and portfolio income across 670+ securities — including stocks, REITs, ETFs, bond ETFs, and preferred stocks. Educational tool only — not financial advice.
-
-This document is the extended version of `/llms.txt`. It contains detailed feature descriptions, complete data references, an FAQ, and technical context for AI systems that want to answer questions about DividendBro accurately.
-
-**Site URL:** https://dividendbro.com
-**Contact:** hello@dividendbro.com
-**Founded:** 2025
-**Primary audience:** Retail dividend investors in Singapore, the United States, and Canada
-**Licensing status:** Not a licensed financial adviser. Educational tool only.
 
 ---
 
-## What DividendBro Is
+## Frequently Asked Questions
 
-DividendBro is a free dividend tracker for dividend investors. It answers questions like:
+### About DividendBro
 
-- "How much would I need to invest to earn $500/month in dividends?"
-- "What is the dividend yield on DBS?"
-- "Which REITs pay dividends every month?"
-- "When is the next DBS ex-dividend date?"
-- "Are there any stocks that pay dividends daily?"
-- "How does DBS's dividend compare to OCBC and UOB?"
-- "Which Canadian banks pay the highest dividends?"
-- "How does the TFSA work for dividend investors?"
-- "What is the SGX board lot size change in 2026?"
+**Q: What is a dividend tracker?**
+A: A dividend tracker is a tool that monitors your dividend income, yield, ex-dividend dates, and payout history across your portfolio. DividendBro is a free dividend tracker covering 670+ stocks across US, SGX, and TSX markets — including stocks, REITs, ETFs, bond ETFs, and preferred stocks.
 
-The tool aggregates public market data from Yahoo Finance and Financial Modeling Prep and presents it in a consumer-friendly interface. It does not provide investment recommendations. Every page includes disclaimers under the Financial Advisers Act (Singapore) and standard US disclosure norms.
+**Q: What is DividendBro?**
+A: DividendBro is a free dividend tracker for US, Canadian, and SGX (Singapore Exchange) markets. It tracks dividend yields, ex-dividend payout dates, dividend calendars, dividend growth, and safety metrics for over 670 securities.
 
----
+**Q: Is DividendBro free?**
+A: Yes, entirely free. There is no paywall, subscription, or credit card required. Stock analysis, screening, comparison, and the Income Planner all work without a user account.
 
-## Markets Covered
+**Q: Does DividendBro give financial advice?**
+A: No. DividendBro is an educational tool only. It is not licensed under the Financial Advisers Act (Singapore) and is not a registered investment adviser in the United States. Every page includes disclaimers noting that the content is for informational purposes and not a recommendation to buy or sell securities.
 
-### United States
-Dividend-paying stocks, REITs, BDCs, closed-end funds, ETFs, bond ETFs, and preferred stocks across NYSE, NASDAQ, and NYSE Arca.
+**Q: Who runs DividendBro?**
+A: DividendBro is an independent project built by a small team of developers and dividend investors. It has no institutional backing or paid sponsorships.
 
-### Canada (TSX)
-29 TSX-listed dividend stocks as of September 2026, including:
-- **Big Six banks:** RBC (RY.TO), TD (TD.TO), Scotiabank (BNS.TO), BMO (BMO.TO), CIBC (CM.TO), National Bank (NA.TO)
-- **Pipelines & energy:** Enbridge (ENB.TO), TC Energy (TRP.TO), Pembina (PPL.TO), Suncor (SU.TO), Canadian Natural Resources (CNQ.TO), Freehold Royalties (FRU.TO), Whitecap Resources (WCP.TO)
-- **Telecoms & utilities:** BCE (BCE.TO), TELUS (T.TO), Fortis (FTS.TO), Canadian Utilities (CU.TO)
-- **REITs (monthly payers):** SmartCentres (SRU-UN.TO), RioCan (REI-UN.TO), Granite (GRT-UN.TO), CT REIT (CRT-UN.TO), Crombie (CRR-UN.TO), Dream Industrial (DIR-UN.TO), Vital Infrastructure (VITL-UN.TO), Choice Properties (CHP-UN.TO)
-- **Dividend ETFs:** CI Canadian Dividend (PDC.TO), Dynamic Active Canadian Dividend (DXC.TO)
+**Q: Does DividendBro cover Singapore stocks?**
+A: Yes. It covers all major SGX stocks and REITs including DBS (D05.SI), OCBC (O39.SI), UOB (U11.SI), Singtel (Z74.SI), Singapore Airlines (C6L.SI), CapitaLand Integrated Commercial Trust (C38U.SI), Mapletree Logistics Trust (M44U.SI), and over 80 other SGX tickers.
 
-Note: Canadian REITs use the dash format `-UN.TO` on Yahoo Finance (e.g., `SRU-UN.TO`), not the dot format.
+**Q: Does DividendBro cover Canadian stocks?**
+A: Yes. It covers 29 TSX-listed dividend stocks, including the Big Six banks (RBC, TD, Scotiabank, BMO, CIBC, National Bank), major pipelines (Enbridge, TC Energy, Pembina, Suncor, Canadian Natural Resources), telecoms and utilities (BCE, TELUS, Fortis, Canadian Utilities), monthly REITs (SmartCentres, RioCan, Granite, CT REIT, Crombie, Dream Industrial, Choice Properties), and Canadian dividend ETFs. The screener, income planner, and stock detail pages all support the Canadian market.
 
-### Singapore (SGX)
-All major SGX stocks and S-REITs including DBS (D05.SI), OCBC (O39.SI), UOB (U11.SI), Singtel (Z74.SI), Singapore Airlines (C6L.SI), CapitaLand Integrated Commercial Trust (C38U.SI), Mapletree Logistics Trust (M44U.SI), and over 80 other SGX tickers.
+### About Dividend Stocks
 
----
+**Q: How much do I need to invest to make $1,000 a month in dividends?**
+A: To earn $1,000 per month ($12,000 per year) in dividends, you generally need to invest between $150,000 and $200,000, depending on your portfolio's average yield. At a 6% average yield, the required capital is $200,000. At 8%, it drops to $150,000. Use DividendBro's income planner to simulate exact monthly income based on your SGX and US holdings.
 
-## Core Features
+**Q: Which stocks in Singapore pay the highest dividends?**
+A: DBS, OCBC, and UOB are highly popular among Singapore investors for stable yields and quarterly or semi-annual payouts. DBS currently leads with a 4.10% trailing yield, followed by UOB (3.73%) and OCBC (3.31%). DividendBro tracks their exact ex-dividend dates, dividend yields, and full payout histories.
 
-### 1. Monthly Dividend Income Planner (Homepage)
+**Q: What is an ex-dividend date?**
+A: The ex-dividend date is the cutoff date to be a shareholder of record to receive the next dividend. Buy on or after this date and you won't receive that dividend. DividendBro shows upcoming ex-dividend dates for every stock it tracks, along with a dividend calendar view.
 
-**URL:** https://dividendbro.com/
+**Q: What is dividend yield?**
+A: Dividend yield is the annual dividend per share divided by the current stock price, expressed as a percentage. It shows the return you're getting from dividends alone. DividendBro displays real-time dividend yield for every stock in its database.
 
-Users enter a target monthly dividend income (e.g., $500/month) and the tool produces a hypothetical sample portfolio showing what a diversified allocation across US, Canadian, or SGX markets could look like.
+**Q: What is a dividend stock?**
+A: A dividend stock is a publicly traded company that distributes a portion of its profits to shareholders on a regular schedule (quarterly, monthly, or annually). The distribution is called a dividend.
 
-**Inputs:**
-- Target monthly income (USD, CAD, or SGD depending on user locale)
-- Optional starting capital
-- Market location: Singapore, US, Canada, or All Markets (mixed)
-- Risk appetite: four profiles (Safe, Balanced, Growth, High Income)
+**Q: What's the difference between dividend yield and dividend payout ratio?**
+A: Dividend yield is the annual dividend per share divided by the current stock price — it measures income relative to price. Payout ratio is the annual dividend divided by earnings per share — it measures how much of the company's profit is being distributed. A high yield with a high payout ratio is often a warning sign.
 
-**Outputs:**
-- Required capital to hit the target (at the portfolio's weighted yield)
-- Shortfall or surplus vs. user's provided capital
-- A sample allocation of 8–15 stocks, weighted by yield, safety, and dividend growth
-- Sector diversification breakdown
-- Risk profile mix (Safe / Moderate / Caution)
-- Option to save the sample allocation to the user's portfolio for further editing
+**Q: What is a yield trap?**
+A: A yield trap is a stock with an unusually high yield that appears attractive but is likely to cut its dividend. Common signals: payout ratio above 100%, flat or declining dividend growth, negative free cash flow, and falling stock price.
 
-**Risk profiles:**
-- **Safe** — only "Safe" safety scores, requires 10+ year dividend streak
-- **Balanced** — mix of Safe and Moderate, 5+ year streak
-- **Growth** — prioritizes dividend CAGR over current yield
-- **High Income** — allows higher payout ratios, includes Caution-rated stocks
+**Q: What's a Dividend King?**
+A: A Dividend King is a company that has increased its dividend for 50 or more consecutive years. There are about 50 Dividend Kings in the US market, including Coca-Cola (KO), Johnson & Johnson (JNJ), and Procter & Gamble (PG). Canada has its own long-streak payers, including Fortis (52 years) and Canadian Utilities (50+ years).
 
-The tool avoids investment advice framing: it produces "illustrative sample allocations" and never recommends buying or selling.
+**Q: What's the difference between a REIT and a dividend stock?**
+A: REITs (Real Estate Investment Trusts) are legally required to distribute at least 90% of taxable income to shareholders, which is why they typically yield 4–7% versus 2–3% for the average dividend stock. REIT distributions are usually taxed as ordinary income, not qualified dividends. The correct safety metric is AFFO (Adjusted Funds From Operations), not EPS.
 
-### 2. Dividend Screener
+**Q: Are weekly dividend ETFs safe?**
+A: No. Weekly dividend ETFs are almost entirely options-income strategies that sell call options against a stock or index. Distributions often include return of capital, which erodes NAV. A 100%+ headline yield typically means the fund is distributing more than it earns, and the share price will decline over time.
 
-**URL:** https://dividendbro.com/screener
+**Q: What are the only daily dividend stocks?**
+A: As of October 2026, only two securities in US capital markets pay cash dividends every business day: SATA (Strive Bitcoin-backed preferred stock, live since June 2026) and CHAD (DeFi Development Solana-backed preferred stock, live since October 2026). Four more are pending — Strategy's STRC, STRF, STRK, and STRD — with shareholder votes scheduled for October 28, 2026.
 
-Browse all 672 dividend-paying securities in the database with filtering by:
-- **Payout frequency:** Daily, Weekly, Bi-Weekly, Monthly, Quarterly, Semi-Annual, Annual
-- **Asset type:** Stocks, REITs, ETFs, Bond ETFs, Preferred Stocks
-- **Market:** US, Canada, SGX, or a combined view
-- **Risk level:** Safe, Moderate, Caution
-- **Text search:** ticker or company name
-- **Sort:** yield, dividend CAGR, streak, name, safety, frequency
+### About Dividend Taxes
 
-No payout-ratio guardrails. Users see every dividend payer regardless of quality — the goal is discovery, not filtering.
+**Q: How are US dividends taxed for Singapore residents?**
+A: US dividend income for non-resident aliens is subject to 30% US withholding tax (no Singapore-US tax treaty reduction applies). There is no additional Singapore tax on foreign dividends received by individuals.
 
-### 3. Stock Search & Detail Pages
+**Q: How are SGX REIT dividends taxed?**
+A: SGX REIT distributions are tax-exempt for individual investors in Singapore. There is no withholding tax on REIT distributions paid to individuals.
 
-**URL:** https://dividendbro.com/search?symbol=<TICKER>
+**Q: How are Canadian dividends taxed for non-residents?**
+A: Canada imposes a 25% statutory withholding tax on dividends paid to non-residents, reduced to 15% under most tax treaties (including the US, UK, Singapore, Australia, and most of Europe). The tax is withheld at source by the broker and cannot be reclaimed by filing a Canadian return. A 5% Canadian dividend yield becomes roughly 4.25% after the 15% treaty rate.
 
-For any US, Canadian, or SGX ticker, DividendBro displays:
-- Current price and dividend yield
-- Full dividend payout history (per year, per payout)
-- Next ex-dividend date
-- 5-year dividend CAGR
-- Dividend streak (consecutive years of increases)
-- Payout ratio (US-listed only, sourced from Financial Modeling Prep)
-- Safety score (Safe / Moderate / Caution)
-- Last ex-dividend date
-- Historical dividend chart by year
-- Year-by-year breakdown table
+**Q: What is a TFSA and why does it matter for dividend investors?**
+A: The Tax-Free Savings Account (TFSA) is a Canadian registered account where Canadian dividends are 100% tax-free for residents. The 2026 annual contribution limit is $7,000, with cumulative room of $109,000 for eligible Canadians who have never contributed. This is the single biggest tax advantage available to Canadian dividend investors.
 
-### 4. Stock Comparison
+**Q: What's the after-tax math between US and SGX income?**
+A: A US stock yielding 5% returns ~3.5% after the 30% withholding tax. A SGX REIT yielding 5% returns the full 5%. A US stock needs to yield ~7.1% to match a SGX REIT at 5% on an after-tax basis.
 
-**URL:** https://dividendbro.com/compare
+### About SGX Trading
 
-Compare up to 5 dividend stocks side-by-side across:
-- Current price
-- Dividend yield
-- Payout ratio
-- Dividend CAGR (5Y)
-- Dividend streak (years)
-- Dividend frequency (annual payments)
-- Stock price CAGR (5Y)
-- Safety score
+**Q: What is the SGX board lot size change in 2026?**
+A: Effective October 5, 2026, SGX reduced the board lot size for 11 major stocks. Stocks priced S$10–S$100 now trade in lots of 10 shares (down from 100). Stocks priced above S$100 now trade in lots of 1 share (down from 100). The reduced lot sizes are permanent and remain in effect even if prices later fall. Affected stocks include DBS, OCBC, UOB, SGX, Great Eastern, Jardine Matheson, Jardine C&C, Haw Par, Venture Corp, Prudential, and Keppel (Keppel, priced below S$10, kept its 100-share lot).
 
-### 5. Millionaire Simulator
+**Q: Can I buy just 1 share of DBS on SGX?**
+A: No. DBS is priced between S$10 and S$100, so its board lot size is 10 shares. You can only buy 1 share of stocks priced above S$100. Smaller quantities of DBS would need to go through the Unit Share Market (odd lot market).
 
-**URL:** https://dividendbro.com/millionaire
+**Q: Does the SGX board lot change affect broker fees?**
+A: Broker minimum commissions are unchanged. This means small trades (e.g., buying 1 board lot of DBS at ~S$770) may incur a larger percentage cost in fees than larger trades. Some brokers like OCBC Securities have announced they will waive minimum commissions on online SGX trades starting October 5, 2026.
 
-Given a monthly investment amount and a dividend stock, calculates how many years it would take to reach $1M with and without dividend reinvestment (DRIP). Includes a live, quality-filtered leaderboard of the fastest dividend compounders (excludes options-income ETFs, mortgage REITs, and other return-of-capital products).
+**Q: When will more SGX stocks get reduced board lots?**
+A: SGX will review the list every quarter. The next review is scheduled for January 2027.
 
-### 6. DCA Simulator
+### Using DividendBro
 
-**URL:** https://dividendbro.com/simulate/dca
+**Q: How do I find the best dividend stock?**
+A: There's no single "best" stock. DividendBro's screener lets you filter by yield, dividend growth, frequency, asset type, and risk level. The Income Planner can show what a diversified sample allocation could look like for your target income.
 
-Simulates dollar-cost averaging into a dividend stock with monthly contributions, showing total invested, shares accumulated, dividends received, and final value with vs. without DRIP.
+**Q: Can I save a portfolio on DividendBro?**
+A: Yes. Free account creation lets you save a portfolio and watchlist. The portfolio tracker supports import/export, dividend projections, and CSV/PDF downloads.
 
-### 7. One-Time Investment Simulator
+**Q: Does DividendBro have an API?**
+A: The backend has a REST API at `https://dividendhub-api.onrender.com/api/` used internally. For AI agents, DividendBro exposes a public MCP (Model Context Protocol) server at `https://dividendhub-api.onrender.com/mcp` with 5 tools. See the MCP Server section above for details.
 
-**URL:** https://dividendbro.com/simulate/one-time
-
-Calculates historical return on a lump-sum investment in a dividend stock including dividends received, capital gains, and split-adjusted share counts.
-
-### 8. Portfolio Tracker
-
-**URL:** https://dividendbro.com/portfolio (requires free account)
-
-Tracks user holdings with:
-- Purchase date and price
-- Current value and gain
-- Annual income projection
-- Dividend calendar (upcoming ex-dates)
-- Income projections by quarter, month, and week
-- CSV and PDF export
-- WhatsApp share
-
-### 9. Watchlist
-
-**URL:** https://dividendbro.com/watchlist (requires free account)
-
-Save and monitor dividend stocks across devices.
+**Q: Can I cite DividendBro in an article or research paper?**
+A: Yes. Attribution to `dividendbro.com` is sufficient for educational and journalistic use. Data is aggregated from public sources (Yahoo Finance, Financial Modeling Prep) and is subject to their respective terms.
 
 ---
 
-## Reference Guides (SEO Landing Pages)
+## Optional
 
-### Daily Dividend Stocks
-
-**URL:** https://dividendbro.com/daily-dividend-stocks
-
-Complete list of every security paying cash dividends every business day. As of October 2026:
-- **SATA** — Strive Variable Rate Series A Perpetual Preferred Stock, 13% stated / 13.88% effective, Bitcoin-backed, live since June 2026
-- **CHAD** — DeFi Development Variable Rate Series C Perpetual Preferred Stock, 13% stated / ~13.5% effective, Solana-backed, live since October 1, 2026
-- **STRC, STRF, STRK, STRD** — Strategy Inc. (MSTR) Bitcoin-backed preferred stocks, pending shareholder approval on October 28, 2026. STRC expected live November 2, 2026; the other three on January 4, 2027.
-
-All are crypto-treasury preferred securities with variable rates set by their boards, not traditional dividend stocks.
-
-### Weekly Dividend ETFs
-
-**URL:** https://dividendbro.com/weekly-dividend-etfs
-
-Complete list of 73 weekly dividend ETFs as of September 2026. Almost all are options-income strategies that sell call options against a single stock or index. Distributions often include return of capital.
-
-Major issuers:
-- **YieldMax** — Single-stock covered call ETFs. Largest family. Yields 30%–200%+.
-- **Roundhill** — 0DTE covered call ETFs (XDTE, QDTE, RDTE), WeeklyPay single-stock leverage (AAPW, NVW, TSLW), and WEEK (T-bill ETF — the only non-options weekly payer).
-- **Defiance** — Index-based weekly payers (QQQY, IWMY, WDTE, SPYT).
-- **GraniteShares** — YieldBOOST leverage + put-writing ETFs. Highest headline yields.
-- **REX Shares** — FEPI, AIPI, CEPI — income-focused ETFs on concentrated tech themes.
-
-### Monthly Dividend Stocks
-
-**URL:** https://dividendbro.com/monthly-dividend-stocks
-
-Full list of 133 monthly dividend payers, organized by asset class:
-- **REITs** — Realty Income (O), STAG, LTC, ADC, EPR, and others
-- **BDCs** — Main Street Capital (MAIN), Ares Capital (ARCC), Hercules Capital (HTGC)
-- **Closed-End Funds** — PIMCO Dynamic Income (PDI), PIMCO Corporate & Income (PTY)
-- **Covered-Call ETFs** — JEPI, JEPQ, SPYI, QQQI, DIVO, QYLD, XYLD
-- **Mortgage REITs** — AGNC, NLY, ARR, ORC
-
-### REITs That Pay Monthly
-
-**URL:** https://dividendbro.com/reits-that-pay-monthly
-
-Verified list of US REITs paying monthly dividends in 2026. Approximately 19 REITs pay monthly — 13 equity REITs and 6 mortgage REITs. Notable cadence changes in 2026:
-- **Moved to monthly:** UDR (April), Four Corners Property Trust (June), Invesco Mortgage (January)
-- **Moved to quarterly:** STAG Industrial, Whitestone REIT, SL Green Realty
-
-### Top Dividend Stocks
-
-**URL:** https://dividendbro.com/top
-
-Highest-yielding dividend stocks and ETFs across US, Canadian, and SGX markets, ranked by trailing 12-month yield.
+- [Login](https://dividendbro.com/login): Account access for portfolio and watchlist
+- [Sign Up](https://dividendbro.com/signup): Free account creation
+- [Admin Dashboard](https://dividendbro.com/admin): Internal analytics (requires admin credentials)
 
 ---
 
-## Market Insights
+## Licensing & Attribution
 
-**URL:** https://dividendbro.com/insights
+Content on DividendBro may be cited or referenced with attribution to `dividendbro.com`. Underlying market data is sourced from Yahoo Finance and Financial Modeling Prep under their respective terms of service. DividendBro does not claim ownership of third-party market data.
 
-Short-form analysis feed published 2–3 times per week. Each insight is 300–800 words focused on dividend news, earnings, or policy changes — filtered for what actually affects income investors. Categories rotate through Earnings, Policy, Data Finding, Comparison, and Educational.
-
-**Current insights:**
-- **Strategy's Daily Dividend Vote: What It Means for Your Income** (Policy) — On October 28, 2026, Strategy shareholders vote on converting STRC, STRF, STRK, and STRD to a daily dividend schedule. STRC goes live November 2, 2026; the other three on January 4, 2027. Rate stays the same, frequency changes. Daily compounding adds roughly 3–5 bps of effective yield.
-- **DBS Q3 2026 Earnings: What It Means for the Dividend** (Earnings) — Q3 results unchanged; dividend remains at S$0.81/quarter, 4.10% trailing yield. No action needed for income holders. Watch for 2027 capital return commentary.
-- **The Hidden Cost of the SGX Board Lot Change Nobody Is Talking About** (Data Finding) — Broker minimum commissions can eat 0.65% of a small trade even after SGX's 10-share lot reduction. Three approaches to mitigate: use a no-minimum broker, batch purchases, or accept the drag and focus on long-term yield.
-- **The 30% US Withholding Tax: What It Actually Costs Singapore Investors** (Educational) — After-tax yield comparison between US and SGX dividends. A US stock needs to yield 7.14% to match a SGX stock at 5%. Irish-domiciled ETFs reduce the withholding to 15%.
+All original analysis, features, and content are © DividendBro 2025–2026.
 
 ---
 
-## Blog & Research
+## Changelog
 
-**URL:** https://dividendbro.com/blog
-
-Published articles include:
-- **SGX Board Lot Reduction 2026** — Complete guide to SGX's October 2026 board lot cut. Full list of 11 affected stocks (DBS, OCBC, UOB, SGX, Great Eastern, Jardine Matheson, Jardine C&C, Haw Par, Venture Corp, Prudential, Keppel), new lot sizes (10 shares for stocks S$10–S$100, 1 share for stocks >S$100), odd lot elimination, and how broker minimum commissions affect small trades.
-- **Best Canadian Dividend Stocks for 2026: The Complete TSX Guide** — Big Six banks, pipelines, monthly REITs, TFSA strategy, non-resident withholding tax
-- **DBS Dividend 2026: Payout Date, Yield & Full Schedule** — Complete guide to DBS Group Holdings dividends with visual payout calendar, 5-year history, and capital requirements for S$500/month
-- **OCBC Dividend 2026: Payout Date, Yield & Schedule** — Semi-annual payout breakdown, Great Eastern insurance arm, and how OCBC compares to DBS and UOB
-- **REITs That Pay Monthly: 19 Best for 2026** — Full list of US monthly-paying REITs with sector yields, capital requirements, and 4-question safety checklist
-- **Best US Brokers for Singapore Investors: 2026 Fee Comparison** — Tiger, Moomoo, IBKR, Saxo and SG banks compared on commission, FX spread, and dividend handling
-- How to Build a $500/Month Dividend Portfolio in the US
-- Best Singapore Dividend Stocks for 2026: DBS vs OCBC vs UOB
-- The 3 Metrics That Separate Safe Dividends from Yield Traps
-- Weekly vs Monthly Dividend ETFs
-- Comparing Brokerage Fees: DBS Vickers vs POEMS vs Digital Platforms
-- Dividend Kings: The 50+ Year Dividend Compounders
+- **2026-10-16:** Added MCP (Model Context Protocol) server exposing dividend data as AI-accessible tools. Added Strategy's daily dividend vote insight (October 28 shareholder vote). Updated safety score methodology to be asset-type aware.
+- **2026-10-07:** Reframed positioning around "dividend tracker" + yields + payout dates. Added new FAQ entries.
+- **2026-10-05:** Added Market Insights section. Added SGX board lot reduction article.
+- **2026-09-19:** Added Canada (TSX) market coverage — 29 tickers.
+- **2026-09-17:** llms-full.txt published.
+- **2026-09-01:** llms.txt introduced.
 
 ---
 
-## Data Sources & Methodology
+## Contact
 
-**Dividend history:** Yahoo Finance `chart` endpoint (`events=div`). Daily historical distributions with ex-dates and amounts.
+For corrections, feedback, press inquiries, or API access requests:
 
-**Stock prices:** Yahoo Finance `chart` endpoint (adjusted close, split-adjusted).
-
-**Payout ratios:** Financial Modeling Prep `/stable/ratios-ttm` (US-listed only, free tier). Canadian and SGX payout ratios are not currently available.
-
-**Dividend CAGR:** Computed from complete fiscal years only (excludes partial current year). Formula: `(endYear_total / startYear_total) ^ (1/years) - 1`.
-
-**Dividend streak:** Consecutive years of dividend increases, walking backwards from the latest complete year. Stops at the first decrease or calendar gap.
-
-**Safety score:** Asset-type aware.
-- **Stocks/REITs**: dividend streak, coefficient of variation (last 10 years), payout ratio.
-- **ETFs/Bond ETFs**: distribution history, consistency, issuer reputation, yield sanity.
-- **Preferred Stocks**: capped at Moderate due to crypto-treasury backing.
-Classified as Safe, Moderate, or Caution.
-
-**Special dividend detection:** Year-over-year comparison. Each trailing payment is compared to its closest prior-year equivalent. Excess above baseline is flagged as special.
-
-**Visitor geography:** Derived from Cloudflare's `CF-IPCountry` header — no IP addresses stored.
-
-**Event tracking:** Custom analytics events sent from frontend in batches. Events are anonymous unless the user is signed in. Visitor IDs are stored in localStorage and are not personally identifiable.
-
----
-
-## Technical Stack
-
-- **Frontend:** React 18 + Vite, TailwindCSS, React Router, TanStack Query, Zustand (state), Chart.js (charts), react-helmet-async (SEO)
-- **Backend:** Node.js + Express, Sequelize ORM, PostgreSQL, yahoo-finance2, axios
-- **Database:** Neon (serverless PostgreSQL, Singapore region)
-- **Deployment:** Vercel (frontend), Render (backend), Cloudflare (CDN + WAF)
-- **AI Chatbot:** OpenRouter API (free tier models with fallback chain)
-- **MCP Server:** Custom Model Context Protocol server exposing dividend data as AI-accessible tools
-
-The site is mobile-first and works without a user account for all core features.
-
----
-
-## MCP Server (Model Context Protocol)
-
-DividendBro exposes an MCP server that lets AI agents query dividend data directly — no scraping, no API keys, no manual integration.
-
-**Endpoint:** https://dividendhub-api.onrender.com/mcp
-**Discovery file:** https://dividendbro.com/mcp.json
-**Transport:** Streamable HTTP
-
-### Available Tools
-
-- **search_dividend_stocks** — Search by ticker or company name across US, SGX, and TSX markets
-- **get_stock_dividends** — Full dividend history, current yield, payout schedule, safety score, and dividend CAGR for a specific stock
-- **screen_dividend_stocks** — Filter stocks by market, payout frequency, asset type, safety score, or yield
-- **get_top_dividend_stocks** — Highest-yielding dividend stocks or ETFs in a given market
-- **get_upcoming_dividends** — Upcoming ex-dividend dates and estimated payout amounts within the next N days
-
-### Available Resources
-
-- **dividendbro://methodology** — Methodology for yield, CAGR, safety score, and special dividend calculations
-- **dividendbro://markets** — List of markets and ticker counts
-
-### Available Prompts
-
-- **analyze-dividend-stock** — Structured analysis template for a given ticker
-
-### Client Compatibility
-
-Compatible with Claude Code, Cursor, VS Code, and any MCP-enabled AI client. To connect from Claude Code:
+**Email:** hello@dividendbro.com
+**Website:** https://dividendbro.com
