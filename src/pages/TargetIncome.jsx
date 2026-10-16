@@ -47,10 +47,6 @@ function marketToLocation(market) {
   return 'SG';
 }
 
-/* ─────────────────────────────────────────────────────────── */
-/*  "AI cooking" loader                                        */
-/* ─────────────────────────────────────────────────────────── */
-
 const LOADING_PHASES = [
   'Scanning 672 dividend payers…',
   'Filtering by your risk profile…',
@@ -73,42 +69,35 @@ const ThinkingCard = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 py-10">
+    <div className="flex flex-col items-center justify-center gap-4 sm:gap-6 py-6 sm:py-10">
 
-      {/* Orbital sparkle */}
-      <div className="relative w-28 h-28 flex items-center justify-center">
-        {/* Ambient glow */}
+      <div className="relative w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center">
         <div className="absolute inset-0 rounded-full bg-accent-blue/25 blur-3xl animate-pulse" />
-        {/* Dashed static ring */}
         <div className="absolute inset-2 rounded-full border-2 border-dashed border-accent-blue/25" />
-        {/* Orbiting dot 1 */}
         <div className="absolute inset-0 animate-spin" style={{ animationDuration: '2s' }}>
           <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-accent-blue shadow-[0_0_16px_var(--accent)]" />
         </div>
-        {/* Orbiting dot 2 (reverse) */}
         <div className="absolute inset-0 animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }}>
           <span className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-accent-teal shadow-[0_0_12px_var(--accent)]" />
         </div>
-        {/* Center icon */}
-        <Sparkles size={36} className="text-accent-blue relative z-10" strokeWidth={1.75} />
+        <Sparkles size={28} className="sm:hidden text-accent-blue relative z-10" strokeWidth={1.75} />
+        <Sparkles size={36} className="hidden sm:block text-accent-blue relative z-10" strokeWidth={1.75} />
       </div>
 
-      {/* Labels */}
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-1.5 sm:space-y-2">
         <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">
           Cooking up your portfolio
         </p>
-        <div className="h-7 flex items-center justify-center">
+        <div className="h-6 sm:h-7 flex items-center justify-center">
           <p
             key={phaseIndex}
-            className="text-base font-bold text-accent-teal transition-opacity duration-300"
+            className="text-sm sm:text-base font-bold text-accent-teal transition-opacity duration-300"
           >
             {LOADING_PHASES[phaseIndex]}
           </p>
         </div>
       </div>
 
-      {/* Pulsing dots */}
       <div className="flex items-center gap-2">
         {[0, 1, 2].map((i) => (
           <span
@@ -121,10 +110,6 @@ const ThinkingCard = () => {
     </div>
   );
 };
-
-/* ─────────────────────────────────────────────────────────── */
-/*  Planner                                                    */
-/* ─────────────────────────────────────────────────────────── */
 
 const TargetIncome = () => {
   const { currency, market: storeMarket, setPortfolio } = useStore();
@@ -256,14 +241,14 @@ const TargetIncome = () => {
         <meta name="description" content="Free tool: see how much you'd need to invest to earn a target monthly dividend income. Sample portfolios for Singapore, US, and Canadian stocks." />
       </Helmet>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8 space-y-3 sm:space-y-6">
 
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
+          <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-text-primary leading-tight">
             Monthly Dividend <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Income Planner</span>
           </h1>
-          <p className="text-text-muted text-sm mt-2 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-text-muted mt-1.5 sm:mt-2 max-w-2xl mx-auto">
             Answer 3 quick questions and we'll build a sample dividend portfolio for you.
           </p>
         </div>
@@ -275,7 +260,7 @@ const TargetIncome = () => {
         >
 
           {/* Progress bar */}
-          <div className="px-5 sm:px-8 pt-6 pb-4 border-b border-border/40 bg-bg-primary/20">
+          <div className="px-4 sm:px-8 pt-4 pb-3 sm:pt-6 sm:pb-4 border-b border-border/40 bg-bg-primary/20">
             <div className="flex items-center justify-between">
               {[1, 2, 3].map((n, i) => {
                 const isActive = step === n;
@@ -285,11 +270,11 @@ const TargetIncome = () => {
                     <button
                       type="button"
                       onClick={() => goToStep(n)}
-                      className="flex flex-col items-center gap-1.5 group"
+                      className="flex flex-col items-center gap-1 sm:gap-1.5 group"
                       aria-label={`Go to step ${n}`}
                     >
                       <div
-                        className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-black transition-all ${
+                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs font-black transition-all ${
                           isActive
                             ? 'bg-gradient-to-br from-accent-blue to-accent-teal text-white shadow-md'
                             : isDone
@@ -300,7 +285,7 @@ const TargetIncome = () => {
                         {isDone ? '✓' : n}
                       </div>
                       <span
-                        className={`text-[10px] font-bold uppercase tracking-wider ${
+                        className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-wider ${
                           isActive ? 'text-accent-blue' : isDone ? 'text-accent-green' : 'text-text-muted'
                         }`}
                       >
@@ -321,28 +306,28 @@ const TargetIncome = () => {
           </div>
 
           {/* Step content OR AI loader */}
-          <div className="px-5 sm:px-8 py-8 min-h-[340px] flex flex-col justify-center">
+          <div className="px-4 sm:px-8 py-5 sm:py-8 min-h-0 sm:min-h-[340px] flex flex-col justify-center">
             {isLoading ? (
               <ThinkingCard />
             ) : (
               <>
                 {/* ===== STEP 1 ===== */}
                 {step === 1 && (
-                  <div className="space-y-6 max-w-2xl mx-auto w-full">
+                  <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                      <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
                         Question 1 of 3
                       </p>
-                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">
+                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         How much dividend income do you want per month?
                       </h2>
-                      <p className="text-xs text-text-muted mt-2">
+                      <p className="text-[11px] sm:text-xs text-text-muted mt-1.5 sm:mt-2">
                         Pick a target. Most dividend investors aim for 3 to 6% per year on their investment.
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-3 max-w-md mx-auto">
-                      <span className="text-3xl font-black text-accent-blue font-mono" aria-hidden="true">
+                    <div className="flex items-center gap-2 sm:gap-3 max-w-md mx-auto">
+                      <span className="text-2xl sm:text-3xl font-black text-accent-blue font-mono" aria-hidden="true">
                         {curSymbol}
                       </span>
                       <input
@@ -353,9 +338,9 @@ const TargetIncome = () => {
                         max="1000000"
                         step="50"
                         aria-label="Target monthly dividend income in dollars"
-                        className="flex-1 bg-bg-primary border-2 border-border/60 rounded-xl px-4 py-4 text-3xl font-black text-text-primary text-center focus:outline-none focus:border-accent-blue transition-colors"
+                        className="flex-1 bg-bg-primary border-2 border-border/60 rounded-xl px-3 sm:px-4 py-3 sm:py-4 text-2xl sm:text-3xl font-black text-text-primary text-center focus:outline-none focus:border-accent-blue transition-colors"
                       />
-                      <span className="text-sm font-bold text-text-muted">/mo</span>
+                      <span className="text-xs sm:text-sm font-bold text-text-muted">/mo</span>
                     </div>
 
                     <div className="flex flex-wrap gap-2 justify-center">
@@ -364,7 +349,7 @@ const TargetIncome = () => {
                           key={v}
                           type="button"
                           onClick={() => setTargetMonthly(v)}
-                          className={`text-sm font-bold px-4 py-2 rounded-lg border transition-all ${
+                          className={`text-xs sm:text-sm font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border transition-all ${
                             targetMonthly === v
                               ? 'bg-accent-blue text-white border-accent-blue shadow-sm'
                               : 'bg-bg-primary border-border/60 text-text-secondary hover:border-accent-blue/60'
@@ -379,20 +364,20 @@ const TargetIncome = () => {
 
                 {/* ===== STEP 2 ===== */}
                 {step === 2 && (
-                  <div className="space-y-6 max-w-2xl mx-auto w-full">
+                  <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                      <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
                         Question 2 of 3
                       </p>
-                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">
+                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         Where are you investing from?
                       </h2>
-                      <p className="text-xs text-text-muted mt-2">
+                      <p className="text-[11px] sm:text-xs text-text-muted mt-1.5 sm:mt-2">
                         This affects which stocks we show. Singapore, US, and Canadian investors all have different tax situations.
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+                    <div className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-lg mx-auto">
                       {LOCATIONS.map((loc) => {
                         const active = location === loc.key;
                         const FlagComponent = loc.Flag;
@@ -402,26 +387,26 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setLocation(loc.key)}
                             aria-pressed={active}
-                            className={`min-h-[100px] rounded-xl p-4 border-2 text-left transition-all active:scale-[0.98] ${
+                            className={`min-h-[84px] sm:min-h-[100px] rounded-xl p-3 sm:p-4 border-2 text-left transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
                             }`}
                           >
-                            <div className="mb-2 h-6 flex items-center">
+                            <div className="mb-1.5 sm:mb-2 h-5 sm:h-6 flex items-center">
                               {FlagComponent ? (
                                 <FlagComponent
                                   title={loc.label}
-                                  className="w-9 h-6 rounded-sm shadow-sm ring-1 ring-border/30"
+                                  className="w-8 h-5 sm:w-9 sm:h-6 rounded-sm shadow-sm ring-1 ring-border/30"
                                 />
                               ) : (
                                 <Globe
-                                  size={24}
+                                  size={20}
                                   className={active ? 'text-accent-blue' : 'text-text-muted'}
                                 />
                               )}
                             </div>
-                            <p className={`text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
+                            <p className={`text-xs sm:text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
                               {loc.label}
                             </p>
                             <p className="text-[10px] text-text-muted mt-0.5">{loc.sub}</p>
@@ -434,15 +419,15 @@ const TargetIncome = () => {
 
                 {/* ===== STEP 3 ===== */}
                 {step === 3 && (
-                  <div className="space-y-6 max-w-2xl mx-auto w-full">
+                  <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto w-full">
                     <div className="text-center">
-                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                      <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-text-muted font-bold mb-1.5 sm:mb-2">
                         Question 3 of 3
                       </p>
-                      <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight">
+                      <h2 className="text-lg sm:text-2xl font-black text-text-primary tracking-tight leading-tight">
                         How much risk are you okay with?
                       </h2>
-                      <p className="text-xs text-text-muted mt-2">
+                      <p className="text-[11px] sm:text-xs text-text-muted mt-1.5 sm:mt-2">
                         Higher risk usually means higher income, but the dividend could get cut. If you're new, <strong className="text-text-secondary">Balanced</strong> is a good start.
                       </p>
                     </div>
@@ -456,13 +441,13 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setRiskProfile(r.key)}
                             aria-pressed={active}
-                            className={`min-h-[88px] rounded-xl p-3 border-2 transition-all active:scale-[0.98] ${
+                            className={`min-h-[72px] sm:min-h-[88px] rounded-xl p-2.5 sm:p-3 border-2 transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
                             }`}
                           >
-                            <div className={`text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
+                            <div className={`text-xs sm:text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
                               {r.label}
                             </div>
                             <div className="text-[10px] text-text-muted mt-1 leading-tight">{r.desc}</div>
@@ -478,8 +463,8 @@ const TargetIncome = () => {
 
           {/* Navigation footer (hidden during loading) */}
           {!isLoading && (
-            <div className="px-5 sm:px-8 py-5 border-t border-border/40 bg-bg-primary/20">
-              <div className="grid grid-cols-3 items-center gap-3">
+            <div className="px-4 sm:px-8 py-3.5 sm:py-5 border-t border-border/40 bg-bg-primary/20">
+              <div className="grid grid-cols-3 items-center gap-2 sm:gap-3">
 
                 {/* Left: Back */}
                 <div className="flex justify-start">
@@ -487,7 +472,7 @@ const TargetIncome = () => {
                     <button
                       type="button"
                       onClick={goBack}
-                      className="min-h-[48px] px-4 sm:px-5 py-3 rounded-xl text-xs font-bold uppercase tracking-wider border bg-bg-surface border-border/60 text-text-secondary hover:bg-bg-surface-hover transition-all"
+                      className="min-h-[42px] sm:min-h-[48px] px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider border bg-bg-surface border-border/60 text-text-secondary hover:bg-bg-surface-hover transition-all"
                     >
                       ← Back
                     </button>
@@ -520,7 +505,7 @@ const TargetIncome = () => {
                       type="button"
                       onClick={goNext}
                       disabled={step === 1 && (!targetMonthly || targetMonthly < 50)}
-                      className="min-h-[48px] px-6 sm:px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
+                      className="min-h-[42px] sm:min-h-[48px] px-4 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
                     >
                       Next →
                     </button>
@@ -529,9 +514,9 @@ const TargetIncome = () => {
                       type="button"
                       onClick={runGeneration}
                       disabled={!targetMonthly}
-                      className="min-h-[48px] px-4 sm:px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
+                      className="min-h-[42px] sm:min-h-[48px] px-3 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-40"
                     >
-                      ✨ Show Me a Sample Portfolio
+                      ✨ Show Sample Portfolio
                     </button>
                   )}
                 </div>
@@ -557,11 +542,11 @@ const TargetIncome = () => {
         {/* Results */}
         {result && result.ok && (
           <div ref={resultsRef} className="space-y-6">
-            <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6">
+            <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-5 sm:p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center md:text-left">
                   <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">Your Goal</p>
-                  <p className="text-3xl font-black text-text-primary mt-1">{curSymbol}{fmt(result.summary.targetMonthly)}</p>
+                  <p className="text-2xl sm:text-3xl font-black text-text-primary mt-1">{curSymbol}{fmt(result.summary.targetMonthly)}</p>
                   <p className="text-xs text-text-muted">per month</p>
                 </div>
                 <div className="text-center">
@@ -569,12 +554,12 @@ const TargetIncome = () => {
                     Money You'd Need
                     <InfoTip text="The amount of capital required at this portfolio's average yield to produce your target monthly income." position="bottom" />
                   </p>
-                  <p className="text-3xl font-black text-accent-blue mt-1">{curSymbol}{fmt(result.summary.requiredCapital)}</p>
+                  <p className="text-2xl sm:text-3xl font-black text-accent-blue mt-1">{curSymbol}{fmt(result.summary.requiredCapital)}</p>
                   <p className="text-xs text-text-muted">at {result.summary.avgYield}% average yield</p>
                 </div>
                 <div className="text-center md:text-right">
                   <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">This Plan Pays You</p>
-                  <p className="text-3xl font-black text-accent-teal mt-1">{curSymbol}{fmt(result.summary.totalMonthlyIncome)}</p>
+                  <p className="text-2xl sm:text-3xl font-black text-accent-teal mt-1">{curSymbol}{fmt(result.summary.totalMonthlyIncome)}</p>
                   <p className="text-xs text-text-muted">/ month from {result.summary.positionCount} stocks</p>
                 </div>
               </div>
@@ -739,7 +724,6 @@ const TargetIncome = () => {
               </button>
             </div>
 
-            {/* Share options */}
             <ShareBar result={result} curSymbol={curSymbol} />
 
             <div className="bg-bg-surface border border-border/40 rounded-2xl p-5 mt-4">
@@ -750,7 +734,7 @@ const TargetIncome = () => {
         )}
 
         {/* Disclaimer (bottom) */}
-        <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4 mt-8">
+        <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-3.5 sm:p-4 mt-6 sm:mt-8">
           <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
             This is a learning tool, not financial advice
           </p>
