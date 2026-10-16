@@ -7,6 +7,7 @@ import useStore from '../store/useStore';
 import { generateIncomeAllocation } from '../services/api';
 import { track } from '../services/tracker';
 import InfoTip from '../components/InfoTip';
+import ShareBar from '../components/ShareBar';
 
 const LOCATIONS = [
   { key: 'SG', label: 'Singapore', sub: 'SGX stocks only', Flag: SG },
@@ -179,7 +180,6 @@ const TargetIncome = () => {
         riskProfile,
       });
 
-      // ✅ Enforce minimum loader display time so the AI animation is visible
       const elapsed = Date.now() - startTime;
       const remaining = Math.max(0, MIN_LOADER_MS - elapsed);
       if (remaining > 0) {
@@ -192,7 +192,6 @@ const TargetIncome = () => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } catch (err) {
-      // Also enforce minimum on error so the loader doesn't flash
       const elapsed = Date.now() - startTime;
       const remaining = Math.max(0, MIN_LOADER_MS - elapsed);
       if (remaining > 0) {
@@ -739,6 +738,9 @@ const TargetIncome = () => {
                 Start Over
               </button>
             </div>
+
+            {/* Share options */}
+            <ShareBar result={result} curSymbol={curSymbol} />
 
             <div className="bg-bg-surface border border-border/40 rounded-2xl p-5 mt-4">
               <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Important</p>
