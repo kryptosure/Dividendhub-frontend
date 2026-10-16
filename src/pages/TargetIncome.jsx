@@ -58,6 +58,23 @@ const LOADING_PHASES = [
 
 const MIN_LOADER_MS = 2500;
 
+const RevealCard = ({ children, delay = 0 }) => {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), delay);
+    return () => clearTimeout(t);
+  }, [delay]);
+  return (
+    <div
+      className={`transition-all duration-700 ease-out ${
+        visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95'
+      }`}
+    >
+      {children}
+    </div>
+  );
+};
+
 const ThinkingCard = () => {
   const [phaseIndex, setPhaseIndex] = useState(0);
 
@@ -125,6 +142,7 @@ const TargetIncome = () => {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [resultPhase, setResultPhase] = useState(0);
 
   const resultsRef = useRef(null);
   const wizardRef = useRef(null);
@@ -147,6 +165,7 @@ const TargetIncome = () => {
     setError(null);
     setResult(null);
     setSaved(false);
+    setResultPhase(0);
 
     track('income_planner_generate', {
       targetMonthly,
@@ -172,6 +191,7 @@ const TargetIncome = () => {
       }
 
       setResult(data);
+      setResultPhase(1);
 
       setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -198,6 +218,7 @@ const TargetIncome = () => {
     setResult(null);
     setError(null);
     setSaved(false);
+    setResultPhase(0);
     track('income_planner_restart', {});
     setTimeout(() => {
       wizardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -233,6 +254,15 @@ const TargetIncome = () => {
   const goToStep = (n) => setStep(n);
 
   const showStartOver = step > 1 && !isLoading;
+
+  const incomeDiff = result
+    ? result.summary.totalMonthlyIncome - result.summary.targetMonthly
+    : 0;
+  const incomeDiffMsg = result
+    ? incomeDiff >= 0
+      ? `That's ${curSymbol}${fmt(Math.abs(incomeDiff))} above your goal!`
+      : `Just ${curSymbol}${fmt(Math.abs(incomeDiff))} shy of your goal.`
+    : '';
 
   return (
     <>
@@ -542,194 +572,272 @@ const TargetIncome = () => {
         {/* Results */}
         {result && result.ok && (
           <div ref={resultsRef} className="space-y-6">
-            <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-5 sm:p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center md:text-left">
-                  <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">Your Goal</p>
-                  <p className="text-2xl sm:text-3xl font-black text-text-primary mt-1">{curSymbol}{fmt(result.summary.targetMonthly)}</p>
-                  <p className="text-xs text-text-muted">per month</p>
-                </div>
-                <div className="text-center">
-                  <p className="flex items-center justify-center md:justify-start text-[10px] uppercase tracking-widest text-text-muted font-bold">
-                    Money You'd Need
-                    <InfoTip text="The amount of capital required at this portfolio's average yield to produce your target monthly income." position="bottom" />
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-black text-accent-blue mt-1">{curSymbol}{fmt(result.summary.requiredCapital)}</p>
-                  <p className="text-xs text-text-muted">at {result.summary.avgYield}% average yield</p>
-                </div>
-                <div className="text-center md:text-right">
-                  <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">This Plan Pays You</p>
-                  <p className="text-2xl sm:text-3xl font-black text-accent-teal mt-1">{curSymbol}{fmt(result.summary.totalMonthlyIncome)}</p>
-                  <p className="text-xs text-text-muted">/ month from {result.summary.positionCount} stocks</p>
-                </div>
-              </div>
-            </div>
 
-            {result.warnings?.length > 0 && (
-              <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4 space-y-1.5">
-                {result.warnings.map((w, i) => (
-                  <p key={i} className="text-xs text-amber-300 font-medium">{w}</p>
+            {/* Progress dots */}
+            {resultPhase > 0 && resultPhase < 5 && (
+              <div className="flex justify-center gap-2 pt-2">
+                {[1, 2, 3, 4].map((n) => (
+                  <div
+                    key={n}
+                    className={`h-1.5 rounded-full transition-all duration-500 ${
+                      n <= resultPhase
+                        ? 'w-10 bg-gradient-to-r from-accent-blue to-accent-teal'
+                        : 'w-4 bg-border/40'
+                    }`}
+                  />
                 ))}
               </div>
             )}
 
-            <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
-              <div className="flex items-start justify-between flex-wrap gap-3">
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">Risk Level</p>
-                  <p className="text-lg font-black text-text-primary mt-1">{result.profile.label}</p>
-                  <p className="text-xs text-text-muted mt-1 max-w-2xl">{result.profile.description}</p>
-                </div>
-                <div className="text-right">
-                  <p className="flex items-center justify-end text-[10px] uppercase tracking-widest text-text-muted font-bold">
-                    Typical Yield
-                    <InfoTip text="The percentage of your investment that comes back to you each year as dividends." position="left" />
-                  </p>
-                  <p className="text-sm font-bold text-accent-teal mt-1">
-                    {result.profile.expectedYieldRange[0]}% - {result.profile.expectedYieldRange[1]}%
-                  </p>
-                </div>
+            {/* Summary card with progressive reveal */}
+            <div className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-5 sm:p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {resultPhase >= 1 && (
+                  <RevealCard>
+                    <div className="text-center md:text-left">
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">🎯 Your Goal</p>
+                      <p className="text-2xl sm:text-3xl font-black text-text-primary mt-1">{curSymbol}{fmt(result.summary.targetMonthly)}</p>
+                      <p className="text-xs text-text-muted">per month</p>
+                    </div>
+                  </RevealCard>
+                )}
+                {resultPhase >= 2 && (
+                  <RevealCard>
+                    <div className="text-center">
+                      <p className="flex items-center justify-center md:justify-start text-[10px] uppercase tracking-widest text-text-muted font-bold">
+                        💰 Money You'd Need
+                        <InfoTip text="The amount of capital required at this portfolio's average yield to produce your target monthly income." position="bottom" />
+                      </p>
+                      <p className="text-2xl sm:text-3xl font-black text-accent-blue mt-1">{curSymbol}{fmt(result.summary.requiredCapital)}</p>
+                      <p className="text-xs text-text-muted">at {result.summary.avgYield}% average yield</p>
+                    </div>
+                  </RevealCard>
+                )}
+                {resultPhase >= 3 && (
+                  <RevealCard>
+                    <div className="text-center md:text-right">
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">💸 This Plan Pays You</p>
+                      <p className="text-2xl sm:text-3xl font-black text-accent-teal mt-1">{curSymbol}{fmt(result.summary.totalMonthlyIncome)}</p>
+                      <p className="text-xs text-text-muted">/ month from {result.summary.positionCount} stocks</p>
+                    </div>
+                  </RevealCard>
+                )}
               </div>
             </div>
 
-            <div className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm">
-              <div className="px-5 py-3 border-b border-border/40 bg-bg-primary/30">
-                <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">
-                  Sample Portfolio
-                </p>
-                <p className="text-[10px] text-text-muted mt-0.5">
-                  Just an example. Not a recommendation, research each stock before investing.
-                </p>
-              </div>
+            {/* Risk Level (phase 4) */}
+            {resultPhase >= 4 && (
+              <RevealCard>
+                <div className="bg-bg-surface border border-border/50 rounded-2xl p-5 shadow-sm">
+                  <div className="flex items-start justify-between flex-wrap gap-3">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">⚖️ Risk Level</p>
+                      <p className="text-lg font-black text-text-primary mt-1">{result.profile.label}</p>
+                      <p className="text-xs text-text-muted mt-1 max-w-2xl">{result.profile.description}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="flex items-center justify-end text-[10px] uppercase tracking-widest text-text-muted font-bold">
+                        Typical Yield
+                        <InfoTip text="The percentage of your investment that comes back to you each year as dividends." position="left" />
+                      </p>
+                      <p className="text-sm font-bold text-accent-teal mt-1">
+                        {result.profile.expectedYieldRange[0]}% - {result.profile.expectedYieldRange[1]}%
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </RevealCard>
+            )}
 
-              <div className="overflow-x-auto mobile-scroll">
-                <table className="w-full text-xs">
-                  <thead className="bg-bg-primary/50 text-text-muted uppercase font-bold tracking-wider text-[10px]">
-                    <tr>
-                      <th className="px-3 py-3 text-left">Ticker</th>
-                      <th className="px-3 py-3 text-left">Company</th>
-                      <th className="px-3 py-3 text-left">Industry</th>
-                      <th className="px-3 py-3 text-right">
-                        <span className="inline-flex items-center">
-                          Yield
-                          <InfoTip text="The percentage of your investment paid back to you each year as dividends." />
-                        </span>
-                      </th>
-                      <th className="px-3 py-3 text-right">
-                        <span className="inline-flex items-center">
-                          Share
-                          <InfoTip text="How much of your total money goes into this stock." />
-                        </span>
-                      </th>
-                      <th className="px-3 py-3 text-right">Shares</th>
-                      <th className="px-3 py-3 text-right">Invest</th>
-                      <th className="px-3 py-3 text-right">Income /mo</th>
-                      <th className="px-3 py-3 text-center">
-                        <span className="inline-flex items-center">
-                          Risk
-                          <InfoTip text="Safe = most reliable. Moderate = generally fine. Caution = higher chance of dividend cuts." position="left" />
-                        </span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/20">
-                    {result.positions.map((p) => (
-                      <tr key={p.symbol} className="hover:bg-bg-primary/30">
-                        <td className="px-3 py-2 font-mono font-bold text-accent-teal">
-                          <Link to={`/search?symbol=${p.symbol}`} className="hover:underline">{p.symbol}</Link>
-                        </td>
-                        <td className="px-3 py-2 text-text-primary truncate max-w-[160px]">{p.name}</td>
-                        <td className="px-3 py-2 text-text-muted text-[10px] uppercase font-bold">{sectorLabel(p.sector)}</td>
-                        <td className="px-3 py-2 text-right font-mono text-accent-green font-bold">{p.currentYield.toFixed(2)}%</td>
-                        <td className="px-3 py-2 text-right font-mono text-text-secondary">{p.weight.toFixed(2)}%</td>
-                        <td className="px-3 py-2 text-right font-mono text-text-primary">{p.shares}</td>
-                        <td className="px-3 py-2 text-right font-mono text-text-secondary">{curSymbol}{fmt(p.cost)}</td>
-                        <td className="px-3 py-2 text-right font-mono text-accent-blue font-bold">{curSymbol}{fmt(p.monthlyIncome)}</td>
-                        <td className="px-3 py-2 text-center">
-                          <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border ${
-                            p.safety === 'Safe' ? 'bg-accent-green/10 border-accent-green/20 text-accent-green' :
-                            p.safety === 'Moderate' ? 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow' :
-                            'bg-accent-red/10 border-accent-red/20 text-accent-red'
-                          }`}>
-                            {p.safety}
-                          </span>
-                        </td>
-                      </tr>
+            {/* Next / Skip buttons */}
+            {resultPhase >= 1 && resultPhase < 5 && (
+              <RevealCard>
+                <div className="text-center space-y-3">
+                  <button
+                    type="button"
+                    onClick={() => setResultPhase((p) => Math.min(p + 1, 5))}
+                    className="min-h-[48px] px-6 sm:px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all"
+                  >
+                    {resultPhase === 1 && '💰 What does it take? →'}
+                    {resultPhase === 2 && '💸 What does it pay? →'}
+                    {resultPhase === 3 && '⚖️ What\'s the risk? →'}
+                    {resultPhase === 4 && '📊 See Full Portfolio →'}
+                  </button>
+                  {resultPhase < 4 && (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => setResultPhase(5)}
+                        className="text-[11px] text-text-muted hover:text-accent-blue transition-colors"
+                      >
+                        Skip to full portfolio →
+                      </button>
+                    </div>
+                  )}
+                  {resultPhase === 3 && incomeDiffMsg && (
+                    <p className="text-[11px] text-accent-teal font-bold">{incomeDiffMsg}</p>
+                  )}
+                </div>
+              </RevealCard>
+            )}
+
+            {/* Full results */}
+            {resultPhase >= 5 && (
+              <>
+                <div className="text-center">
+                  <p className="text-sm font-black text-accent-teal">
+                    <span className="inline-block animate-bounce">🎉</span> Here's your full portfolio!
+                  </p>
+                </div>
+
+                {result.warnings?.length > 0 && (
+                  <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4 space-y-1.5">
+                    {result.warnings.map((w, i) => (
+                      <p key={i} className="text-xs text-amber-300 font-medium">{w}</p>
                     ))}
-                  </tbody>
-                  <tfoot className="bg-bg-primary/40 font-bold">
-                    <tr>
-                      <td colSpan="6" className="px-3 py-3 text-text-muted text-[10px] uppercase tracking-wider">Total</td>
-                      <td className="px-3 py-3 text-right font-mono text-text-primary">{curSymbol}{fmt(result.summary.totalCost)}</td>
-                      <td className="px-3 py-3 text-right font-mono text-accent-blue">{curSymbol}{fmt(result.summary.totalMonthlyIncome)}</td>
-                      <td></td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
+                  </div>
+                )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-bg-surface border border-border/50 rounded-2xl p-4">
-                <p className="flex items-center text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
-                  Risk Breakdown
-                  <InfoTip text="How many Safe, Moderate, and Caution stocks ended up in your portfolio." />
-                </p>
-                <div className="space-y-1.5">
-                  {Object.entries(result.safetyBreakdown).map(([k, v]) => v > 0 && (
-                    <div key={k} className="flex items-center justify-between text-xs">
-                      <span className="text-text-secondary">{k}</span>
-                      <span className="font-bold text-text-primary">{v} {v === 1 ? 'stock' : 'stocks'}</span>
-                    </div>
-                  ))}
+                <div className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm">
+                  <div className="px-5 py-3 border-b border-border/40 bg-bg-primary/30">
+                    <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold">
+                      Sample Portfolio
+                    </p>
+                    <p className="text-[10px] text-text-muted mt-0.5">
+                      Just an example. Not a recommendation, research each stock before investing.
+                    </p>
+                  </div>
+
+                  <div className="overflow-x-auto mobile-scroll">
+                    <table className="w-full text-xs">
+                      <thead className="bg-bg-primary/50 text-text-muted uppercase font-bold tracking-wider text-[10px]">
+                        <tr>
+                          <th className="px-3 py-3 text-left">Ticker</th>
+                          <th className="px-3 py-3 text-left">Company</th>
+                          <th className="px-3 py-3 text-left">Industry</th>
+                          <th className="px-3 py-3 text-right">
+                            <span className="inline-flex items-center">
+                              Yield
+                              <InfoTip text="The percentage of your investment paid back to you each year as dividends." />
+                            </span>
+                          </th>
+                          <th className="px-3 py-3 text-right">
+                            <span className="inline-flex items-center">
+                              Share
+                              <InfoTip text="How much of your total money goes into this stock." />
+                            </span>
+                          </th>
+                          <th className="px-3 py-3 text-right">Shares</th>
+                          <th className="px-3 py-3 text-right">Invest</th>
+                          <th className="px-3 py-3 text-right">Income /mo</th>
+                          <th className="px-3 py-3 text-center">
+                            <span className="inline-flex items-center">
+                              Risk
+                              <InfoTip text="Safe = most reliable. Moderate = generally fine. Caution = higher chance of dividend cuts." position="left" />
+                            </span>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border/20">
+                        {result.positions.map((p) => (
+                          <tr key={p.symbol} className="hover:bg-bg-primary/30">
+                            <td className="px-3 py-2 font-mono font-bold text-accent-teal">
+                              <Link to={`/search?symbol=${p.symbol}`} className="hover:underline">{p.symbol}</Link>
+                            </td>
+                            <td className="px-3 py-2 text-text-primary truncate max-w-[160px]">{p.name}</td>
+                            <td className="px-3 py-2 text-text-muted text-[10px] uppercase font-bold">{sectorLabel(p.sector)}</td>
+                            <td className="px-3 py-2 text-right font-mono text-accent-green font-bold">{p.currentYield.toFixed(2)}%</td>
+                            <td className="px-3 py-2 text-right font-mono text-text-secondary">{p.weight.toFixed(2)}%</td>
+                            <td className="px-3 py-2 text-right font-mono text-text-primary">{p.shares}</td>
+                            <td className="px-3 py-2 text-right font-mono text-text-secondary">{curSymbol}{fmt(p.cost)}</td>
+                            <td className="px-3 py-2 text-right font-mono text-accent-blue font-bold">{curSymbol}{fmt(p.monthlyIncome)}</td>
+                            <td className="px-3 py-2 text-center">
+                              <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border ${
+                                p.safety === 'Safe' ? 'bg-accent-green/10 border-accent-green/20 text-accent-green' :
+                                p.safety === 'Moderate' ? 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow' :
+                                'bg-accent-red/10 border-accent-red/20 text-accent-red'
+                              }`}>
+                                {p.safety}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                      <tfoot className="bg-bg-primary/40 font-bold">
+                        <tr>
+                          <td colSpan="6" className="px-3 py-3 text-text-muted text-[10px] uppercase tracking-wider">Total</td>
+                          <td className="px-3 py-3 text-right font-mono text-text-primary">{curSymbol}{fmt(result.summary.totalCost)}</td>
+                          <td className="px-3 py-3 text-right font-mono text-accent-blue">{curSymbol}{fmt(result.summary.totalMonthlyIncome)}</td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-bg-surface border border-border/50 rounded-2xl p-4">
-                <p className="flex items-center text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
-                  Industry Breakdown
-                  <InfoTip text="Spreading your money across different industries helps protect you if one sector struggles." />
-                </p>
-                <div className="space-y-1.5">
-                  {Object.entries(result.sectorBreakdown).sort((a,b) => b[1]-a[1]).map(([k, v]) => (
-                    <div key={k} className="flex items-center justify-between text-xs">
-                      <span className="text-text-secondary truncate">{sectorLabel(k)}</span>
-                      <span className="font-bold text-text-primary">{v}</span>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-bg-surface border border-border/50 rounded-2xl p-4">
+                    <p className="flex items-center text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                      Risk Breakdown
+                      <InfoTip text="How many Safe, Moderate, and Caution stocks ended up in your portfolio." />
+                    </p>
+                    <div className="space-y-1.5">
+                      {Object.entries(result.safetyBreakdown).map(([k, v]) => v > 0 && (
+                        <div key={k} className="flex items-center justify-between text-xs">
+                          <span className="text-text-secondary">{k}</span>
+                          <span className="font-bold text-text-primary">{v} {v === 1 ? 'stock' : 'stocks'}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+                  <div className="bg-bg-surface border border-border/50 rounded-2xl p-4">
+                    <p className="flex items-center text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">
+                      Industry Breakdown
+                      <InfoTip text="Spreading your money across different industries helps protect you if one sector struggles." />
+                    </p>
+                    <div className="space-y-1.5">
+                      {Object.entries(result.sectorBreakdown).sort((a,b) => b[1]-a[1]).map(([k, v]) => (
+                        <div key={k} className="flex items-center justify-between text-xs">
+                          <span className="text-text-secondary truncate">{sectorLabel(k)}</span>
+                          <span className="font-bold text-text-primary">{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={handleSaveToPortfolio}
-                disabled={saved}
-                className="min-h-[48px] px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
-              >
-                {saved ? 'Saved to My Portfolio' : 'Save This to My Portfolio'}
-              </button>
-              <Link
-                to="/portfolio"
-                className="min-h-[48px] px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all flex items-center"
-              >
-                View My Portfolio
-              </Link>
-              <button
-                type="button"
-                onClick={handleRestart}
-                className="min-h-[48px] px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all flex items-center gap-2"
-              >
-                <RefreshCw size={14} />
-                Start Over
-              </button>
-            </div>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={handleSaveToPortfolio}
+                    disabled={saved}
+                    className="min-h-[48px] px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all disabled:opacity-50"
+                  >
+                    {saved ? 'Saved to My Portfolio' : 'Save This to My Portfolio'}
+                  </button>
+                  <Link
+                    to="/portfolio"
+                    className="min-h-[48px] px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all flex items-center"
+                  >
+                    View My Portfolio
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={handleRestart}
+                    className="min-h-[48px] px-6 py-3 bg-bg-surface border border-border/60 text-text-secondary text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bg-surface-hover transition-all flex items-center gap-2"
+                  >
+                    <RefreshCw size={14} />
+                    Start Over
+                  </button>
+                </div>
 
-            <ShareBar result={result} curSymbol={curSymbol} />
+                <ShareBar result={result} curSymbol={curSymbol} />
 
-            <div className="bg-bg-surface border border-border/40 rounded-2xl p-5 mt-4">
-              <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Important</p>
-              <p className="text-[11px] text-text-muted leading-relaxed">{result.disclaimer}</p>
-            </div>
+                <div className="bg-bg-surface border border-border/40 rounded-2xl p-5 mt-4">
+                  <p className="text-[10px] uppercase tracking-widest text-text-muted font-bold mb-2">Important</p>
+                  <p className="text-[11px] text-text-muted leading-relaxed">{result.disclaimer}</p>
+                </div>
+              </>
+            )}
           </div>
         )}
 
