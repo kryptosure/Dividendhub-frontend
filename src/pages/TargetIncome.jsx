@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Globe } from 'lucide-react';
+import { SG, US, CA } from 'country-flag-icons/react/3x2';
 import useStore from '../store/useStore';
 import { generateIncomeAllocation } from '../services/api';
 import { track } from '../services/tracker';
@@ -8,10 +10,10 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import InfoTip from '../components/InfoTip';
 
 const LOCATIONS = [
-  { key: 'SG', label: 'Singapore', sub: 'SGX stocks only', emoji: '🇸🇬' },
-  { key: 'US', label: 'United States', sub: 'US stocks only', emoji: '🇺🇸' },
-  { key: 'CA', label: 'Canada', sub: 'TSX stocks only', emoji: '🇨🇦' },
-  { key: 'All', label: 'All Markets', sub: 'US + CA + SGX', emoji: '🌏' },
+  { key: 'SG', label: 'Singapore', sub: 'SGX stocks only', Flag: SG },
+  { key: 'US', label: 'United States', sub: 'US stocks only', Flag: US },
+  { key: 'CA', label: 'Canada', sub: 'TSX stocks only', Flag: CA },
+  { key: 'All', label: 'All Markets', sub: 'US + CA + SGX', Flag: null },
 ];
 
 const RISK_LABELS = [
@@ -97,7 +99,6 @@ const TargetIncome = () => {
       });
       setResult(data);
 
-      // Scroll to results after render
       setTimeout(() => {
         resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -277,19 +278,32 @@ const TargetIncome = () => {
                 <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
                   {LOCATIONS.map((loc) => {
                     const active = location === loc.key;
+                    const FlagComponent = loc.Flag;
                     return (
                       <button
                         key={loc.key}
                         type="button"
                         onClick={() => setLocation(loc.key)}
                         aria-pressed={active}
-                        className={`min-h-[88px] rounded-xl p-4 border-2 text-left transition-all active:scale-[0.98] ${
+                        className={`min-h-[100px] rounded-xl p-4 border-2 text-left transition-all active:scale-[0.98] ${
                           active
                             ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                             : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
                         }`}
                       >
-                        <div className="text-2xl mb-1">{loc.emoji}</div>
+                        <div className="mb-2 h-6 flex items-center">
+                          {FlagComponent ? (
+                            <FlagComponent
+                              title={loc.label}
+                              className="w-9 h-6 rounded-sm shadow-sm ring-1 ring-border/30"
+                            />
+                          ) : (
+                            <Globe
+                              size={24}
+                              className={active ? 'text-accent-blue' : 'text-text-muted'}
+                            />
+                          )}
+                        </div>
                         <p className={`text-sm font-black ${active ? 'text-accent-blue' : 'text-text-primary'}`}>
                           {loc.label}
                         </p>
@@ -574,7 +588,7 @@ const TargetIncome = () => {
           </div>
         )}
 
-        {/* ============ DISCLAIMER (moved to bottom) ============ */}
+        {/* ============ DISCLAIMER (bottom) ============ */}
         <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4 mt-8">
           <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
             This is a learning tool, not financial advice
