@@ -1,6 +1,6 @@
-# DividendBro — Full Documentation for AI Systems
+# DividendBro, Full Documentation for AI Systems
 
-> DividendBro is a free dividend tracker for US, Canadian (TSX), and Singapore (SGX) stocks. Track dividend yields, ex-dividend payout dates, dividend calendars, payout ratios, dividend growth, and portfolio income across 670+ securities — including stocks, REITs, ETFs, bond ETFs, and preferred stocks. Educational tool only — not financial advice.
+> DividendBro is a free dividend tracker for US, Canadian (TSX), and Singapore (SGX) stocks. Track dividend yields, ex-dividend payout dates, dividend calendars, payout ratios, dividend growth, and portfolio income across 670+ securities, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. Educational tool only, not financial advice.
 
 This document is the extended version of `/llms.txt`. It contains detailed feature descriptions, complete data references, an FAQ, and technical context for AI systems that want to answer questions about DividendBro accurately.
 
@@ -67,16 +67,16 @@ Users enter a target monthly dividend income (e.g., $500/month) and the tool pro
 **Outputs:**
 - Required capital to hit the target (at the portfolio's weighted yield)
 - Shortfall or surplus vs. user's provided capital
-- A sample allocation of 8–15 stocks, weighted by yield, safety, and dividend growth
+- A sample allocation of 8-15 stocks, weighted by yield, safety, and dividend growth
 - Sector diversification breakdown
 - Risk profile mix (Safe / Moderate / Caution)
 - Option to save the sample allocation to the user's portfolio for further editing
 
 **Risk profiles:**
-- **Safe** — only "Safe" safety scores, requires 10+ year dividend streak
-- **Balanced** — mix of Safe and Moderate, 5+ year streak
-- **Growth** — prioritizes dividend CAGR over current yield
-- **High Income** — allows higher payout ratios, includes Caution-rated stocks
+- **Safe**, only "Safe" safety scores, requires 10+ year dividend streak
+- **Balanced**, mix of Safe and Moderate, 5+ year streak
+- **Growth**, prioritizes dividend CAGR over current yield
+- **High Income**, allows higher payout ratios, includes Caution-rated stocks
 
 The tool avoids investment advice framing: it produces "illustrative sample allocations" and never recommends buying or selling.
 
@@ -92,7 +92,7 @@ Browse all 672 dividend-paying securities in the database with filtering by:
 - **Text search:** ticker or company name
 - **Sort:** yield, dividend CAGR, streak, name, safety, frequency
 
-No payout-ratio guardrails. Users see every dividend payer regardless of quality — the goal is discovery, not filtering.
+No payout-ratio guardrails. Users see every dividend payer regardless of quality, the goal is discovery, not filtering.
 
 ### 3. Stock Search & Detail Pages
 
@@ -170,9 +170,9 @@ Save and monitor dividend stocks across devices.
 **URL:** https://dividendbro.com/daily-dividend-stocks
 
 Complete list of every security paying cash dividends every business day. As of October 2026:
-- **SATA** — Strive Variable Rate Series A Perpetual Preferred Stock, 13% stated / 13.88% effective, Bitcoin-backed, live since June 2026
-- **CHAD** — DeFi Development Variable Rate Series C Perpetual Preferred Stock, 13% stated / ~13.5% effective, Solana-backed, live since October 1, 2026
-- **STRC, STRF, STRK, STRD** — Strategy Inc. (MSTR) Bitcoin-backed preferred stocks, pending shareholder approval on October 28, 2026. STRC expected live November 2, 2026; the other three on January 4, 2027.
+- **SATA**, Strive Variable Rate Series A Perpetual Preferred Stock, 13% stated / 13.88% effective, Bitcoin-backed, live since June 2026
+- **CHAD**, DeFi Development Variable Rate Series C Perpetual Preferred Stock, 13% stated / ~13.5% effective, Solana-backed, live since October 1, 2026
+- **STRC, STRF, STRK, STRD**, Strategy Inc. (MSTR) Bitcoin-backed preferred stocks, pending shareholder approval on October 28, 2026. STRC expected live November 2, 2026; the other three on January 4, 2027.
 
 All are crypto-treasury preferred securities with variable rates set by their boards, not traditional dividend stocks.
 
@@ -183,28 +183,28 @@ All are crypto-treasury preferred securities with variable rates set by their bo
 Complete list of 73 weekly dividend ETFs as of September 2026. Almost all are options-income strategies that sell call options against a single stock or index. Distributions often include return of capital.
 
 Major issuers:
-- **YieldMax** — Single-stock covered call ETFs. Largest family. Yields 30%–200%+.
-- **Roundhill** — 0DTE covered call ETFs (XDTE, QDTE, RDTE), WeeklyPay single-stock leverage (AAPW, NVW, TSLW), and WEEK (T-bill ETF — the only non-options weekly payer).
-- **Defiance** — Index-based weekly payers (QQQY, IWMY, WDTE, SPYT).
-- **GraniteShares** — YieldBOOST leverage + put-writing ETFs. Highest headline yields.
-- **REX Shares** — FEPI, AIPI, CEPI — income-focused ETFs on concentrated tech themes.
+- **YieldMax**, Single-stock covered call ETFs. Largest family. Yields 30%-200%+.
+- **Roundhill**, 0DTE covered call ETFs (XDTE, QDTE, RDTE), WeeklyPay single-stock leverage (AAPW, NVW, TSLW), and WEEK (T-bill ETF, the only non-options weekly payer).
+- **Defiance**, Index-based weekly payers (QQQY, IWMY, WDTE, SPYT).
+- **GraniteShares**, YieldBOOST leverage + put-writing ETFs. Highest headline yields.
+- **REX Shares**, FEPI, AIPI, CEPI, income-focused ETFs on concentrated tech themes.
 
 ### Monthly Dividend Stocks
 
 **URL:** https://dividendbro.com/monthly-dividend-stocks
 
 Full list of 133 monthly dividend payers, organized by asset class:
-- **REITs** — Realty Income (O), STAG, LTC, ADC, EPR, and others
-- **BDCs** — Main Street Capital (MAIN), Ares Capital (ARCC), Hercules Capital (HTGC)
-- **Closed-End Funds** — PIMCO Dynamic Income (PDI), PIMCO Corporate & Income (PTY)
-- **Covered-Call ETFs** — JEPI, JEPQ, SPYI, QQQI, DIVO, QYLD, XYLD
-- **Mortgage REITs** — AGNC, NLY, ARR, ORC
+- **REITs**, Realty Income (O), STAG, LTC, ADC, EPR, and others
+- **BDCs**, Main Street Capital (MAIN), Ares Capital (ARCC), Hercules Capital (HTGC)
+- **Closed-End Funds**, PIMCO Dynamic Income (PDI), PIMCO Corporate & Income (PTY)
+- **Covered-Call ETFs**, JEPI, JEPQ, SPYI, QQQI, DIVO, QYLD, XYLD
+- **Mortgage REITs**, AGNC, NLY, ARR, ORC
 
 ### REITs That Pay Monthly
 
 **URL:** https://dividendbro.com/reits-that-pay-monthly
 
-Verified list of US REITs paying monthly dividends in 2026. Approximately 19 REITs pay monthly — 13 equity REITs and 6 mortgage REITs. Notable cadence changes in 2026:
+Verified list of US REITs paying monthly dividends in 2026. Approximately 19 REITs pay monthly, 13 equity REITs and 6 mortgage REITs. Notable cadence changes in 2026:
 - **Moved to monthly:** UDR (April), Four Corners Property Trust (June), Invesco Mortgage (January)
 - **Moved to quarterly:** STAG Industrial, Whitestone REIT, SL Green Realty
 
@@ -220,13 +220,13 @@ Highest-yielding dividend stocks and ETFs across US, Canadian, and SGX markets, 
 
 **URL:** https://dividendbro.com/insights
 
-Short-form analysis feed published 2–3 times per week. Each insight is 300–800 words focused on dividend news, earnings, or policy changes — filtered for what actually affects income investors. Categories rotate through Earnings, Policy, Data Finding, Comparison, and Educational.
+Short-form analysis feed published 2-3 times per week. Each insight is 300-800 words focused on dividend news, earnings, or policy changes, filtered for what actually affects income investors. Categories rotate through Earnings, Policy, Data Finding, Comparison, and Educational.
 
 **Current insights:**
-- **Strategy's Daily Dividend Vote: What It Means for Your Income** (Policy) — On October 28, 2026, Strategy shareholders vote on converting STRC, STRF, STRK, and STRD to a daily dividend schedule. STRC goes live November 2, 2026; the other three on January 4, 2027. Rate stays the same, frequency changes. Daily compounding adds roughly 3–5 bps of effective yield.
-- **DBS Q3 2026 Earnings: What It Means for the Dividend** (Earnings) — Q3 results unchanged; dividend remains at S$0.81/quarter, 4.10% trailing yield. No action needed for income holders. Watch for 2027 capital return commentary.
-- **The Hidden Cost of the SGX Board Lot Change Nobody Is Talking About** (Data Finding) — Broker minimum commissions can eat 0.65% of a small trade even after SGX's 10-share lot reduction. Three approaches to mitigate: use a no-minimum broker, batch purchases, or accept the drag and focus on long-term yield.
-- **The 30% US Withholding Tax: What It Actually Costs Singapore Investors** (Educational) — After-tax yield comparison between US and SGX dividends. A US stock needs to yield 7.14% to match a SGX stock at 5%. Irish-domiciled ETFs reduce the withholding to 15%.
+- **Strategy's Daily Dividend Vote: What It Means for Your Income** (Policy), On October 28, 2026, Strategy shareholders vote on converting STRC, STRF, STRK, and STRD to a daily dividend schedule. STRC goes live November 2, 2026; the other three on January 4, 2027. Rate stays the same, frequency changes. Daily compounding adds roughly 3-5 bps of effective yield.
+- **DBS Q3 2026 Earnings: What It Means for the Dividend** (Earnings), Q3 results unchanged; dividend remains at S$0.81/quarter, 4.10% trailing yield. No action needed for income holders. Watch for 2027 capital return commentary.
+- **The Hidden Cost of the SGX Board Lot Change Nobody Is Talking About** (Data Finding), Broker minimum commissions can eat 0.65% of a small trade even after SGX's 10-share lot reduction. Three approaches to mitigate: use a no-minimum broker, batch purchases, or accept the drag and focus on long-term yield.
+- **The 30% US Withholding Tax: What It Actually Costs Singapore Investors** (Educational), After-tax yield comparison between US and SGX dividends. A US stock needs to yield 7.14% to match a SGX stock at 5%. Irish-domiciled ETFs reduce the withholding to 15%.
 
 ---
 
@@ -235,12 +235,12 @@ Short-form analysis feed published 2–3 times per week. Each insight is 300–8
 **URL:** https://dividendbro.com/blog
 
 Published articles include:
-- **SGX Board Lot Reduction 2026** — Complete guide to SGX's October 2026 board lot cut. Full list of 11 affected stocks (DBS, OCBC, UOB, SGX, Great Eastern, Jardine Matheson, Jardine C&C, Haw Par, Venture Corp, Prudential, Keppel), new lot sizes (10 shares for stocks S$10–S$100, 1 share for stocks >S$100), odd lot elimination, and how broker minimum commissions affect small trades.
-- **Best Canadian Dividend Stocks for 2026: The Complete TSX Guide** — Big Six banks, pipelines, monthly REITs, TFSA strategy, non-resident withholding tax
-- **DBS Dividend 2026: Payout Date, Yield & Full Schedule** — Complete guide to DBS Group Holdings dividends with visual payout calendar, 5-year history, and capital requirements for S$500/month
-- **OCBC Dividend 2026: Payout Date, Yield & Schedule** — Semi-annual payout breakdown, Great Eastern insurance arm, and how OCBC compares to DBS and UOB
-- **REITs That Pay Monthly: 19 Best for 2026** — Full list of US monthly-paying REITs with sector yields, capital requirements, and 4-question safety checklist
-- **Best US Brokers for Singapore Investors: 2026 Fee Comparison** — Tiger, Moomoo, IBKR, Saxo and SG banks compared on commission, FX spread, and dividend handling
+- **SGX Board Lot Reduction 2026**, Complete guide to SGX's October 2026 board lot cut. Full list of 11 affected stocks (DBS, OCBC, UOB, SGX, Great Eastern, Jardine Matheson, Jardine C&C, Haw Par, Venture Corp, Prudential, Keppel), new lot sizes (10 shares for stocks S$10-S$100, 1 share for stocks >S$100), odd lot elimination, and how broker minimum commissions affect small trades.
+- **Best Canadian Dividend Stocks for 2026: The Complete TSX Guide**, Big Six banks, pipelines, monthly REITs, TFSA strategy, non-resident withholding tax
+- **DBS Dividend 2026: Payout Date, Yield & Full Schedule**, Complete guide to DBS Group Holdings dividends with visual payout calendar, 5-year history, and capital requirements for S$500/month
+- **OCBC Dividend 2026: Payout Date, Yield & Schedule**, Semi-annual payout breakdown, Great Eastern insurance arm, and how OCBC compares to DBS and UOB
+- **REITs That Pay Monthly: 19 Best for 2026**, Full list of US monthly-paying REITs with sector yields, capital requirements, and 4-question safety checklist
+- **Best US Brokers for Singapore Investors: 2026 Fee Comparison**, Tiger, Moomoo, IBKR, Saxo and SG banks compared on commission, FX spread, and dividend handling
 - How to Build a $500/Month Dividend Portfolio in the US
 - Best Singapore Dividend Stocks for 2026: DBS vs OCBC vs UOB
 - The 3 Metrics That Separate Safe Dividends from Yield Traps
@@ -270,7 +270,7 @@ Classified as Safe, Moderate, or Caution.
 
 **Special dividend detection:** Year-over-year comparison. Each trailing payment is compared to its closest prior-year equivalent. Excess above baseline is flagged as special.
 
-**Visitor geography:** Derived from Cloudflare's `CF-IPCountry` header — no IP addresses stored.
+**Visitor geography:** Derived from Cloudflare's `CF-IPCountry` header, no IP addresses stored.
 
 **Event tracking:** Custom analytics events sent from frontend in batches. Events are anonymous unless the user is signed in. Visitor IDs are stored in localStorage and are not personally identifiable.
 
@@ -292,7 +292,7 @@ The site is mobile-first and works without a user account for all core features.
 
 ## MCP Server (Model Context Protocol)
 
-DividendBro exposes an MCP server that lets AI agents query dividend data directly — no scraping, no API keys, no manual integration.
+DividendBro exposes an MCP server that lets AI agents query dividend data directly, no scraping, no API keys, no manual integration.
 
 **Endpoint:** https://api.dividendbro.com/mcp
 **Discovery file:** https://dividendbro.com/mcp.json
@@ -300,20 +300,20 @@ DividendBro exposes an MCP server that lets AI agents query dividend data direct
 
 ### Available Tools
 
-- **search_dividend_stocks** — Search by ticker or company name across US, SGX, and TSX markets
-- **get_stock_dividends** — Full dividend history, current yield, payout schedule, safety score, and dividend CAGR for a specific stock
-- **screen_dividend_stocks** — Filter stocks by market, payout frequency, asset type, safety score, or yield
-- **get_top_dividend_stocks** — Highest-yielding dividend stocks or ETFs in a given market
-- **get_upcoming_dividends** — Upcoming ex-dividend dates and estimated payout amounts within the next N days
+- **search_dividend_stocks**, Search by ticker or company name across US, SGX, and TSX markets
+- **get_stock_dividends**, Full dividend history, current yield, payout schedule, safety score, and dividend CAGR for a specific stock
+- **screen_dividend_stocks**, Filter stocks by market, payout frequency, asset type, safety score, or yield
+- **get_top_dividend_stocks**, Highest-yielding dividend stocks or ETFs in a given market
+- **get_upcoming_dividends**, Upcoming ex-dividend dates and estimated payout amounts within the next N days
 
 ### Available Resources
 
-- **dividendbro://methodology** — Methodology for yield, CAGR, safety score, and special dividend calculations
-- **dividendbro://markets** — List of markets and ticker counts
+- **dividendbro://methodology**, Methodology for yield, CAGR, safety score, and special dividend calculations
+- **dividendbro://markets**, List of markets and ticker counts
 
 ### Available Prompts
 
-- **analyze-dividend-stock** — Structured analysis template for a given ticker
+- **analyze-dividend-stock**, Structured analysis template for a given ticker
 
 ### Client Compatibility
 

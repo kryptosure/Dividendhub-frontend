@@ -4,7 +4,7 @@ export const article = {
   date: "2026-09-24",
   category: "Learning",
   image: "/images/blog/uob-dividend-guide-2026-cover.webp",
-  excerpt: "A plain-language guide to UOB dividends in 2026 — current yield, semi-annual payment schedule, five-year payout history, and how UOB compares to DBS and OCBC.",
+  excerpt: "A plain-language guide to UOB dividends in 2026, current yield, semi-annual payment schedule, five-year payout history, and how UOB compares to DBS and OCBC.",
   author: "DividendBro Research Team",
   content: `
       <p>UOB is the bank that quietly serves Southeast Asia. It has the smallest domestic footprint of the three Singapore banks, but it makes up for it with a network that stretches across Thailand, Malaysia, Indonesia, and Vietnam. For income investors, that means a dividend that reflects the bank's exposure to some of the fastest-growing economies in the region.</p>
@@ -20,7 +20,7 @@ export const article = {
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="https://dividendbro.com" class="db-ig-link">dividendbro.com →</a>
         </div>
-        <h4 class="db-ig-title">UOB (U11.SI) — September 2026</h4>
+        <h4 class="db-ig-title">UOB (U11.SI), September 2026</h4>
         <p class="db-ig-sub">Live dividend data from DividendBro</p>
         <div class="db-ig-grid">
           <div class="db-ig-stat">
@@ -86,9 +86,9 @@ export const article = {
         </tbody>
       </table>
 
-      <p>Two things stand out from this table. First, the payments are relatively large — S$0.88 per share in August 2026 is more than double what OCBC paid for the same period. That is because UOB has a smaller share count, so the per-share amount is naturally higher even when the total cash returned to shareholders is comparable.</p>
+      <p>Two things stand out from this table. First, the payments are relatively large, S$0.88 per share in August 2026 is more than double what OCBC paid for the same period. That is because UOB has a smaller share count, so the per-share amount is naturally higher even when the total cash returned to shareholders is comparable.</p>
 
-      <p>Second, the 2025 payments were boosted by one-off special dividends of S$0.25 per share in both April and August. That is why the 2025 figures look so much higher than 2026. The underlying regular dividend has not fallen — the specials simply are not recurring.</p>
+      <p>Second, the 2025 payments were boosted by one-off special dividends of S$0.25 per share in both April and August. That is why the 2025 figures look so much higher than 2026. The underlying regular dividend has not fallen, the specials simply are not recurring.</p>
 
       <p>This distinction matters more for UOB than for DBS or OCBC. If you saw UOB's 2025 dividend history and assumed that was the sustainable level, you would be disappointed by 2026's numbers. The correct way to look at UOB is to focus on the regular dividend, which has been stable and growing.</p>
 
@@ -154,7 +154,7 @@ export const article = {
 
       <p>Over the past five complete years, the annual dividend per share has compounded at <strong>14.77%</strong>. That is a strong growth rate, though it is the lowest of the three Singapore banks. DBS leads at 25.18%, and OCBC follows at 17.42%.</p>
 
-      <p>Two context points make the history easier to interpret. First, the low starting point in 2021 reflects the MAS dividend cap imposed during the pandemic, which suppressed payouts across all three local banks. When the cap was lifted, dividends normalised. Second, 2025 stands out because of the two special dividends paid that year. Stripping those out, the regular dividend grew from S$1.73 in 2024 to roughly S$1.77 in 2025 — a modest increase, not the dramatic jump the chart appears to show.</p>
+      <p>Two context points make the history easier to interpret. First, the low starting point in 2021 reflects the MAS dividend cap imposed during the pandemic, which suppressed payouts across all three local banks. When the cap was lifted, dividends normalised. Second, 2025 stands out because of the two special dividends paid that year. Stripping those out, the regular dividend grew from S$1.73 in 2024 to roughly S$1.77 in 2025, a modest increase, not the dramatic jump the chart appears to show.</p>
 
       <p>UOB has now grown its dividend for five consecutive years. Since it began paying dividends, the bank has distributed a cumulative <strong>S$24.49 per share</strong> to shareholders.</p>
 
@@ -164,7 +164,7 @@ export const article = {
 
       <p>UOB's payout ratio is approximately 50% of core earnings, according to its own disclosures. That means the bank is paying out about half of what it earns as dividends and retaining the other half to fund growth and build capital. A 50% payout ratio is comfortable for a bank and leaves room to maintain the dividend even if earnings dip temporarily.</p>
 
-      <p>UOB's capital position is strong. Like DBS and OCBC, it maintains a common equity tier one ratio well above regulatory requirements. Its non-performing loan ratio is slightly higher than its peers — reflecting its greater exposure to emerging ASEAN markets where credit conditions can be more volatile.</p>
+      <p>UOB's capital position is strong. Like DBS and OCBC, it maintains a common equity tier one ratio well above regulatory requirements. Its non-performing loan ratio is slightly higher than its peers, reflecting its greater exposure to emerging ASEAN markets where credit conditions can be more volatile.</p>
 
       <p>What could go wrong? Interest rates are the primary risk for all three Singapore banks. When rates fall, net interest margins compress and earnings come under pressure. UOB is also more exposed to currency fluctuations in emerging ASEAN markets and to the economic cycles of countries like Thailand, Indonesia, and Vietnam.</p>
 
@@ -249,7 +249,7 @@ export const article = {
       <h2>Frequently Asked Questions</h2>
 
       <p><strong>How often does UOB pay dividends?</strong></p>
-      <p>UOB pays dividends twice a year — an interim dividend in August and a final dividend in April or May. This semi-annual structure is common for Singapore banks.</p>
+      <p>UOB pays dividends twice a year, an interim dividend in August and a final dividend in April or May. This semi-annual structure is common for Singapore banks.</p>
 
       <p><strong>What is the current UOB dividend per share?</strong></p>
       <p>The most recent interim dividend was S$0.88 per share, paid in August 2026. The most recent final dividend was S$0.71 per share, paid in April 2026. The trailing twelve-month total is S$1.59 per share.</p>

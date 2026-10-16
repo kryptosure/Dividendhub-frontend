@@ -136,7 +136,7 @@ export const article = {
         </div>
       </div>
 
-      <p><em>*2026 is not finished — one more payment is expected.</em></p>
+      <p><em>*2026 is not finished, one more payment is expected.</em></p>
 
       <p><strong>Why the jump from 2021 to 2023?</strong> During COVID, Singapore's central bank capped bank dividends. When the caps lifted in 2022, DBS paid extra to catch up. The growth from 2023 onwards is the "real" baseline.</p>
 
@@ -169,7 +169,7 @@ export const article = {
           </div>
           <div class="db-ig-stat">
             <div class="db-ig-stat-label">Time to Build</div>
-            <div class="db-ig-stat-val">15–20 yrs</div>
+            <div class="db-ig-stat-val">15-20 yrs</div>
             <div class="db-ig-stat-sub">S$500/month contributions</div>
           </div>
         </div>
@@ -180,7 +180,7 @@ export const article = {
 
       <p>Yes, S$146,000 sounds like a lot. But almost nobody starts with that. Most people start with whatever they can afford, reinvest the dividends, and let time do the work. Use the <a href="/simulate/dca">DCA simulator</a> to see what your journey looks like.</p>
 
-      <h2>DBS vs OCBC vs UOB — The Visual Comparison</h2>
+      <h2>DBS vs OCBC vs UOB, The Visual Comparison</h2>
 
       <table>
         <thead>
@@ -226,7 +226,7 @@ export const article = {
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="https://dividendbro.com" class="db-ig-link">Compare tool →</a>
         </div>
-        <h4 class="db-ig-title">S$10,000 Invested — Annual Income</h4>
+        <h4 class="db-ig-title">S$10,000 Invested, Annual Income</h4>
         <div class="db-ig-body">
           <div class="db-ig-row">
             <span class="db-ig-row-label">DBS</span>
@@ -257,7 +257,7 @@ export const article = {
           <a href="https://dividendbro.com" class="db-ig-link">Safety ratings →</a>
         </div>
         <h4 class="db-ig-title">🛡️ Dividend Safety Check</h4>
-        <p class="db-ig-sub">What we look at — and what we found</p>
+        <p class="db-ig-sub">What we look at, and what we found</p>
         <div class="db-ig-grid">
           <div class="db-ig-stat">
             <div class="db-ig-stat-label">Growth Streak</div>
@@ -292,7 +292,7 @@ export const article = {
       <h2>Frequently Asked Questions</h2>
 
       <p><strong>When is DBS's next dividend payout?</strong><br/>
-      The next payout is expected in November 2026. The ex-dividend date typically falls in mid-November, with payment about 10–14 days later.</p>
+      The next payout is expected in November 2026. The ex-dividend date typically falls in mid-November, with payment about 10-14 days later.</p>
 
       <p><strong>How much does DBS pay per share?</strong><br/>
       S$0.81 per quarter. That's S$3.24 per year if you hold 1 share through all four ex-dividend dates.</p>
@@ -301,7 +301,7 @@ export const article = {
       4.10% based on a share price of S$77.60 and trailing 12-month dividends of S$3.18.</p>
 
       <p><strong>Does DBS pay dividends every quarter?</strong><br/>
-      Yes. Four payments per year — typically in April, May, August, and November.</p>
+      Yes. Four payments per year, typically in April, May, August, and November.</p>
 
       <p><strong>Is the DBS dividend safe?</strong><br/>
       DBS has grown its dividend for six consecutive years. It's rated <strong>Moderate</strong> on our safety scale. No dividend is guaranteed, but a cut would require a major financial deterioration.</p>

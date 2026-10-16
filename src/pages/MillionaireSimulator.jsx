@@ -136,16 +136,16 @@ const MillionaireSimulator = () => {
   return (
     <>
       <Helmet>
-        <title>Millionaire Simulator – How Fast to $1M with Dividend Stocks</title>
+        <title>Millionaire Simulator - How Fast to $1M with Dividend Stocks</title>
         <meta name="description" content="Interactive dividend simulator: see how fast $500/month reaches $1M in US, Canada, and SGX stocks with DRIP. Live leaderboard of the fastest dividend compounders." />
         <link rel="canonical" href="https://dividendbro.com/millionaire" />
-        <meta property="og:title" content="Millionaire Simulator – How Fast to $1M with Dividend Stocks" />
+        <meta property="og:title" content="Millionaire Simulator - How Fast to $1M with Dividend Stocks" />
         <meta property="og:description" content="See how fast your monthly dividend investment reaches $1M. Interactive DRIP simulator for US, Canada, and SGX stocks." />
         <meta property="og:url" content="https://dividendbro.com/millionaire" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://dividendbro.com/images/cover.png" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Millionaire Simulator – DividendBro" />
+        <meta name="twitter:title" content="Millionaire Simulator - DividendBro" />
         <meta name="twitter:description" content="See how fast your monthly dividend investment reaches $1M." />
         <meta name="twitter:image" content="https://dividendbro.com/images/cover.png" />
       </Helmet>
@@ -268,7 +268,7 @@ const MillionaireSimulator = () => {
                   ⚠️ High-Risk Yield Warning
                 </p>
                 <p className="text-xs text-text-secondary leading-relaxed">
-                  High-yield products often return capital rather than earnings — this projection may be unrealistically optimistic.
+                  High-yield products often return capital rather than earnings, this projection may be unrealistically optimistic.
                   {rawYieldPct > 10 && (
                     <> The displayed yield of <strong className="text-accent-red">{rawYieldPct.toFixed(2)}%</strong> is unusually high and typically signals elevated risk of distribution cuts.</>
                   )}
@@ -390,7 +390,7 @@ const MillionaireSimulator = () => {
         <div className={`pt-4 ${metrics ? 'border-t border-border/40' : ''}`}>
           <div className="mb-4">
             <h2 className="text-2xl font-black tracking-tight text-text-primary">
-              🏆 Quality Dividend Compounders — Fastest to {curSymbol}1M
+              🏆 Quality Dividend Compounders, Fastest to {curSymbol}1M
             </h2>
             <p className="text-text-muted text-xs mt-1 max-w-2xl">
               Established dividend payers with yields between 2% and 8% and Safe or Moderate safety scores.

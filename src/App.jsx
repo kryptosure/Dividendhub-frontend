@@ -117,9 +117,9 @@ function App() {
             <meta property="og:url" content={SITE_URL} />
             <meta property="og:image" content={DEFAULT_IMAGE} />
             <meta name="twitter:card" content="summary_large_image" />
-            <meta property="og:title" content="Free Dividend Tracker — Yields, Payout Dates & Income" />
+            <meta property="og:title" content="Free Dividend Tracker, Yields, Payout Dates & Income" />
             <meta property="og:description" content="Track 670+ dividend stocks across US, SGX & TSX. Real-time yields, ex-dividend dates, payout calendar, and monthly income projections. Free." />
-            <meta name="twitter:title" content="Free Dividend Tracker — Yields, Payout Dates & Income" />
+            <meta name="twitter:title" content="Free Dividend Tracker, Yields, Payout Dates & Income" />
             <meta name="twitter:description" content="Track 670+ dividend stocks across US, SGX & TSX. Real-time yields, ex-dividend dates, payout calendar, and monthly income projections." />
           </Helmet>
 

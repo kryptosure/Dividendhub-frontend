@@ -19,7 +19,7 @@ const DAILY_PAYERS = [
     treasury: 'Bitcoin (23,156 BTC held unencumbered)',
     reserve: '18 months of dividend coverage',
     description:
-      'SATA is the first listed security in U.S. capital markets history to pay cash dividends every business day. Strive maintains a Bitcoin treasury to back the distribution and has set aside an 18-month dividend reserve in liquid assets. Dividends are cumulative — if a payment is ever missed, it accrues and must be paid before common dividends.',
+      'SATA is the first listed security in U.S. capital markets history to pay cash dividends every business day. Strive maintains a Bitcoin treasury to back the distribution and has set aside an 18-month dividend reserve in liquid assets. Dividends are cumulative, if a payment is ever missed, it accrues and must be paid before common dividends.',
     caveat:
       'Backed by a Bitcoin treasury. If Bitcoin collapses, the reserve could deplete and the dividend rate can be adjusted by the board. Not a traditional "safe income" security.',
   },
@@ -34,7 +34,7 @@ const DAILY_PAYERS = [
     parValue: '$10.00',
     perDay: '~$0.0036',
     paymentDays: '~250/year',
-    treasury: 'Solana (SOL) — $290M+ treasury',
+    treasury: 'Solana (SOL), $290M+ treasury',
     reserve: '$1.30 per share dividend reserve',
     description:
       'CHAD is the second security paying daily dividends. DeFi Development Corp. holds a Solana treasury and has funded a per-share dividend reserve. Dividends are cumulative and paid daily, when declared by the board. The lower $10 par value makes it more accessible for small investors.',
@@ -93,15 +93,15 @@ const UPCOMING_PAYERS = [
 const FAQS = [
   {
     q: 'What is a daily dividend stock?',
-    a: 'A daily dividend stock pays cash dividends every business day — approximately 250 payments per year instead of 4 (quarterly) or 12 (monthly). The annual rate is fixed, but sliced into daily payments. The concept was pioneered in June 2026 when Strive Inc. began paying daily dividends on its SATA preferred stock.',
+    a: 'A daily dividend stock pays cash dividends every business day, approximately 250 payments per year instead of 4 (quarterly) or 12 (monthly). The annual rate is fixed, but sliced into daily payments. The concept was pioneered in June 2026 when Strive Inc. began paying daily dividends on its SATA preferred stock.',
   },
   {
     q: 'How many daily dividend stocks exist?',
-    a: 'As of October 2026, two are live: SATA (Strive, Bitcoin-backed) and CHAD (DeFi Development, Solana-backed). Four more are pending shareholder approval: STRC, STRF, STRK, and STRD — all issued by Strategy Inc. If approved, STRC goes live November 2, 2026, and the other three on January 4, 2027.',
+    a: 'As of October 2026, two are live: SATA (Strive, Bitcoin-backed) and CHAD (DeFi Development, Solana-backed). Four more are pending shareholder approval: STRC, STRF, STRK, and STRD, all issued by Strategy Inc. If approved, STRC goes live November 2, 2026, and the other three on January 4, 2027.',
   },
   {
     q: 'Are daily dividends better than monthly?',
-    a: 'They compound slightly faster. On a 13% stated rate, daily payments produce an effective yield of ~13.88% vs ~13.65% for monthly payments. The difference is roughly 0.23 percentage points per year — about $23 on a $10,000 investment.',
+    a: 'They compound slightly faster. On a 13% stated rate, daily payments produce an effective yield of ~13.88% vs ~13.65% for monthly payments. The difference is roughly 0.23 percentage points per year, about $23 on a $10,000 investment.',
   },
   {
     q: 'Are daily dividend stocks safe?',
@@ -147,7 +147,7 @@ const DailyDividendStocks = () => {
     <>
       <Helmet>
         <title>Daily Dividend Stocks 2026: Complete List (SATA, CHAD, Strategy)</title>
-        <meta name="description" content="Only 2 daily dividend stocks are live today — SATA and CHAD, both paying ~13% annually. See the complete list plus Strategy's 4 upcoming daily preferreds. Updated October 2026." />
+        <meta name="description" content="Only 2 daily dividend stocks are live today, SATA and CHAD, both paying ~13% annually. See the complete list plus Strategy's 4 upcoming daily preferreds. Updated October 2026." />
         <link rel="canonical" href={`${SITE_URL}/daily-dividend-stocks`} />
         <meta property="og:title" content="Daily Dividend Stocks 2026: Complete List (SATA, CHAD, Strategy)" />
         <meta property="og:description" content="Two live, four pending. The complete guide to every security paying daily dividends in 2026." />
@@ -168,7 +168,7 @@ const DailyDividendStocks = () => {
             Daily Dividend Stocks: The <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Complete List</span>
           </h1>
           <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-3xl">
-            Only two securities in U.S. capital markets pay cash dividends every business day. Four more are pending approval — Strategy Inc.'s proposal would bring the daily dividend universe to <strong className="text-text-primary">six assets by January 2027</strong>. Here's everything you need to know.
+            Only two securities in U.S. capital markets pay cash dividends every business day. Four more are pending approval, Strategy Inc.'s proposal would bring the daily dividend universe to <strong className="text-text-primary">six assets by January 2027</strong>. Here's everything you need to know.
           </p>
           <p className="text-text-muted text-xs">
             Updated October 2026 · 2 live · 4 pending · SATA, CHAD, STRC, STRF, STRK, STRD
@@ -189,10 +189,10 @@ const DailyDividendStocks = () => {
             What is a daily dividend stock?
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            A daily dividend stock pays cash to shareholders every <strong className="text-text-primary">business day</strong> — approximately 250 payments per year instead of 4 (quarterly) or 12 (monthly). The concept was pioneered in June 2026 when Strive Inc. began paying daily dividends on its SATA preferred stock, marking the first time any listed security in U.S. capital markets history paid cash on a daily cadence.
+            A daily dividend stock pays cash to shareholders every <strong className="text-text-primary">business day</strong>, approximately 250 payments per year instead of 4 (quarterly) or 12 (monthly). The concept was pioneered in June 2026 when Strive Inc. began paying daily dividends on its SATA preferred stock, marking the first time any listed security in U.S. capital markets history paid cash on a daily cadence.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Daily dividends are only possible with <strong className="text-text-primary">cumulative preferred stock</strong>, not common stock. Preferred stock allows the board to set a variable rate and declare dividends monthly for the following month's payments. The daily accrual is mechanical — the annualized rate is simply divided by the number of business days in the year.
+            Daily dividends are only possible with <strong className="text-text-primary">cumulative preferred stock</strong>, not common stock. Preferred stock allows the board to set a variable rate and declare dividends monthly for the following month's payments. The daily accrual is mechanical, the annualized rate is simply divided by the number of business days in the year.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
             All six current and pending daily dividend payers are issued by crypto-treasury companies: Strive (Bitcoin), DeFi Development (Solana), and Strategy (Bitcoin).
@@ -282,7 +282,7 @@ const DailyDividendStocks = () => {
               Strategy's 4 daily preferreds would triple the universe
             </h3>
             <p className="text-sm text-text-secondary leading-relaxed">
-              Strategy Inc. (Nasdaq: MSTR) has proposed converting four of its preferred stocks to a daily dividend schedule. If approved, the daily dividend universe grows from 2 to 6 assets by January 2027 — a 3x expansion in 6 months.
+              Strategy Inc. (Nasdaq: MSTR) has proposed converting four of its preferred stocks to a daily dividend schedule. If approved, the daily dividend universe grows from 2 to 6 assets by January 2027, a 3x expansion in 6 months.
             </p>
           </div>
 
@@ -382,7 +382,7 @@ const DailyDividendStocks = () => {
             <div className="bg-bg-surface border border-border/50 rounded-2xl p-5">
               <h3 className="font-bold text-text-primary text-base mb-2">Preferred stock structure</h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Preferred stock is senior to common stock in bankruptcy but junior to all debt. If the issuer becomes insolvent, preferred holders are in line behind every bondholder. SATA investors do not own a claim on the Bitcoin treasury directly — they own a preferred share whose dividend depends on the company's ongoing viability.
+                Preferred stock is senior to common stock in bankruptcy but junior to all debt. If the issuer becomes insolvent, preferred holders are in line behind every bondholder. SATA investors do not own a claim on the Bitcoin treasury directly, they own a preferred share whose dividend depends on the company's ongoing viability.
               </p>
             </div>
 
@@ -430,7 +430,7 @@ const DailyDividendStocks = () => {
 
         <section className="bg-gradient-to-br from-accent-blue/10 via-bg-surface to-accent-teal/10 border border-accent-blue/20 rounded-2xl p-6 sm:p-8 text-center">
           <h2 className="text-xl sm:text-2xl font-black text-text-primary tracking-tight mb-2">
-            See every dividend payer — daily, weekly, monthly, quarterly
+            See every dividend payer, daily, weekly, monthly, quarterly
           </h2>
           <p className="text-text-secondary text-sm mb-5 max-w-xl mx-auto">
             Our screener tracks every dividend-paying security across US, Canadian, and SGX markets. Filter by payout frequency, asset type, and risk.

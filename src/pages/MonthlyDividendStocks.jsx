@@ -13,16 +13,16 @@ const CATEGORIES = [
     name: 'Monthly Dividend REITs',
     icon: '🏢',
     count: 19,
-    yieldRange: '3.9% – 14.0%',
+    yieldRange: '3.9% - 14.0%',
     examples: 'Realty Income (O), Agree Realty (ADC), LTC Properties (LTC)',
-    description: 'Real estate investment trusts that own physical property — offices, warehouses, hospitals, retail centers — and pay you rent monthly.',
+    description: 'Real estate investment trusts that own physical property, offices, warehouses, hospitals, retail centers, and pay you rent monthly.',
     riskNote: 'Equity REITs are the safest monthly payers. Mortgage REITs at the bottom of this list are much riskier.',
   },
   {
     name: 'Monthly Dividend BDCs',
     icon: '💰',
     count: 8,
-    yieldRange: '7.0% – 11.0%',
+    yieldRange: '7.0% - 11.0%',
     examples: 'Main Street Capital (MAIN), Ares Capital (ARCC), Hercules Capital (HTGC)',
     description: 'Business Development Companies lend money to mid-sized private businesses. High yield, but higher risk than REITs.',
     riskNote: 'BDCs get hit hard in recessions when borrowers default. Check the NAV trend before buying.',
@@ -31,16 +31,16 @@ const CATEGORIES = [
     name: 'Closed-End Funds (CEFs)',
     icon: '📊',
     count: 15,
-    yieldRange: '6.0% – 13.0%',
+    yieldRange: '6.0% - 13.0%',
     examples: 'PIMCO Dynamic Income (PDI), PIMCO Corporate & Income (PTY)',
     description: 'Professionally managed funds that trade on exchanges like stocks. Often use leverage to boost yield.',
-    riskNote: "Some CEF distributions include return of capital — that means they're partially paying you back your own money.",
+    riskNote: "Some CEF distributions include return of capital, that means they're partially paying you back your own money.",
   },
   {
     name: 'Covered-Call ETFs',
     icon: '📈',
     count: 22,
-    yieldRange: '6.0% – 12.0%',
+    yieldRange: '6.0% - 12.0%',
     examples: 'JEPI, JEPQ, SPYI, QQQI, DIVO',
     description: 'ETFs that hold stocks AND sell options against them. The option premiums fund the monthly distribution.',
     riskNote: 'You give up big upside in bull markets. These are income plays, not growth plays.',
@@ -49,34 +49,34 @@ const CATEGORIES = [
     name: 'Mortgage REITs (mREITs)',
     icon: '🏦',
     count: 6,
-    yieldRange: '10.0% – 15.0%',
+    yieldRange: '10.0% - 15.0%',
     examples: 'AGNC Investment (AGNC), Annaly Capital (NLY), ARMOUR (ARR)',
-    description: "These don't own property — they own mortgage-backed securities. Very high yield, very high volatility.",
+    description: "These don't own property, they own mortgage-backed securities. Very high yield, very high volatility.",
     riskNote: 'Rising interest rates crush mREIT book values. Only for investors who can stomach 30%+ drawdowns.',
   },
   {
     name: 'Preferred Stock Funds',
     icon: '🏛️',
     count: 12,
-    yieldRange: '5.5% – 8.0%',
+    yieldRange: '5.5% - 8.0%',
     examples: 'Various preferred income ETFs and closed-end funds',
-    description: 'Funds that hold preferred stock — a hybrid between bonds and common stock.',
+    description: 'Funds that hold preferred stock, a hybrid between bonds and common stock.',
     riskNote: 'Preferred dividends can be suspended without triggering bankruptcy. Read the prospectus.',
   },
 ];
 
 const TOP_MONTHLY_STOCKS = [
   { ticker: 'O',     name: 'Realty Income',         category: 'REIT',         yield: 5.5,  risk: 'Safe',     note: '632 consecutive monthly dividends paid since 1994' },
-  { ticker: 'ADC',   name: 'Agree Realty',           category: 'REIT',         yield: 3.9,  risk: 'Safe',     note: 'Net-lease retail — 2,200+ properties' },
+  { ticker: 'ADC',   name: 'Agree Realty',           category: 'REIT',         yield: 3.9,  risk: 'Safe',     note: 'Net-lease retail, 2,200+ properties' },
   { ticker: 'LTC',   name: 'LTC Properties',         category: 'REIT',         yield: 5.7,  risk: 'Safe',     note: 'Healthcare REIT focused on senior housing' },
   { ticker: 'MAIN',  name: 'Main Street Capital',    category: 'BDC',          yield: 6.5,  risk: 'Moderate', note: 'Pays monthly PLUS semi-annual specials' },
-  { ticker: 'STAG',  name: 'STAG Industrial',        category: 'REIT',         yield: 4.2,  risk: 'Safe',     note: 'Industrial warehouses — e-commerce tailwind' },
-  { ticker: 'EPR',   name: 'EPR Properties',         category: 'REIT',         yield: 6.1,  risk: 'Moderate', note: 'Experiential — theaters, ski resorts, casinos' },
+  { ticker: 'STAG',  name: 'STAG Industrial',        category: 'REIT',         yield: 4.2,  risk: 'Safe',     note: 'Industrial warehouses, e-commerce tailwind' },
+  { ticker: 'EPR',   name: 'EPR Properties',         category: 'REIT',         yield: 6.1,  risk: 'Moderate', note: 'Experiential, theaters, ski resorts, casinos' },
   { ticker: 'ARCC',  name: 'Ares Capital',           category: 'BDC',          yield: 9.3,  risk: 'Moderate', note: 'Largest publicly traded BDC' },
   { ticker: 'DOC',   name: 'Healthpeak Properties',  category: 'REIT',         yield: 7.0,  risk: 'Moderate', note: 'Medical office + lab space' },
-  { ticker: 'APLE',  name: 'Apple Hospitality',      category: 'REIT',         yield: 8.0,  risk: 'Higher',   note: 'Hotel REIT — Marriott and Hilton portfolio' },
+  { ticker: 'APLE',  name: 'Apple Hospitality',      category: 'REIT',         yield: 8.0,  risk: 'Higher',   note: 'Hotel REIT, Marriott and Hilton portfolio' },
   { ticker: 'GOOD',  name: 'Gladstone Commercial',   category: 'REIT',         yield: 9.6,  risk: 'Higher',   note: 'Small-cap net lease; has cut dividend in past' },
-  { ticker: 'AGNC',  name: 'AGNC Investment',        category: 'Mortgage REIT', yield: 14.0, risk: 'High',    note: 'Agency MBS — highest yield, biggest swings' },
+  { ticker: 'AGNC',  name: 'AGNC Investment',        category: 'Mortgage REIT', yield: 14.0, risk: 'High',    note: 'Agency MBS, highest yield, biggest swings' },
   { ticker: 'NLY',   name: 'Annaly Capital',         category: 'Mortgage REIT', yield: 12.5, risk: 'High',    note: 'One of the oldest mREITs, since 1997' },
 ];
 
@@ -99,11 +99,11 @@ const FAQS = [
   },
   {
     q: 'Are monthly dividend stocks better than quarterly?',
-    a: 'Not inherently better, but they compound slightly faster. On a 6% stated yield, monthly payments produce an effective yield of 6.17% vs 6.14% for quarterly — about 3 extra basis points per year. The real benefit is cash flow timing: monthly payers make it easier to budget your income.',
+    a: 'Not inherently better, but they compound slightly faster. On a 6% stated yield, monthly payments produce an effective yield of 6.17% vs 6.14% for quarterly, about 3 extra basis points per year. The real benefit is cash flow timing: monthly payers make it easier to budget your income.',
   },
   {
     q: 'What is the highest-yielding monthly dividend stock?',
-    a: "AGNC Investment (AGNC) currently yields around 14% — the highest among monthly payers. But it's a mortgage REIT, meaning the yield comes with significant price volatility. The stock has fallen more than 40% in past rate cycles. Higher yield always means higher risk.",
+    a: "AGNC Investment (AGNC) currently yields around 14%, the highest among monthly payers. But it's a mortgage REIT, meaning the yield comes with significant price volatility. The stock has fallen more than 40% in past rate cycles. Higher yield always means higher risk.",
   },
   {
     q: 'Are monthly dividends taxed differently?',
@@ -111,17 +111,17 @@ const FAQS = [
   },
   {
     q: 'How many monthly dividend stocks are there?',
-    a: 'As of October 2026, DividendBro tracks 133 securities that pay dividends every month. This includes 19 REITs, 8 BDCs, 15 closed-end funds, 22 covered-call ETFs, 6 mortgage REITs, and 12 preferred stock funds — plus a few smaller categories.',
+    a: 'As of October 2026, DividendBro tracks 133 securities that pay dividends every month. This includes 19 REITs, 8 BDCs, 15 closed-end funds, 22 covered-call ETFs, 6 mortgage REITs, and 12 preferred stock funds, plus a few smaller categories.',
   },
 ];
 
 const QUOTE_FACTS = [
-  'Realty Income (O) has paid 632 consecutive monthly dividends since 1994 — 32 years without a single skip.',
-  'Only 133 of the ~6,000 US-listed stocks and funds pay dividends monthly — roughly 2% of the market.',
-  'Monthly dividends compound to 6.17% effective yield on a 6% stated rate — 3 basis points higher than quarterly payouts.',
-  'Singapore investors give up 30% of US monthly dividend income to withholding tax — a 6% yield becomes 4.2% after tax.',
+  'Realty Income (O) has paid 632 consecutive monthly dividends since 1994, 32 years without a single skip.',
+  'Only 133 of the ~6,000 US-listed stocks and funds pay dividends monthly, roughly 2% of the market.',
+  'Monthly dividends compound to 6.17% effective yield on a 6% stated rate, 3 basis points higher than quarterly payouts.',
+  'Singapore investors give up 30% of US monthly dividend income to withholding tax, a 6% yield becomes 4.2% after tax.',
   'The average monthly dividend REIT yields 5.8%, versus 3.5% for the average quarterly dividend stock.',
-  'Mortgage REITs offer the highest monthly yields (10%+) but have historically lost 30–40% of book value during rate-hike cycles.',
+  'Mortgage REITs offer the highest monthly yields (10%+) but have historically lost 30-40% of book value during rate-hike cycles.',
 ];
 
 /* ─────────────────────────────────────────────────────────── */
@@ -143,10 +143,10 @@ const MonthlyDividendStocks = () => {
     <>
       <Helmet>
         <title>Monthly Dividend Stocks 2026: 133 Stocks That Pay Every Month</title>
-        <meta name="description" content="Complete list of 133 monthly dividend stocks in 2026 — REITs, BDCs, closed-end funds, and ETFs. See yields, payout history, and how much capital you need for $1,000/month." />
+        <meta name="description" content="Complete list of 133 monthly dividend stocks in 2026, REITs, BDCs, closed-end funds, and ETFs. See yields, payout history, and how much capital you need for $1,000/month." />
         <link rel="canonical" href={`${SITE_URL}/monthly-dividend-stocks`} />
         <meta property="og:title" content="Monthly Dividend Stocks 2026: 133 Stocks That Pay Every Month" />
-        <meta property="og:description" content="The complete list of monthly dividend stocks — REITs, BDCs, CEFs, and covered-call ETFs. Includes yields, category breakdowns, and capital requirements." />
+        <meta property="og:description" content="The complete list of monthly dividend stocks, REITs, BDCs, CEFs, and covered-call ETFs. Includes yields, category breakdowns, and capital requirements." />
         <meta property="og:url" content={`${SITE_URL}/monthly-dividend-stocks`} />
         <meta property="og:type" content="article" />
         <meta property="og:image" content={`${SITE_URL}/images/cover.png`} />
@@ -165,7 +165,7 @@ const MonthlyDividendStocks = () => {
             Monthly Dividend Stocks: <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">133 Stocks That Pay Every Month</span>
           </h1>
           <p className="text-text-secondary text-base sm:text-lg leading-relaxed max-w-3xl">
-            <strong className="text-text-primary">133 US-listed stocks pay dividends every single month.</strong> Below is the complete 2026 list — sorted into 6 categories, with yields, risk levels, and how much capital you need for $1,000/month.
+            <strong className="text-text-primary">133 US-listed stocks pay dividends every single month.</strong> Below is the complete 2026 list, sorted into 6 categories, with yields, risk levels, and how much capital you need for $1,000/month.
           </p>
           <p className="text-text-muted text-xs">
             Updated October 2026 · 133 monthly payers · REITs, BDCs, ETFs, CEFs
@@ -189,7 +189,7 @@ const MonthlyDividendStocks = () => {
             <a href="/screener" className="db-ig-link">Live Screener →</a>
           </div>
           <h4 className="db-ig-title">📊 Monthly Dividend Stocks at a Glance</h4>
-          <p className="db-ig-sub">The numbers that matter — October 2026</p>
+          <p className="db-ig-sub">The numbers that matter, October 2026</p>
           <div className="db-ig-grid">
             <div className="db-ig-stat">
               <div className="db-ig-stat-label">Total Monthly Payers</div>
@@ -198,7 +198,7 @@ const MonthlyDividendStocks = () => {
             </div>
             <div className="db-ig-stat">
               <div className="db-ig-stat-label">Typical Yield Range</div>
-              <div className="db-ig-stat-val">3.9% – 14%</div>
+              <div className="db-ig-stat-val">3.9% - 14%</div>
               <div className="db-ig-stat-sub">Varies by category</div>
             </div>
             <div className="db-ig-stat">
@@ -213,7 +213,7 @@ const MonthlyDividendStocks = () => {
             </div>
           </div>
           <div className="db-ig-footer">
-            Most monthly payers are REITs, BDCs, and covered-call ETFs — not traditional dividend stocks
+            Most monthly payers are REITs, BDCs, and covered-call ETFs, not traditional dividend stocks
           </div>
         </div>
 
@@ -225,10 +225,10 @@ const MonthlyDividendStocks = () => {
             A monthly dividend stock pays you cash <strong className="text-text-primary">12 times per year</strong> instead of the usual 4 (quarterly). Instead of getting one big payment every 3 months, you get smaller payments every 30 days.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
-            The annual total is roughly the same. The difference is <strong className="text-text-primary">when</strong> you get paid — and that matters for budgeting, compounding, and emotional consistency.
+            The annual total is roughly the same. The difference is <strong className="text-text-primary">when</strong> you get paid, and that matters for budgeting, compounding, and emotional consistency.
           </p>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Only about <strong className="text-text-primary">2% of US-listed securities</strong> pay monthly. They cluster in six categories — REITs, BDCs, closed-end funds, covered-call ETFs, mortgage REITs, and preferred stock funds. We'll walk through each.
+            Only about <strong className="text-text-primary">2% of US-listed securities</strong> pay monthly. They cluster in six categories, REITs, BDCs, closed-end funds, covered-call ETFs, mortgage REITs, and preferred stock funds. We'll walk through each.
           </p>
         </section>
 
@@ -282,7 +282,7 @@ const MonthlyDividendStocks = () => {
             Top 12 monthly dividend stocks (by quality)
           </h2>
           <p className="text-text-secondary text-sm leading-relaxed">
-            Sorted by <strong className="text-text-primary">safety</strong>, not raw yield. The highest-yielding stock isn't necessarily the best — mortgage REITs at the bottom of this list pay 2–3x more, but can lose half their value in a bad year.
+            Sorted by <strong className="text-text-primary">safety</strong>, not raw yield. The highest-yielding stock isn't necessarily the best, mortgage REITs at the bottom of this list pay 2-3x more, but can lose half their value in a bad year.
           </p>
 
           <div className="overflow-x-auto mobile-scroll">
@@ -459,12 +459,12 @@ const MonthlyDividendStocks = () => {
               </div>
             </div>
             <div className="db-ig-footer">
-              Higher yield means less capital — but more risk. The 12% row is mortgage REIT territory.
+              Higher yield means less capital, but more risk. The 12% row is mortgage REIT territory.
             </div>
           </div>
 
           <p className="text-sm text-text-secondary leading-relaxed">
-            A balanced monthly dividend portfolio of 60% REITs, 20% BDCs, and 20% covered-call ETFs averages roughly <strong className="text-text-primary">6.0–6.5%</strong>. That means <strong className="text-text-primary">~$185,000 to $200,000</strong> invested for $1,000/month.
+            A balanced monthly dividend portfolio of 60% REITs, 20% BDCs, and 20% covered-call ETFs averages roughly <strong className="text-text-primary">6.0-6.5%</strong>. That means <strong className="text-text-primary">~$185,000 to $200,000</strong> invested for $1,000/month.
           </p>
         </section>
 
@@ -480,7 +480,7 @@ const MonthlyDividendStocks = () => {
                 <span className="text-accent-red">⚠</span> Chasing the highest yield
               </h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                A 12% monthly yield looks amazing until the price drops 40% and you've lost 3 years of dividends in capital. The mortgage REITs at 12–15% have historically been the worst long-term performers among monthly payers.
+                A 12% monthly yield looks amazing until the price drops 40% and you've lost 3 years of dividends in capital. The mortgage REITs at 12-15% have historically been the worst long-term performers among monthly payers.
               </p>
             </div>
 
@@ -489,7 +489,7 @@ const MonthlyDividendStocks = () => {
                 <span className="text-accent-red">⚠</span> Ignoring return of capital
               </h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                Many covered-call ETFs and closed-end funds pay you partly from <em>your own money</em>. Their distributions include "return of capital" — that erodes NAV. Check the fund's Section 19a notice to see what percentage is real income vs. ROC.
+                Many covered-call ETFs and closed-end funds pay you partly from <em>your own money</em>. Their distributions include "return of capital", that erodes NAV. Check the fund's Section 19a notice to see what percentage is real income vs. ROC.
               </p>
             </div>
 
@@ -498,7 +498,7 @@ const MonthlyDividendStocks = () => {
                 <span className="text-accent-red">⚠</span> Forgetting the 30% US withholding tax
               </h3>
               <p className="text-sm text-text-secondary leading-relaxed">
-                If you're a Singapore investor, every US monthly dividend is taxed 30% at source. A 6% yield becomes 4.2% after tax. Compare after-tax yields — a SGX REIT at 5% nets you more than a US REIT at 6%.
+                If you're a Singapore investor, every US monthly dividend is taxed 30% at source. A 6% yield becomes 4.2% after tax. Compare after-tax yields, a SGX REIT at 5% nets you more than a US REIT at 6%.
               </p>
             </div>
           </div>

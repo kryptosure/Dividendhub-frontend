@@ -25,7 +25,7 @@ const SimulatorSingle = () => {
   return (
     <>
       <Helmet>
-        <title>One-Time Investment Return Simulator – DividendBro</title>
+        <title>One-Time Investment Return Simulator - DividendBro</title>
         <meta name="description" content="Simulate the return on a one-time stock investment, including dividend reinvestment and capital gains." />
       </Helmet>
       <div className="max-w-4xl mx-auto px-4 sm:px-0 relative">

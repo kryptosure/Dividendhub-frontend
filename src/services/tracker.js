@@ -65,7 +65,7 @@ export function track(eventType, eventData = {}) {
   }
 }
 
-// ---------- Page-view tracker — fires on every route change ----------
+// ---------- Page-view tracker, fires on every route change ----------
 export function trackPageView(path) {
   try {
     const referrer = document.referrer || '';

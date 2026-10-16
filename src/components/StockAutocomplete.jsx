@@ -27,7 +27,7 @@ const StockAutocomplete = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  // ✅ Debounced search — depends ONLY on query and market (not value)
+  // ✅ Debounced search, depends ONLY on query and market (not value)
   useEffect(() => {
     // Skip if the query change came from a selection
     if (skipNextSearchRef.current) {

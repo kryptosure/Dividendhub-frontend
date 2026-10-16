@@ -114,7 +114,7 @@ export const insight = {
         </div>
       </div>
       <div class="db-ig-footer">
-        Annual total stays the same. Daily compounding adds roughly 3–5 bps of effective yield.
+        Annual total stays the same. Daily compounding adds roughly 3-5 bps of effective yield.
       </div>
     </div>
 
@@ -178,12 +178,12 @@ export const insight = {
       <p class="db-ig-sub">What happens if shareholders approve</p>
       <div class="db-ig-body">
         <div class="db-ig-row">
-          <span class="db-ig-row-label">Nov 1–2</span>
+          <span class="db-ig-row-label">Nov 1-2</span>
           <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:100%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
           <span class="db-ig-row-val" style="color:#34d399;">STRC goes daily</span>
         </div>
         <div class="db-ig-row">
-          <span class="db-ig-row-label">Jan 1–4, 2027</span>
+          <span class="db-ig-row-label">Jan 1-4, 2027</span>
           <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:100%;background:linear-gradient(90deg,#3b82f6,#06b6d4);"></div></div>
           <span class="db-ig-row-val" style="color:#60a5fa;">STRF, STRK, STRD go daily</span>
         </div>

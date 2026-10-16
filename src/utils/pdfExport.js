@@ -88,7 +88,7 @@ export async function generatePDFReport(options) {
           ${tableHTML}
 
           <div class="footer">
-            <span>Generated via <span class="brand">DividendBro</span> — High Yield Matrix Engine</span><br>
+            <span>Generated via <span class="brand">DividendBro</span>, High Yield Matrix Engine</span><br>
             <span style="font-size:9px; color:#94a3b8; margin-top:4px; display:inline-block;">Audit performance lines live at <a href="https://dividendbro.com">dividendbro.com</a></span>
           </div>
         </body>

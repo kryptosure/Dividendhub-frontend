@@ -8,7 +8,7 @@ export const article = {
   excerpt: "OCBC pays semi-annual dividends with a current yield of ~3.31%. See next payout date, ex-dividend dates, and 5-year dividend history.",
   author: "DividendBro Research Team",
   content: `
-      <p><strong>OCBC pays you twice a year — once in August and once in April/May. That's S$1.05 per year if you hold 1 share.</strong> Here's the full breakdown.</p>
+      <p><strong>OCBC pays you twice a year, once in August and once in April/May. That's S$1.05 per year if you hold 1 share.</strong> Here's the full breakdown.</p>
 
       <p>All numbers below come from live DividendBro data as of October 2026.</p>
 
@@ -24,7 +24,7 @@ export const article = {
         <div class="db-ig-grid">
           <div class="db-ig-stat">
             <div class="db-ig-stat-label">Paid Each Time</div>
-            <div class="db-ig-stat-val">S$0.47–0.58</div>
+            <div class="db-ig-stat-val">S$0.47-0.58</div>
             <div class="db-ig-stat-sub">Interim vs final</div>
           </div>
           <div class="db-ig-stat">
@@ -153,7 +153,7 @@ export const article = {
           </div>
           <div class="db-ig-stat">
             <div class="db-ig-stat-label">Time to Build</div>
-            <div class="db-ig-stat-val">15–20 yrs</div>
+            <div class="db-ig-stat-val">15-20 yrs</div>
             <div class="db-ig-stat-sub">S$500/month contributions</div>
           </div>
         </div>
@@ -164,7 +164,7 @@ export const article = {
 
       <p>S$182k for S$500/month sounds steep. But remember: this assumes you buy everything today. If you invest S$500/month for 20 years, dividends reinvested, you'll get there. Play with the <a href="/simulate/dca">DCA simulator</a> to see your timeline.</p>
 
-      <h2>OCBC vs DBS vs UOB — The Visual Comparison</h2>
+      <h2>OCBC vs DBS vs UOB, The Visual Comparison</h2>
 
       <table>
         <thead>
@@ -210,7 +210,7 @@ export const article = {
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="https://dividendbro.com" class="db-ig-link">Compare tool →</a>
         </div>
-        <h4 class="db-ig-title">S$10,000 Invested — Annual Income</h4>
+        <h4 class="db-ig-title">S$10,000 Invested, Annual Income</h4>
         <div class="db-ig-body">
           <div class="db-ig-row">
             <span class="db-ig-row-label">DBS</span>
@@ -271,7 +271,7 @@ export const article = {
 
       <p><strong>What makes OCBC different?</strong> It owns Great Eastern, one of Southeast Asia's largest insurers. That business brings in its own income, separate from banking, which smooths out earnings.</p>
 
-      <p><strong>What could go wrong?</strong> The same as any bank — falling interest rates reduce profits. OCBC is also heavily exposed to Singapore and Greater China, so a regional slowdown would hurt.</p>
+      <p><strong>What could go wrong?</strong> The same as any bank, falling interest rates reduce profits. OCBC is also heavily exposed to Singapore and Greater China, so a regional slowdown would hurt.</p>
 
       <h2>Frequently Asked Questions</h2>
 
@@ -285,7 +285,7 @@ export const article = {
       3.31% based on a share price of S$31.77 and trailing 12-month dividends of S$1.05.</p>
 
       <p><strong>How often does OCBC pay dividends?</strong><br/>
-      Twice a year — an interim dividend in August and a final dividend in April or May. This semi-annual pattern is common for Asian banks.</p>
+      Twice a year, an interim dividend in August and a final dividend in April or May. This semi-annual pattern is common for Asian banks.</p>
 
       <p><strong>Is the OCBC dividend safe?</strong><br/>
       OCBC has grown its dividend for five consecutive years. It's rated <strong>Moderate</strong> on our safety scale. The bank's insurance arm through Great Eastern provides extra stability.</p>
@@ -300,7 +300,7 @@ export const article = {
 
       <p>OCBC is the most diversified of the three Singapore banks because of its insurance business through Great Eastern. It pays twice a year, has grown its dividend for five straight years, and yields around 3.31%.</p>
 
-      <p>The yield is lower than DBS's — that's the honest trade-off. In exchange, you get a more stable earnings profile and a slightly lower valuation.</p>
+      <p>The yield is lower than DBS's, that's the honest trade-off. In exchange, you get a more stable earnings profile and a slightly lower valuation.</p>
 
       <p>For young investors building a dividend portfolio, OCBC pairs well with DBS. The two banks pay on different schedules, so your dividend income spreads more evenly across the year.</p>
 

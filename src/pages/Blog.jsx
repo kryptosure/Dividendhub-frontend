@@ -10,7 +10,7 @@ const Blog = () => {
   return (
     <>
       <Helmet>
-        <title>Financial Academy – DividendBro</title>
+        <title>Financial Academy - DividendBro</title>
         <meta name="description" content="Learn dividend investing strategies and passive income tips." />
       </Helmet>
       <div className="max-w-6xl mx-auto px-4 py-12">
@@ -24,7 +24,7 @@ const Blog = () => {
             <Link key={article.slug} to={`/blog/${article.slug}`} className="group flex">
               <div className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm flex flex-col w-full hover:border-accent-blue/50 hover:shadow-lg transition-all duration-300">
 
-                {/* ✅ Cover Image — Lazy Loaded + WebP with fallback */}
+                {/* ✅ Cover Image, Lazy Loaded + WebP with fallback */}
                 <div className="aspect-video w-full overflow-hidden bg-bg-primary relative">
                   <picture>
                     <source srcSet={toWebp(article.image)} type="image/webp" />

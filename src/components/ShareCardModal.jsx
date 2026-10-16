@@ -130,7 +130,7 @@ const ShareCardModal = ({ isOpen, onClose, metrics, monthlyAmount, drip, yearsTo
             }}>{yearsText}</div>
           </div>
 
-          {/* Stats grid — stack on very small */}
+          {/* Stats grid, stack on very small */}
           <div className="modal-compact-stack" style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr 1fr',

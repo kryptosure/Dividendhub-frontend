@@ -4,15 +4,15 @@ import { generatePDFReport } from '../utils/pdfExport';
 
 const SimulatorExport = ({ result, symbol, currencySymbol, type }) => {
   const formatCurrency = (amount) => {
-    if (amount === undefined || amount === null || isNaN(amount) || amount === 0) return '—';
+    if (amount === undefined || amount === null || isNaN(amount) || amount === 0) return '-';
     return `${currencySymbol}${amount.toFixed(2)}`;
   };
   const formatNumber = (num) => {
-    if (num === undefined || num === null || isNaN(num) || num === 0) return '—';
+    if (num === undefined || num === null || isNaN(num) || num === 0) return '-';
     return num.toFixed(2);
   };
   const formatPercent = (num) => {
-    if (num === undefined || num === null || isNaN(num) || num === 0) return '—';
+    if (num === undefined || num === null || isNaN(num) || num === 0) return '-';
     return `${num.toFixed(2)}%`;
   };
 
@@ -76,10 +76,10 @@ const SimulatorExport = ({ result, symbol, currencySymbol, type }) => {
         kpis = [
           { label: 'Current Value', value: formatCurrency(result.currentValue) },
           { label: 'Invested Cost', value: formatCurrency(result.purchaseCost) },
-          { label: 'Net Gains', value: result.netGain ? `${result.netGain >= 0 ? '+' : ''}${formatCurrency(result.netGain)} (${formatPercent(result.netGainPct)})` : '—' },
+          { label: 'Net Gains', value: result.netGain ? `${result.netGain >= 0 ? '+' : ''}${formatCurrency(result.netGain)} (${formatPercent(result.netGainPct)})` : '-' },
           { label: 'Total Return', value: formatPercent(result.totalReturnPct) },
           { label: 'Dividend Gains', value: formatCurrency(result.totalDividendGain) },
-          { label: 'Dividend Count', value: result.dividendCount || '—' },
+          { label: 'Dividend Count', value: result.dividendCount || '-' },
         ];
         if (result.reinvest) {
           kpis.push(
@@ -90,8 +90,8 @@ const SimulatorExport = ({ result, symbol, currencySymbol, type }) => {
         const summaryRows = [
           ['Current Price', formatCurrency(result.currentPrice)],
           ['Buy Price', formatCurrency(result.buyPrice)],
-          ['Quantity', result.quantity || '—'],
-          ['Shares Today', result.sharesToday ? formatNumber(result.sharesToday) : (result.quantity || '—')],
+          ['Quantity', result.quantity || '-'],
+          ['Shares Today', result.sharesToday ? formatNumber(result.sharesToday) : (result.quantity || '-')],
         ];
         tables = [{ title: 'Investment Summary', headers: ['Metric', 'Value'], rows: summaryRows }];
       } else {

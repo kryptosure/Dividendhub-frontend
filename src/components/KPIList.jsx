@@ -25,14 +25,14 @@ const KPIList = ({ data }) => {
           {hasNoDividends ? 'No History' : `${cur}${data.totalDividend.toFixed(2)}`}
         </div>
         <div className="text-[10px] font-semibold text-text-muted mt-0.5">
-          {hasNoDividends ? '—' : `${data.payoutCount} Tracked Logs`}
+          {hasNoDividends ? '-' : `${data.payoutCount} Tracked Logs`}
         </div>
       </div>
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
         <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Current Market Price</span>
         <div className="text-lg font-black text-text-primary mt-1">
-          {data.currentPrice ? cur + data.currentPrice.toFixed(2) : '—'}
+          {data.currentPrice ? cur + data.currentPrice.toFixed(2) : '-'}
         </div>
         <div className="text-[10px] font-semibold text-text-muted mt-0.5">Real-time Feed</div>
       </div>
@@ -40,7 +40,7 @@ const KPIList = ({ data }) => {
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
         <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Div Yield</span>
         <div className="text-lg font-black text-accent-green mt-1">
-          {data.currentYield ? data.currentYield.toFixed(2) + '%' : '—'}
+          {data.currentYield ? data.currentYield.toFixed(2) + '%' : '-'}
         </div>
         <div className="text-[10px] font-semibold text-text-muted mt-0.5">TTM Metric Variance</div>
       </div>
@@ -48,14 +48,14 @@ const KPIList = ({ data }) => {
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
         <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">5-Yr CAGR Alpha</span>
         <div className={`text-lg font-black mt-1 ${cagrClass}`}>
-          {data.dividendCAGR != null ? (data.dividendCAGR >= 0 ? '+' : '') + data.dividendCAGR.toFixed(2) + '%' : '—'}
+          {data.dividendCAGR != null ? (data.dividendCAGR >= 0 ? '+' : '') + data.dividendCAGR.toFixed(2) + '%' : '-'}
         </div>
         <div className="text-[10px] font-semibold text-text-muted mt-0.5">Compounded Delta</div>
       </div>
 
       <div className="bg-bg-surface border border-border/50 rounded-xl p-4 shadow-sm">
         <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Last Div Ex-Date</span>
-        <div className="text-sm font-bold text-text-primary mt-2 truncate font-mono tracking-tight">{data.lastExDate || '—'}</div>
+        <div className="text-sm font-bold text-text-primary mt-2 truncate font-mono tracking-tight">{data.lastExDate || '-'}</div>
         <div className="text-[10px] font-semibold text-text-muted mt-1">Most Recent Event</div>
       </div>
 
@@ -63,7 +63,7 @@ const KPIList = ({ data }) => {
         <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Risk Layer</span>
         <div className="mt-1">
           <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border ${safetyColors[data.safetyScore] || 'bg-bg-primary text-text-muted border-border/40'}`}>
-            {data.safetyScore || '—'}
+            {data.safetyScore || '-'}
           </span>
         </div>
       </div>

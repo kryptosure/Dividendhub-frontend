@@ -5,12 +5,12 @@ export const article = {
   updated: "2026-10-06",
   category: "Passive Income",
   image: "/images/blog/daily-dividend-cover.webp",
-  excerpt: "Only a handful of US securities pay cash dividends every single day. We break down the complete list — SATA, CHAD, and Strategy's upcoming daily preferred stocks — with yields, effective returns, and what it means for income investors.",
+  excerpt: "Only a handful of US securities pay cash dividends every single day. We break down the complete list, SATA, CHAD, and Strategy's upcoming daily preferred stocks, with yields, effective returns, and what it means for income investors.",
   author: "DividendBro Research Team",
   content: `
-      <p><strong>Imagine getting paid every single day you own a stock.</strong> Not monthly, not quarterly — every business day, cash lands in your account. That's the promise of daily dividend stocks. And in 2026, this tiny corner of the market is finally growing up.</p>
+      <p><strong>Imagine getting paid every single day you own a stock.</strong> Not monthly, not quarterly, every business day, cash lands in your account. That's the promise of daily dividend stocks. And in 2026, this tiny corner of the market is finally growing up.</p>
 
-      <p>Two securities pioneered it. Now a third major player — Strategy (MSTR) — is about to supercharge the space. Here's everything you need to know, in plain English.</p>
+      <p>Two securities pioneered it. Now a third major player, Strategy (MSTR), is about to supercharge the space. Here's everything you need to know, in plain English.</p>
 
       <h2>The Daily Dividend Landscape in 10 Seconds</h2>
 
@@ -39,7 +39,7 @@ export const article = {
           </div>
           <div class="db-ig-stat">
             <div class="db-ig-stat-label">Typical Stated Yield</div>
-            <div class="db-ig-stat-val">12–13%</div>
+            <div class="db-ig-stat-val">12-13%</div>
             <div class="db-ig-stat-sub">Before daily compounding</div>
           </div>
         </div>
@@ -50,7 +50,7 @@ export const article = {
 
       <p><strong>What is a daily dividend stock?</strong> It's a security that pays cash dividends every business day (or in Strategy's case, every calendar day). The payout is fixed at a stated annual rate, but it's sliced into tiny daily pieces instead of four quarterly chunks.</p>
 
-      <p><strong>Who are these for?</strong> Investors who want the smoothest possible income stream — and are willing to accept the unique risks of crypto-backed preferred stocks.</p>
+      <p><strong>Who are these for?</strong> Investors who want the smoothest possible income stream, and are willing to accept the unique risks of crypto-backed preferred stocks.</p>
 
       <h2>The Two Live Daily Dividend Stocks</h2>
 
@@ -61,7 +61,7 @@ export const article = {
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="/search?symbol=SATA" class="db-ig-link">SATA Page →</a>
         </div>
-        <h4 class="db-ig-title">🥇 SATA — The Original Daily Dividend Stock</h4>
+        <h4 class="db-ig-title">🥇 SATA, The Original Daily Dividend Stock</h4>
         <p class="db-ig-sub">Strive Inc. · Bitcoin-backed · Live since June 16, 2026</p>
         <div class="db-ig-grid">
           <div class="db-ig-stat">
@@ -92,14 +92,14 @@ export const article = {
 
       <p><strong>How it works:</strong> Strive buys and holds Bitcoin. They issue SATA preferred shares to raise capital. They use a portion of their Bitcoin gains and treasury to pay a 13% annual dividend, sliced into daily payments.</p>
 
-      <p><strong>What you actually get:</strong> On a $100 investment, you receive about $0.0516 per day — roughly 5.2 cents for every share you own. Over a year, that compounds to about $13.88 per $100 invested, which is a 13.88% effective yield.</p>
+      <p><strong>What you actually get:</strong> On a $100 investment, you receive about $0.0516 per day, roughly 5.2 cents for every share you own. Over a year, that compounds to about $13.88 per $100 invested, which is a 13.88% effective yield.</p>
 
       <div class="db-ig">
         <div class="db-ig-header">
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="/search?symbol=CHAD" class="db-ig-link">CHAD Page →</a>
         </div>
-        <h4 class="db-ig-title">🥈 CHAD — The Solana-Backed Challenger</h4>
+        <h4 class="db-ig-title">🥈 CHAD, The Solana-Backed Challenger</h4>
         <p class="db-ig-sub">DeFi Development Corp · Solana-backed · Live since October 1, 2026</p>
         <div class="db-ig-grid">
           <div class="db-ig-stat">
@@ -132,7 +132,7 @@ export const article = {
 
       <p><strong>What you actually get:</strong> On a $10 investment, you receive about $0.0036 per day per share. The effective yield lands around 13.5% or higher after compounding, depending on the exact number of payment days.</p>
 
-      <p><strong>Important difference from SATA:</strong> CHAD has a $10 stated value instead of $100. This means the barrier to entry is 10x lower — you can start with $10 instead of $100. But it also means the daily dividend amount is smaller in absolute dollars.</p>
+      <p><strong>Important difference from SATA:</strong> CHAD has a $10 stated value instead of $100. This means the barrier to entry is 10x lower, you can start with $10 instead of $100. But it also means the daily dividend amount is smaller in absolute dollars.</p>
 
       <h2>The Big News: Strategy's Four Preferred Stocks</h2>
 
@@ -175,9 +175,9 @@ export const article = {
       <p><strong>The key details:</strong></p>
 
       <ul>
-        <li><strong>STRC</strong> is the flagship — a $9.3 billion preferred stock with a 12% variable rate. It would move from semi-monthly to daily payments, starting November 2, 2026.</li>
+        <li><strong>STRC</strong> is the flagship, a $9.3 billion preferred stock with a 12% variable rate. It would move from semi-monthly to daily payments, starting November 2, 2026.</li>
         <li><strong>STRF, STRK, and STRD</strong> would move from quarterly to daily payments, starting January 4, 2027.</li>
-        <li><strong>Every calendar day</strong> — including weekends and holidays — becomes a dividend record date. Payment happens on the next business day.</li>
+        <li><strong>Every calendar day</strong>, including weekends and holidays, becomes a dividend record date. Payment happens on the next business day.</li>
         <li><strong>The dividend rate doesn't change.</strong> Strategy isn't raising the yield. They're just changing <em>when</em> you get paid.</li>
       </ul>
 
@@ -187,7 +187,7 @@ export const article = {
 
       <h2>The Math: Why Daily Beats Monthly (Sometimes)</h2>
 
-      <p>The difference between a 13% stated rate paid monthly and a 13% stated rate paid daily is small — but it's real.</p>
+      <p>The difference between a 13% stated rate paid monthly and a 13% stated rate paid daily is small, but it's real.</p>
 
       <div class="db-ig">
         <div class="db-ig-header">
@@ -262,22 +262,22 @@ export const article = {
           <tr>
             <td><strong>STRF</strong></td>
             <td>Bitcoin</td>
-            <td style="text-align:right;">—</td>
-            <td style="text-align:right;">—</td>
+            <td style="text-align:right;">, </td>
+            <td style="text-align:right;">, </td>
             <td>🟡 Vote Oct 28 · Live Jan 2027</td>
           </tr>
           <tr>
             <td><strong>STRK</strong></td>
             <td>Bitcoin</td>
-            <td style="text-align:right;">—</td>
-            <td style="text-align:right;">—</td>
+            <td style="text-align:right;">, </td>
+            <td style="text-align:right;">, </td>
             <td>🟡 Vote Oct 28 · Live Jan 2027</td>
           </tr>
           <tr>
             <td><strong>STRD</strong></td>
             <td>Bitcoin</td>
-            <td style="text-align:right;">—</td>
-            <td style="text-align:right;">—</td>
+            <td style="text-align:right;">, </td>
+            <td style="text-align:right;">, </td>
             <td>🟡 Vote Oct 28 · Live Jan 2027</td>
           </tr>
         </tbody>
@@ -292,7 +292,7 @@ export const article = {
       <ul>
         <li><strong>These are preferred stocks, not common stocks.</strong> You're lending money to a crypto treasury company in exchange for a fixed dividend. You don't get voting rights or the same upside as common shareholders.</li>
         <li><strong>They're backed by volatile crypto assets.</strong> SATA is backed by Bitcoin. CHAD is backed by Solana. If crypto prices crash, the company's ability to pay dividends could be threatened.</li>
-        <li><strong>Rates are variable, not fixed.</strong> The 13% rate is "current" — it can be adjusted by the board. Don't assume it stays at 13% forever.</li>
+        <li><strong>Rates are variable, not fixed.</strong> The 13% rate is "current", it can be adjusted by the board. Don't assume it stays at 13% forever.</li>
         <li><strong>Price can deviate from par value.</strong> STRC fell to $71 in June 2026 before recovering. You can lose principal if you sell below your purchase price.</li>
         <li><strong>Liquidity is thinner than blue-chip stocks.</strong> These are relatively new, smaller securities. Bid-ask spreads can be wider, especially during volatile markets.</li>
       </ul>
@@ -349,18 +349,18 @@ export const article = {
       They trade on major US exchanges (NASDAQ and NYSE). You can buy them through any broker that offers US stock trading. Use the ticker symbols: SATA, CHAD, STRC, STRF, STRK, STRD.</p>
 
       <p><strong>Will more companies launch daily dividend stocks?</strong><br/>
-      Likely. The success of SATA and the pending Strategy expansion have drawn attention to the space. If it continues to grow, more crypto-treasury companies — and possibly traditional financial firms — may follow suit.</p>
+      Likely. The success of SATA and the pending Strategy expansion have drawn attention to the space. If it continues to grow, more crypto-treasury companies, and possibly traditional financial firms, may follow suit.</p>
 
       <p><strong>What happens if the company goes bankrupt?</strong><br/>
       Preferred stockholders rank above common stockholders but below bondholders. If the company liquidates, you'd have a claim on remaining assets after debt is paid, but there's no guarantee you'd recover your full investment.</p>
 
       <h2>The Bottom Line</h2>
 
-      <p>Daily dividend stocks are a fascinating new corner of the income-investing world. They offer the smoothest possible cash flow — literally getting paid every day you hold them.</p>
+      <p>Daily dividend stocks are a fascinating new corner of the income-investing world. They offer the smoothest possible cash flow, literally getting paid every day you hold them.</p>
 
-      <p><strong>Two are live today.</strong> SATA (Bitcoin-backed) and CHAD (Solana-backed) both pay 13% annual rates daily, with effective yields around 13.5–13.9%.</p>
+      <p><strong>Two are live today.</strong> SATA (Bitcoin-backed) and CHAD (Solana-backed) both pay 13% annual rates daily, with effective yields around 13.5-13.9%.</p>
 
-      <p><strong>Four more are coming.</strong> Strategy's proposal, if approved on October 28, would add STRC, STRF, STRK, and STRD to the daily dividend universe — making it six assets by January 2027.</p>
+      <p><strong>Four more are coming.</strong> Strategy's proposal, if approved on October 28, would add STRC, STRF, STRK, and STRD to the daily dividend universe, making it six assets by January 2027.</p>
 
       <p><strong>But proceed with caution.</strong> These are crypto-backed preferred stocks, not blue-chip dividend payers. They offer high yields in exchange for real risks. If you're interested, keep it to a small allocation and understand what you're buying.</p>
 

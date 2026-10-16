@@ -4,7 +4,7 @@ export const insight = {
   date: "2026-10-05",
   category: "Educational",
   emoji: "🧾",
-  excerpt: "A US stock yielding 5% only gives you 3.5% after tax. Here's the visual math — and how much extra yield you need to catch up to SGX dividends.",
+  excerpt: "A US stock yielding 5% only gives you 3.5% after tax. Here's the visual math, and how much extra yield you need to catch up to SGX dividends.",
   content: `
     <p><strong>The short version:</strong> Singapore has no tax treaty with the US. That means every US dividend you receive gets 30% withheld before it reaches you. A 5% yield becomes 3.5%.</p>
 
@@ -39,7 +39,7 @@ export const insight = {
     <p>For a US stock to match a 5% SGX dividend after tax, it needs to yield:</p>
 
     <p style="text-align:center;font-size:20px;font-weight:900;color:var(--accent);margin:2rem 0;">
-      5% ÷ (1 − 0.30) = 7.14%
+      5% ÷ (1 - 0.30) = 7.14%
     </p>
 
     <p>That's the number. A US stock yielding 7.14% gives you the same after-tax income as a SGX stock yielding 5%.</p>

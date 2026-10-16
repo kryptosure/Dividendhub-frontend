@@ -475,7 +475,7 @@ const PortfolioView = () => {
   return (
     <>
       <Helmet>
-        <title>My Dividend Portfolio – Track Your Passive Income</title>
+        <title>My Dividend Portfolio - Track Your Passive Income</title>
       </Helmet>
       <div className="p-3 sm:p-6 space-y-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

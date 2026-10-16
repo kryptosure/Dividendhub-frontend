@@ -91,7 +91,7 @@ const Login = () => {
   if (callbackLoading) {
     return (
       <>
-        <Helmet><title>Signing in… – DividendBro</title></Helmet>
+        <Helmet><title>Signing in… - DividendBro</title></Helmet>
         <div className="min-h-[75vh] flex items-center justify-center px-4">
           <div className="text-center">
             <div className="w-10 h-10 border-3 border-accent-blue border-t-transparent rounded-full animate-spin mx-auto mb-4" />
@@ -104,7 +104,7 @@ const Login = () => {
 
   return (
     <>
-      <Helmet><title>Sign In – DividendBro</title></Helmet>
+      <Helmet><title>Sign In - DividendBro</title></Helmet>
       <div className="min-h-[75vh] flex items-center justify-center px-4 py-8 relative overflow-hidden">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-accent-blue/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -134,7 +134,7 @@ const Login = () => {
             Continue with Google
           </button>
 
-          {/* Legacy email fallback — collapsed by default */}
+          {/* Legacy email fallback, collapsed by default */}
           <div className="mt-6">
             <button
               type="button"

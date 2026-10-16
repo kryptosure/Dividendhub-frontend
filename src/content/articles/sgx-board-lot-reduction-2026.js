@@ -30,7 +30,7 @@ export const article = {
             <span class="db-ig-row-val" style="color:#34d399;">100 → 1 share</span>
           </div>
           <div class="db-ig-row">
-            <span class="db-ig-row-label">Price S$10 – S$100</span>
+            <span class="db-ig-row-label">Price S$10 - S$100</span>
             <div class="db-ig-row-track"><div class="db-ig-row-fill" style="width:100%;background:linear-gradient(90deg,#3b82f6,#06b6d4);"></div></div>
             <span class="db-ig-row-val" style="color:#60a5fa;">100 → 10 shares</span>
           </div>

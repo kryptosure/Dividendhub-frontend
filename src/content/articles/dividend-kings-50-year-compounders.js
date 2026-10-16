@@ -4,12 +4,12 @@ export const article = {
   date: "2026-09-11",
   category: "Strategy",
   image: "/images/blog/dividend-kings-cover.jpg",
-  excerpt: "Only ~50 companies have raised dividends for 50+ consecutive years. Here's the full list — with yields, streaks, and why they outperform the S&P 500.",
+  excerpt: "Only ~50 companies have raised dividends for 50+ consecutive years. Here's the full list, with yields, streaks, and why they outperform the S&P 500.",
   author: "DividendBro Research Team",
   content: `
-      <p>Imagine buying a stock today and receiving a bigger dividend every year for the next 50 years—through recessions, pandemics, and rate hikes. That is exactly what Dividend Kings have done.</p>
+      <p>Imagine buying a stock today and receiving a bigger dividend every year for the next 50 years, through recessions, pandemics, and rate hikes. That is exactly what Dividend Kings have done.</p>
 
-      <p>Dividend Kings are companies that have raised their dividends for <strong>50 consecutive years or more</strong>. They are the elite of the elite—rarer than Dividend Aristocrats (25+ years), and with a track record that is nearly impossible to fake.</p>
+      <p>Dividend Kings are companies that have raised their dividends for <strong>50 consecutive years or more</strong>. They are the elite of the elite, rarer than Dividend Aristocrats (25+ years), and with a track record that is nearly impossible to fake.</p>
 
       <p>In this guide, we break down what makes Dividend Kings special, the top names to consider, and how to build a portfolio around them.</p>
 
@@ -158,7 +158,7 @@ export const article = {
         </div>
       </div>
 
-      <p>That is the magic of Dividend Kings. Your starting yield was 3%. Thirty years later, your <strong>yield on cost is 27.6%</strong>—because the dividend kept growing while your original capital stayed the same.</p>
+      <p>That is the magic of Dividend Kings. Your starting yield was 3%. Thirty years later, your <strong>yield on cost is 27.6%</strong>, because the dividend kept growing while your original capital stayed the same.</p>
 
       <h2>How to Build a Dividend King Portfolio</h2>
 
@@ -166,25 +166,25 @@ export const article = {
 
       <h3>Tier 1: The Consumer Staples Core (40%)</h3>
       <ul>
-        <li><strong>Coca-Cola (KO)</strong> — 63 years, ~3.0% yield</li>
-        <li><strong>Procter &amp; Gamble (PG)</strong> — 68 years, ~2.5% yield</li>
-        <li><strong>Colgate-Palmolive (CL)</strong> — 61 years, ~2.3% yield</li>
-        <li><strong>Altria (MO)</strong> — 55 years, ~7.0% yield</li>
+        <li><strong>Coca-Cola (KO)</strong>, 63 years, ~3.0% yield</li>
+        <li><strong>Procter &amp; Gamble (PG)</strong>, 68 years, ~2.5% yield</li>
+        <li><strong>Colgate-Palmolive (CL)</strong>, 61 years, ~2.3% yield</li>
+        <li><strong>Altria (MO)</strong>, 55 years, ~7.0% yield</li>
       </ul>
 
       <h3>Tier 2: The Healthcare Defensive Layer (30%)</h3>
       <ul>
-        <li><strong>Johnson &amp; Johnson (JNJ)</strong> — 62 years, ~2.8% yield</li>
-        <li><strong>Abbott Laboratories (ABT)</strong> — 52 years, ~1.9% yield</li>
-        <li><strong>AbbVie (ABBV)</strong> — 53 years, ~3.5% yield</li>
+        <li><strong>Johnson &amp; Johnson (JNJ)</strong>, 62 years, ~2.8% yield</li>
+        <li><strong>Abbott Laboratories (ABT)</strong>, 52 years, ~1.9% yield</li>
+        <li><strong>AbbVie (ABBV)</strong>, 53 years, ~3.5% yield</li>
       </ul>
 
       <h3>Tier 3: The Industrial Diversifiers (30%)</h3>
       <ul>
-        <li><strong>Parker-Hannifin (PH)</strong> — 68 years, ~1.2% yield</li>
-        <li><strong>Emerson Electric (EMR)</strong> — 67 years, ~2.0% yield</li>
-        <li><strong>Dover Corp (DOV)</strong> — 68 years, ~1.5% yield</li>
-        <li><strong>3M Company (MMM)</strong> — 65 years, ~4.5% yield</li>
+        <li><strong>Parker-Hannifin (PH)</strong>, 68 years, ~1.2% yield</li>
+        <li><strong>Emerson Electric (EMR)</strong>, 67 years, ~2.0% yield</li>
+        <li><strong>Dover Corp (DOV)</strong>, 68 years, ~1.5% yield</li>
+        <li><strong>3M Company (MMM)</strong>, 65 years, ~4.5% yield</li>
       </ul>
 
       <p>Model any combination of these holdings in our <a href="/compare">Stock Comparison Tool</a> to see how they perform side by side.</p>
@@ -192,7 +192,7 @@ export const article = {
       <h2>The Risks of Dividend Kings</h2>
 
       <ul>
-        <li><strong>Valuation risk.</strong> Kings trade at premium multiples—you often pay for quality.</li>
+        <li><strong>Valuation risk.</strong> Kings trade at premium multiples, you often pay for quality.</li>
         <li><strong>Slow growth.</strong> Many Kings offer 1-3% yields and low double-digit annual returns. If you want explosive growth, look elsewhere.</li>
         <li><strong>Dividend cut risk.</strong> Even Kings can be dethroned. 3M cut its dividend in 2024 after 64 years of increases due to litigation costs.</li>
         <li><strong>Sector concentration.</strong> Most Kings are in Consumer Staples, Healthcare, and Industrials. Diversify outside these if you want balance.</li>

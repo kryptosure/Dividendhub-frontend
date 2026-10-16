@@ -7,7 +7,7 @@ const Insights = () => {
   return (
     <>
       <Helmet>
-        <title>Market Insights — DividendBro</title>
+        <title>Market Insights, DividendBro</title>
         <meta name="description" content="Weekly dividend analysis, earnings breakdowns, and market data for US, Canadian, and SGX investors." />
       </Helmet>
 
@@ -19,7 +19,7 @@ const Insights = () => {
           </div>
           <h1 className="text-3xl font-black tracking-tight">Market Insights</h1>
           <p className="text-text-secondary text-sm mt-2">
-            Short-form analysis on dividend news, earnings, and policy changes — filtered for what actually affects your income.
+            Short-form analysis on dividend news, earnings, and policy changes, filtered for what actually affects your income.
           </p>
         </div>
 

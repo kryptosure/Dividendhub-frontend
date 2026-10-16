@@ -8,7 +8,7 @@ export const article = {
   excerpt: "19 US-listed REITs pay dividends every month in 2026. See the full list with yields, sectors, and how much capital you need for S$1,000/month.",
   author: "DividendBro Research Team",
   content: `
-      <p><strong>19 US REITs pay you every single month.</strong> This is the complete list — sorted by quality, with yields, sectors, and how much money you'd need for a target income.</p>
+      <p><strong>19 US REITs pay you every single month.</strong> This is the complete list, sorted by quality, with yields, sectors, and how much money you'd need for a target income.</p>
 
       <p>All numbers below are current as of October 2026.</p>
 
@@ -20,7 +20,7 @@ export const article = {
           <a href="https://dividendbro.com" class="db-ig-link">Explainer</a>
         </div>
         <h4 class="db-ig-title">🏢 How a REIT Works (in 3 Steps)</h4>
-        <p class="db-ig-sub">Simple version — no finance degree needed</p>
+        <p class="db-ig-sub">Simple version, no finance degree needed</p>
         <div class="db-ig-body">
           <div class="db-ig-row">
             <span class="db-ig-row-label">1. You buy</span>
@@ -43,28 +43,28 @@ export const article = {
         </div>
       </div>
 
-      <h2>Why Most REITs Pay Quarterly — But 19 Pay Monthly</h2>
+      <h2>Why Most REITs Pay Quarterly, But 19 Pay Monthly</h2>
 
       <p>Paying monthly is a <strong>board decision</strong>, not a legal rule. The REITs that choose monthly tend to be in sectors where money comes in every month:</p>
 
       <ul>
-        <li><strong>Net-lease REITs</strong> — collect rent monthly (Realty Income, Agree Realty)</li>
-        <li><strong>Healthcare REITs</strong> — collect from operators monthly (LTC, Healthpeak)</li>
-        <li><strong>Mortgage REITs</strong> — collect interest monthly (AGNC, Annaly)</li>
+        <li><strong>Net-lease REITs</strong>, collect rent monthly (Realty Income, Agree Realty)</li>
+        <li><strong>Healthcare REITs</strong>, collect from operators monthly (LTC, Healthpeak)</li>
+        <li><strong>Mortgage REITs</strong>, collect interest monthly (AGNC, Annaly)</li>
       </ul>
 
-      <p><strong>Warning:</strong> a REIT can switch from monthly to quarterly at any time. In 2026, three well-known REITs did exactly that — without cutting the total dividend. Your monthly budget would feel the change even if the annual total didn't.</p>
+      <p><strong>Warning:</strong> a REIT can switch from monthly to quarterly at any time. In 2026, three well-known REITs did exactly that, without cutting the total dividend. Your monthly budget would feel the change even if the annual total didn't.</p>
 
       <h2>The 19 Monthly-Paying REITs (2026)</h2>
 
-      <p>Sorted by quality — <strong>Blue Chip</strong> = decades of track record. <strong>Speculative</strong> = high yield, high risk.</p>
+      <p>Sorted by quality, <strong>Blue Chip</strong> = decades of track record. <strong>Speculative</strong> = high yield, high risk.</p>
 
       <div class="db-ig">
         <div class="db-ig-header">
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="https://dividendbro.com" class="db-ig-link">Full list</a>
         </div>
-        <h4 class="db-ig-title">📅 Monthly REIT Yields — Visual Ranking</h4>
+        <h4 class="db-ig-title">📅 Monthly REIT Yields, Visual Ranking</h4>
         <p class="db-ig-sub">Green = safer · Amber = medium risk · Red = high risk</p>
         <div class="db-ig-body">
           <div class="db-ig-row">
@@ -206,14 +206,14 @@ export const article = {
         </tbody>
       </table>
 
-      <h2>Monthly vs Quarterly — Does It Matter?</h2>
+      <h2>Monthly vs Quarterly, Does It Matter?</h2>
 
       <div class="db-ig">
         <div class="db-ig-header">
           <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
           <a href="https://dividendbro.com" class="db-ig-link">Full analysis</a>
         </div>
-        <h4 class="db-ig-title">⚖️ Monthly vs Quarterly — The Real Difference</h4>
+        <h4 class="db-ig-title">⚖️ Monthly vs Quarterly, The Real Difference</h4>
         <p class="db-ig-sub">What actually changes when you switch cadence</p>
         <div class="db-ig-grid">
           <div class="db-ig-stat">
@@ -320,7 +320,7 @@ export const article = {
 
       <p>REITs are the most reliable high-yield income vehicle in the market. For most investors, a blended portfolio of <strong>50% US REITs</strong> (Realty Income, VICI, Prologis) and <strong>50% Singapore REITs</strong> (CICT, Ascendas, Mapletree) gives you the best balance of yield, growth, and tax efficiency.</p>
 
-      <p>If monthly income is specifically what you want, the US market has 19 options — Realty Income, LTC Properties, and Agree Realty are the highest-quality among them.</p>
+      <p>If monthly income is specifically what you want, the US market has 19 options, Realty Income, LTC Properties, and Agree Realty are the highest-quality among them.</p>
 
       <p>Track your REIT income and forecast passive cash flow using our <a href="/portfolio">My Portfolio</a> tool.</p>
 

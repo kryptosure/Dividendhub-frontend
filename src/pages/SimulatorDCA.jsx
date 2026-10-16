@@ -25,7 +25,7 @@ const SimulatorDCA = () => {
   return (
     <>
       <Helmet>
-        <title>Regular Investment (DCA) Simulator – DividendBro</title>
+        <title>Regular Investment (DCA) Simulator - DividendBro</title>
         <meta name="description" content="Simulate dollar-cost averaging (DCA) with monthly investments and dividend reinvestment." />
       </Helmet>
       <div className="max-w-4xl mx-auto px-4 sm:px-0">

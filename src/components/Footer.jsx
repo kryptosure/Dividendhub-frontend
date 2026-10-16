@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="border-t border-border/40 bg-bg-secondary/20 mt-20 py-6 px-2 text-center text-text-muted text-[10px] sm:text-[11px] font-medium leading-relaxed">
       <div className="max-w-md md:max-w-4xl mx-auto space-y-4">
 
-        {/* Explore links — internal SEO signals. Ordered by payout frequency. */}
+        {/* Explore links, internal SEO signals. Ordered by payout frequency. */}
         <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-[10px] font-bold uppercase tracking-wider">
           <Link to="/screener" className="text-text-secondary hover:text-accent-blue transition-colors">
             Screener

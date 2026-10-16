@@ -30,7 +30,7 @@ const StockComparison = () => {
     })),
   });
 
-  // ✅ Serial growth fetch — one symbol at a time.
+  // ✅ Serial growth fetch, one symbol at a time.
   // Previously used useQueries (parallel), which caused Yahoo to silently
   // throttle 3 out of 5 requests, returning partial data → null 5Y slot.
   const growthQuery = useQuery({
@@ -95,10 +95,10 @@ const StockComparison = () => {
   return (
     <>
       <Helmet>
-        <title>Stock Comparison Tool – Compare Dividend Stocks Side by Side</title>
+        <title>Stock Comparison Tool - Compare Dividend Stocks Side by Side</title>
         <meta name="description" content="Compare up to 5 dividend stocks side by side. Yield, payout ratio, dividend CAGR, safety score, and dividend streak in one clean table." />
         <link rel="canonical" href="https://dividendbro.com/compare" />
-        <meta property="og:title" content="Stock Comparison Tool – DividendBro" />
+        <meta property="og:title" content="Stock Comparison Tool - DividendBro" />
         <meta property="og:description" content="Compare up to 5 dividend stocks side by side." />
         <meta property="og:url" content="https://dividendbro.com/compare" />
         <meta property="og:type" content="website" />
@@ -178,7 +178,7 @@ const StockComparison = () => {
                     <td className="px-4 py-3 text-text-muted font-semibold">Current Price</td>
                     {stocksWithData.map(stock => (
                       <td key={stock.symbol} className="px-4 py-3 text-center font-mono font-bold text-text-primary">
-                        {stock.currentPrice ? formatCurrency(stock.currentPrice, curSymbol) : '—'}
+                        {stock.currentPrice ? formatCurrency(stock.currentPrice, curSymbol) : '-'}
                       </td>
                     ))}
                   </tr>
@@ -186,7 +186,7 @@ const StockComparison = () => {
                     <td className="px-4 py-3 text-text-muted font-semibold">Dividend Yield</td>
                     {stocksWithData.map(stock => (
                       <td key={stock.symbol} className={`px-4 py-3 text-center font-bold ${stock.currentYield >= 3 ? 'text-accent-green' : 'text-text-secondary'}`}>
-                        {stock.currentYield ? formatPercent(stock.currentYield) : '—'}
+                        {stock.currentYield ? formatPercent(stock.currentYield) : '-'}
                       </td>
                     ))}
                   </tr>
@@ -199,14 +199,14 @@ const StockComparison = () => {
                             {formatPercent(stock.payoutRatio)}
                             {stock.payoutRatio > 100 && (
                               <span
-                                title="Payout ratio exceeds 100% — dividend may not be covered by earnings"
+                                title="Payout ratio exceeds 100%, dividend may not be covered by earnings"
                                 className="ml-1 cursor-help"
                               >
                                 ⚠
                               </span>
                             )}
                           </>
-                        ) : '—'}
+                        ) : '-'}
                       </td>
                     ))}
                   </tr>
@@ -214,7 +214,7 @@ const StockComparison = () => {
                     <td className="px-4 py-3 text-text-muted font-semibold">Dividend CAGR (5Y)</td>
                     {stocksWithData.map(stock => (
                       <td key={stock.symbol} className={`px-4 py-3 text-center font-mono font-bold ${stock.dividendCAGR >= 0 ? 'text-accent-teal' : 'text-accent-red'}`}>
-                        {stock.dividendCAGR != null ? (stock.dividendCAGR >= 0 ? '+' : '') + stock.dividendCAGR.toFixed(2) + '%' : '—'}
+                        {stock.dividendCAGR != null ? (stock.dividendCAGR >= 0 ? '+' : '') + stock.dividendCAGR.toFixed(2) + '%' : '-'}
                       </td>
                     ))}
                   </tr>
@@ -222,7 +222,7 @@ const StockComparison = () => {
                     <td className="px-4 py-3 text-text-muted font-semibold">Dividend Streak (Years)</td>
                     {stocksWithData.map(stock => (
                       <td key={stock.symbol} className="px-4 py-3 text-center font-mono font-bold text-accent-yellow">
-                        {stock.streak || '—'}
+                        {stock.streak || '-'}
                       </td>
                     ))}
                   </tr>
@@ -230,7 +230,7 @@ const StockComparison = () => {
                     <td className="px-4 py-3 text-text-muted font-semibold">Dividend Frequency (Annually)</td>
                     {stocksWithData.map(stock => (
                       <td key={stock.symbol} className="px-4 py-3 text-center font-mono text-text-secondary">
-                        {stock.frequency ? `${stock.frequency} times/yr` : '—'}
+                        {stock.frequency ? `${stock.frequency} times/yr` : '-'}
                       </td>
                     ))}
                   </tr>
@@ -238,7 +238,7 @@ const StockComparison = () => {
                     <td className="px-4 py-3 text-text-muted font-semibold">Stock Price CAGR (5Y)</td>
                     {stocksWithData.map(stock => (
                       <td key={stock.symbol} className={`px-4 py-3 text-center font-mono font-bold ${stock.priceCAGR >= 0 ? 'text-accent-green' : 'text-accent-red'}`}>
-                        {stock.priceCAGR != null ? (stock.priceCAGR >= 0 ? '+' : '') + stock.priceCAGR.toFixed(2) + '%' : '—'}
+                        {stock.priceCAGR != null ? (stock.priceCAGR >= 0 ? '+' : '') + stock.priceCAGR.toFixed(2) + '%' : '-'}
                       </td>
                     ))}
                   </tr>
@@ -251,7 +251,7 @@ const StockComparison = () => {
                           stock.safetyScore === 'Moderate' ? 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow' :
                           'bg-accent-red/10 border-accent-red/20 text-accent-red'
                         }`}>
-                          {stock.safetyScore || '—'}
+                          {stock.safetyScore || '-'}
                         </span>
                       </td>
                     ))}

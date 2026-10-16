@@ -26,7 +26,7 @@ const Header = () => {
 
       <div className="max-w-7xl mx-auto px-3 py-2 flex items-center justify-between gap-3">
 
-        {/* Logo — only below lg. On lg+, the sidebar owns the branding. */}
+        {/* Logo, only below lg. On lg+, the sidebar owns the branding. */}
         <Link
           to="/"
           className="lg:hidden flex items-center flex-shrink-0 active:scale-[0.98] transition-transform"
@@ -40,7 +40,7 @@ const Header = () => {
           />
         </Link>
 
-        {/* Market + currency toggles — hidden on < md */}
+        {/* Market + currency toggles, hidden on < md */}
         <div className="hidden md:flex items-center gap-2 border border-border/40 bg-bg-primary/40 rounded-xl p-1">
           <div className="flex items-center bg-bg-secondary rounded-lg border border-border/20 shadow-sm p-0.5">
             <button
@@ -88,7 +88,7 @@ const Header = () => {
         {/* Right cluster */}
         <div className="flex items-center gap-2 ml-auto">
 
-          {/* Theme toggle — always visible */}
+          {/* Theme toggle, always visible */}
           <button
             onClick={toggleTheme}
             className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-surface border border-border/40 hover:bg-bg-surface-hover active:scale-95 transition-all text-sm"
@@ -97,7 +97,7 @@ const Header = () => {
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
 
-          {/* Auth — hidden on lg+ (Sidebar owns it there) */}
+          {/* Auth, hidden on lg+ (Sidebar owns it there) */}
           <div className="lg:hidden flex items-center gap-2">
             {token ? (
               <div className="flex items-center gap-2 bg-bg-surface/60 border border-border/40 pl-2 pr-1.5 py-1 rounded-lg text-xs font-bold text-text-secondary">
@@ -122,7 +122,7 @@ const Header = () => {
             )}
           </div>
 
-          {/* Mobile hamburger — hidden on lg+ */}
+          {/* Mobile hamburger, hidden on lg+ */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="lg:hidden w-9 h-9 flex flex-col justify-center items-center rounded-xl bg-bg-surface border border-border/40 transition-colors"
@@ -136,7 +136,7 @@ const Header = () => {
       </div>
 
       {/* ------------------------------------------------------------
-          MOBILE MENU — < lg only
+          MOBILE MENU, < lg only
           ------------------------------------------------------------ */}
       {isMobileMenuOpen && (
         <div className="lg:hidden border-t border-border/40 bg-bg-secondary px-4 py-4 space-y-4 animate-in slide-in-from-top duration-200">

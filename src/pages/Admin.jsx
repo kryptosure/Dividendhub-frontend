@@ -320,7 +320,7 @@ const Admin = () => {
   return (
     <>
       <Helmet>
-        <title>Admin Dashboard – DividendBro</title>
+        <title>Admin Dashboard - DividendBro</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
@@ -800,14 +800,14 @@ const Admin = () => {
             />
           </div>
 
-          {/* MOBILE VIEW — Cards */}
+          {/* MOBILE VIEW, Cards */}
           <div className="sm:hidden space-y-2">
             {users?.users?.map((u) => (
               <div key={u.email} className="bg-bg-surface border border-border/50 rounded-xl p-3">
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <span className="font-mono text-xs text-text-primary truncate flex-1">{u.email}</span>
                   <span className="text-[10px] text-text-muted flex-shrink-0 px-2 py-0.5 rounded bg-bg-primary border border-border/40">
-                    {u.country || '—'}
+                    {u.country || '-'}
                   </span>
                 </div>
                 <div className="grid grid-cols-4 gap-2 text-center">
@@ -837,7 +837,7 @@ const Admin = () => {
             ))}
           </div>
 
-          {/* DESKTOP VIEW — Table */}
+          {/* DESKTOP VIEW, Table */}
           <div className="hidden sm:block bg-bg-surface border border-border/50 rounded-2xl shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
@@ -856,13 +856,13 @@ const Admin = () => {
                   {users?.users?.map((u) => (
                     <tr key={u.email} className="hover:bg-bg-primary/30">
                       <td className="px-4 py-2.5 font-mono text-text-primary truncate max-w-[200px]">{u.email}</td>
-                      <td className="px-4 py-2.5 text-text-muted">{u.country || '—'}</td>
+                      <td className="px-4 py-2.5 text-text-muted">{u.country || '-'}</td>
                       <td className="px-4 py-2.5 text-right font-bold text-accent-purple">{u.holdingsCount}</td>
                       <td className="px-4 py-2.5 text-right font-bold text-accent-teal">{u.watchlistCount}</td>
                       <td className="px-4 py-2.5 text-right font-mono text-text-muted">{u.eventsLast7d}</td>
                       <td className="px-4 py-2.5 text-right font-mono text-text-muted">{u.loginCount}</td>
                       <td className="px-4 py-2.5 text-right text-text-muted">
-                        {u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleDateString() : '—'}
+                        {u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleDateString() : '-'}
                       </td>
                     </tr>
                   ))}
@@ -882,7 +882,7 @@ const Admin = () => {
                 ← Previous
               </button>
               <span className="text-[10px] text-text-muted font-mono">
-                {page * pageSize + 1}–{Math.min((page + 1) * pageSize, users.total)} of {users.total}
+                {page * pageSize + 1}-{Math.min((page + 1) * pageSize, users.total)} of {users.total}
               </span>
               <button
                 onClick={() => setPage(p => p + 1)}

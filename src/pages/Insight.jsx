@@ -12,7 +12,7 @@ const Insight = () => {
   return (
     <>
       <Helmet>
-        <title>{insight.title} — DividendBro Insights</title>
+        <title>{insight.title}, DividendBro Insights</title>
         <meta name="description" content={insight.excerpt} />
       </Helmet>
 

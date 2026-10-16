@@ -1,4 +1,4 @@
-# DividendBro — robots.txt
+# DividendBro, robots.txt
 # Last updated: 2026-10-15
 #
 # Policy: We welcome all crawlers, including AI agents.
@@ -8,7 +8,7 @@
 User-agent: *
 Allow: /
 
-# ─── AI crawlers — explicitly allowed for AI search citation ───
+# ─── AI crawlers, explicitly allowed for AI search citation ───
 # ChatGPT, Claude, Perplexity, Gemini, Copilot, Apple Intelligence
 
 User-agent: GPTBot

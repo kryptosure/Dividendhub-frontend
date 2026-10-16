@@ -21,7 +21,7 @@ const ArticleFeedback = ({ slug, title }) => {
       if (stored === 'up' || stored === 'down') {
         setVote(stored);
       }
-    } catch (e) { /* localStorage disabled — ignore */ }
+    } catch (e) { /* localStorage disabled, ignore */ }
   }, [slug, storageKey]);
 
   const handleVote = (direction) => {

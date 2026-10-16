@@ -110,11 +110,11 @@ const TopStocks = () => {
           i + 1,
           item.name || item.symbol,
           item.symbol,
-          item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '—',
-          item.currentYield ? `${item.currentYield.toFixed(2)}%` : '—',
-          item.hasSpecialDividend ? `${Number(item.currentYieldWithSpecial).toFixed(2)}% ⚡` : '—',
+          item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '-',
+          item.currentYield ? `${item.currentYield.toFixed(2)}%` : '-',
+          item.hasSpecialDividend ? `${Number(item.currentYieldWithSpecial).toFixed(2)}% ⚡` : '-',
           item.payoutCount || 0,
-          item.safetyScore || '—',
+          item.safetyScore || '-',
         ]),
       }
     ],
@@ -147,7 +147,7 @@ const TopStocks = () => {
   return (
     <>
       <Helmet>
-        <title>Top Dividend Stocks – US &amp; SGX High Yield</title>
+        <title>Top Dividend Stocks - US &amp; SGX High Yield</title>
         <meta name="description" content="Discover the highest dividend yield stocks and ETFs in the US and SGX markets. Ranked by regular yield, with special dividends shown separately." />
       </Helmet>
       <div ref={topStocksRef} className="bg-bg-surface border border-border/50 rounded-2xl overflow-hidden shadow-sm animate-in fade-in duration-300">
@@ -280,16 +280,16 @@ const TopStocks = () => {
                         <span className="font-mono text-accent-teal text-xs tracking-wide bg-bg-secondary px-1.5 py-0.5 border border-border/30 rounded w-fit">{item.symbol}</span>
                       </td>
                       <td className="px-4 py-3.5 text-right font-mono text-xs text-text-secondary">
-                        {item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '—'}
+                        {item.currentPrice ? formatCurrency(convertPrice(item.currentPrice), curSymbol) : '-'}
                       </td>
                       <td className="px-4 py-3.5 text-right font-mono text-sm font-black text-accent-green">
-                        {regularYield ? formatPercent(regularYield) : '—'}
+                        {regularYield ? formatPercent(regularYield) : '-'}
                       </td>
                       <td className="px-4 py-3.5 text-right font-mono text-xs">
                         {hasSpecial ? (
                           <span
                             className="inline-flex items-center gap-1.5 justify-end"
-                            title={`Includes special dividend of ${curSymbol}${Number(item.specialDividendAmount).toFixed(2)} — one-off, not recurring`}
+                            title={`Includes special dividend of ${curSymbol}${Number(item.specialDividendAmount).toFixed(2)}, one-off, not recurring`}
                           >
                             <span className="text-text-primary font-bold">{Number(totalYield).toFixed(2)}%</span>
                             <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border bg-accent-yellow/10 border-accent-yellow/30 text-accent-yellow">
@@ -297,7 +297,7 @@ const TopStocks = () => {
                             </span>
                           </span>
                         ) : (
-                          <span className="text-text-muted">—</span>
+                          <span className="text-text-muted">, </span>
                         )}
                       </td>
                       <td className="px-4 py-3.5 text-right font-mono text-xs text-text-muted">{item.payoutCount || 0}</td>
@@ -305,7 +305,7 @@ const TopStocks = () => {
                         <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md border ${
                           safetyColors[item.safetyScore] || 'bg-bg-primary text-text-muted border-border/40'
                         }`}>
-                          {item.safetyScore || '—'}
+                          {item.safetyScore || '-'}
                         </span>
                       </td>
                     </tr>

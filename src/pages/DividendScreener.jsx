@@ -39,8 +39,8 @@ const SORT_OPTIONS = [
   { key: 'frequency-asc', label: 'Most Frequent Payout' },
   { key: 'cagr-desc', label: 'Highest Dividend Growth' },
   { key: 'safety-asc', label: 'Safest First' },
-  { key: 'name-asc', label: 'Name (A–Z)' },
-  { key: 'symbol-asc', label: 'Ticker (A–Z)' },
+  { key: 'name-asc', label: 'Name (A-Z)' },
+  { key: 'symbol-asc', label: 'Ticker (A-Z)' },
 ];
 
 const ASSET_BADGE = {
@@ -97,12 +97,12 @@ const DividendScreener = () => {
   const assetCounts = data?.assetTypeCounts || {};
   const total = data?.total || 0;
 
-  const fmt = (n) => (n == null || isNaN(n) ? '—' : Number(n).toFixed(2));
+  const fmt = (n) => (n == null || isNaN(n) ? '-' : Number(n).toFixed(2));
 
   return (
     <>
       <Helmet>
-        <title>Dividend Stock Screener — Weekly, Monthly & Daily Dividend Payers | DividendBro</title>
+        <title>Dividend Stock Screener, Weekly, Monthly & Daily Dividend Payers | DividendBro</title>
         <meta name="description" content="Browse 500+ dividend-paying stocks, REITs, ETFs, and preferred stocks by payout frequency. Weekly, monthly, daily. US, Canada, and SGX markets." />
         <link rel="canonical" href="https://dividendbro.com/screener" />
       </Helmet>
@@ -114,7 +114,7 @@ const DividendScreener = () => {
             Dividend <span className="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Screener</span>
           </h1>
           <p className="text-text-muted text-sm mt-2 max-w-3xl">
-            Every dividend-paying stock, REIT, ETF, and preferred stock — filtered by how often they pay you. Includes 500+ tickers across US, Canada, and SGX markets.
+            Every dividend-paying stock, REIT, ETF, and preferred stock, filtered by how often they pay you. Includes 500+ tickers across US, Canada, and SGX markets.
           </p>
         </div>
 
@@ -316,7 +316,7 @@ const DividendScreener = () => {
                         <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border whitespace-nowrap ${FREQ_BADGE[s.frequency] || 'bg-bg-primary border-border/40 text-text-muted'}`}>{s.frequency}</span>
                       </td>
                       <td className="px-4 py-2.5 text-right font-mono text-text-secondary text-xs">
-                        {s.currentPrice ? `$${fmt(s.currentPrice)}` : '—'}
+                        {s.currentPrice ? `$${fmt(s.currentPrice)}` : '-'}
                       </td>
                       <td className="px-4 py-2.5 text-right font-mono font-bold text-accent-green">{fmt(s.currentYield)}%</td>
                       <td className="px-4 py-2.5 text-right font-mono text-xs">
@@ -324,7 +324,7 @@ const DividendScreener = () => {
                           <span className={s.dividendCAGR >= 0 ? 'text-accent-teal' : 'text-accent-red'}>
                             {s.dividendCAGR >= 0 ? '+' : ''}{fmt(s.dividendCAGR)}%
                           </span>
-                        ) : '—'}
+                        ) : '-'}
                       </td>
                       <td className="px-4 py-2.5 text-center">
                         <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded border whitespace-nowrap ${s.safetyScore === 'Safe' ? 'bg-accent-green/10 border-accent-green/20 text-accent-green' : s.safetyScore === 'Moderate' ? 'bg-accent-yellow/10 border-accent-yellow/20 text-accent-yellow' : 'bg-accent-red/10 border-accent-red/20 text-accent-red'}`}>{s.safetyScore}</span>
@@ -342,7 +342,7 @@ const DividendScreener = () => {
             <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
               className="text-xs font-bold text-text-secondary hover:text-accent-blue disabled:opacity-30">← Previous</button>
             <span className="text-[10px] text-text-muted font-mono">
-              {page * pageSize + 1}–{Math.min((page + 1) * pageSize, total)} of {total}
+              {page * pageSize + 1}-{Math.min((page + 1) * pageSize, total)} of {total}
             </span>
             <button onClick={() => setPage(p => p + 1)} disabled={(page + 1) * pageSize >= total}
               className="text-xs font-bold text-text-secondary hover:text-accent-blue disabled:opacity-30">Next →</button>
@@ -350,7 +350,7 @@ const DividendScreener = () => {
         )}
 
         <p className="text-[10px] text-text-muted text-center leading-relaxed max-w-3xl mx-auto pt-2">
-          Payout frequency is derived from the most recent complete year of dividend history. Weekly, monthly, and daily payers are almost entirely options-income ETFs and preferred stocks — distributions may include return of capital. This page is educational only and not investment advice.
+          Payout frequency is derived from the most recent complete year of dividend history. Weekly, monthly, and daily payers are almost entirely options-income ETFs and preferred stocks, distributions may include return of capital. This page is educational only and not investment advice.
         </p>
       </div>
     </>

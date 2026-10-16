@@ -195,7 +195,7 @@ const DividendCalendar = () => {
   return (
     <>
       <Helmet>
-        <title>{marketLabel} Dividend Calendar — Upcoming Ex-Dividend Dates | DividendBro</title>
+        <title>{marketLabel} Dividend Calendar, Upcoming Ex-Dividend Dates | DividendBro</title>
         <meta name="description" content={`Upcoming dividend payout dates for ${marketLabel} stocks over the next ${days} days. Filter by safety, portfolio, watchlist, or search a specific ticker.`} />
         <link rel="canonical" href="https://dividendbro.com/calendar" />
       </Helmet>
@@ -215,11 +215,11 @@ const DividendCalendar = () => {
         {/* ---------- Info banner ---------- */}
         <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4">
           <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
-            Estimated dates — verify before trading
+            Estimated dates, verify before trading
           </p>
           <p className="text-[11px] text-text-secondary leading-relaxed">
             These dates are projected from each stock's historical payout pattern (median gap between the last 8 payouts).
-            Actual ex-dividend dates are confirmed by the company typically 2–4 weeks in advance.
+            Actual ex-dividend dates are confirmed by the company typically 2-4 weeks in advance.
           </p>
         </div>
 
@@ -545,8 +545,8 @@ const DividendCalendar = () => {
         {!isLoading && filtered.length > 0 && (
           <p className="text-[10px] text-text-muted text-center leading-relaxed max-w-2xl mx-auto pt-4">
             Ex-dividend dates are estimated using the median gap between the stock's last 8 payouts.
-            Actual dates are typically confirmed 2–4 weeks in advance by the issuer.
-            Payment dates usually follow 2–4 weeks after ex-dates. Educational only, not investment advice.
+            Actual dates are typically confirmed 2-4 weeks in advance by the issuer.
+            Payment dates usually follow 2-4 weeks after ex-dates. Educational only, not investment advice.
           </p>
         )}
       </div>

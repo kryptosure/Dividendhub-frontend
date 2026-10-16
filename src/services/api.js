@@ -1,5 +1,5 @@
 /* src/services/api.js
- * Fetch-based API client — replaces axios to save ~150 KB from the initial bundle.
+ * Fetch-based API client, replaces axios to save ~150 KB from the initial bundle.
  */
 
 const API_BASE =

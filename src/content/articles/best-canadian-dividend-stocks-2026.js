@@ -11,13 +11,13 @@ export const article = {
 
     <p>Pays dividends. Quietly. Relentlessly. For decades.</p>
 
-    <p>The TSX has some of the world's longest dividend streaks — banks that have paid shareholders since before the internet existed. Pipelines that transport a fifth of North America's energy and send you a check every quarter. Utilities that have raised their payout every single year since 1974.</p>
+    <p>The TSX has some of the world's longest dividend streaks, banks that have paid shareholders since before the internet existed. Pipelines that transport a fifth of North America's energy and send you a check every quarter. Utilities that have raised their payout every single year since 1974.</p>
 
     <p>Yet Canadian dividend stocks are almost invisible to global investors. Everyone talks about US dividend aristocrats. Nobody talks about the Canadian ones.</p>
 
     <p>That ends today.</p>
 
-    <p>Here's everything you need to know about dividend investing in Canada in 2026 — the best stocks, the TFSA advantage, and the tax trap that catches non-residents off guard.</p>
+    <p>Here's everything you need to know about dividend investing in Canada in 2026, the best stocks, the TFSA advantage, and the tax trap that catches non-residents off guard.</p>
 
     <div class="db-ig">
       <div class="db-ig-header">
@@ -44,7 +44,7 @@ export const article = {
         </div>
         <div class="db-ig-stat">
           <div class="db-ig-stat-label">Non-Resident Tax</div>
-          <div class="db-ig-stat-val">15–25%</div>
+          <div class="db-ig-stat-val">15-25%</div>
           <div class="db-ig-stat-sub">Treaty dependent</div>
         </div>
       </div>
@@ -57,7 +57,7 @@ export const article = {
 
     <p>Three things happened in 2026 that put Canadian dividends center stage:</p>
 
-    <p><strong>1. The Bank of Canada paused at 2.25%.</strong> When rates stop moving, income investors stop waiting for a better entry point. Dividend yields suddenly look attractive again — especially the 5%+ payers.</p>
+    <p><strong>1. The Bank of Canada paused at 2.25%.</strong> When rates stop moving, income investors stop waiting for a better entry point. Dividend yields suddenly look attractive again, especially the 5%+ payers.</p>
 
     <p><strong>2. Canadian dividend ETFs took in $38.8 billion in net inflows</strong> in the first five months of 2026 alone. That's not retail noise. That's institutional money moving in.</p>
 
@@ -65,7 +65,7 @@ export const article = {
 
     <p>Translation: this isn't a fad. It's a structural shift in how capital is being allocated in Canada. And if you want to ride it, the next five sections are your map.</p>
 
-    <h2>The Big Six Banks — The Bedrock of Every Canadian Dividend Portfolio</h2>
+    <h2>The Big Six Banks, The Bedrock of Every Canadian Dividend Portfolio</h2>
 
     <p>Canada has <strong>six national banks</strong>. They control roughly 90% of the country's banking assets. And they all pay dividends. Every quarter. Without fail. For over a century.</p>
 
@@ -76,7 +76,7 @@ export const article = {
         <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
         <a href="https://dividendbro.com" class="db-ig-link">dividendbro.com →</a>
       </div>
-      <h4 class="db-ig-title">🏦 The Big Six — Current Yields (2026)</h4>
+      <h4 class="db-ig-title">🏦 The Big Six, Current Yields (2026)</h4>
       <p class="db-ig-sub">All six have paid uninterrupted dividends through every recession since WWII</p>
       <div class="db-ig-body">
         <div class="db-ig-row">
@@ -129,9 +129,9 @@ export const article = {
 
     <p><strong>The takeaway:</strong> If you want lower yield but the safest possible dividend, buy RBC. If you want the highest yield in the group, buy Scotiabank. If you want the middle ground, TD and BMO are the sweet spot.</p>
 
-    <h2>Pipelines & Energy — Where the Yield Lives</h2>
+    <h2>Pipelines & Energy, Where the Yield Lives</h2>
 
-    <p>Canada has the <strong>third-largest proven oil reserves</strong> on the planet. And unlike most oil companies, Canada's pipeline giants don't care whether oil is $40 or $140 — they get paid by volume, not by price.</p>
+    <p>Canada has the <strong>third-largest proven oil reserves</strong> on the planet. And unlike most oil companies, Canada's pipeline giants don't care whether oil is $40 or $140, they get paid by volume, not by price.</p>
 
     <p>This is why income investors love them.</p>
 
@@ -193,7 +193,7 @@ export const article = {
 
     <p><strong>Enbridge is the crown jewel here.</strong> It transports roughly 30% of North America's crude oil and 20% of its natural gas. It has raised its dividend every year since 1995. A 5.6% yield with a 31-year growth streak is genuinely rare.</p>
 
-    <h2>Utilities & Telecom — The Boring Millionaires</h2>
+    <h2>Utilities & Telecom, The Boring Millionaires</h2>
 
     <p>If pipelines are the yield engine, utilities and telecoms are the seatbelts. Lower yield, but they just keep paying. Year after year. Through recessions. Through rate cycles. Through everything.</p>
 
@@ -202,7 +202,7 @@ export const article = {
         <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
         <a href="https://dividendbro.com" class="db-ig-link">dividendbro.com →</a>
       </div>
-      <h4 class="db-ig-title">💡 Utilities & Telecom — The Defensive Core</h4>
+      <h4 class="db-ig-title">💡 Utilities & Telecom, The Defensive Core</h4>
       <p class="db-ig-sub">Predictable cash flow, pension-fund favourites</p>
       <div class="db-ig-grid">
         <div class="db-ig-stat">
@@ -233,7 +233,7 @@ export const article = {
 
     <p><strong>Fortis is the quiet superstar.</strong> It has raised its dividend every single year since 1974. That's <strong>52 consecutive years</strong>. No US utility can match that streak. It's the kind of stock you buy and never think about again.</p>
 
-    <h2>Monthly Dividend Stocks — Canada Has Plenty</h2>
+    <h2>Monthly Dividend Stocks, Canada Has Plenty</h2>
 
     <p>Most Canadian companies pay quarterly. But a select group pays <strong>every single month</strong>. If you're building a monthly income stream, these are your building blocks.</p>
 
@@ -243,7 +243,7 @@ export const article = {
         <a href="https://dividendbro.com" class="db-ig-link">dividendbro.com →</a>
       </div>
       <h4 class="db-ig-title">📅 Canadian Monthly Payers</h4>
-      <p class="db-ig-sub">12 checks per year — no waiting for quarterly payouts</p>
+      <p class="db-ig-sub">12 checks per year, no waiting for quarterly payouts</p>
       <div class="db-ig-body">
         <div class="db-ig-row">
           <span class="db-ig-row-label">SmartCentres</span>
@@ -353,7 +353,7 @@ export const article = {
 
     <p>If you're <strong>not</strong> a Canadian resident, listen carefully.</p>
 
-    <p>Canada taxes dividends paid to non-residents. The statutory rate is <strong>25%</strong>. That drops to <strong>15%</strong> for residents of countries with a tax treaty with Canada — which includes the US, UK, Singapore, Australia, and most of Europe.</p>
+    <p>Canada taxes dividends paid to non-residents. The statutory rate is <strong>25%</strong>. That drops to <strong>15%</strong> for residents of countries with a tax treaty with Canada, which includes the US, UK, Singapore, Australia, and most of Europe.</p>
 
     <p>But here's the part that trips people up: <strong>this tax is withheld at the source</strong>. Your broker takes it out before the dividend ever hits your account. You can't file a Canadian return to get it back. It's gone.</p>
 
@@ -402,9 +402,9 @@ export const article = {
 
     <p>Still worth it? Often, yes. But go in with clear eyes.</p>
 
-    <h2>Canadian Dividend Aristocrats — The Full Shortlist</h2>
+    <h2>Canadian Dividend Aristocrats, The Full Shortlist</h2>
 
-    <p>Canada has its own version of the US "Dividend Aristocrats" — companies that have raised their dividend for 5+ consecutive years. The <strong>iShares S&P/TSX Canadian Dividend Aristocrats ETF (CDZ)</strong> tracks 96 of them.</p>
+    <p>Canada has its own version of the US "Dividend Aristocrats", companies that have raised their dividend for 5+ consecutive years. The <strong>iShares S&P/TSX Canadian Dividend Aristocrats ETF (CDZ)</strong> tracks 96 of them.</p>
 
     <p>But here's my shortlist of the ones that actually matter:</p>
 
@@ -413,7 +413,7 @@ export const article = {
         <a href="/" class="db-ig-brand"><span class="db-ig-logo">D</span> DividendBro</a>
         <a href="https://dividendbro.com" class="db-ig-link">dividendbro.com →</a>
       </div>
-      <h4 class="db-ig-title">🏆 Canadian Dividend Aristocrats — Best of the Best</h4>
+      <h4 class="db-ig-title">🏆 Canadian Dividend Aristocrats, Best of the Best</h4>
       <p class="db-ig-sub">Consecutive years of dividend increases</p>
       <div class="db-ig-grid">
         <div class="db-ig-stat">
@@ -450,9 +450,9 @@ export const article = {
 
     <p>Here's the framework I use:</p>
 
-    <p><strong>1. Yield between 2% and 8%.</strong> Below 2% is too small to matter. Above 8% is a red flag — usually means the market expects a cut.</p>
+    <p><strong>1. Yield between 2% and 8%.</strong> Below 2% is too small to matter. Above 8% is a red flag, usually means the market expects a cut.</p>
 
-    <p><strong>2. Payout ratio under 70%</strong> for banks and utilities. REITs are exempt — they're legally required to distribute 90%+ of income.</p>
+    <p><strong>2. Payout ratio under 70%</strong> for banks and utilities. REITs are exempt, they're legally required to distribute 90%+ of income.</p>
 
     <p><strong>3. Dividend CAGR positive over 5 years.</strong> A growing dividend beats a high yield every time. A 4% yield growing at 8% beats a 6% yield that never moves.</p>
 
@@ -465,13 +465,13 @@ export const article = {
     <h2>Frequently Asked Questions</h2>
 
     <p><strong>Are Canadian dividends taxed in the US?</strong></p>
-    <p>Yes — at the 15% US-Canada treaty rate, withheld at source. You cannot reclaim this via a US tax return. You may, however, be able to claim a foreign tax credit on your US return.</p>
+    <p>Yes, at the 15% US-Canada treaty rate, withheld at source. You cannot reclaim this via a US tax return. You may, however, be able to claim a foreign tax credit on your US return.</p>
 
     <p><strong>What is the best Canadian dividend stock for beginners?</strong></p>
     <p>Royal Bank of Canada (RY.TO) or Fortis (FTS.TO). Both have decades-long track records, are household names in Canada, and are easy to understand. Neither is likely to surprise you.</p>
 
     <p><strong>Can I hold Canadian dividend stocks in my TFSA?</strong></p>
-    <p>Absolutely — and you should. Canadian dividends held in a TFSA are 100% tax-free. This is the single biggest tax advantage available to Canadian investors.</p>
+    <p>Absolutely, and you should. Canadian dividends held in a TFSA are 100% tax-free. This is the single biggest tax advantage available to Canadian investors.</p>
 
     <p><strong>Are Canadian bank dividends safe?</strong></p>
     <p>Historically, yes. None of the Big Six has cut its dividend since WWII. But "safe" doesn't mean "guaranteed." Canadian banks are exposed to the housing market, which is the most leveraged in the G7.</p>
@@ -488,9 +488,9 @@ export const article = {
     <p>✅ Pipeline giants paying 5%+ with 30-year growth streaks</p>
     <p>✅ A tax-free account that eliminates dividend taxes entirely for residents</p>
 
-    <p>If you're Canadian, you have one of the best dividend markets in the world at your fingertips — and a tax structure built to reward you for using it.</p>
+    <p>If you're Canadian, you have one of the best dividend markets in the world at your fingertips, and a tax structure built to reward you for using it.</p>
 
-    <p>If you're not Canadian, the 15% withholding tax is a real headwind — but for some of these names (Enbridge, Fortis), it may still be worth it.</p>
+    <p>If you're not Canadian, the 15% withholding tax is a real headwind, but for some of these names (Enbridge, Fortis), it may still be worth it.</p>
 
     <div class="db-ig">
       <div class="db-ig-header">

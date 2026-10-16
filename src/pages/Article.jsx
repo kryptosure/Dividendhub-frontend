@@ -65,7 +65,7 @@ const Article = () => {
   return (
     <>
       <Helmet>
-        <title>{article.title} – DividendBro</title>
+        <title>{article.title} - DividendBro</title>
         <meta name="description" content={article.excerpt} />
         <link rel="canonical" href={`https://dividendbro.com/blog/${slug}`} />
         <script type="application/ld+json">{JSON.stringify(schemaData)}</script>

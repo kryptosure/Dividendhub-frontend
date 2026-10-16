@@ -50,7 +50,7 @@ export const insight = {
 
     <h2>The Real Takeaway</h2>
 
-    <p>The board lot change is a structural improvement. The fee math is a temporary problem — competition between brokers will push minimums to zero within a year, just like it did in the US.</p>
+    <p>The board lot change is a structural improvement. The fee math is a temporary problem, competition between brokers will push minimums to zero within a year, just like it did in the US.</p>
 
     <p>In the meantime, the fix is simple: check the minimum before you trade.</p>
 

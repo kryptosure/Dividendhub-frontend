@@ -21,7 +21,7 @@ const Signup = () => {
   return (
     <>
       <Helmet>
-        <title>Sign Up – DividendBro</title>
+        <title>Sign Up - DividendBro</title>
         <meta name="description" content="Create a free DividendBro account to track your dividend portfolio and passive income." />
       </Helmet>
 

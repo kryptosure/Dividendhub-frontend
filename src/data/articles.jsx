@@ -3,7 +3,7 @@ export const articles = [
     slug: 'top-10-dividend-stocks-2025',
     title: 'Top 10 Dividend Stocks for 2025',
     date: 'June 1, 2025',
-    excerpt: 'Updated for 2025 – we’ve analyzed yield, safety, and growth to bring you the best dividend stocks to buy now.',
+    excerpt: 'Updated for 2025 - we’ve analyzed yield, safety, and growth to bring you the best dividend stocks to buy now.',
     image: '📈',
     category: 'Stock Picks',
     readTime: '6 min read',
@@ -17,16 +17,16 @@ export const articles = [
         <div className="bg-bg-secondary p-4 rounded-lg my-4">
           <h4 className="font-bold text-accent-blue mb-2">🏆 Top 10 Dividend Stocks (June 2025)</h4>
           <ol className="list-decimal list-inside space-y-1 text-sm">
-            <li><strong>Verizon (VZ)</strong> – Yield 5.8%, Safety: Moderate (strong cash flow)</li>
-            <li><strong>Altria (MO)</strong> – Yield 6.2%, Safety: Moderate (defensive consumer staples)</li>
-            <li><strong>AbbVie (ABBV)</strong> – Yield 4.9%, Safety: Safe (pharmaceutical giant)</li>
-            <li><strong>Pfizer (PFE)</strong> – Yield 5.9%, Safety: Moderate (post‑COVID recovery)</li>
-            <li><strong>Exxon Mobil (XOM)</strong> – Yield 3.5%, Safety: Moderate (energy leader)</li>
-            <li><strong>Chevron (CVX)</strong> – Yield 3.4%, Safety: Moderate (integrated energy)</li>
-            <li><strong>Coca‑Cola (KO)</strong> – Yield 3.2%, Safety: Safe (recession‑resistant)</li>
-            <li><strong>PepsiCo (PEP)</strong> – Yield 4.0%, Safety: Moderate (brand power)</li>
-            <li><strong>Microsoft (MSFT)</strong> – Yield 1.3%, Safety: Safe (growth & dividend)</li>
-            <li><strong>Johnson & Johnson (JNJ)</strong> – Yield 3.3%, Safety: Safe (healthcare stalwart)</li>
+            <li><strong>Verizon (VZ)</strong> - Yield 5.8%, Safety: Moderate (strong cash flow)</li>
+            <li><strong>Altria (MO)</strong> - Yield 6.2%, Safety: Moderate (defensive consumer staples)</li>
+            <li><strong>AbbVie (ABBV)</strong> - Yield 4.9%, Safety: Safe (pharmaceutical giant)</li>
+            <li><strong>Pfizer (PFE)</strong> - Yield 5.9%, Safety: Moderate (post‑COVID recovery)</li>
+            <li><strong>Exxon Mobil (XOM)</strong> - Yield 3.5%, Safety: Moderate (energy leader)</li>
+            <li><strong>Chevron (CVX)</strong> - Yield 3.4%, Safety: Moderate (integrated energy)</li>
+            <li><strong>Coca‑Cola (KO)</strong> - Yield 3.2%, Safety: Safe (recession‑resistant)</li>
+            <li><strong>PepsiCo (PEP)</strong> - Yield 4.0%, Safety: Moderate (brand power)</li>
+            <li><strong>Microsoft (MSFT)</strong> - Yield 1.3%, Safety: Safe (growth & dividend)</li>
+            <li><strong>Johnson & Johnson (JNJ)</strong> - Yield 3.3%, Safety: Safe (healthcare stalwart)</li>
           </ol>
         </div>
 
@@ -73,7 +73,7 @@ export const articles = [
           <div className="bg-bg-secondary p-3 rounded-lg border border-border">
             <span className="text-2xl">3️⃣</span>
             <h4 className="font-bold">Include the STI ETF</h4>
-            <p className="text-sm text-text-muted">The SPDR STI ETF (ES3) gives you broad market exposure with a yield of ~3% – ideal for core holdings.</p>
+            <p className="text-sm text-text-muted">The SPDR STI ETF (ES3) gives you broad market exposure with a yield of ~3% - ideal for core holdings.</p>
           </div>
           <div className="bg-bg-secondary p-3 rounded-lg border border-border">
             <span className="text-2xl">4️⃣</span>
@@ -84,7 +84,7 @@ export const articles = [
 
         <div className="bg-accent-green/10 border-l-4 border-accent-green p-3 my-4">
           <p className="text-sm">
-            📈 <strong>Tax Advantage:</strong> Singapore does not tax capital gains or dividends for individuals – a key edge over many markets.
+            📈 <strong>Tax Advantage:</strong> Singapore does not tax capital gains or dividends for individuals - a key edge over many markets.
           </p>
         </div>
 
@@ -97,7 +97,7 @@ export const articles = [
   },
   {
     slug: 'dividend-yield-vs-total-return',
-    title: 'Dividend Yield vs Total Return – What Matters More in 2025?',
+    title: 'Dividend Yield vs Total Return - What Matters More in 2025?',
     date: 'May 10, 2025',
     excerpt: 'With market volatility and changing interest rates, understanding the trade‑off between yield and growth is more important than ever.',
     image: '📊',
@@ -142,9 +142,9 @@ export const articles = [
   },
   {
     slug: 'invest-2000-monthly-dbs-10-years',
-    title: 'How to Make a Million with DBS – 10‑Year DCA Strategy',
+    title: 'How to Make a Million with DBS - 10‑Year DCA Strategy',
     date: 'June 10, 2025',
-    excerpt: 'We simulated investing $2,000 every month into DBS stock from Jan 2016 to Jan 2026. The results are astonishing – even without reinvesting dividends, you could have built substantial wealth.',
+    excerpt: 'We simulated investing $2,000 every month into DBS stock from Jan 2016 to Jan 2026. The results are astonishing - even without reinvesting dividends, you could have built substantial wealth.',
     image: '💰',
     category: 'Case Study',
     readTime: '7 min read',
@@ -164,14 +164,14 @@ export const articles = [
             DBS Group Holdings (D05.SI) is Singapore’s largest bank and a favourite among dividend investors. 
             We ran a simulation using our <a href="/" className="text-accent-blue hover:underline">Regular Investment (DCA) Simulator</a> 
             to see what would happen if you invested <strong>$2,000 every month</strong> starting <strong>1 January 2016</strong> 
-            and continued for <strong>10 years</strong> until 1 January 2026 – and the results are astonishing.
+            and continued for <strong>10 years</strong> until 1 January 2026 - and the results are astonishing.
           </p>
 
           <div className="bg-bg-secondary border border-border rounded-lg p-4 my-4">
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
                 <p className="text-text-muted">📅 Period</p>
-                <p className="font-bold">Jan 2016 – Jan 2026</p>
+                <p className="font-bold">Jan 2016 - Jan 2026</p>
               </div>
               <div>
                 <p className="text-text-muted">💰 Monthly Investment</p>
@@ -202,7 +202,7 @@ export const articles = [
               Final Portfolio Value: <strong>${currentValueNoDRIP.toLocaleString()}</strong><br />
               Total Dividends: <strong>${dividendsCollected.toLocaleString()}</strong><br />
               <span className="text-text-muted">
-                Your $254,000 invested grew to over $790,000 in capital value, plus you collected over $125,000 in dividends – 
+                Your $254,000 invested grew to over $790,000 in capital value, plus you collected over $125,000 in dividends - 
                 a total return of over 260% without even reinvesting dividends!
               </span>
             </p>
@@ -215,7 +215,7 @@ export const articles = [
               Final Portfolio Value: <strong>${currentValueDRIP.toLocaleString()}</strong><br />
               Total Return: <strong>{totalReturnDRIP.toFixed(2)}%</strong><br />
               <span className="text-text-muted">
-                By reinvesting dividends, your final value surpasses $1.13 million – a truly remarkable outcome!
+                By reinvesting dividends, your final value surpasses $1.13 million - a truly remarkable outcome!
               </span>
             </p>
           </div>

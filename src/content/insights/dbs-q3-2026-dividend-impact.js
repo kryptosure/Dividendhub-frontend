@@ -46,7 +46,7 @@ export const insight = {
 
     <p><strong>Unchanged:</strong> The quarterly dividend of S$0.81 and the yield of ~4.10%. If you own DBS for income, nothing about your plan changes today.</p>
 
-    <p><strong>Worth noting:</strong> Net interest margin held steady, which is the key variable for DBS's earnings. Falling rates were the biggest risk heading into this quarter — that risk hasn't materialised yet.</p>
+    <p><strong>Worth noting:</strong> Net interest margin held steady, which is the key variable for DBS's earnings. Falling rates were the biggest risk heading into this quarter, that risk hasn't materialised yet.</p>
 
     <p><strong>Watch for:</strong> Management's commentary on 2027 capital return plans. If they signal a special dividend or an acceleration in regular payouts, the effective yield could climb above 4.5%.</p>
 

@@ -1,6 +1,6 @@
 # DividendBro
 
-> DividendBro is a free dividend tracker for US, Canadian (TSX), and Singapore (SGX) stocks. Track real-time dividend yields, ex-dividend payout dates, dividend calendars, payout ratios, and monthly income projections across 670+ securities. Includes a portfolio tracker, dividend screener, and stock comparison tool. Educational tool only — not financial advice.
+> DividendBro is a free dividend tracker for US, Canadian (TSX), and Singapore (SGX) stocks. Track real-time dividend yields, ex-dividend payout dates, dividend calendars, payout ratios, and monthly income projections across 670+ securities. Includes a portfolio tracker, dividend screener, and stock comparison tool. Educational tool only, not financial advice.
 
 DividendBro covers 672 dividend-paying securities across US, Canadian, and Singapore markets, including stocks, REITs, ETFs, bond ETFs, and preferred stocks. All data is sourced from Yahoo Finance and Financial Modeling Prep.
 
@@ -18,7 +18,7 @@ DividendBro covers 672 dividend-paying securities across US, Canadian, and Singa
 
 - [Daily Dividend Stocks](https://dividendbro.com/daily-dividend-stocks): The complete list of securities paying dividends every business day in 2026. SATA and CHAD are live, with four Strategy preferred stocks (STRC, STRF, STRK, STRD) pending approval.
 - [Weekly Dividend ETFs](https://dividendbro.com/weekly-dividend-etfs): Complete list of 73 weekly dividend ETFs, their issuers (YieldMax, Roundhill, Defiance, GraniteShares), and the return-of-capital risks behind the headline yields.
-- [Monthly Dividend Stocks](https://dividendbro.com/monthly-dividend-stocks): Full list of 133 monthly dividend payers — REITs, BDCs, closed-end funds, and covered-call ETFs.
+- [Monthly Dividend Stocks](https://dividendbro.com/monthly-dividend-stocks): Full list of 133 monthly dividend payers, REITs, BDCs, closed-end funds, and covered-call ETFs.
 - [REITs That Pay Monthly](https://dividendbro.com/reits-that-pay-monthly): The verified 2026 list of US REITs paying monthly dividends, with cadence changes and tax treatment for Singapore investors.
 - [Top Dividend Stocks](https://dividendbro.com/top): Highest-yielding dividend stocks and ETFs in the US, Canadian, and SGX markets, ranked by trailing yield.
 
@@ -29,7 +29,7 @@ DividendBro covers 672 dividend-paying securities across US, Canadian, and Singa
 ## Blog and Research
 
 - [Insights Hub](https://dividendbro.com/blog): Articles on dividend investing strategy, Singapore dividend stocks, Canadian dividend stocks, REITs, brokerage fees, and dividend growth analysis.
-- [SGX Board Lot Reduction 2026](https://dividendbro.com/blog/sgx-board-lot-reduction-2026): Complete guide to SGX's October 2026 board lot change — full list of 11 affected stocks, new lot sizes, odd lot elimination, and how broker minimum commissions affect small trades.
+- [SGX Board Lot Reduction 2026](https://dividendbro.com/blog/sgx-board-lot-reduction-2026): Complete guide to SGX's October 2026 board lot change, full list of 11 affected stocks, new lot sizes, odd lot elimination, and how broker minimum commissions affect small trades.
 - [Best Canadian Dividend Stocks for 2026](https://dividendbro.com/blog/best-canadian-dividend-stocks-2026): Complete TSX guide covering the Big Six banks, energy pipelines, monthly REITs, TFSA strategy, and the non-resident withholding tax trap.
 
 ## FAQ
@@ -41,7 +41,7 @@ A dividend tracker is a tool that monitors your dividend income, yield, ex-divid
 DividendBro is a free dividend tracker for US, Canadian, and SGX markets. It tracks dividend history, yield, payout dates, dividend growth, and safety metrics for 672 securities across stocks, REITs, ETFs, bond ETFs, and preferred stocks.
 
 **Is DividendBro free?**
-Yes. All features are free — no paywall, no subscription, no credit card required. Basic stock analysis doesn't even require sign-up.
+Yes. All features are free, no paywall, no subscription, no credit card required. Basic stock analysis doesn't even require sign-up.
 
 **Does DividendBro cover Singapore stocks?**
 Yes. SGX stocks including DBS, OCBC, UOB, Singtel, Singapore Airlines, and all major S-REITs are covered alongside US and Canadian markets.
@@ -59,7 +59,7 @@ DBS, OCBC, and UOB are highly popular among Singapore investors for stable yield
 The ex-dividend date is the cutoff date to be a shareholder of record to receive the next dividend. Buy on or after this date and you won't receive that dividend. DividendBro shows upcoming ex-dividend dates for every stock it tracks.
 
 **What's the difference between weekly and monthly dividend ETFs?**
-Weekly dividend ETFs are almost entirely options-income strategies that sell call options and pass the premium to shareholders. Distributions often include return of capital. Monthly dividend stocks include REITs, BDCs, and closed-end funds that pay from actual business income — a more traditional income category.
+Weekly dividend ETFs are almost entirely options-income strategies that sell call options and pass the premium to shareholders. Distributions often include return of capital. Monthly dividend stocks include REITs, BDCs, and closed-end funds that pay from actual business income, a more traditional income category.
 
 **Which REITs pay monthly dividends?**
 Realty Income (O), Agree Realty (ADC), LTC Properties (LTC), EPR Properties (EPR), Healthpeak (DOC), Apple Hospitality (APLE), Gladstone Commercial (GOOD), and AGNC Investment (AGNC) are among the ~19 US-listed REITs that pay monthly in 2026.
@@ -74,7 +74,7 @@ Canada imposes a 25% statutory withholding tax on dividends paid to non-resident
 The Tax-Free Savings Account (TFSA) is a Canadian registered account where Canadian dividends are 100% tax-free. The 2026 annual contribution limit is $7,000, with cumulative room of $109,000 for eligible Canadians who have never contributed. This is the single biggest tax advantage available to Canadian dividend investors.
 
 **What is the SGX board lot change of 2026?**
-Effective October 5, 2026, SGX reduced board lot sizes for 11 major stocks. Stocks priced S$10–S$100 now trade in lots of 10 shares (down from 100). Stocks above S$100 trade in lots of 1 share. The reduced lot sizes are permanent. Affected stocks include DBS, OCBC, UOB, SGX, Great Eastern, Jardine Matheson, Jardine C&C, Haw Par, Venture Corp, Prudential, and Keppel (Keppel kept 100-share lots since it trades below S$10).
+Effective October 5, 2026, SGX reduced board lot sizes for 11 major stocks. Stocks priced S$10-S$100 now trade in lots of 10 shares (down from 100). Stocks above S$100 trade in lots of 1 share. The reduced lot sizes are permanent. Affected stocks include DBS, OCBC, UOB, SGX, Great Eastern, Jardine Matheson, Jardine C&C, Haw Par, Venture Corp, Prudential, and Keppel (Keppel kept 100-share lots since it trades below S$10).
 
 **Can I buy just 1 share of DBS on SGX?**
 No. DBS is priced between S$10 and S$100, so its board lot size is 10 shares. You can only buy 1 share of stocks priced above S$100.
@@ -93,11 +93,11 @@ DividendBro exposes an MCP (Model Context Protocol) server that lets AI agents q
 - **Discovery file:** https://dividendbro.com/mcp.json
 - **Transport:** Streamable HTTP
 - **Tools:**
-  - `search_dividend_stocks` — search by ticker or name across US, SGX, TSX
-  - `get_stock_dividends` — full dividend history, yield, payout schedule, safety score
-  - `screen_dividend_stocks` — filter by market, frequency, asset type, safety
-  - `get_top_dividend_stocks` — highest-yielding stocks and ETFs by market
-  - `get_upcoming_dividends` — ex-dividend calendar for the next N days
+  - `search_dividend_stocks`, search by ticker or name across US, SGX, TSX
+  - `get_stock_dividends`, full dividend history, yield, payout schedule, safety score
+  - `screen_dividend_stocks`, filter by market, frequency, asset type, safety
+  - `get_top_dividend_stocks`, highest-yielding stocks and ETFs by market
+  - `get_upcoming_dividends`, ex-dividend calendar for the next N days
 - **Resources:** `dividendbro://methodology`, `dividendbro://markets`
 - **Prompts:** `analyze-dividend-stock`
 
@@ -107,7 +107,7 @@ Compatible with Claude Code, Cursor, VS Code, and any MCP-enabled AI client.
 
 - [Login](https://dividendbro.com/login): Account access for portfolio and watchlist tracking (requires sign-up).
 - [Sign Up](https://dividendbro.com/signup): Free account creation for syncing portfolio and watchlist across devices.
-- [Admin Dashboard](https://dividendbro.com/admin): Internal analytics (requires admin credentials — not publicly accessible).
+- [Admin Dashboard](https://dividendbro.com/admin): Internal analytics (requires admin credentials, not publicly accessible).
 
 ## Licensing
 

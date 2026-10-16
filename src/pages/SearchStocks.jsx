@@ -11,8 +11,8 @@ const SearchStocks = () => {
   const symbol = searchParams.get('symbol') || '';
 
   const pageTitle = symbol
-    ? `${symbol} Dividend History – Yield, Ex-Dates & Risk Assessment`
-    : 'Search Dividend Stocks – US & SGX | DividendBro';
+    ? `${symbol} Dividend History - Yield, Ex-Dates & Risk Assessment`
+    : 'Search Dividend Stocks - US & SGX | DividendBro';
 
   const pageDescription = symbol
     ? `View complete payout histories, current yields metrics, capital safety scores, and ex-dividend dates for ${symbol}.`

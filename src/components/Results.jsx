@@ -151,9 +151,9 @@ const Results = ({ symbol, market = 'us' }) => {
     subtitle: `${data.name} (${data.exchange || 'NASDAQ'})`,
     kpis: [
       { label: 'Total Dividends', value: `${data.currencySymbol || '$'}${data.totalDividend.toFixed(2)}` },
-      { label: 'Current Price', value: `${data.currencySymbol || '$'}${data.currentPrice?.toFixed(2) || '—'}` },
-      { label: 'Yield', value: data.currentYield ? `${data.currentYield.toFixed(2)}%` : '—' },
-      { label: '5-Yr CAGR', value: data.dividendCAGR != null ? `${data.dividendCAGR.toFixed(2)}%` : '—' }
+      { label: 'Current Price', value: `${data.currencySymbol || '$'}${data.currentPrice?.toFixed(2) || '-'}` },
+      { label: 'Yield', value: data.currentYield ? `${data.currentYield.toFixed(2)}%` : '-' },
+      { label: '5-Yr CAGR', value: data.dividendCAGR != null ? `${data.dividendCAGR.toFixed(2)}%` : '-' }
     ],
     tables: [],
     currencySymbol: data.currencySymbol || '$',

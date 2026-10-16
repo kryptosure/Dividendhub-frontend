@@ -66,7 +66,7 @@ const TargetIncome = () => {
   const curSymbol = currency === 'sgd' ? 'S$' : currency === 'cad' ? 'C$' : '$';
 
   // ✅ Keep the planner location in sync when the user changes market in the header.
-  // Selecting manually inside the planner still works — this only re-fires
+  // Selecting manually inside the planner still works, this only re-fires
   // when the store value actually changes.
   useEffect(() => {
     setLocation(marketToLocation(storeMarket));
@@ -130,14 +130,14 @@ const TargetIncome = () => {
   };
 
   const fmt = (n) => {
-    if (n == null || isNaN(n)) return '—';
+    if (n == null || isNaN(n)) return '-';
     return Number(n).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
   return (
     <>
       <Helmet>
-        <title>Monthly Dividend Income Planner – How Much Do You Need? | DividendBro</title>
+        <title>Monthly Dividend Income Planner - How Much Do You Need? | DividendBro</title>
         <meta name="description" content="Free tool: see how much you'd need to invest to earn a target monthly dividend income. Sample portfolios for Singapore, US, and Canadian stocks." />
       </Helmet>
 
@@ -156,7 +156,7 @@ const TargetIncome = () => {
         {/* Compliance banner */}
         <div className="bg-amber-500/10 border border-amber-400/30 rounded-2xl p-4">
           <p className="text-[11px] text-amber-300 font-bold uppercase tracking-wider mb-1">
-            This is a learning tool — not financial advice
+            This is a learning tool, not financial advice
           </p>
           <p className="text-[11px] text-text-secondary leading-relaxed">
             DividendBro is not a licensed financial adviser. We use public market data to show you <strong className="text-text-primary">an example</strong> of what a portfolio could look like. It's not a recommendation. Always do your own research before investing.
@@ -172,7 +172,7 @@ const TargetIncome = () => {
               <label htmlFor="target-monthly-input">
                 How much do you want per month?
               </label>
-              <InfoTip text="This is your monthly income goal from dividends. Pick something realistic — most dividend investors aim for 3–6% per year on their investment." />
+              <InfoTip text="This is your monthly income goal from dividends. Pick something realistic, most dividend investors aim for 3-6% per year on their investment." />
             </div>
             <div className="flex items-center gap-3">
               <span className="text-2xl font-black text-accent-blue font-mono" aria-hidden="true">{curSymbol}</span>
@@ -384,7 +384,7 @@ const TargetIncome = () => {
                     <InfoTip text="The percentage of your investment that comes back to you each year as dividends." position="left" />
                   </p>
                   <p className="text-sm font-bold text-accent-teal mt-1">
-                    {result.profile.expectedYieldRange[0]}% – {result.profile.expectedYieldRange[1]}%
+                    {result.profile.expectedYieldRange[0]}% - {result.profile.expectedYieldRange[1]}%
                   </p>
                 </div>
               </div>
@@ -396,7 +396,7 @@ const TargetIncome = () => {
                   Sample Portfolio
                 </p>
                 <p className="text-[10px] text-text-muted mt-0.5">
-                  Just an example. Not a recommendation — research each stock before investing.
+                  Just an example. Not a recommendation, research each stock before investing.
                 </p>
               </div>
 

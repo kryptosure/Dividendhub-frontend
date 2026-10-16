@@ -4,14 +4,14 @@ export const article = {
   date: "2026-09-10",
   category: "Learning",
   image: "/images/blog/brokerage-fees-cover.jpg",
-  excerpt: "Full 2026 fee comparison for Singapore brokers — DBS Vickers, POEMS, UOB Kay Hian, Tiger, Moomoo, IBKR. Real cost on a $10,000 trade and how fees compound over 10 years.",
+  excerpt: "Full 2026 fee comparison for Singapore brokers, DBS Vickers, POEMS, UOB Kay Hian, Tiger, Moomoo, IBKR. Real cost on a $10,000 trade and how fees compound over 10 years.",
   author: "DividendBro Research Team",
   content: `
       <p><strong>DBS Vickers charges $25 per trade. Tiger Brokers charges $3.87. Over 10 years of $1,000/month investing, that difference costs you $2,536 in pure commissions.</strong></p>
 
-      <p>This is the complete 2026 fee comparison for Singapore brokers — every major platform, real costs, and how to pick the right one for your strategy.</p>
+      <p>This is the complete 2026 fee comparison for Singapore brokers, every major platform, real costs, and how to pick the right one for your strategy.</p>
 
-      <p>In this guide: <strong>DBS Vickers</strong>, <strong>POEMS</strong> (Phillip Securities), <strong>UOB Kay Hian</strong>, and the digital disruptors — <strong>Tiger Brokers</strong>, <strong>Moomoo</strong>, <strong>Interactive Brokers</strong>.</p>
+      <p>In this guide: <strong>DBS Vickers</strong>, <strong>POEMS</strong> (Phillip Securities), <strong>UOB Kay Hian</strong>, and the digital disruptors, <strong>Tiger Brokers</strong>, <strong>Moomoo</strong>, <strong>Interactive Brokers</strong>.</p>
 
       <h2>DBS Vickers Fees (2026)</h2>
 
@@ -51,7 +51,7 @@ export const article = {
         </tbody>
       </table>
 
-      <p><strong>POEMS Cash Management</strong> is the most competitive traditional broker for SGX stocks. $6 minimum vs DBS Vickers' $25 — a 4x difference.</p>
+      <p><strong>POEMS Cash Management</strong> is the most competitive traditional broker for SGX stocks. $6 minimum vs DBS Vickers' $25, a 4x difference.</p>
 
       <h2>DBS Vickers vs POEMS: Head-to-Head</h2>
 
@@ -65,9 +65,9 @@ export const article = {
         </thead>
         <tbody>
           <tr><td><strong>Minimum Fee</strong></td><td style="color:#f87171;">$25 (Cash) / $10 (Online)</td><td style="color:#34d399;">$6 (Cash Mgmt)</td></tr>
-          <tr><td><strong>Commission Rate</strong></td><td>0.12% – 0.18%</td><td style="color:#34d399;">0.08% – 0.12%</td></tr>
+          <tr><td><strong>Commission Rate</strong></td><td>0.12% - 0.18%</td><td style="color:#34d399;">0.08% - 0.12%</td></tr>
           <tr><td><strong>CDP-Linked</strong></td><td>Yes</td><td>Yes</td></tr>
-          <tr><td><strong>Cost on $10K Trade</strong></td><td style="color:#f87171;">$12 – $25</td><td style="color:#34d399;">$8 – $12</td></tr>
+          <tr><td><strong>Cost on $10K Trade</strong></td><td style="color:#f87171;">$12 - $25</td><td style="color:#34d399;">$8 - $12</td></tr>
           <tr><td><strong>Best For</strong></td><td>DBS ecosystem users</td><td>Cost-conscious SGX investors</td></tr>
         </tbody>
       </table>
@@ -85,8 +85,8 @@ export const article = {
           </tr>
         </thead>
         <tbody>
-          <tr><td><strong>Minimum Fee</strong></td><td>$10 – $25</td><td>~$10 – $25</td></tr>
-          <tr><td><strong>Commission Rate</strong></td><td>0.12% – 0.18%</td><td>~0.15% – 0.18%</td></tr>
+          <tr><td><strong>Minimum Fee</strong></td><td>$10 - $25</td><td>~$10 - $25</td></tr>
+          <tr><td><strong>Commission Rate</strong></td><td>0.12% - 0.18%</td><td>~0.15% - 0.18%</td></tr>
           <tr><td><strong>Research Quality</strong></td><td>Basic</td><td style="color:#34d399;">Best-in-class</td></tr>
           <tr><td><strong>Best For</strong></td><td>DBS customers</td><td>Active traders wanting research</td></tr>
         </tbody>
@@ -186,7 +186,7 @@ export const article = {
         </div>
       </div>
 
-      <p><strong>Key takeaway:</strong> That is a difference of <strong>$2,536 in pure commissions</strong> between the most expensive and cheapest option — money that could have generated over $5,000 in future dividends if left invested. Tiger and Moomoo are nearly 6.5x cheaper than DBS Vickers Cash over 10 years.</p>
+      <p><strong>Key takeaway:</strong> That is a difference of <strong>$2,536 in pure commissions</strong> between the most expensive and cheapest option, money that could have generated over $5,000 in future dividends if left invested. Tiger and Moomoo are nearly 6.5x cheaper than DBS Vickers Cash over 10 years.</p>
 
       <h2>What You Get for the Extra Cost</h2>
 
@@ -194,7 +194,7 @@ export const article = {
 
       <h3>Traditional (DBS Vickers, POEMS, UOB Kay Hian, OCBC Securities)</h3>
       <ul>
-        <li><strong>CDP-linked accounts</strong> — shares are held in your name, not the broker's custodian.</li>
+        <li><strong>CDP-linked accounts</strong>, shares are held in your name, not the broker's custodian.</li>
         <li><strong>Research reports</strong> from in-house analysts (UOB Kay Hian is best-in-class).</li>
         <li><strong>IPO access</strong> for Singapore-listed companies.</li>
         <li><strong>Physical branch support</strong> if you prefer in-person help.</li>
@@ -202,8 +202,8 @@ export const article = {
 
       <h3>Digital (Tiger, Moomoo, IBKR)</h3>
       <ul>
-        <li><strong>Fractional shares</strong> — start with as little as $1.</li>
-        <li><strong>Lower minimums</strong> — perfect for monthly DCA.</li>
+        <li><strong>Fractional shares</strong>, start with as little as $1.</li>
+        <li><strong>Lower minimums</strong>, perfect for monthly DCA.</li>
         <li><strong>Better US market access</strong> for dividend ETFs.</li>
         <li><strong>Modern apps</strong> with built-in screeners and analytics.</li>
       </ul>
