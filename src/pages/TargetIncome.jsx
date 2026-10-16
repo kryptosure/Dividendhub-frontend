@@ -48,12 +48,12 @@ function marketToLocation(market) {
 }
 
 const LOADING_PHASES = [
-  'Scanning 672 dividend payers…',
-  'Filtering by your risk profile…',
-  'Checking dividend safety scores…',
-  'Balancing sector diversification…',
-  'Calculating monthly income…',
-  'Assembling your portfolio…',
+  'Scanning 672 dividend payers...',
+  'Filtering by your risk profile...',
+  'Checking dividend safety scores...',
+  'Balancing sector diversification...',
+  'Calculating monthly income...',
+  'Assembling your portfolio...',
 ];
 
 const MIN_LOADER_MS = 2500;
@@ -241,7 +241,7 @@ const TargetIncome = () => {
         <meta name="description" content="Free tool: see how much you'd need to invest to earn a target monthly dividend income. Sample portfolios for Singapore, US, and Canadian stocks." />
       </Helmet>
 
-      <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-8 space-y-3 sm:space-y-6">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 pt-1 sm:pt-8 pb-4 sm:pb-8 space-y-3 sm:space-y-6">
 
         {/* Header */}
         <div className="text-center">
@@ -306,7 +306,7 @@ const TargetIncome = () => {
           </div>
 
           {/* Step content OR AI loader */}
-          <div className="px-4 sm:px-8 py-5 sm:py-8 min-h-0 sm:min-h-[340px] flex flex-col justify-center">
+          <div className="px-4 sm:px-8 py-4 sm:py-8 min-h-0 sm:min-h-[340px] flex flex-col justify-center">
             {isLoading ? (
               <ThinkingCard />
             ) : (
@@ -387,7 +387,7 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setLocation(loc.key)}
                             aria-pressed={active}
-                            className={`min-h-[88px] sm:min-h-[100px] rounded-xl p-3 sm:p-4 border-2 text-left transition-all active:scale-[0.98] ${
+                            className={`min-h-[76px] sm:min-h-[100px] rounded-xl p-3 sm:p-4 border-2 text-left transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
@@ -441,7 +441,7 @@ const TargetIncome = () => {
                             type="button"
                             onClick={() => setRiskProfile(r.key)}
                             aria-pressed={active}
-                            className={`min-h-[80px] sm:min-h-[88px] rounded-xl p-3 sm:p-3 border-2 transition-all active:scale-[0.98] ${
+                            className={`min-h-[68px] sm:min-h-[88px] rounded-xl p-3 sm:p-3 border-2 transition-all active:scale-[0.98] ${
                               active
                                 ? 'border-accent-blue bg-accent-blue/5 shadow-sm'
                                 : 'border-border/50 bg-bg-primary hover:border-accent-blue/40'
@@ -463,7 +463,7 @@ const TargetIncome = () => {
 
           {/* Navigation footer (hidden during loading) */}
           {!isLoading && (
-            <div className="px-4 sm:px-8 py-3.5 sm:py-5 border-t border-border/40 bg-bg-primary/20">
+            <div className="px-4 sm:px-8 py-2.5 sm:py-5 border-t border-border/40 bg-bg-primary/20">
               <div className="grid grid-cols-3 items-center gap-2 sm:gap-3">
 
                 {/* Left: Back */}
