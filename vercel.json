@@ -5,7 +5,11 @@
       "destination": "/ai-catalog.json"
     },
     {
-      "source": "/((?!api|assets|images|favicon.ico|manifest.json|sitemap.xml|robots.txt|llms.txt|llms-full.txt|ai-catalog.json|ai-catalog|\\.well-known).*)",
+      "source": "/.well-known/mcp.json",
+      "destination": "/mcp.json"
+    },
+    {
+      "source": "/((?!api|assets|images|favicon.ico|manifest.json|sitemap.xml|robots.txt|llms.txt|llms-full.txt|ai-catalog.json|ai-catalog|mcp.json|mcp|\\.well-known).*)",
       "destination": "/index.html"
     }
   ],

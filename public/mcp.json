@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "dividendbro": {
+      "type": "streamable-http",
+      "url": "https://dividendhub-api.onrender.com/mcp",
+      "name": "DividendBro",
+      "description": "Dividend data for US, SGX, and TSX markets. Get yields, ex-dividend dates, payout schedules, and safety scores for 672 dividend-paying stocks.",
+      "tools": [
+        "search_dividend_stocks",
+        "get_stock_dividends",
+        "screen_dividend_stocks",
+        "get_top_dividend_stocks",
+        "get_upcoming_dividends"
+      ]
+    }
+  }
+}

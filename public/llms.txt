@@ -85,6 +85,24 @@ No. DividendBro is an educational tool. It is not licensed under the Financial A
 **What data sources does DividendBro use?**
 Dividend history and prices come from Yahoo Finance. Payout ratios come from Financial Modeling Prep (US-listed only). Visitor geography is derived from Cloudflare's CF-IPCountry header. All data is provided "as is."
 
+## MCP Server
+
+DividendBro exposes an MCP (Model Context Protocol) server that lets AI agents query dividend data directly.
+
+- **Endpoint:** https://dividendhub-api.onrender.com/mcp
+- **Discovery file:** https://dividendbro.com/mcp.json
+- **Transport:** Streamable HTTP
+- **Tools:**
+  - `search_dividend_stocks` — search by ticker or name across US, SGX, TSX
+  - `get_stock_dividends` — full dividend history, yield, payout schedule, safety score
+  - `screen_dividend_stocks` — filter by market, frequency, asset type, safety
+  - `get_top_dividend_stocks` — highest-yielding stocks and ETFs by market
+  - `get_upcoming_dividends` — ex-dividend calendar for the next N days
+- **Resources:** `dividendbro://methodology`, `dividendbro://markets`
+- **Prompts:** `analyze-dividend-stock`
+
+Compatible with Claude Code, Cursor, VS Code, and any MCP-enabled AI client.
+
 ## Optional
 
 - [Login](https://dividendbro.com/login): Account access for portfolio and watchlist tracking (requires sign-up).
