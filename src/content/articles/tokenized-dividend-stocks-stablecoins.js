@@ -4,7 +4,7 @@ export const article = {
   date: "2026-10-16",
   updated: "2026-10-16",
   category: "Crypto",
-  image: "/images/blog/tokenized-dividend-stocks-cover.webp",
+  image: "/images/blog/tokenized-dividend-stocks-hero.webp",
   excerpt: "A practical guide for investors in emerging markets. Use stablecoins to buy fractional US dividend stocks, receive payouts in your crypto wallet, and understand the 30% withholding tax.",
   author: "DividendBro Research Team",
   content: `
