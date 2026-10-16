@@ -57,6 +57,8 @@ const LOADING_PHASES = [
 ];
 
 const MIN_LOADER_MS = 2500;
+const REVEAL_INTERVAL_MS = 1000;
+const MAX_PHASE = 5;
 
 const RevealCard = ({ children, delay = 0 }) => {
   const [visible, setVisible] = useState(false);
@@ -159,6 +161,16 @@ const TargetIncome = () => {
       navigate(`/search?symbol=${encodeURIComponent(symbol)}`, { replace: true });
     }
   }, [searchParams, navigate]);
+
+  // Auto-advance the reveal phases every REVEAL_INTERVAL_MS
+  useEffect(() => {
+    if (!result || !result.ok) return;
+    if (resultPhase >= MAX_PHASE) return;
+    const t = setTimeout(() => {
+      setResultPhase((p) => Math.min(p + 1, MAX_PHASE));
+    }, REVEAL_INTERVAL_MS);
+    return () => clearTimeout(t);
+  }, [result, resultPhase]);
 
   const runGeneration = async () => {
     setIsLoading(true);
@@ -574,7 +586,7 @@ const TargetIncome = () => {
           <div ref={resultsRef} className="space-y-6">
 
             {/* Progress dots */}
-            {resultPhase > 0 && resultPhase < 5 && (
+            {resultPhase > 0 && resultPhase < MAX_PHASE && (
               <div className="flex justify-center gap-2 pt-2">
                 {[1, 2, 3, 4].map((n) => (
                   <div
@@ -623,6 +635,14 @@ const TargetIncome = () => {
                   </RevealCard>
                 )}
               </div>
+
+              {resultPhase >= 3 && incomeDiffMsg && (
+                <RevealCard delay={150}>
+                  <p className="text-center text-[11px] sm:text-xs font-bold text-accent-teal mt-3">
+                    {incomeDiffMsg}
+                  </p>
+                </RevealCard>
+              )}
             </div>
 
             {/* Risk Level (phase 4) */}
@@ -649,40 +669,21 @@ const TargetIncome = () => {
               </RevealCard>
             )}
 
-            {/* Next / Skip buttons */}
-            {resultPhase >= 1 && resultPhase < 5 && (
-              <RevealCard>
-                <div className="text-center space-y-3">
-                  <button
-                    type="button"
-                    onClick={() => setResultPhase((p) => Math.min(p + 1, 5))}
-                    className="min-h-[48px] px-6 sm:px-8 py-3 bg-gradient-to-r from-accent-blue to-accent-teal text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl shadow-md hover:opacity-95 active:scale-95 transition-all"
-                  >
-                    {resultPhase === 1 && '💰 What does it take? →'}
-                    {resultPhase === 2 && '💸 What does it pay? →'}
-                    {resultPhase === 3 && '⚖️ What\'s the risk? →'}
-                    {resultPhase === 4 && '📊 See Full Portfolio →'}
-                  </button>
-                  {resultPhase < 4 && (
-                    <div>
-                      <button
-                        type="button"
-                        onClick={() => setResultPhase(5)}
-                        className="text-[11px] text-text-muted hover:text-accent-blue transition-colors"
-                      >
-                        Skip to full portfolio →
-                      </button>
-                    </div>
-                  )}
-                  {resultPhase === 3 && incomeDiffMsg && (
-                    <p className="text-[11px] text-accent-teal font-bold">{incomeDiffMsg}</p>
-                  )}
-                </div>
-              </RevealCard>
+            {/* Skip link while reveal is running */}
+            {resultPhase >= 1 && resultPhase < MAX_PHASE && (
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => setResultPhase(MAX_PHASE)}
+                  className="text-[11px] text-text-muted hover:text-accent-blue transition-colors"
+                >
+                  Skip to full portfolio →
+                </button>
+              </div>
             )}
 
             {/* Full results */}
-            {resultPhase >= 5 && (
+            {resultPhase >= MAX_PHASE && (
               <>
                 <div className="text-center">
                   <p className="text-sm font-black text-accent-teal">
