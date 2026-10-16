@@ -1,7 +1,7 @@
 // src/content/articles/tokenized-dividend-stocks-stablecoins.js
 // Em dash free. No en dashes. No minus signs. Only hyphens.
 
-const article = {
+export const article = {
   slug: 'tokenized-dividend-stocks-stablecoins',
   title: 'How to Buy Tokenized Dividend Stocks with USDT or USDC and Get Paid Every Quarter',
   description:
@@ -16,10 +16,10 @@ const article = {
     'USDC',
   ],
   author: 'DividendBro',
-  publishedAt: '2026-10-16',
+  date: '2026-10-16',
   updatedAt: '2026-10-16',
   readingTime: 11,
-  heroImage: '/images/articles/tokenized-dividend-stocks-hero.webp',
+  heroImage: '/images/articles/tokenized-dividend-stocks-hero.png',
   content: `
 For millions of investors in Africa, Southeast Asia, and Latin America, owning a share of a dividend-paying US company like Coca-Cola has always been out of reach. Brokerage accounts demand high minimums, international transfers are expensive, and the process is slow. Tokenized dividend stocks, combined with stablecoins, are changing that. This guide explains how to use USDT or USDC to buy fractional shares of US dividend stocks and receive regular payouts in your crypto wallet.
 
